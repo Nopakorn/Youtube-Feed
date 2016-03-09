@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Youtube.h"
 
-@interface SettingTableViewController : UITableViewController
+@interface SettingTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    NSInteger selectedRow;
+}
+
+@property (nonatomic, retain) NSMutableArray *selectedType;
+@property (nonatomic, retain) NSMutableArray *genreList;
+@property (nonatomic, retain) NSMutableArray *genreSelected;
+
+@property(weak, nonatomic) IBOutlet UITableView *settingTableView;
+@property(weak,nonatomic) IBOutlet UIButton  *submitButton;
 
 @end

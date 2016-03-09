@@ -28,7 +28,7 @@
     [self.youtube.videoIdList  addObject:@"OHXjxWaQs9o"];
     
     //NSLog(@"object %@",[self.youtube.videoIdList objectAtIndex:0]);
-    [self.youtube callSearch];
+    //[self.youtube callSearch];
     //[self getVideoId];
     [self.navigationController setNavigationBarHidden:YES];
     self.playerView.delegate = self;
@@ -119,7 +119,23 @@
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
 
     }else if(state == kYTPlayerErrorVideoNotFound){
-        NSLog(@"Video not found");
+        
+        NSLog(@"Video not found : %@", [self.youtube.videoIdList objectAtIndex:item]);
+        
+    }else if(state == kYTPlayerStateUnstarted){
+        
+        NSLog(@"Video unstarted : %@", [self.youtube.videoIdList objectAtIndex:item]);
+        item+=1;
+        [self.playerView pauseVideo];
+        NSDictionary *playerVers = @{
+                                     @"playsinline" : @1,
+                                     @"controls" : @0,
+                                     @"showinfo" : @1,
+                                     @"modestbranding" : @1,
+                                     @"autoplay" : @0
+                                     };
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
     }
 }
 

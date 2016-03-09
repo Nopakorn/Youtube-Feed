@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -23,7 +24,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcD-kf-vM4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1540.5" y="417"/>
+            <point key="canvasLocation" x="-2039" y="761"/>
         </scene>
         <!--search-->
         <scene sceneID="h5J-V3-JzZ">
@@ -52,7 +53,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jTx-nb-R6Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2047.5" y="1102"/>
+            <point key="canvasLocation" x="-3232" y="2094"/>
         </scene>
         <!--Setting-->
         <scene sceneID="THI-bJ-NXg">
@@ -63,7 +64,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="M43-tY-Uys">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="M43-tY-Uys" customClass="SettingCustomCell">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M43-tY-Uys" id="tzJ-FN-zo3">
@@ -80,15 +81,19 @@
                     <navigationItem key="navigationItem" title="Setting" id="lXn-IB-OwO">
                         <barButtonItem key="rightBarButtonItem" title="Submit" style="plain" id="J3D-ez-SoZ">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="jR7-cp-3z6">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <rect key="frame" x="529" y="7" width="51" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Submit"/>
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="submitButton" destination="jR7-cp-3z6" id="mEB-DE-zTD"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AQk-RV-sFa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1230" y="1822"/>
+            <point key="canvasLocation" x="-1214" y="2118"/>
         </scene>
         <!--setting-->
         <scene sceneID="sUW-ig-UcD">
@@ -105,7 +110,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="30z-Qe-Rrj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2047.5" y="1822"/>
+            <point key="canvasLocation" x="-2048" y="2118"/>
         </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="XeX-Ur-dpP">
@@ -212,16 +217,16 @@
                                 <exclude reference="Fkv-79-fz0"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="57y-lU-aWK"/>
-                                <exclude reference="lpj-aE-sso"/>
-                                <exclude reference="nZp-bV-OOK"/>
+                                <exclude reference="u6D-hQ-6Tj"/>
                                 <exclude reference="2Q3-ej-xqB"/>
                                 <exclude reference="uTj-OT-UTX"/>
                                 <exclude reference="Yit-Iz-Abe"/>
                                 <exclude reference="eFD-FL-u89"/>
                                 <exclude reference="42Y-BX-MCl"/>
                                 <exclude reference="auG-hd-Bso"/>
-                                <exclude reference="u6D-hQ-6Tj"/>
+                                <exclude reference="57y-lU-aWK"/>
+                                <exclude reference="lpj-aE-sso"/>
+                                <exclude reference="nZp-bV-OOK"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
@@ -240,16 +245,16 @@
                                 <include reference="Fkv-79-fz0"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="57y-lU-aWK"/>
-                                <include reference="lpj-aE-sso"/>
-                                <include reference="nZp-bV-OOK"/>
+                                <include reference="u6D-hQ-6Tj"/>
                                 <include reference="2Q3-ej-xqB"/>
                                 <include reference="uTj-OT-UTX"/>
                                 <include reference="Yit-Iz-Abe"/>
                                 <include reference="eFD-FL-u89"/>
                                 <include reference="42Y-BX-MCl"/>
                                 <include reference="auG-hd-Bso"/>
-                                <include reference="u6D-hQ-6Tj"/>
+                                <include reference="57y-lU-aWK"/>
+                                <include reference="lpj-aE-sso"/>
+                                <include reference="nZp-bV-OOK"/>
                             </mask>
                         </variation>
                     </view>

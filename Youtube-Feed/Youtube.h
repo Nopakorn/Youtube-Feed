@@ -13,17 +13,21 @@
     NSMutableData* receivedData;
 }
 
-@property(nonatomic, copy) NSString* siteURLString;
-@property(nonatomic, copy) NSString* search;
-@property(nonatomic, copy) NSString* video;
-@property(nonatomic, copy) NSString* youtube_api_key;
-@property(nonatomic, copy) NSString* part;
+@property (nonatomic, copy) NSString *siteURLString;
+@property (nonatomic, copy) NSString *search;
+@property (nonatomic, copy) NSString *video;
+@property (nonatomic, copy) NSString *youtube_api_key;
+@property (nonatomic, copy) NSString *part;
 
-@property(nonatomic, retain) NSMutableArray *videoIdList;
-@property(nonatomic, retain) NSMutableArray *titleList;
+@property (nonatomic, retain) NSMutableArray *videoIdList;
+@property (nonatomic, retain) NSMutableArray *titleList;
 
-@property(nonatomic, retain) NSDictionary *searchResults;
--(id) init;
--(void) callSearch;
+@property (nonatomic, retain) NSMutableArray *selectedType;
+
+@property (nonatomic, retain) NSDictionary *searchResults;
+
+- (id) init;
+- (void) callSearch;
+- (void) settingSelectedType:(NSMutableArray *)type;
 
 @end

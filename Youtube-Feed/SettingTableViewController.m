@@ -7,6 +7,8 @@
 //
 
 #import "SettingTableViewController.h"
+#import "SettingCustomCell.h"
+
 
 @interface SettingTableViewController ()
 
@@ -16,40 +18,78 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSLog(@"ViewDidload SettingTableViewController");
+    self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
+    [self createGerne];
+    //self.settingTableView.delegate = self;
+    self.settingTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
+- (void)createGerne
+{
+    self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
+    NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    
+    return [self.genreList count];
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    // Configure the cell...
+    static NSString *tableIdentifier = @"SettingCustomCell";
+    //[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SettingCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:tableIdentifier];
+    if (cell == nil) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SettingCustomCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    NSInteger row = indexPath.row;
+    if (row == selectedRow) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
+    cell.type.text = [self.genreList objectAtIndex:indexPath.row];
     return cell;
 }
-*/
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 53;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
+    selectedRow = indexPath.row;
+    [tableView reloadData];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if(sender == self.submitButton){
+        NSLog(@"submitButton Action");
+        //[self.parentViewController.tabBarController setSelectedIndex:1];
+    }
+}
 
 /*
 // Override to support conditional editing of the table view.

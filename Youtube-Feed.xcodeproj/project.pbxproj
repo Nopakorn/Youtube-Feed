@@ -11,6 +11,7 @@
 		11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */; };
 		11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */; };
 		11BC1A0F1C8E938900285564 /* SettingCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11BC1A0E1C8E938900285564 /* SettingCustomCell.xib */; };
+		11BC1A131C8EC2D200285564 /* SettingCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC1A121C8EC2D200285564 /* SettingCustomCell.m */; };
 		11C170E91C7186A800E74681 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C170E81C7186A800E74681 /* main.m */; };
 		11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C170EB1C7186A800E74681 /* AppDelegate.m */; };
 		11C170EF1C7186A800E74681 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C170EE1C7186A800E74681 /* ViewController.m */; };
@@ -48,6 +49,8 @@
 		11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarViewController.h; sourceTree = "<group>"; };
 		11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTabBarViewController.m; sourceTree = "<group>"; };
 		11BC1A0E1C8E938900285564 /* SettingCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingCustomCell.xib; sourceTree = "<group>"; };
+		11BC1A111C8EC2D200285564 /* SettingCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingCustomCell.h; sourceTree = "<group>"; };
+		11BC1A121C8EC2D200285564 /* SettingCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingCustomCell.m; sourceTree = "<group>"; };
 		11C170E41C7186A800E74681 /* Youtube-Feed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Youtube-Feed.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		11C170E81C7186A800E74681 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		11C170EA1C7186A800E74681 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -113,6 +116,15 @@
 			name = CustomCells;
 			sourceTree = "<group>";
 		};
+		11BC1A141C8EC31700285564 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				11BC1A111C8EC2D200285564 /* SettingCustomCell.h */,
+				11BC1A121C8EC2D200285564 /* SettingCustomCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		11C170DB1C7186A800E74681 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +150,7 @@
 		11C170E61C7186A800E74681 /* Youtube-Feed */ = {
 			isa = PBXGroup;
 			children = (
+				11BC1A141C8EC31700285564 /* Views */,
 				11BC1A101C8E939300285564 /* CustomCells */,
 				11C170EA1C7186A800E74681 /* AppDelegate.h */,
 				11C170EB1C7186A800E74681 /* AppDelegate.m */,
@@ -385,6 +398,7 @@
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
 				11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */,
 				11C170E91C7186A800E74681 /* main.m in Sources */,
+				11BC1A131C8EC2D200285564 /* SettingCustomCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
