@@ -21,6 +21,7 @@
 		11C171021C7186A800E74681 /* Youtube_FeedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C171011C7186A800E74681 /* Youtube_FeedTests.m */; };
 		11C1710D1C7186A900E74681 /* Youtube_FeedUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1710C1C7186A900E74681 /* Youtube_FeedUITests.m */; };
 		11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F18B6C1C76D21B0066A8EF /* Youtube.m */; };
+		5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */; };
 		82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,8 @@
 		11C1710E1C7186A900E74681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11F18B6B1C76D21B0066A8EF /* Youtube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Youtube.h; sourceTree = "<group>"; };
 		11F18B6C1C76D21B0066A8EF /* Youtube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Youtube.m; sourceTree = "<group>"; };
+		5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstSettingTableViewController.h; sourceTree = "<group>"; };
+		5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstSettingTableViewController.m; sourceTree = "<group>"; };
 		BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Youtube-Feed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDAB1E741440D88306343CB6 /* Pods-Youtube-Feed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.release.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.release.xcconfig"; sourceTree = "<group>"; };
 		CE71C9F1D08343CD300C4E2D /* Pods-Youtube-Feed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.debug.xcconfig"; sourceTree = "<group>"; };
@@ -154,8 +157,6 @@
 				11BC1A101C8E939300285564 /* CustomCells */,
 				11C170EA1C7186A800E74681 /* AppDelegate.h */,
 				11C170EB1C7186A800E74681 /* AppDelegate.m */,
-				11C170ED1C7186A800E74681 /* ViewController.h */,
-				11C170EE1C7186A800E74681 /* ViewController.m */,
 				11C170F01C7186A800E74681 /* Main.storyboard */,
 				11C170F31C7186A800E74681 /* Assets.xcassets */,
 				11C170F51C7186A800E74681 /* LaunchScreen.storyboard */,
@@ -163,12 +164,16 @@
 				11C170E71C7186A800E74681 /* Supporting Files */,
 				11F18B6B1C76D21B0066A8EF /* Youtube.h */,
 				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
+				11C170ED1C7186A800E74681 /* ViewController.h */,
+				11C170EE1C7186A800E74681 /* ViewController.m */,
 				112B36421C882ADF00959C20 /* YTViewController.h */,
 				112B36431C882ADF00959C20 /* YTViewController.m */,
 				11BC1A081C8E8A5D00285564 /* SettingTableViewController.h */,
 				11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */,
 				11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */,
 				11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */,
+				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
+				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
 			);
 			path = "Youtube-Feed";
 			sourceTree = "<group>";
@@ -396,6 +401,7 @@
 				11C170EF1C7186A800E74681 /* ViewController.m in Sources */,
 				11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
+				5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */,
 				11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */,
 				11C170E91C7186A800E74681 /* main.m in Sources */,
 				11BC1A131C8EC2D200285564 /* SettingCustomCell.m in Sources */,
