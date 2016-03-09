@@ -7,6 +7,7 @@
 //
 
 #import "SettingTableViewController.h"
+#import "MainTabBarViewController.h"
 #import "SettingCustomCell.h"
 
 
@@ -20,16 +21,15 @@
     [super viewDidLoad];
     NSLog(@"ViewDidload SettingTableViewController");
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
-    [self createGerne];
+    MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
+    self.genreSelected = tabbar.genreSelected;
+    NSLog(@"gern scale %lu",(unsigned long)[tabbar.genreSelected count]);
+    [self createGenre];
     //self.settingTableView.delegate = self;
     self.settingTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-     //self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
 }
-- (void)createGerne
+- (void)createGenre
 {
     self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
     NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
@@ -61,7 +61,7 @@
         cell = [nib objectAtIndex:0];
     }
     NSInteger row = indexPath.row;
-    if (row == selectedRow) {
+    if ([self checkmark:row]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -71,6 +71,20 @@
     return cell;
 }
 
+- (BOOL)checkmark:(NSInteger )row
+{
+    NSString *item = [self.genreList objectAtIndex:row];
+    if(self.genreSelected != 0){
+        for (int i = 0; i < [self.genreSelected count]; i++) {
+            if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
+                return true;
+                
+            }
+        }
+    }
+    return false;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 53;
@@ -78,17 +92,29 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
-    selectedRow = indexPath.row;
+    NSString *item = [self.genreList objectAtIndex:indexPath.row];
+    if([self.genreSelected count] != 0 ){
+        for (int i=0; i < [self.genreSelected count]; i++) {
+            if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
+                [self.genreSelected removeObjectAtIndex:i];
+                break;
+                
+            }else if(i == [self.genreSelected count] - 1){
+                
+                [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
+                break;
+            }
+        }
+    }else{
+        [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
+    }
     [tableView reloadData];
+
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if(sender == self.submitButton){
-        NSLog(@"submitButton Action");
-        //[self.parentViewController.tabBarController setSelectedIndex:1];
-    }
+
 }
 
 /*

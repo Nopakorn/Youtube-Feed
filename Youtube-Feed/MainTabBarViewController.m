@@ -15,6 +15,7 @@
 
 @implementation MainTabBarViewController
 @synthesize youtube;
+@synthesize genreSelected;
 
 - (void)viewDidLoad {
     [super viewDidLoad];

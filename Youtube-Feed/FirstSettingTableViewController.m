@@ -151,6 +151,7 @@
         NSNumber *indexShow = sender;
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
+        dest.genreSelected = self.genreSelected;
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
         
     }

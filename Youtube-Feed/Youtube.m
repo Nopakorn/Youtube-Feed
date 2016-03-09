@@ -57,7 +57,7 @@
         {
             NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             self.searchResults = json;
-            NSLog(@"json reponse %@",json);
+            //NSLog(@"json reponse %@",json);
             [self fetchVideos];
         }else{
             NSLog(@"%@",error);
