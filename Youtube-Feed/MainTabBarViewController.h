@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Youtube.h"
+
 
 @interface MainTabBarViewController : UITabBarController
+
+@property(strong, nonatomic) Youtube *youtube;
 
 @end

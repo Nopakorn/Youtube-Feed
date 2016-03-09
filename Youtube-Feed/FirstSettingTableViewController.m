@@ -19,6 +19,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.youtube = [[Youtube alloc] init];
+    
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     [self createGerne];
 
@@ -50,7 +52,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     static NSString *tableIdentifier = @"SettingCustomCell";
-    //[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
     SettingCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:tableIdentifier];
     if (cell == nil) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SettingCustomCell" owner:self options:nil];
@@ -67,7 +69,7 @@
     return cell;
 }
 
-- (BOOL) checkmark:(NSInteger )row
+- (BOOL)checkmark:(NSInteger )row
 {
     NSString *item = [self.genreList objectAtIndex:row];
     if(self.genreSelected != 0){
@@ -108,11 +110,47 @@
     [tableView reloadData];
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+
+- (void)submitButtonPressed:(id)sender
 {
-    if(sender == self.submitButton){
-        NSLog(@"submitButton Action");
-        //[self.parentViewController.tabBarController setSelectedIndex:1];
+    [self.youtube callSearch];
+    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(130.5, 65.5);
+    spinner.color = [UIColor blackColor];
+    [alert.view addSubview:spinner];
+    [spinner startAnimating];
+    [self presentViewController:alert animated:NO completion:nil];
+    
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"GetUser" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoId)
+                                                 name:@"LoadVideoId" object:nil];
+
+}
+
+- (void)receivedLoadVideoId
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
+        [alert dismissViewControllerAnimated:YES completion:nil];
+        
+    });
+
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"SubmitSetting"]){
+        // NAVIGATION HIDE
+        [self.navigationController setNavigationBarHidden:YES];
+        
+        NSNumber *indexShow = sender;
+        MainTabBarViewController *dest = segue.destinationViewController;
+        dest.youtube = self.youtube;
+        [dest setSelectedIndex:indexShow.unsignedIntegerValue];
+    
     }
 }
 

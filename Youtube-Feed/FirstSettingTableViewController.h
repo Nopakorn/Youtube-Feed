@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
-@interface FirstSettingTableViewController : UITableViewController
+@interface FirstSettingTableViewController : UITableViewController<UIAlertViewDelegate,UITextFieldDelegate>
+{
+    UIAlertController *alert;
+}
 
 @property(strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray *genreList;
