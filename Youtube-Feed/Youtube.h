@@ -15,6 +15,7 @@
 
 @property (nonatomic, copy) NSString *siteURLString;
 @property (nonatomic, copy) NSString *search;
+@property (nonatomic, copy) NSString *searchTerm;
 @property (nonatomic, copy) NSString *video;
 @property (nonatomic, copy) NSString *youtube_api_key;
 @property (nonatomic, copy) NSString *part;
@@ -27,7 +28,7 @@
 @property (nonatomic, retain) NSDictionary *searchResults;
 
 - (id) init;
-- (void) callSearch;
-- (void) settingSelectedType:(NSMutableArray *)type;
+- (void) callSearch:(NSMutableArray *)genreSelected;
+
 
 @end

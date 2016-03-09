@@ -24,16 +24,24 @@
 }
 
 
--(void) callSearch
+-(void) callSearch:(NSMutableArray *)genreSelected
 {
-    NSLog(@"calling youtube services");
-    [self getSearchYoutube];
+    self.searchTerm = @"";
+    for(int i = 0 ; i < [genreSelected count] ; i++){
+        
+        self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
+    }
+    [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    //self.searchTerm = [NSString stringWithFormat:@"%@+music",self.searchTerm];
+    
+    NSLog(@"calling youtube services with searchTerm:%@",self.searchTerm);
+    [self getSearchYoutube:self.searchTerm];
 }
 
--(void) getSearchYoutube
+-(void) getSearchYoutube:(NSString *)searchTerm
 {
 
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=pop+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=20"];
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=20", searchTerm];
     
     
     NSURL *url = [[NSURL alloc] initWithString:urlString];
