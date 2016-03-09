@@ -7,25 +7,6 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Item 2-->
-        <scene sceneID="WXJ-Td-RU4">
-            <objects>
-                <viewController id="XLt-eY-eg7" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Yb6-x9-74J"/>
-                        <viewControllerLayoutGuide type="bottom" id="6kh-m7-07t"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ZPx-Zr-mzI">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="tWL-Px-lMk"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HcD-kf-vM4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2039" y="761"/>
-        </scene>
         <!--search-->
         <scene sceneID="h5J-V3-JzZ">
             <objects>
@@ -140,9 +121,11 @@
                                 <state key="normal" title="Go"/>
                                 <connections>
                                     <action selector="submitButtonPressed:" destination="6HI-kr-p9O" eventType="touchUpInside" id="F2w-rN-SSw"/>
-                                    <segue destination="Ogr-FY-MaA" kind="push" identifier="SubmitSetting" id="UD8-GI-RVY"/>
                                 </connections>
                             </button>
+                            <connections>
+                                <segue destination="Ogr-FY-MaA" kind="push" identifier="SubmitSetting" id="fMn-DI-hRv"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -180,7 +163,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="XLt-eY-eg7" kind="relationship" relationship="viewControllers" id="MNN-qI-MGF"/>
                         <segue destination="pHh-BN-O3A" kind="relationship" relationship="viewControllers" id="Qmd-8Z-Lb9"/>
                         <segue destination="0he-ZN-WCF" kind="relationship" relationship="viewControllers" id="ize-DK-SH7"/>
                         <segue destination="OLY-Rq-FhV" kind="relationship" relationship="viewControllers" id="bz3-Fb-fFf"/>

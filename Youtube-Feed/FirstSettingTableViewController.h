@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
-@interface FirstSettingTableViewController : UITableViewController<UIAlertViewDelegate,UITextFieldDelegate>
+@interface FirstSettingTableViewController : UITableViewController<UIAlertViewDelegate,UITextFieldDelegate, UITableViewDelegate,UITableViewDataSource>
 {
     UIAlertController *alert;
 }

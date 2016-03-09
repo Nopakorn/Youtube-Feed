@@ -76,7 +76,7 @@
         for (int i = 0; i < [self.genreSelected count]; i++) {
             if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
                 return true;
-                break;
+                
             }
         }
     }
@@ -93,27 +93,28 @@
 {
     NSString *item = [self.genreList objectAtIndex:indexPath.row];
     if([self.genreSelected count] != 0 ){
-        for (int i=0; i<[self.genreSelected count]; i++) {
+        for (int i=0; i < [self.genreSelected count]; i++) {
             if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
-                [self.genreSelected removeObject:item];
+                [self.genreSelected removeObjectAtIndex:i];
                 break;
             
-            }else if(i == [self.genreSelected count] - i){
-                [self.genreSelected addObject:item];
+            }else if(i == [self.genreSelected count] - 1){
+                NSLog(@"last count");
+                [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
                 break;
             }
         }
     }else{
         [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
     }
-    
+    NSLog(@"check l %lul",(unsigned long)[self.genreSelected count]);
     [tableView reloadData];
 }
 
-
-- (void)submitButtonPressed:(id)sender
+- (IBAction)submitButtonPressed:(id)sender
 {
-    [self.youtube callSearch];
+    [self.youtube callSearch:self.genreSelected];
+    
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.center = CGPointMake(130.5, 65.5);
@@ -122,10 +123,11 @@
     [spinner startAnimating];
     [self presentViewController:alert animated:NO completion:nil];
     
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"GetUser" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoId)
                                                  name:@"LoadVideoId" object:nil];
+    [self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
+    
 
 }
 
@@ -133,11 +135,11 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        [self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
+        [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
         [alert dismissViewControllerAnimated:YES completion:nil];
         
     });
-
+   
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -145,12 +147,12 @@
     if([segue.identifier isEqualToString:@"SubmitSetting"]){
         // NAVIGATION HIDE
         [self.navigationController setNavigationBarHidden:YES];
-        
+       
         NSNumber *indexShow = sender;
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
-    
+        
     }
 }
 

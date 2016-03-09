@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "MainTabBarViewController.h"
 
 @interface ViewController ()
 
@@ -20,16 +21,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     item = 0;
-    self.youtube = [[Youtube alloc] init];
-    //self.youtube.videoIdList = [[NSMutableArray alloc] initWithCapacity:10];
-    [self.youtube.videoIdList  addObject:@"kBgkcuJ12k8"];
-    [self.youtube.videoIdList  addObject:@"OHXjxWaQs9o"];
-    [self.youtube.videoIdList  addObject:@"f_h7o4yLldY"];
-    [self.youtube.videoIdList  addObject:@"OHXjxWaQs9o"];
+    self.youtube = [[Youtube alloc] init];    
+    MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
+    self.youtube = tabbar.youtube;
+    if([tabbar.youtube.videoIdList count] == 0){
+        NSLog(@"object is nil");
+    }
     
-    //NSLog(@"object %@",[self.youtube.videoIdList objectAtIndex:0]);
-    //[self.youtube callSearch];
-    //[self getVideoId];
     [self.navigationController setNavigationBarHidden:YES];
     self.playerView.delegate = self;
     NSDictionary *playerVers = @{

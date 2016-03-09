@@ -12,6 +12,8 @@
 
 @interface MainTabBarViewController : UITabBarController
 
+
 @property(strong, nonatomic) Youtube *youtube;
+@property (nonatomic, retain) NSString *passValue;
 
 @end

@@ -31,7 +31,7 @@
         
         self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
     }
-    [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     //self.searchTerm = [NSString stringWithFormat:@"%@+music",self.searchTerm];
     
     NSLog(@"calling youtube services with searchTerm:%@",self.searchTerm);

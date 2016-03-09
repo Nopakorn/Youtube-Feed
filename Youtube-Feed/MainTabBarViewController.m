@@ -7,30 +7,25 @@
 //
 
 #import "MainTabBarViewController.h"
+#import "ViewController.h"
 
 @interface MainTabBarViewController ()
 
 @end
 
 @implementation MainTabBarViewController
+@synthesize youtube;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-   NSLog(@"view did Load Tabbar");
+    NSLog(@"view did Load Tabbar");
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-     NSLog(@"view did appear Tabbar");
-//    UITabBarController *tab = self.tabBarController;
-//    if(tab){
-//        NSLog(@"I have a tab bar");
-//        [self.tabBarController setSelectedIndex:3];
-//    }else{
-//        NSLog(@"I dont have");
-//        //[(UITabBarController *)self.navigationController.topViewController setSelectedIndex:3];
-//    }
+    self.passValue = @"test";
+     NSLog(@"view did appear Tabbar %lu",(unsigned long)[self.youtube.videoIdList count]);
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -38,14 +33,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [(UITabBarController *)self.window.rootViewController setSelectedIndex:3];
+    //[(UITabBarController *)self.window.rootViewController setSelectedIndex:3];
     return YES;
 }
 
