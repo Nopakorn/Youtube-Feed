@@ -26,12 +26,12 @@
 
 - (IBAction)cancelButtonPressed:(id)sender
 {
-
+    [self dismissViewControllerAnimated:YES completion:Nil];
 }
 
 - (IBAction)okButtonPressed:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:Nil];
+   
 }
 
 @end
