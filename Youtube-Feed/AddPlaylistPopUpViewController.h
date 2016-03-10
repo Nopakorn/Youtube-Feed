@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddPlaylistPopUpViewController : UIViewController
+@interface AddPlaylistPopUpViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
+
+@property (nonatomic, retain) NSMutableArray *playlist;
+
+@property(weak, nonatomic) IBOutlet UITableView *playlistTableView;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIButton *okButton;
 

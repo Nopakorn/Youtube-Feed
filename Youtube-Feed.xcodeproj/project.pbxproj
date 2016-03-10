@@ -21,6 +21,8 @@
 		11C1710D1C7186A900E74681 /* Youtube_FeedUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1710C1C7186A900E74681 /* Youtube_FeedUITests.m */; };
 		11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F18B6C1C76D21B0066A8EF /* Youtube.m */; };
 		5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */; };
+		5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */; };
+		5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */; };
 		5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */; };
 		82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */; };
 /* End PBXBuildFile section */
@@ -70,6 +72,9 @@
 		11F18B6C1C76D21B0066A8EF /* Youtube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Youtube.m; sourceTree = "<group>"; };
 		5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPlaylistPopUpViewController.h; sourceTree = "<group>"; };
 		5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPlaylistPopUpViewController.m; sourceTree = "<group>"; };
+		5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistPopUpCustomCell.xib; sourceTree = "<group>"; };
+		5C4222921C916EBF00C1C525 /* PlaylistPopUpCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistPopUpCustomCell.h; sourceTree = "<group>"; };
+		5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistPopUpCustomCell.m; sourceTree = "<group>"; };
 		5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstSettingTableViewController.h; sourceTree = "<group>"; };
 		5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstSettingTableViewController.m; sourceTree = "<group>"; };
 		BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Youtube-Feed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				11BC1A0E1C8E938900285564 /* SettingCustomCell.xib */,
+				5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */,
 			);
 			name = CustomCells;
 			sourceTree = "<group>";
@@ -124,6 +130,8 @@
 			children = (
 				11BC1A111C8EC2D200285564 /* SettingCustomCell.h */,
 				11BC1A121C8EC2D200285564 /* SettingCustomCell.m */,
+				5C4222921C916EBF00C1C525 /* PlaylistPopUpCustomCell.h */,
+				5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -322,6 +330,7 @@
 			files = (
 				11C170F71C7186A800E74681 /* LaunchScreen.storyboard in Resources */,
 				11C170F41C7186A800E74681 /* Assets.xcassets in Resources */,
+				5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */,
 				11C170F21C7186A800E74681 /* Main.storyboard in Resources */,
 				11BC1A0F1C8E938900285564 /* SettingCustomCell.xib in Resources */,
 			);
@@ -399,6 +408,7 @@
 				11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */,
 				11C170EF1C7186A800E74681 /* ViewController.m in Sources */,
 				11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */,
+				5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
 				5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */,
 				11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #import "AddPlaylistPopUpViewController.h"
+#import "PlaylistPopUpCustomCell.h"
 
 @interface AddPlaylistPopUpViewController ()
 
