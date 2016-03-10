@@ -20,6 +20,7 @@
 		11C171021C7186A800E74681 /* Youtube_FeedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C171011C7186A800E74681 /* Youtube_FeedTests.m */; };
 		11C1710D1C7186A900E74681 /* Youtube_FeedUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1710C1C7186A900E74681 /* Youtube_FeedUITests.m */; };
 		11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F18B6C1C76D21B0066A8EF /* Youtube.m */; };
+		5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */; };
 		5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */; };
 		82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */; };
 /* End PBXBuildFile section */
@@ -67,6 +68,8 @@
 		11C1710E1C7186A900E74681 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11F18B6B1C76D21B0066A8EF /* Youtube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Youtube.h; sourceTree = "<group>"; };
 		11F18B6C1C76D21B0066A8EF /* Youtube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Youtube.m; sourceTree = "<group>"; };
+		5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPlaylistPopUpViewController.h; sourceTree = "<group>"; };
+		5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPlaylistPopUpViewController.m; sourceTree = "<group>"; };
 		5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstSettingTableViewController.h; sourceTree = "<group>"; };
 		5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstSettingTableViewController.m; sourceTree = "<group>"; };
 		BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Youtube-Feed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -169,6 +172,8 @@
 				11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */,
 				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
 				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
+				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
+				5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */,
 			);
 			path = "Youtube-Feed";
 			sourceTree = "<group>";
@@ -398,6 +403,7 @@
 				5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */,
 				11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */,
 				11C170E91C7186A800E74681 /* main.m in Sources */,
+				5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */,
 				11BC1A131C8EC2D200285564 /* SettingCustomCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

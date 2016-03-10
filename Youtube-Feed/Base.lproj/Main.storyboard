@@ -238,14 +238,23 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UG4-Wj-xH2">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="Add"/>
+                                <connections>
+                                    <segue destination="A9A-dn-pSo" kind="modal" id="Dkd-je-Xgg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="CNQ-RZ-NbX" firstAttribute="top" secondItem="Fkv-79-fz0" secondAttribute="bottom" constant="20" id="2Q3-ej-xqB"/>
                             <constraint firstItem="aEp-dk-5ZN" firstAttribute="leading" secondItem="QeE-5E-bv5" secondAttribute="trailing" constant="23" id="42Y-BX-MCl"/>
                             <constraint firstItem="Fkv-79-fz0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="87" id="57y-lU-aWK"/>
+                            <constraint firstItem="UG4-Wj-xH2" firstAttribute="leading" secondItem="CNQ-RZ-NbX" secondAttribute="leading" id="OYS-Fm-SFX"/>
                             <constraint firstItem="QeE-5E-bv5" firstAttribute="leading" secondItem="CNQ-RZ-NbX" secondAttribute="trailing" constant="21" id="Yit-Iz-Abe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aEp-dk-5ZN" secondAttribute="trailing" constant="95" id="auG-hd-Bso"/>
+                            <constraint firstItem="UG4-Wj-xH2" firstAttribute="top" secondItem="CNQ-RZ-NbX" secondAttribute="bottom" constant="22" id="bEo-T5-BJu"/>
                             <constraint firstItem="QeE-5E-bv5" firstAttribute="baseline" secondItem="aEp-dk-5ZN" secondAttribute="baseline" id="eFD-FL-u89"/>
                             <constraint firstItem="Fkv-79-fz0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="lpj-aE-sso"/>
                             <constraint firstAttribute="trailing" secondItem="Fkv-79-fz0" secondAttribute="trailing" id="nZp-bV-OOK"/>
@@ -258,18 +267,21 @@
                                 <exclude reference="aEp-dk-5ZN"/>
                                 <exclude reference="CNQ-RZ-NbX"/>
                                 <exclude reference="Fkv-79-fz0"/>
+                                <exclude reference="UG4-Wj-xH2"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="u6D-hQ-6Tj"/>
+                                <exclude reference="57y-lU-aWK"/>
+                                <exclude reference="lpj-aE-sso"/>
+                                <exclude reference="nZp-bV-OOK"/>
                                 <exclude reference="2Q3-ej-xqB"/>
                                 <exclude reference="uTj-OT-UTX"/>
                                 <exclude reference="Yit-Iz-Abe"/>
                                 <exclude reference="eFD-FL-u89"/>
                                 <exclude reference="42Y-BX-MCl"/>
                                 <exclude reference="auG-hd-Bso"/>
-                                <exclude reference="57y-lU-aWK"/>
-                                <exclude reference="lpj-aE-sso"/>
-                                <exclude reference="nZp-bV-OOK"/>
+                                <exclude reference="OYS-Fm-SFX"/>
+                                <exclude reference="bEo-T5-BJu"/>
+                                <exclude reference="u6D-hQ-6Tj"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
@@ -286,18 +298,21 @@
                                 <include reference="aEp-dk-5ZN"/>
                                 <include reference="CNQ-RZ-NbX"/>
                                 <include reference="Fkv-79-fz0"/>
+                                <include reference="UG4-Wj-xH2"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="u6D-hQ-6Tj"/>
+                                <include reference="57y-lU-aWK"/>
+                                <include reference="lpj-aE-sso"/>
+                                <include reference="nZp-bV-OOK"/>
                                 <include reference="2Q3-ej-xqB"/>
                                 <include reference="uTj-OT-UTX"/>
                                 <include reference="Yit-Iz-Abe"/>
                                 <include reference="eFD-FL-u89"/>
                                 <include reference="42Y-BX-MCl"/>
                                 <include reference="auG-hd-Bso"/>
-                                <include reference="57y-lU-aWK"/>
-                                <include reference="lpj-aE-sso"/>
-                                <include reference="nZp-bV-OOK"/>
+                                <include reference="OYS-Fm-SFX"/>
+                                <include reference="bEo-T5-BJu"/>
+                                <include reference="u6D-hQ-6Tj"/>
                             </mask>
                         </variation>
                     </view>
@@ -312,6 +327,108 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1119" y="-237"/>
+        </scene>
+        <!--Add Playlist Pop Up View Controller-->
+        <scene sceneID="vUC-pf-tHl">
+            <objects>
+                <viewController id="A9A-dn-pSo" customClass="AddPlaylistPopUpViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jtV-Ba-I8p"/>
+                        <viewControllerLayoutGuide type="bottom" id="tVk-M6-U5o"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="asW-eZ-9Ro">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.55000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ckE-Vx-OK3">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="600"/>
+                                </variation>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U2k-Fe-Aqs">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="pRb-jv-iFw">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pRb-jv-iFw" id="N2e-5A-BYZ">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="38" y="93" width="324" height="414"/>
+                                </variation>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HPg-R2-6cE">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlist" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X7Y-U6-9FE">
+                                        <rect key="frame" x="-42" y="-21" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="88" y="18" width="149" height="21"/>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mJx-de-yNO">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="OK"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="272" y="14" width="30" height="30"/>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bnd-Pt-toW">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="1" green="0.14714819839428306" blue="0.10638132683355961" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="7" y="14" width="48" height="30"/>
+                                        </variation>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="X7Y-U6-9FE"/>
+                                        <exclude reference="mJx-de-yNO"/>
+                                        <exclude reference="bnd-Pt-toW"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="38" y="30" width="324" height="58"/>
+                                    <mask key="subviews">
+                                        <include reference="X7Y-U6-9FE"/>
+                                        <include reference="mJx-de-yNO"/>
+                                        <include reference="bnd-Pt-toW"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="ckE-Vx-OK3"/>
+                                <exclude reference="U2k-Fe-Aqs"/>
+                                <exclude reference="HPg-R2-6cE"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="ckE-Vx-OK3"/>
+                                <include reference="U2k-Fe-Aqs"/>
+                                <include reference="HPg-R2-6cE"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jhK-E3-54k" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-306" y="-237"/>
         </scene>
     </scenes>
 </document>
