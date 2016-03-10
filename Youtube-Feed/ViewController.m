@@ -61,40 +61,16 @@
     
 }
 
-- (void)getVideoId
-{
-    NSLog(@"wait notification");
-    [self videoView];
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     
     if([[segue identifier]isEqualToString:@"PlayYoutube" ])
     {
         NSLog(@"in prepare");
-        YTViewController *dest = [segue destinationViewController];
-        dest.youtube = self.youtube;
+       
         
     }
 }
-
-
-
-- (void)videoView
-{
-    //[self performSegueWithIdentifier:@"PlayYoutube" sender:self];
-    NSLog(@"loading player view from %lu",(unsigned long)[self.youtube.videoIdList count]);
-//    NSDictionary *playerVers = @{
-//                                 @"playsinline" : @1,
-//                                 @"controls" : @1,
-//                                 @"showinfo" : @1,
-//                                 @"modestbranding" : @1,
-//                                 };
-//    
-//    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:10] playerVars:playerVers];
-}
-
 
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
 {
@@ -159,7 +135,7 @@
                                      @"autoplay" : @0
                                      };
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
-        //[self videoView];
+      
     }
 }
 
