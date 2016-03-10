@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		112B36441C882ADF00959C20 /* YTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 112B36431C882ADF00959C20 /* YTViewController.m */; };
 		11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */; };
 		11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */; };
 		11BC1A0F1C8E938900285564 /* SettingCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 11BC1A0E1C8E938900285564 /* SettingCustomCell.xib */; };
@@ -43,8 +42,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		112B36421C882ADF00959C20 /* YTViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTViewController.h; sourceTree = "<group>"; };
-		112B36431C882ADF00959C20 /* YTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTViewController.m; sourceTree = "<group>"; };
 		11BC1A081C8E8A5D00285564 /* SettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewController.h; sourceTree = "<group>"; };
 		11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewController.m; sourceTree = "<group>"; };
 		11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTabBarViewController.h; sourceTree = "<group>"; };
@@ -166,8 +163,6 @@
 				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
 				11C170ED1C7186A800E74681 /* ViewController.h */,
 				11C170EE1C7186A800E74681 /* ViewController.m */,
-				112B36421C882ADF00959C20 /* YTViewController.h */,
-				112B36431C882ADF00959C20 /* YTViewController.m */,
 				11BC1A081C8E8A5D00285564 /* SettingTableViewController.h */,
 				11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */,
 				11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */,
@@ -397,7 +392,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */,
-				112B36441C882ADF00959C20 /* YTViewController.m in Sources */,
 				11C170EF1C7186A800E74681 /* ViewController.m in Sources */,
 				11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
