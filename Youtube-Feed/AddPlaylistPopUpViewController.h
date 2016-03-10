@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
+#import "Youtube.h"
+
 
 @interface AddPlaylistPopUpViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 
 @property (nonatomic, retain) NSMutableArray *playlist;
+@property(strong, nonatomic) Youtube *youtube;
 
 @property(weak, nonatomic) IBOutlet UITableView *playlistTableView;
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;

@@ -500,6 +500,7 @@
                     <connections>
                         <outlet property="cancelButton" destination="bnd-Pt-toW" id="P8z-77-UF5"/>
                         <outlet property="okButton" destination="mJx-de-yNO" id="IWw-Wu-wHG"/>
+                        <outlet property="playlistTableView" destination="U2k-Fe-Aqs" id="Sq7-9Z-vhP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jhK-E3-54k" userLabel="First Responder" sceneMemberID="firstResponder"/>
