@@ -10,4 +10,10 @@
 
 @interface AddPlaylistPopUpViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UIButton *cancelButton;
+@property (strong, nonatomic) IBOutlet UIButton *okButton;
+
+- (IBAction)cancelButtonPressed:(id)sender;
+- (IBAction)okButtonPressed:(id)sender;
+
 @end

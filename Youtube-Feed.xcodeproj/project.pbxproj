@@ -166,14 +166,14 @@
 				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
 				11C170ED1C7186A800E74681 /* ViewController.h */,
 				11C170EE1C7186A800E74681 /* ViewController.m */,
+				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
+				5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */,
 				11BC1A081C8E8A5D00285564 /* SettingTableViewController.h */,
 				11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */,
 				11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */,
 				11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */,
 				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
 				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
-				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
-				5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */,
 			);
 			path = "Youtube-Feed";
 			sourceTree = "<group>";

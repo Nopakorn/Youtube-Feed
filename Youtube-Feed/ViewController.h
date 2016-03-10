@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 #import "YTPlayerView.h"
-
+#import "AddPlaylistPopUpViewController.h"
 
 
 @interface ViewController : UIViewController<YTPlayerViewDelegate>
@@ -19,6 +19,7 @@
 @property(weak,nonatomic) IBOutlet UIButton  *playButton;
 @property(weak,nonatomic) IBOutlet UIButton  *pauseButton;
 @property(weak,nonatomic) IBOutlet UIButton  *nextButton;
+@property(weak,nonatomic) IBOutlet UIButton  *addButton;
 
 - (IBAction)buttonPressed:(id)sender;
 

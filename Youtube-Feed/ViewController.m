@@ -18,6 +18,7 @@
     Boolean flag;
     int item;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     item = 0;
@@ -43,9 +44,6 @@
                                              selector:@selector(receivedPlayBackStartedNotification:)
                                                  name:@"Playback started" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(getVideoId)
-                                                 name:@"LoadVideoId" object:nil];
 
 }
 
@@ -59,17 +57,6 @@
     NSLog(@"calling view didappear");
     [super viewDidAppear:animated];
     
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
-    if([[segue identifier]isEqualToString:@"PlayYoutube" ])
-    {
-        NSLog(@"in prepare");
-       
-        
-    }
 }
 
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
@@ -145,5 +132,30 @@
     }
 
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    UIViewController *newVC = segue.destinationViewController;
+    
+    [ViewController setPresentationStyleForSelfController:self presentingController:newVC];
+}
+
++ (void)setPresentationStyleForSelfController:(UIViewController *)selfController presentingController:(UIViewController *)presentingController
+{
+    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)])
+    {
+        //iOS 8.0 and above
+        presentingController.providesPresentationContextTransitionStyle = YES;
+        presentingController.definesPresentationContext = YES;
+        
+        [presentingController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    }
+    else
+    {
+        [selfController setModalPresentationStyle:UIModalPresentationCurrentContext];
+        [selfController.navigationController setModalPresentationStyle:UIModalPresentationCurrentContext];
+    }
+}
+
 
 @end
