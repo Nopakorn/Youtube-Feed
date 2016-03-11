@@ -22,7 +22,7 @@
 
 @property (nonatomic, retain) NSMutableArray *videoIdList;
 @property (nonatomic, retain) NSMutableArray *titleList;
-@property (nonatomic, retain) NSMutableArray *thumnailList;
+@property (nonatomic, retain) NSMutableArray *thumbnailList;
 
 @property (nonatomic, retain) NSMutableArray *selectedType;
 

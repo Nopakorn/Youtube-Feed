@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Youtube.h"
 
-@interface RecommendTableViewController : UITableViewController
+@interface RecommendTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
+
+@property (strong, nonatomic) Youtube *youtube;
+@property (nonatomic, retain) NSMutableArray  *videoTitle;
+@property (nonatomic, retain) NSMutableArray  *videothumbnail;
+@property (nonatomic, retain) NSMutableArray  *videoId;
+@property (nonatomic, retain) NSMutableArray  *imageData;
+@property (nonatomic) NSInteger selectedRow;
 
 @end

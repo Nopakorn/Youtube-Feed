@@ -16,6 +16,8 @@
         //will change later
         self.siteURLString = [NSString stringWithFormat:@"http://www.googleapis.com/youtube/v3/"];
         self.videoIdList = [[NSMutableArray alloc] initWithCapacity:10];
+        self.thumbnailList = [[NSMutableArray alloc] initWithCapacity:10];
+        self.titleList = [[NSMutableArray alloc] initWithCapacity:10];
         self.search = @"search?";
         self.video = @"video?";
         self.youtube_api_key = @"AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug";
@@ -41,7 +43,7 @@
 -(void) getSearchYoutube:(NSString *)searchTerm
 {
 
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=20", searchTerm];
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", searchTerm];
     
     
     NSURL *url = [[NSURL alloc] initWithString:urlString];
@@ -78,8 +80,10 @@
      NSLog(@"adding id");
     for (NSDictionary* q in items) {
         [self.videoIdList addObject:q[@"id"][@"videoId"]];
+        [self.titleList addObject:q[@"snippet"][@"title"]];
+        [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
     }
-    
+    NSLog(@"check thumbnail %@",self.thumbnailList);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoId" object:self];
 }
 

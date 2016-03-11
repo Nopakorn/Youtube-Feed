@@ -16,5 +16,6 @@
 @property(strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSString *passValue;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
+@property (nonatomic) NSInteger startAt;
 
 @end

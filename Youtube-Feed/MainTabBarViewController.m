@@ -25,7 +25,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     self.passValue = @"test";
-     NSLog(@"view did appear Tabbar %lu",(unsigned long)[self.youtube.videoIdList count]);
+    NSLog(@"view did appear Tabbar %lu",(unsigned long)[self.youtube.videoIdList count]);
+    NSLog(@"startAT %lu",(unsigned long)self.startAt);
 
 }
 

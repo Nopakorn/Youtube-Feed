@@ -38,7 +38,7 @@
                                  @"modestbranding" : @1,
     };
     
-    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:0] playerVars:playerVers];
+    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedPlayBackStartedNotification:)

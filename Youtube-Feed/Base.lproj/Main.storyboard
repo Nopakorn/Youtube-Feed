@@ -333,16 +333,19 @@
         <!--Recommend-->
         <scene sceneID="2FS-v5-9PY">
             <objects>
-                <tableViewController id="oG8-XK-5yJ" sceneMemberID="viewController">
+                <tableViewController id="oG8-XK-5yJ" customClass="RecommendTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="m8k-Ka-6sa">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="YKY-rM-jpe">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="YKY-rM-jpe" customClass="RecommendCustomCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YKY-rM-jpe" id="eKE-a3-umx">
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="Ogr-FY-MaA" kind="push" identifier="SelectedFromRecommend" id="01Z-bt-iuD"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -603,4 +606,7 @@
             <point key="canvasLocation" x="-306" y="-237"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="01Z-bt-iuD"/>
+    </inferredMetricsTieBreakers>
 </document>
