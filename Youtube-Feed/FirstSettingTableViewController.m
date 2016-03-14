@@ -135,25 +135,24 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
         [alert dismissViewControllerAnimated:YES completion:nil];
         
     });
-   
+    [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"SubmitSetting"]){
-        // NAVIGATION HIDE
-        [self.navigationController setNavigationBarHidden:YES];
-       
+
         NSNumber *indexShow = sender;
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
         dest.genreSelected = self.genreSelected;
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
-        
+        // NAVIGATION HIDE
+        [self.navigationController setNavigationBarHidden:YES];
     }
 }
 

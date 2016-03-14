@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,14 +15,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJW-Fb-uNc">
-                        <rect key="frame" x="8" y="18" width="244" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PJW-Fb-uNc">
+                        <rect key="frame" x="31" y="18" width="244" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="PJW-Fb-uNc" firstAttribute="leading" secondItem="r0b-pz-1Cs" secondAttribute="leadingMargin" constant="23" id="0sz-oa-DQJ"/>
+                    <constraint firstItem="PJW-Fb-uNc" firstAttribute="centerY" secondItem="r0b-pz-1Cs" secondAttribute="centerY" id="lUs-Jp-zxB"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="PJW-Fb-uNc" secondAttribute="trailing" constant="37" id="xUJ-q0-4iR"/>
+                </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="name" destination="PJW-Fb-uNc" id="VWE-1U-kHw"/>
+            </connections>
             <point key="canvasLocation" x="389" y="204"/>
         </tableViewCell>
     </objects>

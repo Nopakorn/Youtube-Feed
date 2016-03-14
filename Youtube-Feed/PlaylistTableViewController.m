@@ -17,12 +17,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    NSLog(@"in playlist viewdidload");
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+ - (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"inside view will appear");
 }
 
 #pragma mark - Table view data source
@@ -34,7 +40,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    if ([self.playlist.playlistTitle count] != 2) {
+    if ([self.playlist.playlistTitle count] == 0) {
         return 2;
         
     } else {
@@ -53,13 +59,29 @@
         
     }
     
+    if ([self.playlist.playlistTitle count] == 0) {
+        if(indexPath.row == 0) {
+            cell.name.text = @"Favorite";
+        }else {
+            cell.name.text = @" . . . . ";
+        }
+
+    } else {
+        if(indexPath.row == 0) {
+            cell.name.text = @"Favorite";
+        }else {
+            cell.name.text = [self.playlist.playlistTitle objectAtIndex:indexPath.row];
+        }
+    }
+    
+    
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 58;
 }
 
 

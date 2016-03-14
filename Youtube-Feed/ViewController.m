@@ -25,7 +25,10 @@
     item = 0;
     flag = false;
     
-    self.youtube = [[Youtube alloc] init];    
+    self.youtube = [[Youtube alloc] init];
+    self.favorite = [[Favorite alloc] init];
+    self.playlist = [[Playlist alloc] init];
+    
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
     if([tabbar.youtube.videoIdList count] == 0){
@@ -155,6 +158,17 @@
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
       
     }
+}
+
+- (void)favoritePressed:(id)sender
+{
+    NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
+    NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
+    NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
+    
+    [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
+    [self.playlist.favoriteList addObject:self.favorite];
+    NSLog(@"playlist fav size %lu", (unsigned long)[self.playlist.favoriteList  count]);
 }
 
 - (void)receivedPlayBackStartedNotification:(NSNotification *) notification {

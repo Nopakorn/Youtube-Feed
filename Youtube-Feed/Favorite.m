@@ -13,9 +13,9 @@
 -(id)init
 {
     if(self = [super init]){
-        self.videoTitle = [[NSMutableArray alloc] initWithCapacity:10];
-        self.videoId = [[NSMutableArray alloc] initWithCapacity:10];
-        self.videothumbnail = [[NSMutableArray alloc] initWithCapacity:10];
+//        self.videoTitle = [[NSMutableArray alloc] initWithCapacity:10];
+//        self.videoId = [[NSMutableArray alloc] initWithCapacity:10];
+//        self.videothumbnail = [[NSMutableArray alloc] initWithCapacity:10];
     
     }
     return self;
@@ -23,9 +23,9 @@
 
 - (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videothumbnail andVideoId:(NSString *)videoId
 {
-    [self.videoTitle addObject:videoTitle];
-    [self.videoId addObject:videothumbnail];
-    [self.videoId addObject:videoId];
+    self.videoId = [NSString stringWithFormat:@"%@", videoId];
+    self.videoTitle = [NSString stringWithFormat:@"%@", videoTitle];
+    self.videothumbnail = [NSString stringWithFormat:@"%@", videothumbnail];
 }
 
 @end
