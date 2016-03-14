@@ -406,7 +406,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="HZS-n5-5yf" kind="push" id="k9c-Mh-6uq"/>
+                                    <segue destination="HZS-n5-5yf" kind="push" identifier="FavoriteSegue" id="k9c-Mh-6uq"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -424,12 +424,12 @@
         <!--Favorite-->
         <scene sceneID="YNK-2h-Pfb">
             <objects>
-                <tableViewController id="HZS-n5-5yf" sceneMemberID="viewController">
+                <tableViewController id="HZS-n5-5yf" customClass="FavoriteTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="u05-XB-DGs">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="gP4-al-0g5">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="gP4-al-0g5" customClass="FavoriteCustomCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gP4-al-0g5" id="fy4-c4-isi">
                                     <autoresizingMask key="autoresizingMask"/>

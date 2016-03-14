@@ -8,6 +8,7 @@
 
 #import "FavoriteTableViewController.h"
 #import "FavoriteCustomCell.h"
+#import "RecommendCustomCell.h"
 
 @interface FavoriteTableViewController ()
 
@@ -27,7 +28,8 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-
+    NSLog(@"reload table view");
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -48,6 +50,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     static NSString *simpleTableIdentifier = @"FavoriteCustomCell";
     FavoriteCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
@@ -55,13 +58,14 @@
         cell = [nib objectAtIndex:0];
         
     }
-    
+
     Favorite *fav = [self.playlist.favoriteList objectAtIndex:indexPath.row];
+    
     cell.name.text = fav.videoTitle;
     cell.favoriteIcon.image = nil;
-    
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
+    
     if(fav.videothumbnail  != nil){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fav.videothumbnail]];
@@ -90,6 +94,7 @@
 {
     return 80;
 }
+
 
 
 @end

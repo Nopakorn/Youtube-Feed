@@ -126,7 +126,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoId)
                                                  name:@"LoadVideoId" object:nil];
-    [self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
+    //[self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
     
 
 }
@@ -136,9 +136,9 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [alert dismissViewControllerAnimated:YES completion:nil];
-        
+        [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
     });
-    [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
+    
 
 }
 
@@ -153,6 +153,7 @@
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
         // NAVIGATION HIDE
         [self.navigationController setNavigationBarHidden:YES];
+       
     }
 }
 

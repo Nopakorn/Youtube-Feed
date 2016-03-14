@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "MainTabBarViewController.h"
+#import "PlaylistTableViewController.h"
 
 @interface ViewController ()
 
@@ -17,12 +18,14 @@
 {
     Boolean flag;
     NSInteger item;
+    NSInteger queryIndex;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.tabBarController.delegate = self;
     item = 0;
+    queryIndex = -1;
     flag = false;
     
     self.youtube = [[Youtube alloc] init];
@@ -31,6 +34,7 @@
     
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
+    
     if([tabbar.youtube.videoIdList count] == 0){
         NSLog(@"object is nil");
     }
@@ -162,13 +166,23 @@
 
 - (void)favoritePressed:(id)sender
 {
-    NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
-    NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
-    NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
+    if (queryIndex != item) {
+        queryIndex = item;
+        NSLog(@"playlist item %lu", (unsigned long)item);
+        NSString *videoId = [self.youtube.videoIdList objectAtIndex:queryIndex];
+        NSString *videoTitle = [self.youtube.titleList objectAtIndex:queryIndex];
+        NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:queryIndex];
+        
+        Favorite *fav = [[Favorite alloc] init];
+        [fav setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
+        [self.playlist.favoriteList addObject:fav];
+        NSLog(@"playlist fav size %lu", (unsigned long)[self.playlist.favoriteList  count]);
+        
+        
+    }else {
+         NSLog(@"same index item %lu", (unsigned long)item);
+    }
     
-    [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-    [self.playlist.favoriteList addObject:self.favorite];
-    NSLog(@"playlist fav size %lu", (unsigned long)[self.playlist.favoriteList  count]);
 }
 
 - (void)receivedPlayBackStartedNotification:(NSNotification *) notification {
@@ -200,6 +214,18 @@
         [selfController setModalPresentationStyle:UIModalPresentationCurrentContext];
         [selfController.navigationController setModalPresentationStyle:UIModalPresentationCurrentContext];
     }
+}
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if (tabBarController.selectedIndex == 2) {
+         NSLog(@"Select Playlist view tab");
+        UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];
+        //PlaylistTableViewController *playlistView = (PlaylistTableViewController *)viewController;
+        PlaylistTableViewController *playlistView = [nav.viewControllers objectAtIndex:0];
+        playlistView.playlist = self.playlist;
+        
+    }
+    
 }
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController

@@ -15,7 +15,7 @@
 #import "RecommendTableViewController.h"
 
 
-@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate>
+@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate>
 
 @property(strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;
