@@ -16,6 +16,7 @@
 @interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate>
 
 @property(strong, nonatomic) Youtube *youtube;
+
 @property(strong, nonatomic) IBOutlet YTPlayerView *playerView;
 @property(weak,nonatomic) IBOutlet UIButton  *playButton;
 @property(weak,nonatomic) IBOutlet UIButton  *pauseButton;
