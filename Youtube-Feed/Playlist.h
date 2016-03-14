@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) Favorite *favorite;
 @property (nonatomic, retain) NSString *playTitle;
+
 @property (nonatomic, retain) NSMutableArray *playlistTitle;
 @property (nonatomic, retain) NSMutableArray  *favoriteList;
 

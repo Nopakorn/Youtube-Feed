@@ -207,6 +207,7 @@
         //PlaylistTableViewController *playlistView = (PlaylistTableViewController *)viewController;
         PlaylistTableViewController *playlistView = [nav.viewControllers objectAtIndex:0];
         playlistView.playlist = self.playlist;
+        playlistView.youtube = self.youtube;
         
     }
     if (tabBarController.selectedIndex == 1) {
@@ -219,6 +220,8 @@
 
     
 }
+
+#pragma mark - delegate RecommendTableViewController
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController
 {

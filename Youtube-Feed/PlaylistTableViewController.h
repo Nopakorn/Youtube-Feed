@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
 #import "Favorite.h"
+#import "Youtube.h"
 
 @interface PlaylistTableViewController : UITableViewController
 
 @property (strong, nonatomic) Playlist *playlist;
+@property(strong, nonatomic) Youtube *youtube;
+@property (nonatomic, retain) NSMutableArray *playlist_List;
 
 @end

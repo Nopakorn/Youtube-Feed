@@ -138,7 +138,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [alert dismissViewControllerAnimated:YES completion:nil];
-        [self.tabBarController setSelectedIndex:0];
+        //[self.tabBarController setSelectedIndex:0];
     });
     //NSDictionary *userInfo = self.youtube;
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"SelectedFromRecommend" object:self userInfo:userInfo];
