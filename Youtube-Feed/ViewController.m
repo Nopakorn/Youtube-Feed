@@ -39,7 +39,7 @@
         NSLog(@"object is nil");
     }
     
-    [self.navigationController setNavigationBarHidden:YES];
+    [self.navigationController setNavigationBarHidden:NO];
     self.playerView.delegate = self;
     NSDictionary *playerVers = @{
                                  @"playsinline" : @1,

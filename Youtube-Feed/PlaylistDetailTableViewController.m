@@ -1,74 +1,65 @@
 //
-//  FavoriteTableViewController.m
+//  PlaylistDetailTableViewController.m
 //  Youtube-Feed
 //
 //  Created by Siam System Deverlopment on 3/14/2559 BE.
 //  Copyright © 2559 guild. All rights reserved.
 //
 
-#import "FavoriteTableViewController.h"
-#import "FavoriteCustomCell.h"
+#import "PlaylistDetailTableViewController.h"
 #import "RecommendCustomCell.h"
 
-@interface FavoriteTableViewController ()
+@interface PlaylistDetailTableViewController ()
 
 @end
 
-@implementation FavoriteTableViewController
+@implementation PlaylistDetailTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+     NSLog(@"playlist detail");
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"reload table view");
     [self.tableView reloadData];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    if([self.playlist.favoriteList count] != 0) {
-        return [self.playlist.favoriteList count];
-        
-    }else {
-        return 0;
-    }
+    return [self.playlist.videoId count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    static NSString *simpleTableIdentifier = @"FavoriteCustomCell";
-    FavoriteCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    static NSString *simpleTableIdentifier = @"RecommendCustomCell";
+    RecommendCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"FavoriteCustomCell" owner:self options:nil];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RecommendCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
         
     }
-
-    Favorite *fav = [self.playlist.favoriteList objectAtIndex:indexPath.row];
     
-    cell.name.text = fav.videoTitle;
-    cell.favoriteIcon.hidden = YES;
+    cell.name.text = [self.playlist.videoTitle objectAtIndex:indexPath.row];
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
     
-    if(fav.videothumbnail  != nil){
+    if([self.playlist.videoThumbnail objectAtIndex:indexPath.row] != [NSNull null]){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fav.videothumbnail]];
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.playlist.videoThumbnail objectAtIndex:indexPath.row]]];
             
             if(data){
                 [self.imageData addObject:data];
@@ -85,7 +76,7 @@
         });
     }
     
-
+    
     
     return cell;
 }
@@ -94,7 +85,6 @@
 {
     return 80;
 }
-
 
 
 @end

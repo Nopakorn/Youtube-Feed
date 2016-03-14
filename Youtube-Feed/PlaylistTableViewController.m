@@ -9,6 +9,7 @@
 #import "PlaylistTableViewController.h"
 #import "PlaylistCustomCell.h"
 #import "FavoriteTableViewController.h"
+#import "PlaylistDetailTableViewController.h"
 
 @interface PlaylistTableViewController ()
 
@@ -117,25 +118,26 @@
 {
     if( indexPath.row == 0 ) {
         [self performSegueWithIdentifier:@"FavoriteSegue" sender:nil];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }else {
         
+    }else {
+        NSLog(@"perfrom playlistdetail");
         self.playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
-        [self performSegueWithIdentifier:@"PlaylistDetail" sender:nil];
+        [self performSegueWithIdentifier:@"PlaylistDetailSegue" sender:nil];
     }
-    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"FavoriteSegue"]){
+    if ([segue.identifier isEqualToString:@"FavoriteSegue"]){
         
         FavoriteTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
         
-    }else if([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
-        
-        
+    } else if ([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
+         NSLog(@"prepare playlistdetail");
+        PlaylistDetailTableViewController *dest = segue.destinationViewController;
+        dest.playlist = self.playlist;
     }
     
 }
