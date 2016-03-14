@@ -91,7 +91,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedRow = indexPath.row;
-    [self performSegueWithIdentifier:@"SelectedFromRecommend" sender:@0];
+    selectedIndex = indexPath.row;
+    [delegate recommendTableViewControllerDidSelected:self];
+    [self.tabBarController setSelectedIndex:0];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -109,4 +111,6 @@
     }
 
 }
+
+
 @end

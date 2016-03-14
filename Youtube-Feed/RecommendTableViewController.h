@@ -9,7 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
+@protocol RecommendTableViewControllerDelegate;
+
 @interface RecommendTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    id<RecommendTableViewControllerDelegate> delegate;
+    NSInteger selectedIndex;
+
+}
 
 @property (strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray  *videoTitle;
@@ -17,5 +24,11 @@
 @property (nonatomic, retain) NSMutableArray  *videoId;
 @property (nonatomic, retain) NSMutableArray  *imageData;
 @property (nonatomic) NSInteger selectedRow;
+
+@end
+
+@protocol RecommendTableViewControllerDelegate
+
+- (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController;
 
 @end
