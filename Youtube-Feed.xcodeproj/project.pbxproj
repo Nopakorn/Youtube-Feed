@@ -200,21 +200,16 @@
 		11C170E61C7186A800E74681 /* Youtube-Feed */ = {
 			isa = PBXGroup;
 			children = (
-				11BC1A141C8EC31700285564 /* Views */,
-				11BC1A101C8E939300285564 /* CustomCells */,
 				11C170EA1C7186A800E74681 /* AppDelegate.h */,
 				11C170EB1C7186A800E74681 /* AppDelegate.m */,
+				11BC1A141C8EC31700285564 /* Views */,
+				11BC1A101C8E939300285564 /* CustomCells */,
 				11C170F01C7186A800E74681 /* Main.storyboard */,
 				11C170F31C7186A800E74681 /* Assets.xcassets */,
 				11C170F51C7186A800E74681 /* LaunchScreen.storyboard */,
 				11C170F81C7186A800E74681 /* Info.plist */,
 				11C170E71C7186A800E74681 /* Supporting Files */,
-				11F18B6B1C76D21B0066A8EF /* Youtube.h */,
-				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
-				5C67E4181C9678FE00A08005 /* Favorite.h */,
-				5C67E4191C9678FE00A08005 /* Favorite.m */,
-				5C67E41B1C96791E00A08005 /* Playlist.h */,
-				5C67E41C1C96791E00A08005 /* Playlist.m */,
+				5C67E4261C96B15E00A08005 /* Models */,
 				11C170ED1C7186A800E74681 /* ViewController.h */,
 				11C170EE1C7186A800E74681 /* ViewController.m */,
 				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
@@ -268,6 +263,19 @@
 				BDAB1E741440D88306343CB6 /* Pods-Youtube-Feed.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		5C67E4261C96B15E00A08005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				11F18B6B1C76D21B0066A8EF /* Youtube.h */,
+				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
+				5C67E4181C9678FE00A08005 /* Favorite.h */,
+				5C67E4191C9678FE00A08005 /* Favorite.m */,
+				5C67E41B1C96791E00A08005 /* Playlist.h */,
+				5C67E41C1C96791E00A08005 /* Playlist.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

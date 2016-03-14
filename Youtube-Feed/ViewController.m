@@ -54,24 +54,8 @@
                                              selector:@selector(receivedPlayBackStartedNotification:)
                                                  name:@"Playback started" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedSelectedFromRecommendNotification:)
-                                                 name:@"SelectedFromRecommend" object:nil];
-
 
 }
-
-- (void)receivedSelectedFromRecommendNotification:(NSNotification *)notification
-{
-    if ([notification.name isEqualToString:@"SelectedFromRecommend"]) {
-        NSDictionary *userInfo = notification.userInfo;
-        item = [userInfo[@"startAt"]  integerValue];
-        flag = true;
-        NSLog(@"check value %ld",(long)item);
-    }
-
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -225,14 +209,22 @@
         playlistView.playlist = self.playlist;
         
     }
+    if (tabBarController.selectedIndex == 1) {
+        NSLog(@"Select recommend view tab");
+        UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:1];
+        RecommendTableViewController *rec = [nav.viewControllers objectAtIndex:0];
+        rec.delegate = self;
+        
+    }
+
     
 }
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController
 {
-//    flag = true;
-//    item = recommendViewController.selectedRow;
-//    NSLog(@"Receive %ld",(long)item);
+    flag = true;
+    item = recommendViewController.selectedRow;
+    NSLog(@"Receive from delegate");
     
 }
 

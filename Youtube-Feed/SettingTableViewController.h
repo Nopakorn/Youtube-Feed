@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
-@interface SettingTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
+@interface SettingTableViewController : UITableViewController<UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate>
 {
     NSInteger selectedRow;
+    UIAlertController *alert;
 }
 
+@property (strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray *selectedType;
 @property (nonatomic, retain) NSMutableArray *genreList;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
@@ -21,4 +23,5 @@
 @property(weak, nonatomic) IBOutlet UITableView *settingTableView;
 @property(weak,nonatomic) IBOutlet UIButton  *submitButton;
 
+- (IBAction)submitButtonPressed:(id)sender;
 @end

@@ -83,7 +83,7 @@
         [self.titleList addObject:q[@"snippet"][@"title"]];
         [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
     }
-    NSLog(@"check thumbnail %@",self.thumbnailList);
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoId" object:self];
 }
 

@@ -415,7 +415,15 @@
                             <outlet property="delegate" destination="cIc-Xv-a1P" id="ov3-s4-azT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Playlist" id="ua8-np-Baa"/>
+                    <navigationItem key="navigationItem" title="Playlist" id="ua8-np-Baa">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="YNd-ss-MN4">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cat-Sw-BGV">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Setting"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QA8-GK-Y9t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

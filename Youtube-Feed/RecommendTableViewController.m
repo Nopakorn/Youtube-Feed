@@ -94,9 +94,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedRow = indexPath.row;
-    //[self.delegate recommendTableViewControllerDidSelected:self];
-    NSDictionary *userInfo = @{@"startAt":@(self.selectedRow)};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"SelectedFromRecommend" object:self userInfo:userInfo];
+    [self.delegate recommendTableViewControllerDidSelected:self];
+    //NSDictionary *userInfo = @{@"startAt":@(self.selectedRow)};
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"SelectedFromRecommend" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
 }
 

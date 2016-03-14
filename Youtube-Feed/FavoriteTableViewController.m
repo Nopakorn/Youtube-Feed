@@ -62,7 +62,7 @@
     Favorite *fav = [self.playlist.favoriteList objectAtIndex:indexPath.row];
     
     cell.name.text = fav.videoTitle;
-    cell.favoriteIcon.image = nil;
+    cell.favoriteIcon.hidden = YES;
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
     

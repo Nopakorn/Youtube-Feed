@@ -13,19 +13,32 @@
 -(id)init
 {
     if(self = [super init]){
-        self.playlistTitle = [[NSMutableArray alloc] initWithCapacity:10];
+        self.videoTitle = [[NSMutableArray alloc] initWithCapacity:10];
+        self.videoId = [[NSMutableArray alloc] initWithCapacity:10];
+        self.videoThumbnail = [[NSMutableArray alloc] initWithCapacity:10];
         self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
+        self.playlistTitle = [[NSMutableArray alloc]  initWithCapacity:10];
     }
     return self;
 }
 
-- (void)addFavorite:(Favorite *)favorite;
+- (void)addFavorite:(Favorite *)favorite
 {
     [self.favoriteList addObject:favorite];
 }
 
 - (void)setTitle:(NSString *)title
 {
-    [self.playlistTitle addObject:title];
+    self.playTitle = [NSString stringWithFormat:@"%@",title];
 }
+
+- (void)addPlaylistWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId
+{
+    [self.videoId addObject:videoId];
+    [self.videoTitle addObject:videoTitle];
+    [self.videoThumbnail addObject:videoThumbnail];
+
+}
+
+
 @end
