@@ -13,8 +13,8 @@
 
 @interface RecommendTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
 {
-    id<RecommendTableViewControllerDelegate> delegate;
-    NSInteger selectedIndex;
+    //id<RecommendTableViewControllerDelegate> delegate;
+    //NSInteger selectedRow;
 
 }
 
@@ -23,11 +23,13 @@
 @property (nonatomic, retain) NSMutableArray  *videothumbnail;
 @property (nonatomic, retain) NSMutableArray  *videoId;
 @property (nonatomic, retain) NSMutableArray  *imageData;
+
+@property (nonatomic, assign) id<RecommendTableViewControllerDelegate> delegate;
 @property (nonatomic) NSInteger selectedRow;
 
 @end
 
-@protocol RecommendTableViewControllerDelegate
+@protocol RecommendTableViewControllerDelegate <NSObject>
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController;
 

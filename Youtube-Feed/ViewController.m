@@ -16,12 +16,15 @@
 @implementation ViewController
 {
     Boolean flag;
-    int item;
+    NSInteger item;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     item = 0;
+    flag = false;
+    
     self.youtube = [[Youtube alloc] init];    
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
@@ -44,8 +47,24 @@
                                              selector:@selector(receivedPlayBackStartedNotification:)
                                                  name:@"Playback started" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedSelectedFromRecommendNotification:)
+                                                 name:@"SelectedFromRecommend" object:nil];
+
 
 }
+
+- (void)receivedSelectedFromRecommendNotification:(NSNotification *)notification
+{
+    if ([notification.name isEqualToString:@"SelectedFromRecommend"]) {
+        NSDictionary *userInfo = notification.userInfo;
+        item = [userInfo[@"startAt"]  integerValue];
+        flag = true;
+        NSLog(@"check value %ld",(long)item);
+    }
+
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -56,6 +75,18 @@
 {
     NSLog(@"calling view didappear");
     [super viewDidAppear:animated];
+    
+    if(flag){
+        NSDictionary *playerVers = @{
+                                     @"playsinline" : @1,
+                                     @"controls" : @1,
+                                     @"showinfo" : @1,
+                                     @"modestbranding" : @1,
+                                     };
+        
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+        flag = false;
+    }
     
 }
 
@@ -157,5 +188,12 @@
     }
 }
 
+- (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController
+{
+//    flag = true;
+//    item = recommendViewController.selectedRow;
+//    NSLog(@"Receive %ld",(long)item);
+    
+}
 
 @end

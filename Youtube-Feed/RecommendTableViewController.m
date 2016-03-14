@@ -17,6 +17,9 @@
 
 @implementation RecommendTableViewController
 
+@synthesize delegate = _delegate;
+//@synthesize selectedRow;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -91,8 +94,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedRow = indexPath.row;
-    selectedIndex = indexPath.row;
-    [delegate recommendTableViewControllerDidSelected:self];
+    //[self.delegate recommendTableViewControllerDidSelected:self];
+    NSDictionary *userInfo = @{@"startAt":@(self.selectedRow)};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"SelectedFromRecommend" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
 }
 

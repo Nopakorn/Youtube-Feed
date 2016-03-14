@@ -10,9 +10,10 @@
 #import "Youtube.h"
 #import "YTPlayerView.h"
 #import "AddPlaylistPopUpViewController.h"
+#import "RecommendTableViewController.h"
 
 
-@interface ViewController : UIViewController<YTPlayerViewDelegate>
+@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate>
 
 @property(strong, nonatomic) Youtube *youtube;
 @property(strong, nonatomic) IBOutlet YTPlayerView *playerView;
