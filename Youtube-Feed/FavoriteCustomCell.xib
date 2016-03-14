@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="80" id="xZf-fJ-APm" customClass="FavoriteCustomCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xZf-fJ-APm" id="F1O-5E-zxH">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="79"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L2b-E5-CQl">
+                        <rect key="frame" x="8" y="5" width="95" height="69"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="95" id="C0m-qj-JxR"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WGL-nO-gLp">
+                        <rect key="frame" x="276" y="22" width="36" height="36"/>
+                        <color key="backgroundColor" red="0.188557128011899" green="0.28443445476478202" blue="0.40365265052356025" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="36" id="GH2-A2-1zi"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifj-kC-kvB">
+                        <rect key="frame" x="111" y="8" width="157" height="63"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="ifj-kC-kvB" firstAttribute="leading" secondItem="L2b-E5-CQl" secondAttribute="trailing" constant="8" symbolic="YES" id="ARn-Tf-yyh"/>
+                    <constraint firstItem="WGL-nO-gLp" firstAttribute="centerY" secondItem="ifj-kC-kvB" secondAttribute="centerY" id="BBo-wo-Pux"/>
+                    <constraint firstItem="L2b-E5-CQl" firstAttribute="centerY" secondItem="ifj-kC-kvB" secondAttribute="centerY" id="Hs0-Uc-5i3"/>
+                    <constraint firstItem="L2b-E5-CQl" firstAttribute="leading" secondItem="F1O-5E-zxH" secondAttribute="leadingMargin" id="QyU-iA-wKk"/>
+                    <constraint firstItem="ifj-kC-kvB" firstAttribute="bottom" secondItem="F1O-5E-zxH" secondAttribute="bottomMargin" id="R0j-Bb-2pd"/>
+                    <constraint firstItem="WGL-nO-gLp" firstAttribute="trailing" secondItem="F1O-5E-zxH" secondAttribute="trailingMargin" id="TLm-0z-as7"/>
+                    <constraint firstItem="L2b-E5-CQl" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="-3" id="Y6Z-Z0-goT"/>
+                    <constraint firstItem="WGL-nO-gLp" firstAttribute="leading" secondItem="ifj-kC-kvB" secondAttribute="trailing" constant="8" symbolic="YES" id="h5G-Bb-e9R"/>
+                    <constraint firstItem="WGL-nO-gLp" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="14" id="jUv-MU-gH0"/>
+                    <constraint firstItem="ifj-kC-kvB" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" id="ncV-bF-aYX"/>
+                </constraints>
+                <variation key="widthClass=compact">
+                    <mask key="subviews">
+                        <include reference="L2b-E5-CQl"/>
+                        <include reference="WGL-nO-gLp"/>
+                        <exclude reference="ifj-kC-kvB"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="favoriteIcon" destination="WGL-nO-gLp" id="k3s-wL-R3W"/>
+                <outlet property="name" destination="ifj-kC-kvB" id="CcB-18-cvn"/>
+                <outlet property="thumnail" destination="L2b-E5-CQl" id="BWE-ZV-zRZ"/>
+            </connections>
+            <point key="canvasLocation" x="368" y="174"/>
+        </tableViewCell>
+    </objects>
+</document>
