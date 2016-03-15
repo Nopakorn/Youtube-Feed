@@ -18,22 +18,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"playlistEdit");
-        NSLog(@"check size of favorite %lu", (unsigned long)[self.playlist.favoriteList count]);
-        for (int i = 0; i < [self.playlist.favoriteList count]; i++) {
-            Favorite *fav = [self.playlist.favoriteList objectAtIndex:i];
-            NSLog(@"id:%@ title:%@ thumbnail:%@",fav.videoId,fav.videoTitle,fav.videothumbnail);
-        }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,7 +65,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.playlist = [self.playlist_List objectAtIndex:indexPath.row];
-    NSLog(@"test playlistobj: %lu",(unsigned long)[self.playlist.videoId count]);
+    
     [self performSegueWithIdentifier:@"PlaylistEditDetailSegue" sender:nil];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 

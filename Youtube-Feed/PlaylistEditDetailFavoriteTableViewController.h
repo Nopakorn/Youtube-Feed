@@ -10,10 +10,23 @@
 #import "Favorite.h"
 #import "Playlist.h"
 
-@interface PlaylistEditDetailFavoriteTableViewController : UITableViewController
+@protocol PlaylistEditDetailFavoriteControllerDelegate;
+
+@interface PlaylistEditDetailFavoriteTableViewController : UITableViewController <UIAlertViewDelegate>
+{
+    UIAlertController *alert;
+}
 
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
 @property (nonatomic, retain) NSMutableArray  *imageData;
+
+@property (nonatomic, assign) id<PlaylistEditDetailFavoriteControllerDelegate> delegate;
+
+@end
+
+@protocol PlaylistEditDetailFavoriteControllerDelegate <NSObject>
+
+- (void)addingVideoFromPlayListEditDetailFavorite:(Playlist *) playlist;
 
 @end

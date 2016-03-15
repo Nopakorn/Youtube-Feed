@@ -162,9 +162,9 @@
         NSString *videoTitle = [self.youtube.titleList objectAtIndex:queryIndex];
         NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:queryIndex];
         
-        Favorite *fav = [[Favorite alloc] init];
-        [fav setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-        [self.playlist.favoriteList addObject:fav];
+//        Favorite *fav = [[Favorite alloc] init];
+//        [fav setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
+//        [self.playlist.favoriteList addObject:fav];
         
         [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
         NSLog(@"playlist fav size %lu", (unsigned long)[self.playlist.favoriteList  count]);

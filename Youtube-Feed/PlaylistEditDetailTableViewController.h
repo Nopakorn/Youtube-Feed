@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
 #import "Favorite.h"
+#import "PlaylistEditDetailFavoriteTableViewController.h"
 
-@interface PlaylistEditDetailTableViewController : UITableViewController
+@interface PlaylistEditDetailTableViewController : UITableViewController <PlaylistEditDetailFavoriteControllerDelegate>
 
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
+
 
 @end

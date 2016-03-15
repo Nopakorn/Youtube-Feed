@@ -19,12 +19,11 @@
     [super viewDidLoad];
     
     //[self.tableView setEditing:YES animated:YES];
-     NSLog(@"playlist detail");
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"reload table view");
     [self.tableView reloadData];
 }
 

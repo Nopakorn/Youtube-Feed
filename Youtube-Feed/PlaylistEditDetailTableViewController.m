@@ -20,15 +20,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    NSLog(@"inedit detail playlistobj: %lu",(unsigned long)[self.playlist.videoId count]);
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setEditing:YES animated:YES];
     self.tableView.allowsSelectionDuringEditing = YES;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"view did appear playlisteditdetail");
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,9 +76,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-     NSLog(@"inside didselect row");
     if (indexPath.row == 0) {
-        NSLog(@"select row 0");
+        
         [self performSegueWithIdentifier:@"AddPlaylistSegue" sender:nil];
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }else {
@@ -94,11 +93,12 @@
         PlaylistEditDetailFavoriteTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
         dest.favorite = self.favorite;
+        dest.delegate = self;
         
     }
 }
 
-# pragma editmode
+# pragma mark - editmode
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -130,5 +130,14 @@
     
 }
 
+#pragma mark - delegate PlaylistEditDetailFavoriteController
+
+- (void)addingVideoFromPlayListEditDetailFavorite:(Playlist *)playlist
+{
+   
+    //self.playlist = playlist;
+    NSLog(@"Receive from delegate playlisteditdetailfavorite");
+    
+}
 
 @end

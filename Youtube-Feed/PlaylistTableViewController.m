@@ -20,10 +20,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //self.youtube = [[Youtube alloc] init];
+
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    NSLog(@"in playlist viewdidload");
     [self createPlaylist];
 }
 
@@ -44,6 +43,12 @@
         [pav2 addPlaylistWithTitle:[self.youtube.titleList objectAtIndex:i] thumbnail:[self.youtube.thumbnailList objectAtIndex:i] andVideoId:[self.youtube.videoIdList objectAtIndex:i]];
     }
      [self.playlist_List addObject:pav2];
+    
+    NSString *title3 = @"Play List 3";
+    Playlist *pav3 = [[Playlist alloc] init];
+    [pav3 setTitle:title3];
+    [self.playlist_List addObject:pav3];
+    
     NSLog(@"index list %lu",(unsigned long)[self.playlist_List count]);
 }
 
@@ -74,7 +79,8 @@
         return 2;
         
     } else {
-        return [self.playlist_List count]+1;
+        //for favorite and . . . row
+        return [self.playlist_List count]+2;
 
     }
 }
@@ -97,12 +103,21 @@
         }
 
     } else {
+        
         if(indexPath.row == 0) {
             cell.name.text = @"Favorite";
+            
         }else {
-            Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
-            cell.name.text = playlist.playTitle;
+            if (indexPath.row <= [self.playlist_List count]) {
+                
+                Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
+                cell.name.text = playlist.playTitle;
+                
+            }else {
+                cell.name.text = @" . . . . ";
+            }
         }
+        
     }
     
     
