@@ -63,8 +63,14 @@
     if (cell == nil) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistEditDetailCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
+        //add gesture ;
+        UILongPressGestureRecognizer *lgpr = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                           action:@selector(handleLongPress:)];
+        lgpr.minimumPressDuration = 1.5;
+        [cell addGestureRecognizer:lgpr];
         
     }
+    
     if (indexPath.row == 0) {
         cell.name.text = self.playlist.playTitle;
         
@@ -105,6 +111,59 @@
         
     }
 }
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (indexPath == nil) {
+        
+        NSLog(@"long press table view but not in row");
+        
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
+        
+        NSLog(@"began at %ld",indexPath.row);
+        NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.playTitle];
+        
+        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
+                                                    message:message
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       [self deleteRowAtIndex:indexPath.row-1];
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action){
+                                                           
+                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+                                                       }];
+        [alert addAction:ok];
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
+    }
+}
+
+- (void)deleteRowAtIndex:(NSInteger )index
+{
+    NSLog(@"delete at %ld", index);
+    [self.playlist.videoId removeObjectAtIndex:index];
+    [self.playlist.videoTitle removeObjectAtIndex:index];
+    [self.playlist.videoThumbnail removeObjectAtIndex:index];
+    [self.tableView reloadData];
+    
+}
+
 
 # pragma mark - editmode
 

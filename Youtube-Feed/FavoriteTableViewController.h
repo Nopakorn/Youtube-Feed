@@ -10,7 +10,10 @@
 #import "Playlist.h"
 #import "Favorite.h"
 
-@interface FavoriteTableViewController : UITableViewController
+@interface FavoriteTableViewController : UITableViewController <UIGestureRecognizerDelegate, UIAlertViewDelegate>
+{
+    UIAlertController *alert;
+}
 
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
