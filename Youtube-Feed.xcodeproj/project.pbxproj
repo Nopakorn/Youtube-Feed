@@ -42,6 +42,7 @@
 		5CBA2CEE1C97CC2B0049FE4A /* PlaylistEditDetailCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CED1C97CC2B0049FE4A /* PlaylistEditDetailCustomCell.m */; };
 		5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CF01C97CD370049FE4A /* PlaylistEditTableViewController.m */; };
 		5CBA2CF41C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CF31C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m */; };
+		5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CF81C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m */; };
 		82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +127,8 @@
 		5CBA2CF01C97CD370049FE4A /* PlaylistEditTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistEditTableViewController.m; sourceTree = "<group>"; };
 		5CBA2CF21C97CDA30049FE4A /* PlaylistEditDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistEditDetailTableViewController.h; sourceTree = "<group>"; };
 		5CBA2CF31C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistEditDetailTableViewController.m; sourceTree = "<group>"; };
+		5CBA2CF71C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistEditDetailFavoriteTableViewController.h; sourceTree = "<group>"; };
+		5CBA2CF81C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistEditDetailFavoriteTableViewController.m; sourceTree = "<group>"; };
 		BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Youtube-Feed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDAB1E741440D88306343CB6 /* Pods-Youtube-Feed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.release.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.release.xcconfig"; sourceTree = "<group>"; };
 		CE71C9F1D08343CD300C4E2D /* Pods-Youtube-Feed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.debug.xcconfig"; sourceTree = "<group>"; };
@@ -235,28 +238,7 @@
 				11C170F81C7186A800E74681 /* Info.plist */,
 				11C170E71C7186A800E74681 /* Supporting Files */,
 				5C67E4261C96B15E00A08005 /* Models */,
-				11C170ED1C7186A800E74681 /* ViewController.h */,
-				11C170EE1C7186A800E74681 /* ViewController.m */,
-				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
-				5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */,
-				11BC1A081C8E8A5D00285564 /* SettingTableViewController.h */,
-				11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */,
-				11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */,
-				11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */,
-				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
-				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
-				5CB425D71C928420005DCB46 /* RecommendTableViewController.h */,
-				5CB425D81C928420005DCB46 /* RecommendTableViewController.m */,
-				5C67E4151C96767E00A08005 /* PlaylistTableViewController.h */,
-				5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */,
-				5C67E4231C9699C500A08005 /* FavoriteTableViewController.h */,
-				5C67E4241C9699C500A08005 /* FavoriteTableViewController.m */,
-				5C67E4271C96C92200A08005 /* PlaylistDetailTableViewController.h */,
-				5C67E4281C96C92200A08005 /* PlaylistDetailTableViewController.m */,
-				5CBA2CEF1C97CD370049FE4A /* PlaylistEditTableViewController.h */,
-				5CBA2CF01C97CD370049FE4A /* PlaylistEditTableViewController.m */,
-				5CBA2CF21C97CDA30049FE4A /* PlaylistEditDetailTableViewController.h */,
-				5CBA2CF31C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m */,
+				5CBA2CF51C97E8400049FE4A /* Controller */,
 			);
 			path = "Youtube-Feed";
 			sourceTree = "<group>";
@@ -307,6 +289,45 @@
 				5C67E41C1C96791E00A08005 /* Playlist.m */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		5CBA2CF51C97E8400049FE4A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				11C170ED1C7186A800E74681 /* ViewController.h */,
+				11C170EE1C7186A800E74681 /* ViewController.m */,
+				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
+				5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */,
+				11BC1A081C8E8A5D00285564 /* SettingTableViewController.h */,
+				11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */,
+				11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */,
+				11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */,
+				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
+				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
+				5CB425D71C928420005DCB46 /* RecommendTableViewController.h */,
+				5CB425D81C928420005DCB46 /* RecommendTableViewController.m */,
+				5CBA2CF61C97E86E0049FE4A /* PlaylistViews */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		5CBA2CF61C97E86E0049FE4A /* PlaylistViews */ = {
+			isa = PBXGroup;
+			children = (
+				5C67E4151C96767E00A08005 /* PlaylistTableViewController.h */,
+				5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */,
+				5C67E4231C9699C500A08005 /* FavoriteTableViewController.h */,
+				5C67E4241C9699C500A08005 /* FavoriteTableViewController.m */,
+				5C67E4271C96C92200A08005 /* PlaylistDetailTableViewController.h */,
+				5C67E4281C96C92200A08005 /* PlaylistDetailTableViewController.m */,
+				5CBA2CEF1C97CD370049FE4A /* PlaylistEditTableViewController.h */,
+				5CBA2CF01C97CD370049FE4A /* PlaylistEditTableViewController.m */,
+				5CBA2CF21C97CDA30049FE4A /* PlaylistEditDetailTableViewController.h */,
+				5CBA2CF31C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m */,
+				5CBA2CF71C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.h */,
+				5CBA2CF81C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m */,
+			);
+			name = PlaylistViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -510,6 +531,7 @@
 				5CBA2CEE1C97CC2B0049FE4A /* PlaylistEditDetailCustomCell.m in Sources */,
 				5C67E41D1C96791E00A08005 /* Playlist.m in Sources */,
 				5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */,
+				5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */,
 				5CB425E31C928561005DCB46 /* RecommendCustomCell.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
 				5CBA2CF41C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m in Sources */,

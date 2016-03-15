@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,17 +15,29 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5xP-9P-Ixj">
-                        <rect key="frame" x="8" y="18" width="225" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FpA-pS-EC4">
+                        <rect key="frame" x="263" y="4" width="49" height="49"/>
+                        <color key="backgroundColor" red="1" green="0.70795595854205717" blue="0.75287211052537784" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="49" id="cix-Mg-vSo"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5xP-9P-Ixj">
+                        <rect key="frame" x="31" y="8" width="225" height="41"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FpA-pS-EC4">
-                        <rect key="frame" x="263" y="4" width="49" height="49"/>
-                        <color key="backgroundColor" red="1" green="0.70795595854205717" blue="0.75287211052537784" alpha="1" colorSpace="calibratedRGB"/>
-                    </imageView>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="5xP-9P-Ixj" firstAttribute="top" secondItem="jhk-bK-hL7" secondAttribute="topMargin" id="Acs-zl-MwM"/>
+                    <constraint firstItem="FpA-pS-EC4" firstAttribute="leading" secondItem="5xP-9P-Ixj" secondAttribute="trailing" constant="7" id="Jap-oU-7QO"/>
+                    <constraint firstItem="FpA-pS-EC4" firstAttribute="top" secondItem="jhk-bK-hL7" secondAttribute="topMargin" constant="-4" id="S4R-r7-Cgh"/>
+                    <constraint firstItem="5xP-9P-Ixj" firstAttribute="leading" secondItem="jhk-bK-hL7" secondAttribute="leadingMargin" constant="23" id="aRQ-Bt-dme"/>
+                    <constraint firstItem="FpA-pS-EC4" firstAttribute="trailing" secondItem="jhk-bK-hL7" secondAttribute="trailingMargin" id="i76-Dd-obP"/>
+                    <constraint firstItem="5xP-9P-Ixj" firstAttribute="bottom" secondItem="jhk-bK-hL7" secondAttribute="bottomMargin" id="u3D-3m-xJs"/>
+                    <constraint firstItem="5xP-9P-Ixj" firstAttribute="centerY" secondItem="FpA-pS-EC4" secondAttribute="centerY" id="wge-3e-Jin"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="addIcon" destination="FpA-pS-EC4" id="yRt-cQ-XzP"/>

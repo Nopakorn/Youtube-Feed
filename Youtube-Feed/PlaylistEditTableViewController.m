@@ -26,6 +26,15 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"playlistEdit");
+        NSLog(@"check size of favorite %lu", (unsigned long)[self.playlist.favoriteList count]);
+        for (int i = 0; i < [self.playlist.favoriteList count]; i++) {
+            Favorite *fav = [self.playlist.favoriteList objectAtIndex:i];
+            NSLog(@"id:%@ title:%@ thumbnail:%@",fav.videoId,fav.videoTitle,fav.videothumbnail);
+        }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -77,6 +86,7 @@
         
         PlaylistEditDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
+        dest.favorite = self.favorite;
         
     }
 

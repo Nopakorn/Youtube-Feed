@@ -1,5 +1,5 @@
 //
-//  PlaylistEditTableViewController.h
+//  PlaylistEditDetailFavoriteTableViewController.h
 //  Youtube-Feed
 //
 //  Created by Siam System Deverlopment on 3/15/2559 BE.
@@ -7,14 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Playlist.h"
 #import "Favorite.h"
-#import "PlaylistTableViewController.h"
+#import "Playlist.h"
 
-@interface PlaylistEditTableViewController : UITableViewController
+@interface PlaylistEditDetailFavoriteTableViewController : UITableViewController
 
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
-@property (nonatomic, retain) NSMutableArray *playlist_List;
+@property (nonatomic, retain) NSMutableArray  *imageData;
 
 @end

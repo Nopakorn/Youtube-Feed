@@ -7,7 +7,9 @@
 //
 
 #import "PlaylistEditDetailTableViewController.h"
+#import "PlaylistEditDetailFavoriteTableViewController.h"
 #import "PlaylistCustomCell.h"
+#import "PlaylistEditDetailCustomCell.h"
 
 @interface PlaylistEditDetailTableViewController ()
 
@@ -26,6 +28,7 @@
     NSLog(@"inedit detail playlistobj: %lu",(unsigned long)[self.playlist.videoId count]);
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setEditing:YES animated:YES];
+    self.tableView.allowsSelectionDuringEditing = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -47,18 +50,20 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString *simpleTableIdentifier = @"PlaylistCustomCell";
-    PlaylistCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    static NSString *simpleTableIdentifier = @"PlaylistEditDetailCustomCell";
+    PlaylistEditDetailCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistCustomCell" owner:self options:nil];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistEditDetailCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
         
     }
     if (indexPath.row == 0) {
         cell.name.text = self.playlist.playTitle;
         
+        
     }else {
         cell.name.text = [self.playlist.videoTitle objectAtIndex:indexPath.row-1];
+        cell.addIcon.hidden = YES;
     }
     
     return cell;
@@ -68,6 +73,32 @@
 {
     return 58;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+     NSLog(@"inside didselect row");
+    if (indexPath.row == 0) {
+        NSLog(@"select row 0");
+        [self performSegueWithIdentifier:@"AddPlaylistSegue" sender:nil];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }else {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+   
+    if ([segue.identifier isEqualToString:@"AddPlaylistSegue"]){
+        
+        PlaylistEditDetailFavoriteTableViewController *dest = segue.destinationViewController;
+        dest.playlist = self.playlist;
+        dest.favorite = self.favorite;
+        
+    }
+}
+
+# pragma editmode
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -84,11 +115,13 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     return NO;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     return UITableViewCellEditingStyleNone;
 }
 

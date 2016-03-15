@@ -140,6 +140,7 @@
         
         FavoriteTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
+        dest.favorite = self.favorite;
         
     } else if ([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
          NSLog(@"prepare playlistdetail");
@@ -150,6 +151,7 @@
         NSLog(@"prepare playlistEdit");
         PlaylistEditTableViewController *dest = segue.destinationViewController;
         dest.playlist_List = self.playlist_List;
+        dest.favorite = self.favorite;
     }
     
 }

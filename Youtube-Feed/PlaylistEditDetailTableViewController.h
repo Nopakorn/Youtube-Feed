@@ -13,5 +13,6 @@
 @interface PlaylistEditDetailTableViewController : UITableViewController
 
 @property (strong, nonatomic) Playlist *playlist;
+@property (strong, nonatomic) Favorite *favorite;
 
 @end

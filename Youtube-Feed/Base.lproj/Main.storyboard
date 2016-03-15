@@ -503,7 +503,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cat-Sw-BGV">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Set"/>
+                                <state key="normal" title="Edit"/>
                                 <connections>
                                     <action selector="editButtonPressed:" destination="cIc-Xv-a1P" eventType="touchUpInside" id="VLh-qg-svi"/>
                                     <segue destination="kfM-Vc-J7c" kind="push" identifier="EditSegue" id="NjQ-m2-tjv"/>
@@ -606,10 +606,39 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Playlist Edit Detail" id="Slb-SM-i8O"/>
+                    <connections>
+                        <segue destination="gWu-VQ-GRU" kind="push" identifier="AddPlaylistSegue" id="IXd-FD-f9k"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qLo-4m-eoU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="807" y="1327"/>
+        </scene>
+        <!--Favorite-->
+        <scene sceneID="XCB-Tb-Hi3">
+            <objects>
+                <tableViewController id="gWu-VQ-GRU" customClass="PlaylistEditDetailFavoriteTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YLc-Xo-8Iu">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="pRg-aG-swu">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pRg-aG-swu" id="0pl-Qm-NbJ">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="gWu-VQ-GRU" id="M3P-LG-df4"/>
+                            <outlet property="delegate" destination="gWu-VQ-GRU" id="ngg-Gv-DiK"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Favorite" id="Loj-rv-jK6"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2mR-gs-92L" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1618.5" y="1327"/>
         </scene>
         <!--Playlist Detail-->
         <scene sceneID="ttg-y7-PaL">

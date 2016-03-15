@@ -138,15 +138,14 @@
         [alert dismissViewControllerAnimated:YES completion:nil];
         [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
     });
-    
+    //[self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
 
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"SubmitSetting"]){
-
-        NSNumber *indexShow = sender;
+        NSNumber *indexShow = @0;
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
         dest.genreSelected = self.genreSelected;

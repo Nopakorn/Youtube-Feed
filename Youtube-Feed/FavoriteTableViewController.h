@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
+#import "Favorite.h"
 
 @interface FavoriteTableViewController : UITableViewController
 
 @property (strong, nonatomic) Playlist *playlist;
+@property (strong, nonatomic) Favorite *favorite;
+
 @property (nonatomic, retain) NSMutableArray  *imageData;
 
 @end
