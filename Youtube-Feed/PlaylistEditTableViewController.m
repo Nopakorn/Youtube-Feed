@@ -7,7 +7,8 @@
 //
 
 #import "PlaylistEditTableViewController.h"
-#import "PlaylistEditCustomCell.h"
+#import "PlaylistEditDetailTableViewController.h"
+#import "PlaylistCustomCell.h"
 
 @interface PlaylistEditTableViewController ()
 
@@ -23,6 +24,7 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,10 +45,10 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString *simpleTableIdentifier = @"PlaylistEditCustomCell";
-    PlaylistEditCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    static NSString *simpleTableIdentifier = @"PlaylistCustomCell";
+    PlaylistCustomCell *cell =[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistEditCustomCell" owner:self options:nil];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
         
     }
@@ -60,5 +62,24 @@
     return 58;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.playlist = [self.playlist_List objectAtIndex:indexPath.row];
+    NSLog(@"test playlistobj: %lu",(unsigned long)[self.playlist.videoId count]);
+    [self performSegueWithIdentifier:@"PlaylistEditDetailSegue" sender:nil];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"PlaylistEditDetailSegue"]){
+        
+        PlaylistEditDetailTableViewController *dest = segue.destinationViewController;
+        dest.playlist = self.playlist;
+        
+    }
+
+}
 
 @end

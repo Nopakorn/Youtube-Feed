@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Playlist.h"
+#import "Favorite.h"
 
 @interface PlaylistEditDetailTableViewController : UITableViewController
+
+@property (strong, nonatomic) Playlist *playlist;
 
 @end

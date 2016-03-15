@@ -17,4 +17,7 @@
 @property(strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray *playlist_List;
 
+@property(weak,nonatomic) IBOutlet UIButton  *editButton;
+- (IBAction)editButtonPressed:(id)sender;
+
 @end

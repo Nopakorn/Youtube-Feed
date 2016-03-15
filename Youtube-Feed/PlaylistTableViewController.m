@@ -128,6 +128,12 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (IBAction)editButtonPressed:(id)sender
+{
+    NSLog(@"Edit buttonPressed");
+    //[self performSegueWithIdentifier:@"EditSegue" sender:nil];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"FavoriteSegue"]){
