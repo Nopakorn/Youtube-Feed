@@ -10,6 +10,7 @@
 #import "PlaylistCustomCell.h"
 #import "FavoriteTableViewController.h"
 #import "PlaylistDetailTableViewController.h"
+#import "PlaylistEditTableViewController.h"
 
 @interface PlaylistTableViewController ()
 
@@ -138,6 +139,11 @@
          NSLog(@"prepare playlistdetail");
         PlaylistDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
+        
+    } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
+        NSLog(@"prepare playlistEdit");
+        PlaylistEditTableViewController *dest = segue.destinationViewController;
+        dest.playlist_List = self.playlist_List;
     }
     
 }

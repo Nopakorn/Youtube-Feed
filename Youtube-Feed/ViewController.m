@@ -34,6 +34,11 @@
     
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
+//    Hiding tabbar item its remove view too
+//    NSMutableArray *tabs = [NSMutableArray arrayWithArray:[self.tabBarController viewControllers]];
+//    [tabs removeObjectAtIndex:0];
+//    [self.tabBarController setViewControllers:tabs];
+//    NSLog(@"tabs length in viewcontroller%lu",(unsigned long)[tabs count]);
     
     if([tabbar.youtube.videoIdList count] == 0){
         NSLog(@"object is nil");

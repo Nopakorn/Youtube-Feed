@@ -27,6 +27,11 @@
     self.passValue = @"test";
     NSLog(@"view did appear Tabbar %lu",(unsigned long)[self.youtube.videoIdList count]);
     NSLog(@"startAT %lu",(unsigned long)self.startAt);
+    //NSMutableArray *tabs = [NSMutableArray arrayWithObjects:self.tabBarController.viewControllers, nil];
+    //NSMutableArray *tabs = [NSMutableArray arrayWithArray:[self.tabBarController viewControllers]];
+    //NSLog(@"tabs length %lu",(unsigned long)[tabs count]);
+    //[tabs removeObjectAtIndex:1];
+    //[self.tabBarController setViewControllers:tabs];
 
 }
 
