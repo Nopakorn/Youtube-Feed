@@ -31,6 +31,14 @@
     [self.tableView reloadData];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+     NSLog(@"view did Disappear playlisteditdetail");
+//    for (int i =0 ; i < [self.playlist.videoTitle count]; i++) {
+//        NSLog(@"reordering %@",[self.playlist.videoTitle objectAtIndex:i]);
+//    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -102,6 +110,9 @@
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row == 0) {
+        return NO;
+    }
     return YES;
 }
 
@@ -127,7 +138,29 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
+    NSString *videoTitleToMove = [self.playlist.videoTitle objectAtIndex:sourceIndexPath.row-1];
+    NSString *videoIdToMove = [self.playlist.videoId objectAtIndex:sourceIndexPath.row-1];
+    NSString *videoThumbnailToMove = [self.playlist.videoThumbnail objectAtIndex:sourceIndexPath.row-1];
     
+    [self.playlist.videoId removeObjectAtIndex:sourceIndexPath.row-1];
+    [self.playlist.videoTitle removeObjectAtIndex:sourceIndexPath.row-1];
+    [self.playlist.videoThumbnail removeObjectAtIndex:sourceIndexPath.row-1];
+    
+    [self.playlist.videoId insertObject:videoIdToMove atIndex:destinationIndexPath.row-1];
+    [self.playlist.videoTitle insertObject:videoTitleToMove atIndex:destinationIndexPath.row-1];
+    [self.playlist.videoThumbnail insertObject:videoThumbnailToMove atIndex:destinationIndexPath.row-1];
+    
+    
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    
+    if( proposedDestinationIndexPath.row == 0 ) {
+        return [NSIndexPath indexPathForRow:sourceIndexPath.row inSection:proposedDestinationIndexPath.section];
+    }
+    
+    return proposedDestinationIndexPath;
 }
 
 #pragma mark - delegate PlaylistEditDetailFavoriteController
