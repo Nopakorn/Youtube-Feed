@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import  "Youtube.h"
 
+
+@protocol SearchTableViewControllerDelegate;
+
 @interface SearchTableViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIGestureRecognizerDelegate>
 {
     UIActivityIndicatorView *spinner;
@@ -17,5 +20,13 @@
 @property (strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray  *imageData;
 @property (nonatomic, retain) IBOutlet UISearchBar  *searchBar;
+
+@property (nonatomic, assign) id<SearchTableViewControllerDelegate> delegate;
+@property (nonatomic) NSInteger selectedRow;
+@end
+
+@protocol SearchTableViewControllerDelegate <NSObject>
+
+- (void)searchTableViewControllerDidSelected:(SearchTableViewController *)searchViewController;
 
 @end

@@ -73,7 +73,9 @@
 
 -(void) callSearchByText:(NSString *)text
 {
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", text];
+    NSString *setText = [text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", setText];
     
     NSURL *url = [[NSURL alloc] initWithString:urlString];
     NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];

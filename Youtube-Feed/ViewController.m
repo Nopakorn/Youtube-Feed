@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "MainTabBarViewController.h"
-#import "PlaylistTableViewController.h"
+
 
 @interface ViewController ()
 
@@ -16,7 +16,8 @@
 
 @implementation ViewController
 {
-    Boolean flag;
+    Boolean recommendTableViewFlag;
+    Boolean searchTableViewFlag;
     NSInteger item;
     NSInteger queryIndex;
 }
@@ -28,12 +29,13 @@
     
     item = 0;
     queryIndex = -1;
-    flag = false;
+    recommendTableViewFlag = false;
+    searchTableViewFlag = false;
     
     self.youtube = [[Youtube alloc] init];
     self.favorite = [[Favorite alloc] init];
     self.playlist = [[Playlist alloc] init];
-    
+    //play recommend video first time
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
     
@@ -45,7 +47,7 @@
     self.playerView.delegate = self;
     NSDictionary *playerVers = @{
                                  @"playsinline" : @1,
-                                 @"controls" : @1,
+                                 @"controls" : @0,
                                  @"showinfo" : @1,
                                  @"modestbranding" : @1,
     };
@@ -69,17 +71,30 @@
 
     [super viewDidAppear:animated];
     
-    if(flag){
+    if(recommendTableViewFlag){
         NSDictionary *playerVers = @{
                                      @"playsinline" : @1,
-                                     @"controls" : @1,
+                                     @"controls" : @0,
                                      @"showinfo" : @1,
                                      @"modestbranding" : @1,
                                      };
         
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
-        flag = false;
+        recommendTableViewFlag = false;
     }
+    
+    if(searchTableViewFlag){
+        NSDictionary *playerVers = @{
+                                     @"playsinline" : @1,
+                                     @"controls" : @0,
+                                     @"showinfo" : @1,
+                                     @"modestbranding" : @1,
+                                     };
+        
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+        searchTableViewFlag = false;
+    }
+
     
 }
 
@@ -136,6 +151,7 @@
         [self.playerView pauseVideo];
         
     } else if(sender == self.nextButton){
+        
         item+=1;
         [self.playerView pauseVideo];
         NSDictionary *playerVers = @{
@@ -154,18 +170,29 @@
 {
     if (queryIndex != item) {
         queryIndex = item;
-        NSLog(@"playlist item %lu", (unsigned long)item);
+        
+        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
+        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+        [self presentViewController:favoriteAlert animated:YES completion:nil];
+        
         NSString *videoId = [self.youtube.videoIdList objectAtIndex:queryIndex];
         NSString *videoTitle = [self.youtube.titleList objectAtIndex:queryIndex];
         NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:queryIndex];
-        
         [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-        NSLog(@"playlist fav size %lu", (unsigned long)[self.playlist.favoriteList  count]);
         
     }else {
-         NSLog(@"same index item %lu", (unsigned long)item);
+        
+        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Already in Favorite" preferredStyle:UIAlertControllerStyleAlert];
+        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+        [self presentViewController:favoriteAlert animated:YES completion:nil];
     }
     
+}
+
+- (void)dismissFavoriteAlert
+{
+    [favoriteAlert dismissViewControllerAnimated:YES completion:nil];
+    [favoriteAlertTimer invalidate];
 }
 
 - (void)receivedPlayBackStartedNotification:(NSNotification *) notification {
@@ -198,10 +225,11 @@
         [selfController.navigationController setModalPresentationStyle:UIModalPresentationCurrentContext];
     }
 }
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     if (tabBarController.selectedIndex == 2) {
-         NSLog(@"Select Playlist view tab");
+    
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];
         PlaylistTableViewController *playlistView = [nav.viewControllers objectAtIndex:0];
         playlistView.playlist = self.playlist;
@@ -210,25 +238,41 @@
         playlistView.youtube = self.youtube;
         
     }
+    
     if (tabBarController.selectedIndex == 1) {
-        NSLog(@"Select recommend view tab");
+       
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:1];
         RecommendTableViewController *rec = [nav.viewControllers objectAtIndex:0];
         rec.delegate = self;
         
     }
-
     
+    if (tabBarController.selectedIndex == 3) {
+        
+        UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:3];
+        SearchTableViewController *seachTable = [nav.viewControllers objectAtIndex:0];
+        seachTable.delegate = self;
+        
+    }
 }
 
 #pragma mark - delegate RecommendTableViewController
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController
 {
-    flag = true;
+    recommendTableViewFlag = true;
+    self.youtube = recommendViewController.youtube;
     item = recommendViewController.selectedRow;
-    NSLog(@"Receive from delegate");
     
+}
+
+#pragma mark - delegate SearchTableViewController
+
+- (void)searchTableViewControllerDidSelected:(SearchTableViewController *)searchViewController
+{
+    searchTableViewFlag = true;
+    self.youtube = searchViewController.youtube;
+    item = searchViewController.selectedRow;
 }
 
 @end

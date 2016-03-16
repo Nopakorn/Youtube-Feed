@@ -20,8 +20,8 @@
     self.searchBar.delegate = self;
     self.searchBar.placeholder = @"Search from Youtube";
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    [self.view addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+//    [self.view addGestureRecognizer:tap];
     
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -97,15 +97,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"didselect row");
+    self.selectedRow = indexPath.row;
+    [self.delegate searchTableViewControllerDidSelected:self];
+    [self.tabBarController setSelectedIndex:0];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)dismissKeyboard
-{
-    [self.searchBar resignFirstResponder];
-    self.searchBar.showsCancelButton = NO;
-    self.searchBar.text = @"";
-}
+//- (void)dismissKeyboard
+//{
+//    [self.searchBar resignFirstResponder];
+//    self.searchBar.showsCancelButton = NO;
+//    self.searchBar.text = @"";
+//}
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {

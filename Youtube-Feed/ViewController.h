@@ -12,21 +12,28 @@
 #import "Favorite.h"
 #import "YTPlayerView.h"
 #import "AddPlaylistPopUpViewController.h"
+#import "PlaylistTableViewController.h"
 #import "RecommendTableViewController.h"
+#import "SearchTableViewController.h"
 
 
-@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate>
-
-@property(strong, nonatomic) Youtube *youtube;
+@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate>
+{
+    UIAlertController *favoriteAlert;
+    NSTimer *favoriteAlertTimer;
+}
+@property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;
 @property (strong, nonatomic) Playlist *playlist;
 
-@property(strong, nonatomic) IBOutlet YTPlayerView *playerView;
-@property(weak,nonatomic) IBOutlet UIButton  *playButton;
-@property(weak,nonatomic) IBOutlet UIButton  *pauseButton;
-@property(weak,nonatomic) IBOutlet UIButton  *nextButton;
-@property(weak,nonatomic) IBOutlet UIButton  *addButton;
-@property(weak,nonatomic) IBOutlet UIButton  *favoriteButton;
+@property (strong, nonatomic) IBOutlet YTPlayerView *playerView;
+@property (weak,nonatomic) IBOutlet UIButton  *playButton;
+@property (weak,nonatomic) IBOutlet UIButton  *pauseButton;
+@property (weak,nonatomic) IBOutlet UIButton  *nextButton;
+@property (weak,nonatomic) IBOutlet UIButton  *addButton;
+@property (weak,nonatomic) IBOutlet UIButton  *favoriteButton;
+
+
 
 - (IBAction)buttonPressed:(id)sender;
 - (IBAction)favoritePressed:(id)sender;

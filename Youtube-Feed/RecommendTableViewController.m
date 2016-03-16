@@ -29,8 +29,7 @@
 - (void)getData
 {
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
-    self.youtube = mainTabbar.youtube;
-    
+    self.youtube = mainTabbar.youtube;    
     NSLog(@"received youtube obj %lu",(unsigned long)[self.youtube.videoIdList count]);
 }
 - (void)didReceiveMemoryWarning {
@@ -95,24 +94,12 @@
 {
     self.selectedRow = indexPath.row;
     [self.delegate recommendTableViewControllerDidSelected:self];
-    //NSDictionary *userInfo = @{@"startAt":@(self.selectedRow)};
-    //[[NSNotificationCenter defaultCenter] postNotificationName:@"SelectedFromRecommend" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"SelectedFromRecommend"]){
-        // NAVIGATION HIDE
-        [self.navigationController setNavigationBarHidden:YES];
-        
-        NSNumber *indexShow = sender;
-        MainTabBarViewController *dest = segue.destinationViewController;
-        dest.youtube = self.youtube;
-        dest.startAt = self.selectedRow;
-        dest.selectedViewController = [dest.viewControllers objectAtIndex:indexShow.unsignedIntegerValue];
-    
-    }
 
 }
 

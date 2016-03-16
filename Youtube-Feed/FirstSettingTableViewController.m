@@ -22,6 +22,7 @@
     self.youtube = [[Youtube alloc] init];
     
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
 
 }
