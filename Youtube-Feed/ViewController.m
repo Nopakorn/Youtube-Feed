@@ -23,7 +23,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.tabBarController.delegate = self;
+    
     item = 0;
     queryIndex = -1;
     flag = false;
@@ -34,11 +36,6 @@
     
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
-//    Hiding tabbar item its remove view too
-//    NSMutableArray *tabs = [NSMutableArray arrayWithArray:[self.tabBarController viewControllers]];
-//    [tabs removeObjectAtIndex:0];
-//    [self.tabBarController setViewControllers:tabs];
-//    NSLog(@"tabs length in viewcontroller%lu",(unsigned long)[tabs count]);
     
     if([tabbar.youtube.videoIdList count] == 0){
         NSLog(@"object is nil");
@@ -69,7 +66,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"calling view didappear");
+
     [super viewDidAppear:animated];
     
     if(flag){
@@ -162,13 +159,8 @@
         NSString *videoTitle = [self.youtube.titleList objectAtIndex:queryIndex];
         NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:queryIndex];
         
-//        Favorite *fav = [[Favorite alloc] init];
-//        [fav setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-//        [self.playlist.favoriteList addObject:fav];
-        
         [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
         NSLog(@"playlist fav size %lu", (unsigned long)[self.playlist.favoriteList  count]);
-        
         
     }else {
          NSLog(@"same index item %lu", (unsigned long)item);
@@ -211,7 +203,6 @@
     if (tabBarController.selectedIndex == 2) {
          NSLog(@"Select Playlist view tab");
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];
-        //PlaylistTableViewController *playlistView = (PlaylistTableViewController *)viewController;
         PlaylistTableViewController *playlistView = [nav.viewControllers objectAtIndex:0];
         playlistView.playlist = self.playlist;
         playlistView.favorite = self.favorite;

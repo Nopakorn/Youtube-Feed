@@ -30,6 +30,6 @@
 
 - (id) init;
 - (void) callSearch:(NSMutableArray *)genreSelected;
-
+- (void) callSearchByText:(NSString *)text;
 
 @end

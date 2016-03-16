@@ -71,7 +71,34 @@
 
 }
 
--(void) fetchVideos
+-(void) callSearchByText:(NSString *)text
+{
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", text];
+    
+    NSURL *url = [[NSURL alloc] initWithString:urlString];
+    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [req setHTTPMethod:@"GET"];
+    
+    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+        if(!error)
+        {
+            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            self.searchResults = json;
+            [self fetchVideosFromSearch];
+        }else{
+            NSLog(@"%@",error);
+        }
+        
+        
+        
+    }] resume];
+}
+
+
+
+-(void)fetchVideos
 {
     NSArray* items = self.searchResults[@"items"];
     //self.videoIdList = [NSMutableArray arrayWithCapacity:10];
@@ -86,5 +113,22 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoId" object:self];
 }
+
+-(void)fetchVideosFromSearch
+{
+    NSArray* items = self.searchResults[@"items"];
+    //self.videoIdList = [NSMutableArray arrayWithCapacity:10];
+    
+    //Testing query id from result;
+    NSLog(@"adding id");
+    for (NSDictionary* q in items) {
+        [self.videoIdList addObject:q[@"id"][@"videoId"]];
+        [self.titleList addObject:q[@"snippet"][@"title"]];
+        [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoIdFromSearch" object:self];
+}
+
 
 @end

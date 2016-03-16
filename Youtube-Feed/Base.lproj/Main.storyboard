@@ -50,18 +50,15 @@
         <!--Search-->
         <scene sceneID="sOd-K8-N0f">
             <objects>
-                <tableViewController id="7wg-mq-4XG" sceneMemberID="viewController">
+                <tableViewController id="7wg-mq-4XG" customClass="SearchTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="DhH-jS-YR4">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="r5W-8y-T0O">
-                            <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="B0A-mT-ldN">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="7wg-mq-4XG" id="b0a-kZ-A71"/>
-                            </connections>
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="kEF-hU-LuC">
@@ -80,19 +77,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Search" id="h2c-RF-tVU"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="qpJ-cY-JVo" id="W0S-xc-dZd"/>
+                        <outlet property="searchBar" destination="B0A-mT-ldN" id="0Fn-Fx-9Ay"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQ0-Xm-1sy" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="qpJ-cY-JVo">
-                    <connections>
-                        <outlet property="delegate" destination="7wg-mq-4XG" id="40y-j0-DtU"/>
-                        <outlet property="searchBar" destination="r5W-8y-T0O" id="8nK-36-w3C"/>
-                        <outlet property="searchContentsController" destination="7wg-mq-4XG" id="hqL-h6-eyL"/>
-                        <outlet property="searchResultsDataSource" destination="7wg-mq-4XG" id="Bww-wT-k8C"/>
-                        <outlet property="searchResultsDelegate" destination="7wg-mq-4XG" id="BM4-KT-mNx"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-3906" y="2077"/>
         </scene>
@@ -619,12 +607,15 @@
             <objects>
                 <tableViewController id="gWu-VQ-GRU" customClass="PlaylistEditDetailFavoriteTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="YLc-Xo-8Iu">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="pRg-aG-swu">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pRg-aG-swu" id="0pl-Qm-NbJ">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
