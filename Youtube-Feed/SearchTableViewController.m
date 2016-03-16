@@ -19,6 +19,10 @@
     [super viewDidLoad];
     self.searchBar.delegate = self;
     self.searchBar.placeholder = @"Search from Youtube";
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    [self.view addGestureRecognizer:tap];
+    
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     
@@ -26,7 +30,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"view appear %lu",(unsigned long)[self.youtube.titleList count]);
+    NSLog(@"view appear searchTable");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,6 +93,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 80;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)dismissKeyboard
+{
+    [self.searchBar resignFirstResponder];
+    self.searchBar.showsCancelButton = NO;
+    self.searchBar.text = @"";
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar

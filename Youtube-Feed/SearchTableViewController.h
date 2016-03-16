@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import  "Youtube.h"
 
-@interface SearchTableViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface SearchTableViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIGestureRecognizerDelegate>
 {
     UIActivityIndicatorView *spinner;
 }

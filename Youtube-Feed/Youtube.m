@@ -101,10 +101,6 @@
 -(void)fetchVideos
 {
     NSArray* items = self.searchResults[@"items"];
-    //self.videoIdList = [NSMutableArray arrayWithCapacity:10];
-    
-    //Testing query id from result;
-     NSLog(@"adding id");
     for (NSDictionary* q in items) {
         [self.videoIdList addObject:q[@"id"][@"videoId"]];
         [self.titleList addObject:q[@"snippet"][@"title"]];
@@ -117,10 +113,6 @@
 -(void)fetchVideosFromSearch
 {
     NSArray* items = self.searchResults[@"items"];
-    //self.videoIdList = [NSMutableArray arrayWithCapacity:10];
-    
-    //Testing query id from result;
-    NSLog(@"adding id");
     for (NSDictionary* q in items) {
         [self.videoIdList addObject:q[@"id"][@"videoId"]];
         [self.titleList addObject:q[@"snippet"][@"title"]];
