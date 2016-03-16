@@ -99,7 +99,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSLog(@"searchbar text did change");
+    //when text changing
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -121,10 +121,11 @@
     [self.youtube.titleList removeAllObjects];
     [self.youtube.videoIdList removeAllObjects];
     [self.youtube.thumbnailList removeAllObjects];
-    NSLog(@"get search %@",searchBar.text);
+    [self.tableView reloadData];
+    
     [self.youtube callSearchByText:searchBar.text];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    spinner.center = CGPointMake(130.5, 65.5);
+    spinner.center = CGPointMake(self.view.center.x, 85.5);
     spinner.color = [UIColor blackColor];
     [self.tableView addSubview:spinner];
     [spinner startAnimating];
@@ -135,15 +136,13 @@
 }
 - (void)receivedLoadVideoId
 {
-    NSLog(@"recevied data %@",[self.youtube.titleList objectAtIndex:0]);
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         [self.tableView reloadData];
         [self.searchBar resignFirstResponder];
         self.searchBar.showsCancelButton = NO;
     });
-    
-    
+
 }
 
 @end
