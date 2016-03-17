@@ -15,6 +15,8 @@
 
 @implementation MainTabBarViewController
 @synthesize youtube;
+@synthesize recommendYoutube;
+@synthesize searchYoutube;
 @synthesize genreSelected;
 
 - (void)viewDidLoad {
@@ -25,21 +27,26 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     self.passValue = @"test";
-    NSLog(@"view did appear Tabbar %lu",(unsigned long)[self.youtube.videoIdList count]);
-    NSLog(@"startAT %lu",(unsigned long)self.startAt);
-    //NSMutableArray *tabs = [NSMutableArray arrayWithObjects:self.tabBarController.viewControllers, nil];
-    //NSMutableArray *tabs = [NSMutableArray arrayWithArray:[self.tabBarController viewControllers]];
-    //NSLog(@"tabs length %lu",(unsigned long)[tabs count]);
-    //[tabs removeObjectAtIndex:1];
-    //[self.tabBarController setViewControllers:tabs];
 
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-
+- (void)saveYoutubeObj:(Youtube *)yt
+{
+    if(yt.videoIdList != 0) {
+        for (int i = 0; i < [yt.videoIdList count]; i++) {
+            [self.youtube.videoIdList addObject:[yt.videoIdList objectAtIndex:i]];
+            [self.youtube.titleList addObject:[yt.titleList objectAtIndex:i]];
+            [self.youtube.thumbnailList addObject:[yt.thumbnailList objectAtIndex:i]];
+        }
+        
+    }
+}
 
 @end

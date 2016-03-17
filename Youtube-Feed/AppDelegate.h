@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Youtube.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) Youtube *youtube;
+@property (strong, nonatomic) Youtube *recommendYoutube;
 
 @end
 

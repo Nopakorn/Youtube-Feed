@@ -149,6 +149,7 @@
         NSNumber *indexShow = @0;
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
+        dest.recommendYoutube = self.youtube;
         dest.genreSelected = self.genreSelected;
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
         // NAVIGATION HIDE

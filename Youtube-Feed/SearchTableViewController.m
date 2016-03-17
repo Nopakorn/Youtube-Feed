@@ -8,12 +8,14 @@
 
 #import "SearchTableViewController.h"
 #import "RecommendCustomCell.h"
+#import "MainTabBarViewController.h"
 
 @interface SearchTableViewController ()
 
 @end
 
 @implementation SearchTableViewController
+@synthesize delegate = _delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,13 +26,11 @@
 //    [self.view addGestureRecognizer:tap];
     
     self.youtube = [[Youtube alloc] init];
+    self.searchYoutube = [[Youtube alloc] init];
+    
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-}
-- (void)viewWillAppear:(BOOL)animated
-{
-    NSLog(@"view appear searchTable");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,10 +46,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if([self.youtube.videoIdList count] == 0 ) {
+    if([self.searchYoutube.videoIdList count] == 0 ) {
         return 0;
     }else {
-        return [self.youtube.videoIdList count];
+        return [self.searchYoutube.videoIdList count];
     }
     
 }
@@ -64,13 +64,13 @@
         
     }
     
-    cell.name.text = [self.youtube.titleList objectAtIndex:indexPath.row];
+    cell.name.text = [self.searchYoutube.titleList objectAtIndex:indexPath.row];
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
     //
-    if([self.youtube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
+    if([self.searchYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.youtube.thumbnailList objectAtIndex:indexPath.row]]];
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.searchYoutube.thumbnailList objectAtIndex:indexPath.row]]];
             
             if(data){
                 [self.imageData addObject:data];
@@ -130,7 +130,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         [self.tableView reloadData];
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     });
     
 
@@ -138,12 +138,12 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [self.youtube.titleList removeAllObjects];
-    [self.youtube.videoIdList removeAllObjects];
-    [self.youtube.thumbnailList removeAllObjects];
+    [self.searchYoutube.titleList removeAllObjects];
+    [self.searchYoutube.videoIdList removeAllObjects];
+    [self.searchYoutube.thumbnailList removeAllObjects];
     [self.tableView reloadData];
     
-    [self.youtube callSearchByText:searchBar.text];
+    [self.searchYoutube callSearchByText:searchBar.text];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.center = CGPointMake(self.view.center.x, 85.5);
     spinner.color = [UIColor blackColor];

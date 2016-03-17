@@ -13,11 +13,15 @@
 @end
 
 @implementation AppDelegate
-
+@synthesize youtube;
+@synthesize recommendYoutube;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     //[(UITabBarController *)self.window.rootViewController setSelectedIndex:3];
+    self.youtube = [[Youtube alloc] init];
+    self.recommendYoutube = [[Youtube alloc] init];
+    
     return YES;
 }
 

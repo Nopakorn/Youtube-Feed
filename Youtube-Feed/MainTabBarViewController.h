@@ -14,9 +14,13 @@
 
 
 @property(strong, nonatomic) Youtube *youtube;
+@property(strong, nonatomic) Youtube *recommendYoutube;
+@property(strong, nonatomic) Youtube *searchYoutube;
 @property (strong, nonatomic) Playlist *playlist;
 @property (nonatomic, retain) NSString *passValue;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
 @property (nonatomic) NSInteger startAt;
+
+- (void)saveYoutubeObj:(Youtube *)yt;
 
 @end

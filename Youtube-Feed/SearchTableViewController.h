@@ -18,6 +18,7 @@
 }
 
 @property (strong, nonatomic) Youtube *youtube;
+@property (strong, nonatomic) Youtube *searchYoutube;
 @property (nonatomic, retain) NSMutableArray  *imageData;
 @property (nonatomic, retain) IBOutlet UISearchBar  *searchBar;
 

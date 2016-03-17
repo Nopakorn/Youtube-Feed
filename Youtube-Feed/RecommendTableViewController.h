@@ -19,6 +19,7 @@
 }
 
 @property (strong, nonatomic) Youtube *youtube;
+@property (strong, nonatomic) Youtube *recommendYoutube;
 @property (nonatomic, retain) NSMutableArray  *videoTitle;
 @property (nonatomic, retain) NSMutableArray  *videothumbnail;
 @property (nonatomic, retain) NSMutableArray  *videoId;

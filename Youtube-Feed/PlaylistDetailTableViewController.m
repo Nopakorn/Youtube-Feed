@@ -8,6 +8,7 @@
 
 #import "PlaylistDetailTableViewController.h"
 #import "RecommendCustomCell.h"
+#import "MainTabBarViewController.h"
 
 @interface PlaylistDetailTableViewController ()
 
@@ -17,9 +18,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //[self.tableView setEditing:YES animated:YES];
+
+    [self addingDataToYoutubeObject];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (void)addingDataToYoutubeObject
+{
+    self.youtube = [[Youtube alloc] init];
+    if(self.playlist.videoId != 0) {
+        NSLog(@"save to youtube obj");
+        for (int i = 0; i < [self.playlist.videoId count]; i++) {
+            [self.youtube.videoIdList addObject:[self.playlist.videoId objectAtIndex:i]];
+            [self.youtube.titleList addObject:[self.playlist.videoTitle objectAtIndex:i]];
+            [self.youtube.thumbnailList addObject:[self.playlist.videoThumbnail objectAtIndex:i]];
+        }
+    }else {
+        NSLog(@"Have no video in the playlist");
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,29 +103,17 @@
     return 80;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return true;
+    self.selectedRow = indexPath.row;
+    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSDictionary *userInfo = @{@"youtubeObj": self.youtube,
+                               @"selectedIndex": selected};
+     NSLog(@"post playlistdetail");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PlaylistDetailDidSelected" object:self userInfo:userInfo];
+    [self.tabBarController setSelectedIndex:0];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return NO;
-}
-
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleNone;
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-{
-    
-}
 
 @end

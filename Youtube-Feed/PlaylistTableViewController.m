@@ -11,6 +11,8 @@
 #import "FavoriteTableViewController.h"
 #import "PlaylistDetailTableViewController.h"
 #import "PlaylistEditTableViewController.h"
+#import "MainTabBarViewController.h"
+
 
 @interface PlaylistTableViewController ()
 
@@ -134,6 +136,9 @@
 {
     if( indexPath.row == 0 ) {
         [self performSegueWithIdentifier:@"FavoriteSegue" sender:nil];
+        
+    }else if(indexPath.row == [self.playlist_List count]+1) {
+        NSLog(@"new playlist NOT IMPLEMENT YET");
         
     }else {
         NSLog(@"perfrom playlistdetail");
