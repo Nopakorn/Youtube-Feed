@@ -21,6 +21,8 @@
 {
     UIAlertController *favoriteAlert;
     NSTimer *favoriteAlertTimer;
+    UIAlertController *outOflengthAlert;
+    NSTimer *outOflengthAlertTimer;
 }
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;
@@ -30,6 +32,7 @@
 @property (weak,nonatomic) IBOutlet UIButton  *playButton;
 @property (weak,nonatomic) IBOutlet UIButton  *pauseButton;
 @property (weak,nonatomic) IBOutlet UIButton  *nextButton;
+@property (weak,nonatomic) IBOutlet UIButton  *prevButton;
 @property (weak,nonatomic) IBOutlet UIButton  *addButton;
 @property (weak,nonatomic) IBOutlet UIButton  *favoriteButton;
 
