@@ -36,5 +36,6 @@
 @protocol RecommendTableViewControllerDelegate <NSObject>
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController;
+- (void)recommendTableViewControllerNextPage:(RecommendTableViewController *)recommendViewController;
 
 @end

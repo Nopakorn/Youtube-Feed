@@ -173,7 +173,7 @@
         [self.tableView reloadData];
         nextPage = true;
         //tell viewcontroller to update youtube obj
-        [self.delegate recommendTableViewControllerDidSelected:self];
+        [self.delegate recommendTableViewControllerNextPage:self];
     });
     
 }

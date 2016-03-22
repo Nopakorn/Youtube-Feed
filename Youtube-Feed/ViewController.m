@@ -282,10 +282,6 @@
 - (void)receivedPlaylistDetailNotification:(NSNotification *)notification
 {
     playlistDetailTableViewFlag = true;
-//    [self.youtube.titleList removeAllObjects];
-//    [self.youtube.videoIdList removeAllObjects];
-//    [self.youtube.thumbnailList removeAllObjects];
-    
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     NSLog(@"Received playlistDetail");
@@ -353,6 +349,11 @@
     self.youtube = recommendViewController.recommendYoutube;
     item = recommendViewController.selectedRow;
     
+}
+
+- (void)recommendTableViewControllerNextPage:(RecommendTableViewController *)recommendViewController
+{
+    self.youtube = recommendViewController.recommendYoutube;
 }
 
 #pragma mark - delegate SearchTableViewController
