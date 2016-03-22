@@ -138,7 +138,8 @@
         [self performSegueWithIdentifier:@"FavoriteSegue" sender:nil];
         
     }else if(indexPath.row == [self.playlist_List count]+1) {
-        NSLog(@"new playlist NOT IMPLEMENT YET");
+        
+        [self createNewPlaylist];
         
     }else {
         NSLog(@"perfrom playlistdetail");
@@ -147,6 +148,45 @@
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
+
+- (void)createNewPlaylist
+{
+    alert = [UIAlertController alertControllerWithTitle:@"Create New Playlist"
+                                                message:@"Type your playlist name"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction *action){
+                                                   
+                                                   [self saveNewPlaylist:[[alert.textFields objectAtIndex:0] text]];
+                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                               }];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+        
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    [alert addAction:ok];
+    [alert addAction:cancel];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+       textField.placeholder = @"New playlist name";
+    }];
+    [self presentViewController:alert animated:YES completion:nil];
+
+}
+
+- (void)saveNewPlaylist:(NSString *)text
+{
+    NSString *title = text;
+    Playlist *playlist = [[Playlist alloc] init];
+    [playlist setTitle:title];
+    [self.playlist_List addObject:playlist];
+    [self.tableView reloadData];
+}
+
 
 - (IBAction)editButtonPressed:(id)sender
 {

@@ -22,6 +22,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"view did Load Tabbar");
+    self.customizableViewControllers = nil;
+    UITableView *view = (UITableView *)self.moreNavigationController.topViewController.view;
+    view.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -31,6 +31,8 @@
 		5C67E4221C96970300A08005 /* FavoriteCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C67E4211C96970300A08005 /* FavoriteCustomCell.xib */; };
 		5C67E4251C9699C500A08005 /* FavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4241C9699C500A08005 /* FavoriteTableViewController.m */; };
 		5C67E4291C96C92200A08005 /* PlaylistDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4281C96C92200A08005 /* PlaylistDetailTableViewController.m */; };
+		5C8679E21CA1433C0098F9A9 /* GenreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8679E11CA1433C0098F9A9 /* GenreTableViewController.m */; };
+		5C8679E81CA14E9E0098F9A9 /* GenreListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8679E71CA14E9E0098F9A9 /* GenreListTableViewController.m */; };
 		5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */; };
 		5CB425D91C928420005DCB46 /* RecommendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB425D81C928420005DCB46 /* RecommendTableViewController.m */; };
 		5CB425DE1C928494005DCB46 /* RecommendCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5CB425DD1C928494005DCB46 /* RecommendCustomCell.xib */; };
@@ -110,6 +112,10 @@
 		5C67E4241C9699C500A08005 /* FavoriteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteTableViewController.m; sourceTree = "<group>"; };
 		5C67E4271C96C92200A08005 /* PlaylistDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistDetailTableViewController.h; sourceTree = "<group>"; };
 		5C67E4281C96C92200A08005 /* PlaylistDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistDetailTableViewController.m; sourceTree = "<group>"; };
+		5C8679E01CA1433C0098F9A9 /* GenreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreTableViewController.h; sourceTree = "<group>"; };
+		5C8679E11CA1433C0098F9A9 /* GenreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenreTableViewController.m; sourceTree = "<group>"; };
+		5C8679E61CA14E9E0098F9A9 /* GenreListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenreListTableViewController.h; sourceTree = "<group>"; };
+		5C8679E71CA14E9E0098F9A9 /* GenreListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenreListTableViewController.m; sourceTree = "<group>"; };
 		5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstSettingTableViewController.h; sourceTree = "<group>"; };
 		5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstSettingTableViewController.m; sourceTree = "<group>"; };
 		5CB425D71C928420005DCB46 /* RecommendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendTableViewController.h; sourceTree = "<group>"; };
@@ -311,6 +317,10 @@
 				5CB425D81C928420005DCB46 /* RecommendTableViewController.m */,
 				5C36294E1C990F9F003C359F /* SearchTableViewController.h */,
 				5C36294F1C990F9F003C359F /* SearchTableViewController.m */,
+				5C8679E01CA1433C0098F9A9 /* GenreTableViewController.h */,
+				5C8679E11CA1433C0098F9A9 /* GenreTableViewController.m */,
+				5C8679E61CA14E9E0098F9A9 /* GenreListTableViewController.h */,
+				5C8679E71CA14E9E0098F9A9 /* GenreListTableViewController.m */,
 				5CBA2CF61C97E86E0049FE4A /* PlaylistViews */,
 			);
 			name = Controller;
@@ -525,6 +535,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CB425E61C928577005DCB46 /* PlaylistCustomCell.m in Sources */,
+				5C8679E81CA14E9E0098F9A9 /* GenreListTableViewController.m in Sources */,
 				5CB425D91C928420005DCB46 /* RecommendTableViewController.m in Sources */,
 				11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */,
 				5C67E4291C96C92200A08005 /* PlaylistDetailTableViewController.m in Sources */,
@@ -539,6 +550,7 @@
 				5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */,
 				5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */,
 				5CB425E31C928561005DCB46 /* RecommendCustomCell.m in Sources */,
+				5C8679E21CA1433C0098F9A9 /* GenreTableViewController.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
 				5CBA2CF41C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m in Sources */,
 				5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */,

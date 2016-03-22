@@ -223,7 +223,7 @@
         <!--Genre-->
         <scene sceneID="1lk-ko-rWm">
             <objects>
-                <tableViewController id="aOS-Ib-Dhh" sceneMemberID="viewController">
+                <tableViewController id="aOS-Ib-Dhh" customClass="GenreTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="L0Z-LK-ag2">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -243,11 +243,54 @@
                             <outlet property="delegate" destination="aOS-Ib-Dhh" id="2EK-89-MCV"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Genre" id="jei-mz-Vz8"/>
+                    <navigationItem key="navigationItem" title="Genre" id="jei-mz-Vz8">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="bHX-8b-vrk">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Mc7-7I-tB0">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Submit"/>
+                                <connections>
+                                    <action selector="submitButtonPressed:" destination="aOS-Ib-Dhh" eventType="touchUpInside" id="jST-69-TTL"/>
+                                </connections>
+                            </button>
+                            <connections>
+                                <segue destination="dYy-Z2-P3t" kind="push" identifier="SubmitGenre" id="rIq-jc-RsD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="submitButton" destination="Mc7-7I-tB0" id="ZVR-PH-Fyn"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qwA-ZO-nVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-5758.5" y="2077"/>
+        </scene>
+        <!--Genre List Table View Controller-->
+        <scene sceneID="5EU-dj-9yK">
+            <objects>
+                <tableViewController id="dYy-Z2-P3t" customClass="GenreListTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="91W-xd-HZp">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Y3y-5d-Z2e">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y3y-5d-Z2e" id="A2w-Lb-TFN">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="dYy-Z2-P3t" id="gsZ-bP-0Nb"/>
+                            <outlet property="delegate" destination="dYy-Z2-P3t" id="FgY-18-Kft"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="0er-kR-5q8"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vwY-hX-Xvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5758.5" y="2871"/>
         </scene>
         <!--Genre-->
         <scene sceneID="jrz-ld-qod">
@@ -266,11 +309,11 @@
             </objects>
             <point key="canvasLocation" x="-6568.5" y="2077"/>
         </scene>
-        <!--Yotube Display-->
+        <!--Display-->
         <scene sceneID="MbZ-UI-dms">
             <objects>
                 <navigationController id="pHh-BN-O3A" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Yotube Display" id="Q2K-tf-DoK"/>
+                    <tabBarItem key="tabBarItem" title="Display" id="Q2K-tf-DoK"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qEK-mT-Moc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

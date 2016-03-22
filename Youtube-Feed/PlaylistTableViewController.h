@@ -13,7 +13,10 @@
 
 
 
-@interface PlaylistTableViewController : UITableViewController
+@interface PlaylistTableViewController : UITableViewController <UIAlertViewDelegate>
+{
+    UIAlertController *alert;
+}
 
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;

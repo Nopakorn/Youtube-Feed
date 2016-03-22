@@ -19,6 +19,7 @@
     Boolean recommendTableViewFlag;
     Boolean searchTableViewFlag;
     Boolean playlistDetailTableViewFlag;
+    BOOL outOfLengthAlert;
     NSInteger item;
     NSInteger queryIndex;
 }
@@ -33,6 +34,7 @@
     recommendTableViewFlag = false;
     searchTableViewFlag = false;
     playlistDetailTableViewFlag = false;
+    outOfLengthAlert = true;
     
     self.youtube = [[Youtube alloc] init];
     self.favorite = [[Favorite alloc] init];
@@ -64,6 +66,9 @@
                                              selector:@selector(receivedPlaylistDetailNotification:)
                                                  name:@"PlaylistDetailDidSelected" object:nil];
     
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(receivedLoadVideoIdNextPage)
+//                                                 name:@"LoadGenreVideoIdNextPage" object:nil];
     
     self.addButton.hidden = YES;
 }
@@ -193,44 +198,52 @@
         
         item+=1;
         [self.playerView pauseVideo];
-        if (item == [self.youtube.videoIdList count]) {
-            NSLog(@"Out of length");
-            outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-            outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-            [self presentViewController:outOflengthAlert animated:YES completion:nil];
-
-        }else {
-            NSDictionary *playerVers = @{
-                                         @"playsinline" : @1,
-                                         @"controls" : @0,
-                                         @"showinfo" : @1,
-                                         @"modestbranding" : @1,
-                                         @"autoplay" : @0
-                                         };
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+        if (outOfLengthAlert) {
             
+            if (item == [self.youtube.videoIdList count]) {
+                NSLog(@"Out of length");
+                outOfLengthAlert = false;
+                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                item-=1;
+            }else {
+                NSDictionary *playerVers = @{
+                                             @"playsinline" : @1,
+                                             @"controls" : @0,
+                                             @"showinfo" : @1,
+                                             @"modestbranding" : @1,
+                                             @"autoplay" : @0
+                                             };
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+                
+            }
+
         }
-      
+        
     } else if (sender == self.prevButton) {
         
         item-=1;
         [self.playerView pauseVideo];
-        if (item < 0) {
-            NSLog(@"Out of length");
-            outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-            outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-            [self presentViewController:outOflengthAlert animated:YES completion:nil];
-            
-        } else {
-            NSDictionary *playerVers = @{
-                                         @"playsinline" : @1,
-                                         @"controls" : @0,
-                                         @"showinfo" : @1,
-                                         @"modestbranding" : @1,
-                                         @"autoplay" : @0
-                                         };
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
-            
+        if (outOfLengthAlert) {
+            if (item < 0) {
+                NSLog(@"Out of length");
+                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                item+=1;
+            } else {
+                NSDictionary *playerVers = @{
+                                             @"playsinline" : @1,
+                                             @"controls" : @0,
+                                             @"showinfo" : @1,
+                                             @"modestbranding" : @1,
+                                             @"autoplay" : @0
+                                             };
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+                
+            }
+
         }
     }
 
@@ -267,6 +280,7 @@
 
 - (void)dismissOutOflengthAlert
 {
+    outOfLengthAlert = true;
     [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
     [outOflengthAlertTimer invalidate];
 }

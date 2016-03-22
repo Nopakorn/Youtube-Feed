@@ -35,5 +35,7 @@
 - (void)callSearchByText:(NSString *)text;
 - (void)callSearchNextPage:(NSString *)text;
 - (void)callSearchRecommendNextPage:(NSMutableArray *)genreSelected;
+- (void)callGenreSearch:(NSMutableArray *)genreSelected;
+- (void)callGenreSearchNextPage:(NSMutableArray *)genreSelected;
 
 @end

@@ -52,6 +52,88 @@
 
 }
 
+- (void)callGenreSearch:(NSMutableArray *)genreSelected
+{
+    self.searchTerm = @"";
+    for(int i = 0 ; i < [genreSelected count] ; i++){
+        self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
+    }
+    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    [self getGenreSearchYoutube:self.searchTerm];
+    
+}
+
+- (void)callGenreSearchNextPage:(NSMutableArray *)genreSelected
+{
+    self.searchTerm = @"";
+    for(int i = 0 ; i < [genreSelected count] ; i++){
+        self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
+    }
+    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    [self getGenreSearchYoutubeNextPage:self.searchTerm];
+    
+}
+
+
+- (void)getGenreSearchYoutube:(NSString *)searchTerm
+{
+    
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", searchTerm];
+    
+    
+    NSURL *url = [[NSURL alloc] initWithString:urlString];
+    
+    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [req setHTTPMethod:@"GET"];
+    
+    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+        if(!error)
+        {
+            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            self.searchResults = json;
+            checkResult = @"LoadGenreVideoId";
+            [self fetchVideos];
+        }else{
+            NSLog(@"%@",error);
+        }
+        
+        
+        
+    }] resume];
+    
+}
+
+- (void)getGenreSearchYoutubeNextPage:(NSString *)searchTerm
+{
+    
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, searchTerm];
+    
+    
+    NSURL *url = [[NSURL alloc] initWithString:urlString];
+    
+    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    
+    [req setHTTPMethod:@"GET"];
+    
+    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+        if(!error)
+        {
+            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            self.searchResults = json;
+            checkResult = @"LoadGenreVideoIdNextPage";
+            [self fetchVideos];
+        }else{
+            NSLog(@"%@",error);
+        }
+        
+        
+        
+    }] resume];
+    
+}
 
 - (void)getSearchYoutube:(NSString *)searchTerm
 {
@@ -194,6 +276,12 @@
         
     } else if ([checkResult isEqualToString:@"LoadVideoIdNextPage"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoIdNextPage" object:self];
+        
+    } else if ([checkResult isEqualToString:@"LoadGenreVideoId"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoId" object:self];
+        
+    } else if ([checkResult isEqualToString:@"LoadGenreVideoIdNextPage"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoIdNextPage" object:self];
     }
     
 }
