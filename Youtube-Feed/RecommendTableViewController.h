@@ -14,16 +14,19 @@
 @interface RecommendTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
 {
     //id<RecommendTableViewControllerDelegate> delegate;
-    //NSInteger selectedRow;
+    //NSInteger selectedRow;    
+    UIActivityIndicatorView *spinner;
+    
 
 }
 
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Youtube *recommendYoutube;
-@property (nonatomic, retain) NSMutableArray  *videoTitle;
-@property (nonatomic, retain) NSMutableArray  *videothumbnail;
-@property (nonatomic, retain) NSMutableArray  *videoId;
-@property (nonatomic, retain) NSMutableArray  *imageData;
+@property (nonatomic, retain) NSMutableArray *videoTitle;
+@property (nonatomic, retain) NSMutableArray *videothumbnail;
+@property (nonatomic, retain) NSMutableArray *videoId;
+@property (nonatomic, retain) NSMutableArray *imageData;
+@property (nonatomic, retain) NSMutableArray *genreSelected;
 
 @property (nonatomic, assign) id<RecommendTableViewControllerDelegate> delegate;
 @property (nonatomic) NSInteger selectedRow;

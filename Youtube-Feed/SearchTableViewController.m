@@ -15,6 +15,9 @@
 @end
 
 @implementation SearchTableViewController
+{
+    BOOL nextPage;
+}
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad {
@@ -24,7 +27,7 @@
     
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 //    [self.view addGestureRecognizer:tap];
-    
+    nextPage = true;
     self.youtube = [[Youtube alloc] init];
     self.searchYoutube = [[Youtube alloc] init];
     
@@ -87,6 +90,10 @@
         });
     }
     
+    
+//    if (indexPath.row == [self.searchYoutube.videoIdList count]-1) {
+//        [self launchReload];
+//    }
     return cell;
 }
 
@@ -104,12 +111,44 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-//- (void)dismissKeyboard
-//{
-//    [self.searchBar resignFirstResponder];
-//    self.searchBar.showsCancelButton = NO;
-//    self.searchBar.text = @"";
-//}
+- (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
+                  willDecelerate:(BOOL)decelerate
+{
+    CGPoint offset = aScrollView.contentOffset;
+    CGRect bounds = aScrollView.bounds;
+    CGSize size = aScrollView.contentSize;
+    UIEdgeInsets inset = aScrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    
+    float reload_distance = 50;
+    if(y > h + reload_distance) {
+        if (nextPage) {
+            [self launchReload];
+        } else {
+            NSLog(@"Its still loading api");
+        }
+    }
+}
+
+- (void)launchReload
+{
+    nextPage = false;
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.frame = CGRectMake(0, 0, 320, 44);
+    spinner.color = [UIColor blackColor];
+    self.tableView.tableFooterView = spinner;
+    [spinner startAnimating];
+    
+    [self.searchYoutube callSearchNextPage:self.searchText];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoIdNextPage)
+                                                 name:@"LoadVideoIdFromSearchNextPage" object:nil];
+   
+}
+
+
+
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
@@ -143,6 +182,7 @@
     [self.searchYoutube.thumbnailList removeAllObjects];
     [self.tableView reloadData];
     
+    self.searchText = searchBar.text;
     [self.searchYoutube callSearchByText:searchBar.text];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.center = CGPointMake(self.view.center.x, 85.5);
@@ -161,6 +201,18 @@
         [self.tableView reloadData];
         [self.searchBar resignFirstResponder];
         self.searchBar.showsCancelButton = NO;
+    });
+
+}
+
+- (void)receivedLoadVideoIdNextPage
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [spinner stopAnimating];
+        self.tableView.tableFooterView = nil;
+        [self.tableView reloadData];
+//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.searchYoutube.videoIdList count]-26 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        nextPage = true;
     });
 
 }

@@ -16,12 +16,15 @@
 @end
 
 @implementation RecommendTableViewController
-
+{
+    BOOL nextPage;
+}
 @synthesize delegate = _delegate;
 //@synthesize selectedRow;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    nextPage = true;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.recommendYoutube = [[Youtube alloc] init];
@@ -33,6 +36,7 @@
 {
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
+    self.genreSelected = mainTabbar.genreSelected;
 //    if(self.youtube.videoIdList != 0) {
 //        for (int i = 0; i < [self.youtube.videoIdList count]; i++) {
 //            [self.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
@@ -125,5 +129,53 @@
 
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
+                  willDecelerate:(BOOL)decelerate
+{
+    CGPoint offset = aScrollView.contentOffset;
+    CGRect bounds = aScrollView.bounds;
+    CGSize size = aScrollView.contentSize;
+    UIEdgeInsets inset = aScrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    
+    float reload_distance = 50;
+    if(y > h + reload_distance) {
+        if (nextPage) {
+            [self launchReload];
+        } else {
+            NSLog(@"Its still loading api");
+        }
+    }
+}
+
+- (void)launchReload
+{
+    nextPage = false;
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.frame = CGRectMake(0, 0, 320, 44);
+    spinner.color = [UIColor blackColor];
+    self.tableView.tableFooterView = spinner;
+    [spinner startAnimating];
+    
+    [self.recommendYoutube callSearchRecommendNextPage:self.genreSelected];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoIdNextPage)
+                                                 name:@"LoadVideoIdNextPage" object:nil];
+    
+}
+
+- (void)receivedLoadVideoIdNextPage
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [spinner stopAnimating];
+        self.tableView.tableFooterView = nil;
+        [self.tableView reloadData];
+        nextPage = true;
+        //tell viewcontroller to update youtube obj
+        [self.delegate recommendTableViewControllerDidSelected:self];
+    });
+    
+}
 
 @end

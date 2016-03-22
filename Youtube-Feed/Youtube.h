@@ -19,6 +19,8 @@
 @property (nonatomic, copy) NSString *video;
 @property (nonatomic, copy) NSString *youtube_api_key;
 @property (nonatomic, copy) NSString *part;
+@property (nonatomic, copy) NSString *nextPageToken;
+@property (nonatomic, copy) NSString *prevPageToken;
 
 @property (nonatomic, retain) NSMutableArray *videoIdList;
 @property (nonatomic, retain) NSMutableArray *titleList;
@@ -28,8 +30,10 @@
 
 @property (nonatomic, retain) NSDictionary *searchResults;
 
-- (id) init;
-- (void) callSearch:(NSMutableArray *)genreSelected;
-- (void) callSearchByText:(NSString *)text;
+- (id)init;
+- (void)callSearch:(NSMutableArray *)genreSelected;
+- (void)callSearchByText:(NSString *)text;
+- (void)callSearchNextPage:(NSString *)text;
+- (void)callSearchRecommendNextPage:(NSMutableArray *)genreSelected;
 
 @end

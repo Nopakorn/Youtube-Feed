@@ -45,7 +45,7 @@
         NSLog(@"object is nil");
     }
     
-    [self.navigationController setNavigationBarHidden:NO];
+    //[self.navigationController setNavigationBarHidden:NO];
     self.playerView.delegate = self;
     NSDictionary *playerVers = @{
                                  @"playsinline" : @1,
@@ -215,7 +215,7 @@
         
         item-=1;
         [self.playerView pauseVideo];
-        if (item == 0) {
+        if (item < 0) {
             NSLog(@"Out of length");
             outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
             outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
