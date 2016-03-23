@@ -29,7 +29,7 @@
 }
 
 
-- (void)callSearch:(NSMutableArray *)genreSelected
+- (void)callRecommendSearch:(NSMutableArray *)genreSelected withNextPage:(BOOL)nextPage
 {
     self.searchTerm = @"";
     for(int i = 0 ; i < [genreSelected count] ; i++){
@@ -37,220 +37,182 @@
     }
     self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     NSLog(@"calling youtube services with searchTerm:%@",self.searchTerm);
-    [self getSearchYoutube:self.searchTerm];
+    [self getRecommendSearchYoutube:self.searchTerm withNextPage:nextPage];
     
 }
 
-- (void)callSearchRecommendNextPage:(NSMutableArray *)genreSelected
+- (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage
 {
-    self.searchTerm = @"";
-    for(int i = 0 ; i < [genreSelected count] ; i++){
-        self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
+    NSString* urlString;
+    if (nextPage) {
+        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, searchTerm];
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        
+        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [req setHTTPMethod:@"GET"];
+        
+        NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+            if(!error)
+            {
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.searchResults = json;
+                checkResult = @"LoadGenreVideoIdNextPage";
+                [self fetchVideos];
+                
+            }else{
+                
+                NSLog(@"%@",error);
+            }
+            
+        }] resume];
+
+        
+    } else {
+        
+        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", searchTerm];
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        
+        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [req setHTTPMethod:@"GET"];
+        
+        NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+            if(!error)
+            {
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.searchResults = json;
+                checkResult = @"LoadGenreVideoId";
+                [self fetchVideos];
+                
+            }else{
+                NSLog(@"%@",error);
+                
+            }
+            
+        }] resume];
+
     }
-    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    [self getSearchYoutubeNextPage:self.searchTerm];
-
+    
 }
 
-- (void)callGenreSearch:(NSMutableArray *)genreSelected
+- (void)getRecommendSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage
 {
-    self.searchTerm = @"";
-    for(int i = 0 ; i < [genreSelected count] ; i++){
-        self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
+    if (nextPage) {
+    
+        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, searchTerm];
+        
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        
+        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [req setHTTPMethod:@"GET"];
+        
+        NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+            if(!error)
+            {
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.searchResults = json;
+                checkResult = @"LoadVideoIdNextPage";
+                [self fetchVideos];
+                
+            }else{
+                NSLog(@"%@",error);
+                
+            }
+            
+        }] resume];
+        
+    } else {
+        
+        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", searchTerm];
+        
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        
+        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [req setHTTPMethod:@"GET"];
+        
+        NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+            if(!error)
+            {
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.searchResults = json;
+                checkResult = @"LoadVideoId";
+                [self fetchVideos];
+            }else{
+                NSLog(@"%@",error);
+            }
+        
+        }] resume];
     }
-    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    [self getGenreSearchYoutube:self.searchTerm];
     
-}
-
-- (void)callGenreSearchNextPage:(NSMutableArray *)genreSelected
-{
-    self.searchTerm = @"";
-    for(int i = 0 ; i < [genreSelected count] ; i++){
-        self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
-    }
-    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    [self getGenreSearchYoutubeNextPage:self.searchTerm];
-    
-}
-
-
-- (void)getGenreSearchYoutube:(NSString *)searchTerm
-{
-    
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", searchTerm];
-    
-    
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [req setHTTPMethod:@"GET"];
-    
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        if(!error)
-        {
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.searchResults = json;
-            checkResult = @"LoadGenreVideoId";
-            [self fetchVideos];
-        }else{
-            NSLog(@"%@",error);
-        }
-        
-        
-        
-    }] resume];
-    
-}
-
-- (void)getGenreSearchYoutubeNextPage:(NSString *)searchTerm
-{
-    
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, searchTerm];
-    
-    
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [req setHTTPMethod:@"GET"];
-    
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        if(!error)
-        {
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.searchResults = json;
-            checkResult = @"LoadGenreVideoIdNextPage";
-            [self fetchVideos];
-        }else{
-            NSLog(@"%@",error);
-        }
-        
-        
-        
-    }] resume];
-    
-}
-
-- (void)getSearchYoutube:(NSString *)searchTerm
-{
-
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", searchTerm];
-    
-    
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [req setHTTPMethod:@"GET"];
-
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        if(!error)
-        {
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.searchResults = json;
-            checkResult = @"LoadVideoId";
-            [self fetchVideos];
-        }else{
-            NSLog(@"%@",error);
-        }
-        
-        
-        
-    }] resume];
 
 }
 
-- (void)getSearchYoutubeNextPage:(NSString *)searchTerm
-{
-    
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, searchTerm];
-    
-    
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [req setHTTPMethod:@"GET"];
-    
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        if(!error)
-        {
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.searchResults = json;
-            checkResult = @"LoadVideoIdNextPage";
-            [self fetchVideos];
-        }else{
-            NSLog(@"%@",error);
-        }
-        
-        
-        
-    }] resume];
-    
-}
 
-- (void)callSearchByText:(NSString *)text
+- (void)callSearchByText:(NSString *)text withNextPage:(BOOL)nextPage;
 {
     NSString *setText = [text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", setText];
-    
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [req setHTTPMethod:@"GET"];
-    
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        if(!error)
-        {
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.searchResults = json;
-            checkResult = @"LoadVideoIdFromSearch";
+    if (nextPage) {
+        
+        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, setText];
+        
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+        
+        [req setHTTPMethod:@"GET"];
+        
+        NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+            if(!error)
+            {
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.searchResults = json;
+                checkResult = @"LoadVideoIdFromSearchNextPage";
+                
+                [self fetchVideos];
+            }else{
+                NSLog(@"%@",error);
+            }
+            
+            
+            
+        }] resume];
 
-            [self fetchVideos];
-        }else{
-            NSLog(@"%@",error);
-        }
+    } else {
         
+        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", setText];
         
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         
-    }] resume];
+        [req setHTTPMethod:@"GET"];
+        
+        NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
+            if(!error)
+            {
+                NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.searchResults = json;
+                checkResult = @"LoadVideoIdFromSearch";
+                
+                [self fetchVideos];
+            }else{
+                NSLog(@"%@",error);
+            }
+            
+            
+            
+        }] resume];
+
+    }
 }
 
-- (void)callSearchNextPage:(NSString *)text
-{
-    NSString *setText = [text stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    
-    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, setText];
-    
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-    
-    [req setHTTPMethod:@"GET"];
-    
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
-        if(!error)
-        {
-            NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.searchResults = json;
-            checkResult = @"LoadVideoIdFromSearchNextPage";
-            [self fetchVideos];
-        }else{
-            NSLog(@"%@",error);
-        }
-        
-        
-        
-    }] resume];
-}
 
 
 
@@ -272,6 +234,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoIdFromSearch" object:self];
         
     } else if ([checkResult isEqualToString:@"LoadVideoId"]) {
+        NSLog(@"Load success");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoId" object:self];
         
     } else if ([checkResult isEqualToString:@"LoadVideoIdNextPage"]) {

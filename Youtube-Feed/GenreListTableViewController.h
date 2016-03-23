@@ -13,8 +13,9 @@
 {
      UIActivityIndicatorView *spinner;
 }
+
 @property (strong, nonatomic) Youtube *genreYoutube;
+@property (nonatomic, copy) NSString *searchTerm;
 @property (nonatomic, retain) NSMutableArray *imageData;
-@property (nonatomic, retain) NSMutableArray *genreSelected;
 
 @end

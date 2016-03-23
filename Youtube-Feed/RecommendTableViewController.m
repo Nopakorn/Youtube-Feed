@@ -158,7 +158,7 @@
     self.tableView.tableFooterView = spinner;
     [spinner startAnimating];
     
-    [self.recommendYoutube callSearchRecommendNextPage:self.genreSelected];
+    [self.recommendYoutube callRecommendSearch:self.genreSelected withNextPage:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoIdNextPage)
                                                  name:@"LoadVideoIdNextPage" object:nil];

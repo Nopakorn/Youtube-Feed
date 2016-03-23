@@ -31,11 +31,8 @@
 @property (nonatomic, retain) NSDictionary *searchResults;
 
 - (id)init;
-- (void)callSearch:(NSMutableArray *)genreSelected;
-- (void)callSearchByText:(NSString *)text;
-- (void)callSearchNextPage:(NSString *)text;
-- (void)callSearchRecommendNextPage:(NSMutableArray *)genreSelected;
-- (void)callGenreSearch:(NSMutableArray *)genreSelected;
-- (void)callGenreSearchNextPage:(NSMutableArray *)genreSelected;
+- (void)callRecommendSearch:(NSMutableArray *)genreSelected withNextPage:(BOOL)nextPage;
+- (void)callSearchByText:(NSString *)text withNextPage:(BOOL)nextPage;
+- (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
 
 @end

@@ -140,7 +140,7 @@
     self.tableView.tableFooterView = spinner;
     [spinner startAnimating];
     
-    [self.searchYoutube callSearchNextPage:self.searchText];
+    [self.searchYoutube callSearchByText:self.searchText withNextPage:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoIdNextPage)
                                                  name:@"LoadVideoIdFromSearchNextPage" object:nil];
@@ -183,7 +183,7 @@
     [self.tableView reloadData];
     
     self.searchText = searchBar.text;
-    [self.searchYoutube callSearchByText:searchBar.text];
+    [self.searchYoutube callSearchByText:searchBar.text withNextPage:NO];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.center = CGPointMake(self.view.center.x, 85.5);
     spinner.color = [UIColor blackColor];

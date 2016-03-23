@@ -21,7 +21,7 @@
     
     self.genreYoutube = [[Youtube alloc] init];
     
-    self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
+    //self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
      NSLog(@"View did load");
@@ -68,36 +68,16 @@
     static NSString *tableIdentifier = @"SettingCustomCell";
     
     SettingCustomCell *cell = [tableView dequeueReusableCellWithIdentifier:tableIdentifier];
+    
     if (cell == nil) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SettingCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
-    }
-    NSInteger row = indexPath.row;
-    if ([self checkmark:row]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
     cell.type.text = [self.genreList objectAtIndex:indexPath.row];
     return cell;
 
 }
-
-- (BOOL)checkmark:(NSInteger )row
-{
-    NSString *item = [self.genreList objectAtIndex:row];
-    if(self.genreSelected != 0){
-        for (int i = 0; i < [self.genreSelected count]; i++) {
-            if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
-                return true;
-                
-            }
-        }
-    }
-    return false;
-}
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -106,32 +86,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *item = [self.genreList objectAtIndex:indexPath.row];
-    if([self.genreSelected count] != 0 ){
-        for (int i=0; i < [self.genreSelected count]; i++) {
-            if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
-                [self.genreSelected removeObjectAtIndex:i];
-                break;
-                
-            }else if(i == [self.genreSelected count] - 1){
-                NSLog(@"last count");
-                [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
-                break;
-            }
-        }
-    }else{
-        [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
-    }
-    NSLog(@"check l %lul",(unsigned long)[self.genreSelected count]);
-    [tableView reloadData];
+    self.searchTerm = [self.genreList objectAtIndex:indexPath.row];
+    [self callYoutube:self.searchTerm];
 }
 
-- (IBAction)submitButtonPressed:(id)sender
-{
-    NSLog(@"submit presseds");
 
-     self.genreYoutube = [[Youtube alloc] init];
-    [self.genreYoutube callGenreSearch:self.genreSelected];
+- (void)callYoutube:(NSString *)searchTerm
+{
+    self.genreYoutube = [[Youtube alloc] init];
+    [self.genreYoutube getGenreSearchYoutube:searchTerm withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -144,9 +107,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadGenreVideoId)
                                                  name:@"LoadGenreVideoId" object:nil];
-    
-    
 }
+
 
 - (void)receivedLoadGenreVideoId
 {
@@ -165,8 +127,7 @@
         NSLog(@"perform genre");
         GenreListTableViewController *dest = segue.destinationViewController;
         dest.genreYoutube = self.genreYoutube;
-        dest.genreSelected = self.genreSelected;
-        
+        dest.searchTerm = self.searchTerm;
     }
 }
 

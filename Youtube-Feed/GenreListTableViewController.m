@@ -119,7 +119,7 @@
     self.tableView.tableFooterView = spinner;
     [spinner startAnimating];
     
-    [self.genreYoutube callGenreSearchNextPage:self.genreSelected];
+    [self.genreYoutube getGenreSearchYoutube:self.searchTerm withNextPage:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoIdNextPage)
                                                  name:@"LoadGenreVideoIdNextPage" object:nil];

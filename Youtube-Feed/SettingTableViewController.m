@@ -115,7 +115,7 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
-    [self.youtube callSearch:self.genreSelected];
+    [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];

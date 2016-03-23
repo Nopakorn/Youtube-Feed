@@ -114,7 +114,7 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
-    [self.youtube callSearch:self.genreSelected];
+    [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -147,6 +147,7 @@
 {
     if([segue.identifier isEqualToString:@"SubmitSetting"]){
         NSNumber *indexShow = @0;
+        NSLog(@"check youtube video id length %lu",(unsigned long)[self.youtube.videoIdList count]);
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
         dest.recommendYoutube = self.youtube;

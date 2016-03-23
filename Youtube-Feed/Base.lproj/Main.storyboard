@@ -189,6 +189,7 @@
                         <viewControllerLayoutGuide type="bottom" id="aZk-YT-cEc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="nnf-bP-WeR">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -243,24 +244,7 @@
                             <outlet property="delegate" destination="aOS-Ib-Dhh" id="2EK-89-MCV"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Genre" id="jei-mz-Vz8">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="bHX-8b-vrk">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Mc7-7I-tB0">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Submit"/>
-                                <connections>
-                                    <action selector="submitButtonPressed:" destination="aOS-Ib-Dhh" eventType="touchUpInside" id="jST-69-TTL"/>
-                                </connections>
-                            </button>
-                            <connections>
-                                <segue destination="dYy-Z2-P3t" kind="push" identifier="SubmitGenre" id="rIq-jc-RsD"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="submitButton" destination="Mc7-7I-tB0" id="ZVR-PH-Fyn"/>
-                    </connections>
+                    <navigationItem key="navigationItem" title="Genre" id="jei-mz-Vz8"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qwA-ZO-nVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -271,12 +255,15 @@
             <objects>
                 <tableViewController id="dYy-Z2-P3t" customClass="GenreListTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="91W-xd-HZp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Y3y-5d-Z2e">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y3y-5d-Z2e" id="A2w-Lb-TFN">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
