@@ -23,6 +23,7 @@
     nextPage = true;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.navigationItem.title = self.searchTerm;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,6 +90,20 @@
 {
     return 80;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedRow = indexPath.row;
+    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSDictionary *userInfo = @{@"youtubeObj": self.genreYoutube,
+                               @"selectedIndex": selected};
+    NSLog(@"post playlistdetail");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PlayGenreListDidSelected" object:self userInfo:userInfo];
+    [self.tabBarController setSelectedIndex:0];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
                   willDecelerate:(BOOL)decelerate

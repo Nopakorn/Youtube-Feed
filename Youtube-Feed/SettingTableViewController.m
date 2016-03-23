@@ -20,14 +20,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.youtube = [[Youtube alloc] init];
-    NSLog(@"ViewDidload SettingTableViewController");
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.genreSelected = tabbar.genreSelected;
-    NSLog(@"gern scale %lu",(unsigned long)[tabbar.genreSelected count]);
+    
     [self createGenre];
-    //self.settingTableView.delegate = self;
-    self.settingTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
 }
 - (void)createGenre
@@ -115,6 +113,7 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
+   
     [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
@@ -135,13 +134,28 @@
 
 - (void)receivedLoadVideoId
 {
+    MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
+    [tabbar.recommendYoutube.titleList removeAllObjects];
+    [tabbar.recommendYoutube.videoIdList removeAllObjects];
+    [tabbar.recommendYoutube.thumbnailList removeAllObjects];
+    
+    for (int i = 0 ; i < [self.youtube.videoIdList count] ; i++) {
+        [tabbar.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
+        [tabbar.recommendYoutube.titleList addObject:[self.youtube.titleList objectAtIndex:i]];
+        [tabbar.recommendYoutube.thumbnailList addObject:[self.youtube.thumbnailList objectAtIndex:i]];
+    }
+    
+    tabbar.genreSelected = self.genreSelected;
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [alert dismissViewControllerAnimated:YES completion:nil];
-        //[self.tabBarController setSelectedIndex:0];
+        
+        NSDictionary *userInfo = @{@"youtubeObj": self.youtube
+                                   };
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"SettingDidSelected" object:self userInfo:userInfo];
+        [self.tabBarController setSelectedIndex:0];
     });
-    //NSDictionary *userInfo = self.youtube;
-    //[[NSNotificationCenter defaultCenter] postNotificationName:@"SelectedFromRecommend" object:self userInfo:userInfo];
+    
     
 }
 

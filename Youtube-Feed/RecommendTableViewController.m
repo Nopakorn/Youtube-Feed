@@ -20,7 +20,6 @@
     BOOL nextPage;
 }
 @synthesize delegate = _delegate;
-//@synthesize selectedRow;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,6 +29,10 @@
     self.recommendYoutube = [[Youtube alloc] init];
     [self getData];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedSettingNotification:)
+                                                 name:@"SettingDidSelected" object:nil];
 }
 
 - (void)getData
@@ -37,25 +40,22 @@
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
-//    if(self.youtube.videoIdList != 0) {
-//        for (int i = 0; i < [self.youtube.videoIdList count]; i++) {
-//            [self.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
-//            [self.recommendYoutube.titleList addObject:[self.youtube.titleList objectAtIndex:i]];
-//            [self.recommendYoutube.thumbnailList addObject:[self.youtube.thumbnailList objectAtIndex:i]];
-//        }
-//        
-//    }else {
-//        NSLog(@"youtube nil");
-//    }
 }
 
+- (void)receivedSettingNotification:(NSNotification *)notification
+{
+
+    [self.tableView reloadData];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SettingDidSelected" object:nil];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
     //global objects
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
-     NSLog(@"view appear recommendTable %lu",(unsigned long)[self.recommendYoutube.titleList count]);
+    self.genreSelected = mainTabbar.genreSelected;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -173,7 +173,7 @@
         [self.tableView reloadData];
         nextPage = true;
         //tell viewcontroller to update youtube obj
-        [self.delegate recommendTableViewControllerNextPage:self];
+        //self.delegate recommendTableViewControllerNextPage:self];
     });
     
 }

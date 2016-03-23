@@ -19,6 +19,7 @@
     Boolean recommendTableViewFlag;
     Boolean searchTableViewFlag;
     Boolean playlistDetailTableViewFlag;
+    Boolean genreListTableViewFlag;
     BOOL outOfLengthAlert;
     NSInteger item;
     NSInteger queryIndex;
@@ -34,6 +35,7 @@
     recommendTableViewFlag = false;
     searchTableViewFlag = false;
     playlistDetailTableViewFlag = false;
+    genreListTableViewFlag = false;
     outOfLengthAlert = true;
     
     self.youtube = [[Youtube alloc] init];
@@ -66,11 +68,12 @@
                                              selector:@selector(receivedPlaylistDetailNotification:)
                                                  name:@"PlaylistDetailDidSelected" object:nil];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(receivedLoadVideoIdNextPage)
-//                                                 name:@"LoadGenreVideoIdNextPage" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedGenreListNotification:)
+                                                 name:@"PlayGenreListDidSelected" object:nil];
     
     self.addButton.hidden = YES;
+    NSLog(@"View did load in youtube %@",[tabbar.recommendYoutube.titleList objectAtIndex:1]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,8 +85,8 @@
 {
 
     [super viewDidAppear:animated];
-    
-    if(recommendTableViewFlag){
+    NSLog(@"View did appear in youtube");
+    if (recommendTableViewFlag) {
         NSDictionary *playerVers = @{
                                      @"playsinline" : @1,
                                      @"controls" : @0,
@@ -95,7 +98,7 @@
         recommendTableViewFlag = false;
     }
     
-    if(searchTableViewFlag){
+    if (searchTableViewFlag) {
         NSDictionary *playerVers = @{
                                      @"playsinline" : @1,
                                      @"controls" : @0,
@@ -107,7 +110,7 @@
         searchTableViewFlag = false;
     }
     
-    if(playlistDetailTableViewFlag){
+    if (playlistDetailTableViewFlag) {
         NSDictionary *playerVers = @{
                                      @"playsinline" : @1,
                                      @"controls" : @0,
@@ -119,7 +122,18 @@
         playlistDetailTableViewFlag = false;
     }
 
+    if (genreListTableViewFlag) {
+        NSDictionary *playerVers = @{
+                                     @"playsinline" : @1,
+                                     @"controls" : @0,
+                                     @"showinfo" : @1,
+                                     @"modestbranding" : @1,
+                                     };
+        
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+        genreListTableViewFlag = false;
 
+    }
     
 }
 
@@ -167,7 +181,7 @@
             outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
             outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
             [self presentViewController:outOflengthAlert animated:YES completion:nil];
-            
+             item-=1;
         }else {
             NSDictionary *playerVers = @{
                                          @"playsinline" : @1,
@@ -301,6 +315,13 @@
     NSLog(@"Received playlistDetail");
 }
 
+- (void)receivedGenreListNotification:(NSNotification *)notification
+{
+    genreListTableViewFlag = true;
+    self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    NSLog(@"Received playGenreList");
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -362,12 +383,13 @@
     recommendTableViewFlag = true;
     self.youtube = recommendViewController.recommendYoutube;
     item = recommendViewController.selectedRow;
-    
+    NSLog(@"recommend did selected");
 }
 
 - (void)recommendTableViewControllerNextPage:(RecommendTableViewController *)recommendViewController
 {
     self.youtube = recommendViewController.recommendYoutube;
+    NSLog(@"recommend next page");
 }
 
 #pragma mark - delegate SearchTableViewController

@@ -29,7 +29,7 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    self.passValue = @"test";
+    //self.passValue = @"test";
 
 }
 

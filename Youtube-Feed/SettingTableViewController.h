@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSMutableArray *genreList;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
 
-@property(weak, nonatomic) IBOutlet UITableView *settingTableView;
 @property(weak,nonatomic) IBOutlet UIButton  *submitButton;
 
 - (IBAction)submitButtonPressed:(id)sender;

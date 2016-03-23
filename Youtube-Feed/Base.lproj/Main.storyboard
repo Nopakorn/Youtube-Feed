@@ -36,6 +36,9 @@
                                 <rect key="frame" x="529" y="7" width="51" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Submit"/>
+                                <connections>
+                                    <action selector="submitButtonPressed:" destination="zlU-v7-r9o" eventType="touchUpInside" id="Ftw-TK-Xif"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
@@ -230,13 +233,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Iv1-mq-Uql">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Iv1-mq-Uql">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Iv1-mq-Uql" id="oLM-tw-gfo">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="dYy-Z2-P3t" kind="push" identifier="SubmitGenre" id="AnV-sv-Plu"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -248,7 +254,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qwA-ZO-nVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5758.5" y="2077"/>
+            <point key="canvasLocation" x="-5734.5" y="2173"/>
         </scene>
         <!--Genre List Table View Controller-->
         <scene sceneID="5EU-dj-9yK">
@@ -277,7 +283,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vwY-hX-Xvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5758.5" y="2871"/>
+            <point key="canvasLocation" x="-5752.5" y="2999"/>
         </scene>
         <!--Genre-->
         <scene sceneID="jrz-ld-qod">
