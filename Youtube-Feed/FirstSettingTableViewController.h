@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
-@interface FirstSettingTableViewController : UITableViewController<UIAlertViewDelegate,UITextFieldDelegate, UITableViewDelegate,UITableViewDataSource>
+@interface FirstSettingTableViewController : UITableViewController<UIAlertViewDelegate,UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *alert;
 }
@@ -21,5 +21,9 @@
 
 @property(weak,nonatomic) IBOutlet UIButton  *submitButton;
 - (IBAction)submitButtonPressed:(id)sender;
+
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end

@@ -1,0 +1,21 @@
+//
+//  PrefixHeader.pch
+//  KKP-Movie
+//
+//  Created by Siam System Deverlopment on 3/23/2559 BE.
+//  Copyright © 2559 guild. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+
+#define PrefixHeader_pch
+
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <CoreData/CoreData.h>
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#endif /* PrefixHeader_pch */

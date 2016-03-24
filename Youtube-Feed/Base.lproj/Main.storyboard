@@ -204,7 +204,7 @@
         <!--Main Tab Bar View Controller-->
         <scene sceneID="XeX-Ur-dpP">
             <objects>
-                <tabBarController id="Ogr-FY-MaA" customClass="MainTabBarViewController" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="mainTabbar" id="Ogr-FY-MaA" customClass="MainTabBarViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="qFG-Vd-v40"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="0YF-cc-BHe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -237,7 +237,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Iv1-mq-Uql" id="oLM-tw-gfo">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>

@@ -16,16 +16,12 @@
         self.videoTitle = [[NSMutableArray alloc] initWithCapacity:10];
         self.videoId = [[NSMutableArray alloc] initWithCapacity:10];
         self.videoThumbnail = [[NSMutableArray alloc] initWithCapacity:10];
-        self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
-        self.playlistTitle = [[NSMutableArray alloc]  initWithCapacity:10];
+
     }
     return self;
 }
 
-- (void)addFavorite:(Favorite *)favorite
-{
-    [self.favoriteList addObject:favorite];
-}
+
 
 - (void)setTitle:(NSString *)title
 {

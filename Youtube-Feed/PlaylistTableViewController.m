@@ -12,7 +12,7 @@
 #import "PlaylistDetailTableViewController.h"
 #import "PlaylistEditTableViewController.h"
 #import "MainTabBarViewController.h"
-
+#import "AppDelegate.h"
 
 @interface PlaylistTableViewController ()
 
@@ -20,12 +20,48 @@
 
 @implementation PlaylistTableViewController
 
-- (void)viewDidLoad {
+
+
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createPlaylist];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    self.managedObjectContext = appDelegate.managedObjectContext;
+    [self insertNewObject];
+    [self fetchData];
+}
+
+- (void)fetchData
+{
+    NSArray *result = [self.fetchedResultsController fetchedObjects];
+    for (int i = 0; i < result.count; i++) {
+        NSManagedObject *object = [result objectAtIndex:i];
+        NSLog(@"check result %@", [object valueForKey:@"playlistTitle"]);
+    }
+    //NSManagedObject *object = [[self.fetchedResultsController fetchedObjects] objectAtIndex:0];
+
+}
+- (void)insertNewObject
+{
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+
+    [newManagedObject setValue:@"Playlist 3" forKey:@"playlistTitle"];
+    
+    // Save the context.
+    NSError *error = nil;
+    if (![context save:&error]) {
+
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
 }
 
 - (void)createPlaylist
@@ -61,11 +97,7 @@
  - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"inside view will appear");
-//    NSLog(@"check size of favorite %lu", (unsigned long)[self.playlist.favoriteList count]);
-//    for (int i = 0; i < [self.playlist.favoriteList count]; i++) {
-//        Favorite *fav = [self.playlist.favoriteList objectAtIndex:i];
-//        NSLog(@"id:%@ title:%@ thumbnail:%@",fav.videoId,fav.videoTitle,fav.videothumbnail);
-//    }
+
 }
 
 #pragma mark - Table view data source
@@ -214,6 +246,45 @@
         dest.favorite = self.favorite;
     }
     
+}
+
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"playlistTitle" ascending:NO];
+    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _fetchedResultsController;
 }
 
 @end

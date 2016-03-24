@@ -46,6 +46,9 @@
 		5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CF01C97CD370049FE4A /* PlaylistEditTableViewController.m */; };
 		5CBA2CF41C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CF31C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m */; };
 		5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CBA2CF81C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m */; };
+		5CD4C43C1CA282CB00A6C837 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CD4C43B1CA282CB00A6C837 /* CoreData.framework */; };
+		5CD4C4401CA28D5100A6C837 /* PlaylistModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5CD4C43E1CA28D5100A6C837 /* PlaylistModel.xcdatamodeld */; };
+		5CD4C4591CA295B400A6C837 /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD4C4581CA295B400A6C837 /* DataController.m */; };
 		82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */; };
 /* End PBXBuildFile section */
 
@@ -138,6 +141,11 @@
 		5CBA2CF31C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistEditDetailTableViewController.m; sourceTree = "<group>"; };
 		5CBA2CF71C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistEditDetailFavoriteTableViewController.h; sourceTree = "<group>"; };
 		5CBA2CF81C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistEditDetailFavoriteTableViewController.m; sourceTree = "<group>"; };
+		5CD4C43B1CA282CB00A6C837 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		5CD4C43D1CA2890D00A6C837 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		5CD4C43F1CA28D5100A6C837 /* PlaylistModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PlaylistModel.xcdatamodel; sourceTree = "<group>"; };
+		5CD4C4571CA295B400A6C837 /* DataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
+		5CD4C4581CA295B400A6C837 /* DataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataController.m; sourceTree = "<group>"; };
 		BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Youtube-Feed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDAB1E741440D88306343CB6 /* Pods-Youtube-Feed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.release.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.release.xcconfig"; sourceTree = "<group>"; };
 		CE71C9F1D08343CD300C4E2D /* Pods-Youtube-Feed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.debug.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +156,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CD4C43C1CA282CB00A6C837 /* CoreData.framework in Frameworks */,
 				82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +181,7 @@
 		0F86857DA1F1084B09DA4D29 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5CD4C43B1CA282CB00A6C837 /* CoreData.framework */,
 				BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */,
 			);
 			name = Frameworks;
@@ -237,6 +247,7 @@
 		11C170E61C7186A800E74681 /* Youtube-Feed */ = {
 			isa = PBXGroup;
 			children = (
+				5CD4C4471CA2942400A6C837 /* Core Data */,
 				11C170EA1C7186A800E74681 /* AppDelegate.h */,
 				11C170EB1C7186A800E74681 /* AppDelegate.m */,
 				11BC1A141C8EC31700285564 /* Views */,
@@ -248,6 +259,7 @@
 				11C170E71C7186A800E74681 /* Supporting Files */,
 				5C67E4261C96B15E00A08005 /* Models */,
 				5CBA2CF51C97E8400049FE4A /* Controller */,
+				5CD4C43D1CA2890D00A6C837 /* PrefixHeader.pch */,
 			);
 			path = "Youtube-Feed";
 			sourceTree = "<group>";
@@ -343,6 +355,16 @@
 				5CBA2CF81C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m */,
 			);
 			name = PlaylistViews;
+			sourceTree = "<group>";
+		};
+		5CD4C4471CA2942400A6C837 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				5CD4C43E1CA28D5100A6C837 /* PlaylistModel.xcdatamodeld */,
+				5CD4C4571CA295B400A6C837 /* DataController.h */,
+				5CD4C4581CA295B400A6C837 /* DataController.m */,
+			);
+			name = "Core Data";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -534,11 +556,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CD4C4591CA295B400A6C837 /* DataController.m in Sources */,
 				5CB425E61C928577005DCB46 /* PlaylistCustomCell.m in Sources */,
 				5C8679E81CA14E9E0098F9A9 /* GenreListTableViewController.m in Sources */,
 				5CB425D91C928420005DCB46 /* RecommendTableViewController.m in Sources */,
 				11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */,
 				5C67E4291C96C92200A08005 /* PlaylistDetailTableViewController.m in Sources */,
+				5CD4C4401CA28D5100A6C837 /* PlaylistModel.xcdatamodeld in Sources */,
 				11C170EF1C7186A800E74681 /* ViewController.m in Sources */,
 				11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */,
 				5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */,
@@ -702,6 +726,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = YES;
+				GCC_PREFIX_HEADER = "Youtube-Feed/PrefixHeader.pch";
 				INFOPLIST_FILE = "Youtube-Feed/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.guild.KKP-Movie";
@@ -716,6 +741,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = YES;
+				GCC_PREFIX_HEADER = "Youtube-Feed/PrefixHeader.pch";
 				INFOPLIST_FILE = "Youtube-Feed/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.guild.KKP-Movie";
@@ -811,6 +837,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5CD4C43E1CA28D5100A6C837 /* PlaylistModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5CD4C43F1CA28D5100A6C837 /* PlaylistModel.xcdatamodel */,
+			);
+			currentVersion = 5CD4C43F1CA28D5100A6C837 /* PlaylistModel.xcdatamodel */;
+			path = PlaylistModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 11C170DC1C7186A800E74681 /* Project object */;
 }

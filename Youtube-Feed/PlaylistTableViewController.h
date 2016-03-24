@@ -13,7 +13,7 @@
 
 
 
-@interface PlaylistTableViewController : UITableViewController <UIAlertViewDelegate>
+@interface PlaylistTableViewController : UITableViewController <UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *alert;
 }
@@ -26,5 +26,9 @@
 
 @property(weak,nonatomic) IBOutlet UIButton  *editButton;
 - (IBAction)editButtonPressed:(id)sender;
+
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
