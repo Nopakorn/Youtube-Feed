@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+    <entity name="Favorite" syncable="YES">
+        <attribute name="timeStamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="videoId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoThumbnail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoTitle" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="Playlist" representedClassName="" syncable="YES">
         <attribute name="playlistTitle" optional="YES" attributeType="String" minValueString="0" maxValueString="100" syncable="YES"/>
         <attribute name="timeStamp" optional="YES" attributeType="Date" syncable="YES"/>
@@ -9,5 +15,6 @@
     </entity>
     <elements>
         <element name="Playlist" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Favorite" positionX="-63" positionY="18" width="128" height="105"/>
     </elements>
 </model>

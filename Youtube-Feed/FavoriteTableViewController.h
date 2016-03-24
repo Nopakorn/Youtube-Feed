@@ -10,7 +10,7 @@
 #import "Playlist.h"
 #import "Favorite.h"
 
-@interface FavoriteTableViewController : UITableViewController <UIGestureRecognizerDelegate, UIAlertViewDelegate>
+@interface FavoriteTableViewController : UITableViewController <UIGestureRecognizerDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *alert;
 }
@@ -19,5 +19,8 @@
 @property (strong, nonatomic) Favorite *favorite;
 
 @property (nonatomic, retain) NSMutableArray  *imageData;
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end

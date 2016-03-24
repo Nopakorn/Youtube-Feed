@@ -33,8 +33,8 @@
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
-    [self insertNewObject];
-    [self fetchData];
+    //[self insertNewObject];
+    //[self fetchData];
 }
 
 - (void)fetchData

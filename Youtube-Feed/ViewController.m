@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "MainTabBarViewController.h"
-
+#import "AppDelegate.h"
 
 @interface ViewController ()
 
@@ -38,9 +38,13 @@
     genreListTableViewFlag = false;
     outOfLengthAlert = true;
     
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    self.managedObjectContext = appDelegate.managedObjectContext;
+    
     self.youtube = [[Youtube alloc] init];
     self.favorite = [[Favorite alloc] init];
     self.playlist = [[Playlist alloc] init];
+    self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
     //play recommend video first time
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
@@ -265,31 +269,77 @@
 
 - (void)favoritePressed:(id)sender
 {
-    if (queryIndex != item) {
-        queryIndex = item;
-        
+    BOOL flag = false;
+    NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
+    NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
+    NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
+    [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
+    [self.favoriteList addObject:self.favorite];
+    NSArray *result = [self.fetchedResultsController fetchedObjects];
+    
+    if ([result count] == 0) {
         favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
         favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
         [self presentViewController:favoriteAlert animated:YES completion:nil];
+        [self insertFavorite:self.favorite];
+
+    } else {
         
-        NSString *videoId = [self.youtube.videoIdList objectAtIndex:queryIndex];
-        NSString *videoTitle = [self.youtube.titleList objectAtIndex:queryIndex];
-        NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:queryIndex];
-        [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-        
-    }else {
-        
-        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Already in Favorite" preferredStyle:UIAlertControllerStyleAlert];
-        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-        [self presentViewController:favoriteAlert animated:YES completion:nil];
+        for (int i = 0; i < [result count]; i++) {
+            
+            NSManagedObject *object = [result objectAtIndex:i];
+            if ([self.favorite.videoId isEqualToString:[object valueForKey:@"videoId"]]) {
+                flag = false;
+                NSLog(@"false favorite duplicate");
+                break;
+            } else {
+                flag = true;
+                NSLog(@"no duplicate videoID %@",[object valueForKey:@"videoId"]);
+            }
+        }
+        if (flag) {
+            NSLog(@"favorite true");
+            favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
+            favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+            [self presentViewController:favoriteAlert animated:YES completion:nil];
+            [self insertFavorite:self.favorite];
+
+        } else {
+            
+            favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Already in Favorite" preferredStyle:UIAlertControllerStyleAlert];
+            favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+            [self presentViewController:favoriteAlert animated:YES completion:nil];
+            
+        }
     }
-    
 }
+
+- (void)insertFavorite:(Favorite *)favorite
+{
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
+    [newManagedObject setValue:favorite.videoId forKey:@"videoId"];
+    [newManagedObject setValue:favorite.videoTitle forKey:@"videoTitle"];
+    [newManagedObject setValue:favorite.videothumbnail forKey:@"videoThumbnail"];
+    // Save the context.
+    NSError *error = nil;
+    if (![context save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+}
+
 
 - (void)dismissFavoriteAlert
 {
-    [favoriteAlert dismissViewControllerAnimated:YES completion:nil];
-    [favoriteAlertTimer invalidate];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [favoriteAlert dismissViewControllerAnimated:YES completion:nil];
+        [favoriteAlertTimer invalidate];
+    });
+
+    
 }
 
 - (void)dismissOutOflengthAlert
@@ -402,4 +452,48 @@
      NSLog(@"Received Search");
 }
 
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Favorite" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+
+    return _fetchedResultsController;
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    
+}
 @end

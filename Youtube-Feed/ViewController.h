@@ -17,7 +17,7 @@
 #import "SearchTableViewController.h"
 
 
-@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate>
+@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *favoriteAlert;
     NSTimer *favoriteAlertTimer;
@@ -36,10 +36,14 @@
 @property (weak,nonatomic) IBOutlet UIButton  *addButton;
 @property (weak,nonatomic) IBOutlet UIButton  *favoriteButton;
 
-
+@property (nonatomic, retain) NSMutableArray  *favoriteList;
 
 - (IBAction)buttonPressed:(id)sender;
 - (IBAction)favoritePressed:(id)sender;
+
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
 
