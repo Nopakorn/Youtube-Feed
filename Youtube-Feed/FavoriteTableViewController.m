@@ -21,13 +21,9 @@
     [super viewDidLoad];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-//    self.managedObjectContext = appDelegate.managedObjectContext;
     NSLog(@"favorite view did load");
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(receivedFavoritePressedNotification:)
-//                                                 name:@"AddingFavorite" object:nil];
 }
+
 - (void)fetchData
 {
     NSArray *result = [self.fetchedResultsController fetchedObjects];
@@ -35,17 +31,9 @@
         NSManagedObject *object = [result objectAtIndex:i];
         NSLog(@"check favorite %@", [object valueForKey:@"videoTitle"]);
     }
-    //NSManagedObject *object = [[self.fetchedResultsController fetchedObjects] objectAtIndex:0];
 }
 
-- (void)receivedFavoritePressedNotification:(NSNotification *)notification
-{
-    NSLog(@"received noti from viewcontroller ");
-    self.favorite = [notification.userInfo objectForKey:@"favoriteObj"];
-    //NSArray *result = [self.fetchedResultsController fetchedObjects];
-    [self insertObjectWithFavorite:self.favorite.videoId withTitle:self.favorite.videoTitle andWithThumbnail:self.favorite.videothumbnail];
 
-}
 
 - (void)insertObjectWithFavorite:(NSString *)videoId withTitle:(NSString *)videoTitle andWithThumbnail:(NSString *)videoThumbnail
 {
@@ -191,6 +179,7 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

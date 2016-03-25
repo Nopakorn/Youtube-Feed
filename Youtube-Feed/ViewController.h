@@ -37,6 +37,7 @@
 @property (weak,nonatomic) IBOutlet UIButton  *favoriteButton;
 
 @property (nonatomic, retain) NSMutableArray  *favoriteList;
+@property (nonatomic, retain) NSArray  *resultFovorite;
 
 - (IBAction)buttonPressed:(id)sender;
 - (IBAction)favoritePressed:(id)sender;

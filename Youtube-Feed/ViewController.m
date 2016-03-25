@@ -45,6 +45,8 @@
     self.favorite = [[Favorite alloc] init];
     self.playlist = [[Playlist alloc] init];
     self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
+    
+    
     //play recommend video first time
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
@@ -76,6 +78,9 @@
                                              selector:@selector(receivedGenreListNotification:)
                                                  name:@"PlayGenreListDidSelected" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedDeleteFavoriteNotification:)
+                                                 name:@"DeleteFavorite" object:nil];
     self.addButton.hidden = YES;
     NSLog(@"View did load in youtube %@",[tabbar.recommendYoutube.titleList objectAtIndex:1]);
 }
@@ -143,6 +148,28 @@
 
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
 {
+    BOOL checkFav = false;
+    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2.png"];
+    UIImage *btnImageStar = [UIImage imageNamed:@"star_1.jpg"];
+    
+    self.resultFovorite = [self.fetchedResultsController fetchedObjects];
+    for (int i = 0; i < [self.resultFovorite count]; i++) {
+        
+        NSManagedObject *object = [self.resultFovorite objectAtIndex:i];
+        if ([[object valueForKey:@"videoId"]isEqualToString:[self.youtube.videoIdList objectAtIndex:item]]) {
+            checkFav = true;
+            break;
+        } else {
+            checkFav = false;
+        }
+    }
+    
+    if (checkFav) {
+        [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
+    } else {
+        [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
+    }
+    
     [self.playerView playVideo];
 }
 
@@ -269,54 +296,53 @@
 
 - (void)favoritePressed:(id)sender
 {
-    BOOL flag = false;
     NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
     NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
     NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
     [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-    [self.favoriteList addObject:self.favorite];
-    NSArray *result = [self.fetchedResultsController fetchedObjects];
     
-    if ([result count] == 0) {
+    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2.png"];
+    UIImage *btnImageStar = [UIImage imageNamed:@"star_1.jpg"];
+
+    if ([[self.favoriteButton imageForState:UIControlStateNormal] isEqual:btnImageStar]) {
+        
         favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
         favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
         [self presentViewController:favoriteAlert animated:YES completion:nil];
+        [self.favoriteList addObject:self.favorite];
         [self insertFavorite:self.favorite];
-
+        [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
     } else {
         
-        for (int i = 0; i < [result count]; i++) {
-            
-            NSManagedObject *object = [result objectAtIndex:i];
-            if ([self.favorite.videoId isEqualToString:[object valueForKey:@"videoId"]]) {
-                flag = false;
-                NSLog(@"false favorite duplicate");
-                break;
-            } else {
-                flag = true;
-                NSLog(@"no duplicate videoID %@",[object valueForKey:@"videoId"]);
-            }
-        }
-        if (flag) {
-            NSLog(@"favorite true");
-            favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
-            favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-            [self presentViewController:favoriteAlert animated:YES completion:nil];
-            [self insertFavorite:self.favorite];
+        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Delete From Favorite" preferredStyle:UIAlertControllerStyleAlert];
+        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+        [self presentViewController:favoriteAlert animated:YES completion:nil];
+        [self deleteFavorite:self.favorite];
+        [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
+    }
 
-        } else {
-            
-            favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Already in Favorite" preferredStyle:UIAlertControllerStyleAlert];
-            favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-            [self presentViewController:favoriteAlert animated:YES completion:nil];
-            
-        }
+}
+
+- (void)deleteFavorite:(Favorite *)favorite
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Favorite" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"videoId == %@",favorite.videoId]];
+    
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (NSManagedObject *manageObject in result) {
+        [context deleteObject:manageObject];
     }
 }
 
+
 - (void)insertFavorite:(Favorite *)favorite
 {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
@@ -338,8 +364,6 @@
         [favoriteAlert dismissViewControllerAnimated:YES completion:nil];
         [favoriteAlertTimer invalidate];
     });
-
-    
 }
 
 - (void)dismissOutOflengthAlert
@@ -348,8 +372,15 @@
     [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
     [outOflengthAlertTimer invalidate];
 }
+- (void)receivedDeleteFavoriteNotification:(NSNotificationCenter *)notification
+{
+    //changing star icon when deleting
+     UIImage *btnImageStar = [UIImage imageNamed:@"star_1.jpg"];
+    [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
+}
 
-- (void)receivedPlayBackStartedNotification:(NSNotification *) notification {
+- (void)receivedPlayBackStartedNotification:(NSNotification *) notification
+{
     if ([notification.name isEqual:@"Playback Started"] && notification.object != self) {
         NSLog(@"pause video");
         [self.playerView pauseVideo];
