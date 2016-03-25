@@ -29,65 +29,21 @@
 
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self createPlaylist];
-    
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-    self.managedObjectContext = appDelegate.managedObjectContext;
-    //[self insertNewObject];
-    //[self fetchData];
+    [self fetchPlaylist];
 }
 
-- (void)fetchData
+
+
+- (void)fetchPlaylist
 {
+//    NSArray *result = [self.fetchedResultsController fetchedObjects];
+//    for (int i = 0; i < result.count; i++) {
+//        NSManagedObject *object = [result objectAtIndex:i];
+//        [self.playlist_List addObject:object];
+//    }
     NSArray *result = [self.fetchedResultsController fetchedObjects];
-    for (int i = 0; i < result.count; i++) {
-        NSManagedObject *object = [result objectAtIndex:i];
-        NSLog(@"check result %@", [object valueForKey:@"playlistTitle"]);
-    }
-    //NSManagedObject *object = [[self.fetchedResultsController fetchedObjects] objectAtIndex:0];
-
-}
-- (void)insertNewObject
-{
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-
-    [newManagedObject setValue:@"Playlist 3" forKey:@"playlistTitle"];
+    self.playlist_List = [NSMutableArray arrayWithArray:result];
     
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-}
-
-- (void)createPlaylist
-{
-    NSString *title1 = @"Play List 1";
-    Playlist *pav1 = [[Playlist alloc] init];
-    [pav1 setTitle:title1];
-    for (int i = 0; i < 10; i++) {
-        [pav1 addPlaylistWithTitle:[self.youtube.titleList objectAtIndex:i] thumbnail:[self.youtube.thumbnailList objectAtIndex:i] andVideoId:[self.youtube.videoIdList objectAtIndex:i]];
-    }
-    [self.playlist_List addObject:pav1];
-    
-    NSString *title2 = @"Play List 2";
-    Playlist *pav2 = [[Playlist alloc] init];
-    [pav2 setTitle:title2];
-    for (int i = 10; i < 20; i++) {
-        [pav2 addPlaylistWithTitle:[self.youtube.titleList objectAtIndex:i] thumbnail:[self.youtube.thumbnailList objectAtIndex:i] andVideoId:[self.youtube.videoIdList objectAtIndex:i]];
-    }
-     [self.playlist_List addObject:pav2];
-    
-    NSString *title3 = @"Play List 3";
-    Playlist *pav3 = [[Playlist alloc] init];
-    [pav3 setTitle:title3];
-    [self.playlist_List addObject:pav3];
-    
-    NSLog(@"index list %lu",(unsigned long)[self.playlist_List count]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -109,12 +65,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    if ([self.playlist_List count] == 0) {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    
+    if ([sectionInfo numberOfObjects] == 0) {
         return 2;
         
     } else {
         //for favorite and . . . row
-        return [self.playlist_List count]+2;
+        return [sectionInfo numberOfObjects]+2;
 
     }
 }
@@ -126,9 +84,14 @@
     if (cell == nil) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
-        
+        //add gesture ;
+        UILongPressGestureRecognizer *lgpr = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                           action:@selector(handleLongPress:)];
+        lgpr.minimumPressDuration = 1.5;
+        [cell addGestureRecognizer:lgpr];
     }
     
+    [self fetchPlaylist];
     if ([self.playlist_List count] == 0) {
         if(indexPath.row == 0) {
             cell.name.text = @"Favorite";
@@ -144,8 +107,8 @@
         }else {
             if (indexPath.row <= [self.playlist_List count]) {
                 
-                Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
-                cell.name.text = playlist.playTitle;
+                NSManagedObject *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
+                cell.name.text = [playlist valueForKey:@"playlistTitle"];
                 
             }else {
                 cell.name.text = @" . . . . ";
@@ -213,10 +176,78 @@
 - (void)saveNewPlaylist:(NSString *)text
 {
     NSString *title = text;
-    Playlist *playlist = [[Playlist alloc] init];
-    [playlist setTitle:title];
-    [self.playlist_List addObject:playlist];
-    [self.tableView reloadData];
+    [self insertNewPlaylist:title];
+}
+- (void)insertNewPlaylist:(NSString *)title
+{
+
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+    
+    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
+    [newManagedObject setValue:title forKey:@"playlistTitle"];
+    
+    // Save the context.
+    NSError *error = nil;
+    if (![context save:&error]) {
+        
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+
+}
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (indexPath == nil) {
+        NSLog(@"long press table view but not in row");
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog(@"long press began at row %ld", indexPath.row);
+        
+        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
+                                                    message:@"Are you sure to remove this video from Favorite"
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       [self deleteRowAtIndex:indexPath.row];
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action){
+                                                           
+                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+                                                       }];
+        [alert addAction:ok];
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
+    }
+    
+}
+
+- (void)deleteRowAtIndex:(NSInteger )index
+{
+    NSLog(@"delete at %ld", index);
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    [context deleteObject:[[self.fetchedResultsController fetchedObjects] objectAtIndex:index-1]];
+    
+    NSError *error = nil;
+    if (![context save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
 }
 
 
@@ -231,17 +262,18 @@
     if ([segue.identifier isEqualToString:@"FavoriteSegue"]){
         
         FavoriteTableViewController *dest = segue.destinationViewController;
-        dest.playlist = self.playlist;
+        //dest.playlist = self.playlist;
         dest.favorite = self.favorite;
         
     } else if ([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
          NSLog(@"prepare playlistdetail");
         PlaylistDetailTableViewController *dest = segue.destinationViewController;
-        dest.playlist = self.playlist;
+        //dest.playlist = self.playlist;
         
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
         NSLog(@"prepare playlistEdit");
         PlaylistEditTableViewController *dest = segue.destinationViewController;
+        [self fetchPlaylist];
         dest.playlist_List = self.playlist_List;
         dest.favorite = self.favorite;
     }
@@ -253,6 +285,9 @@
 
 - (NSFetchedResultsController *)fetchedResultsController
 {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    self.managedObjectContext = appDelegate.managedObjectContext;
+    
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;
     }
@@ -266,7 +301,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"playlistTitle" ascending:NO];
+     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
     
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
@@ -285,6 +320,61 @@
     }
     
     return _fetchedResultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        default:
+            return;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableView *tableView = self.tableView;
+    NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+    NSIndexPath *customNewIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row+1 inSection:indexPath.section];
+
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self.tableView reloadData];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
 }
 
 @end

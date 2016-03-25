@@ -26,11 +26,11 @@
 - (void)addingDataToYoutubeObject
 {
     self.youtube = [[Youtube alloc] init];
-    if(self.playlist.videoId != 0) {
+    if(self.playlist.videoIdList != 0) {
         NSLog(@"save to youtube obj");
-        for (int i = 0; i < [self.playlist.videoId count]; i++) {
-            [self.youtube.videoIdList addObject:[self.playlist.videoId objectAtIndex:i]];
-            [self.youtube.titleList addObject:[self.playlist.videoTitle objectAtIndex:i]];
+        for (int i = 0; i < [self.playlist.videoIdList count]; i++) {
+            [self.youtube.videoIdList addObject:[self.playlist.videoIdList objectAtIndex:i]];
+            [self.youtube.titleList addObject:[self.playlist.videoTitleList objectAtIndex:i]];
             [self.youtube.thumbnailList addObject:[self.playlist.videoThumbnail objectAtIndex:i]];
         }
     }else {
@@ -56,7 +56,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.playlist.videoId count];
+    return [self.playlist.videoIdList count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,7 +70,7 @@
         
     }
     
-    cell.name.text = [self.playlist.videoTitle objectAtIndex:indexPath.row];
+    cell.name.text = [self.playlist.videoTitleList objectAtIndex:indexPath.row];
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
     

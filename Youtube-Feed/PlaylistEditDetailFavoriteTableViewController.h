@@ -12,7 +12,7 @@
 
 @protocol PlaylistEditDetailFavoriteControllerDelegate;
 
-@interface PlaylistEditDetailFavoriteTableViewController : UITableViewController <UIAlertViewDelegate>
+@interface PlaylistEditDetailFavoriteTableViewController : UITableViewController <UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *alert;
 }
@@ -22,11 +22,12 @@
 @property (nonatomic, retain) NSMutableArray  *imageData;
 
 @property (nonatomic, assign) id<PlaylistEditDetailFavoriteControllerDelegate> delegate;
-
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @end
 
 @protocol PlaylistEditDetailFavoriteControllerDelegate <NSObject>
 
-- (void)addingVideoFromPlayListEditDetailFavorite:(Playlist *) playlist;
+- (void)addingVideoFromPlayListEditDetailFavorite:(Favorite *)favorite;
 
 @end

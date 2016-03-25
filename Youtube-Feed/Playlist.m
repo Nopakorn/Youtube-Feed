@@ -13,8 +13,8 @@
 -(id)init
 {
     if(self = [super init]){
-        self.videoTitle = [[NSMutableArray alloc] initWithCapacity:10];
-        self.videoId = [[NSMutableArray alloc] initWithCapacity:10];
+        self.videoTitleList = [[NSMutableArray alloc] initWithCapacity:10];
+        self.videoIdList = [[NSMutableArray alloc] initWithCapacity:10];
         self.videoThumbnail = [[NSMutableArray alloc] initWithCapacity:10];
 
     }
@@ -25,13 +25,13 @@
 
 - (void)setTitle:(NSString *)title
 {
-    self.playTitle = [NSString stringWithFormat:@"%@",title];
+    self.playlistTitle = [NSString stringWithFormat:@"%@",title];
 }
 
 - (void)addPlaylistWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId
 {
-    [self.videoId addObject:videoId];
-    [self.videoTitle addObject:videoTitle];
+    [self.videoIdList addObject:videoId];
+    [self.videoTitleList addObject:videoTitle];
     [self.videoThumbnail addObject:videoThumbnail];
 
 }

@@ -12,15 +12,14 @@
 @interface Playlist : NSObject
 
 @property (strong, nonatomic) Favorite *favorite;
-@property (nonatomic, retain) NSString *playTitle;
-@property (nonatomic, retain) NSMutableArray  *videoTitle;
+@property (nonatomic, retain) NSString *playlistTitle;
+@property (nonatomic, retain) NSMutableArray  *videoTitleList;
 @property (nonatomic, retain) NSMutableArray  *videoThumbnail;
-@property (nonatomic, retain) NSMutableArray  *videoId;
+@property (nonatomic, retain) NSMutableArray  *videoIdList;
 
 
 - (void)setTitle:(NSString *) title;
 
 - (void)addPlaylistWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoTshumbnail andVideoId:(NSString *)videoId;
-- (void)deleteVideo:(NSString *)videoId fromPlaylist:(NSString *)playlistTitle;
 
 @end

@@ -8,6 +8,8 @@
 
 #import "PlaylistEditDetailFavoriteTableViewController.h"
 #import "FavoriteCustomCell.h"
+#import "AppDelegate.h"
+
 
 @interface PlaylistEditDetailFavoriteTableViewController ()
 
@@ -19,11 +21,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
@@ -47,8 +44,10 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //return [self.favorite.videoId count];
-    return 0;
+
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    return [sectionInfo numberOfObjects];
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -62,32 +61,31 @@
         
     }
     
-//    cell.name.text = [self.favorite.videoTitle objectAtIndex:indexPath.row];
-//    cell.favoriteIcon.hidden = YES;
-//    cell.tag = indexPath.row;
-//    cell.thumnail.image = nil;
-//    
-//    if([self.favorite.videothumbnail objectAtIndex:indexPath.row] != nil){
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.favorite.videothumbnail objectAtIndex:indexPath.row]]];
-//            
-//            if(data){
-//                [self.imageData addObject:data];
-//                UIImage* image = [UIImage imageWithData:data];
-//                if (image) {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        if(cell.tag == indexPath.row){
-//                            cell.thumnail.image = image;
-//                            [cell setNeedsLayout];
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//    }
+    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.name.text = [object valueForKey:@"videoTitle"];
+    cell.favoriteIcon.hidden = YES;
+    cell.tag = indexPath.row;
+    cell.thumnail.image = nil;
     
-    
-    
+    if([object valueForKey:@"videoThumbnail"]  != nil){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[object valueForKey:@"videoThumbnail"]]];
+            
+            if(data){
+                [self.imageData addObject:data];
+                UIImage* image = [UIImage imageWithData:data];
+                if (image) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(cell.tag == indexPath.row){
+                            cell.thumnail.image = image;
+                            [cell setNeedsLayout];
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     return cell;
 }
 
@@ -98,8 +96,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   
+    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSLog(@"check object picked %@",self.favorite.videoTitle);
     
+//    self.favorite.videoId = [NSString stringWithFormat:@"%@",[object valueForKey:@"videoId"]];
+//    self.favorite.videoTitle = [NSString stringWithFormat:@"%@",[object valueForKey:@"videoTitle"]];
+//    self.favorite.videothumbnail = [NSString stringWithFormat:@"%@",[object valueForKey:@"videoThumbnail"]];
+
     alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
                                                 message:@"Are you sure to adding this video to playlist"
                                          preferredStyle:UIAlertControllerStyleAlert];
@@ -108,7 +112,7 @@
                                                  style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction *action){
                                                    
-                                                   [self saveVideotoPlaylist:indexPath.row];
+                                                   [self saveVideotoPlaylist:self.favorite];
                                                    [alert dismissViewControllerAnimated:YES completion:nil];
                                                }];
     
@@ -121,20 +125,108 @@
     [alert addAction:ok];
     [alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 
 
-- (void)saveVideotoPlaylist:(NSInteger )index
+- (void)saveVideotoPlaylist:(Favorite *)favorite
 {
-//    NSString *videoId = [self.favorite.videoId objectAtIndex:index];
-//    NSString *videoTitle = [self.favorite.videoTitle objectAtIndex:index];
-//    NSString *videoThumbnail = [self.favorite.videothumbnail objectAtIndex:index];
-    
-//    [self.playlist addPlaylistWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
-//    [self.delegate addingVideoFromPlayListEditDetailFavorite:self.playlist];
+     NSLog(@"check object passing %@",favorite.videoTitle);
+    [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
     
     NSLog(@"ADDING VIDEO");
+}
+
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    self.managedObjectContext = appDelegate.managedObjectContext;
+    
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Favorite" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+
+    [fetchRequest setFetchBatchSize:20];
+    
+
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _fetchedResultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        default:
+            return;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableView *tableView = self.tableView;
+    
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self.tableView reloadData];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
 }
 
 @end

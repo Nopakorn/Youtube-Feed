@@ -10,6 +10,7 @@
 #import "PlaylistEditDetailFavoriteTableViewController.h"
 #import "PlaylistCustomCell.h"
 #import "PlaylistEditDetailCustomCell.h"
+#import "AppDelegate.h"
 
 @interface PlaylistEditDetailTableViewController ()
 
@@ -23,20 +24,80 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setEditing:YES animated:YES];
     self.tableView.allowsSelectionDuringEditing = YES;
+    self.navigationItem.title = self.playlist.playlistTitle;
+    //[self fetchPlaylist];
 }
+
+//- (void)fetchPlaylist
+//{
+//    NSLog(@"fetch playlist");
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+//    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
+//    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlistTitle == %@",self.playlist.playlistTitle]];
+//     NSArray *result = [self.fetchedResultsController fetchedObjects];
+//    
+//    for (NSManagedObject *manageObject in result) {
+//        if ([manageObject valueForKey:@"videoIdList"] != nil) {
+//            self.playlist.videoIdList = [NSKeyedUnarchiver unarchiveObjectWithData:[manageObject valueForKey:@"videoIdList"]];
+//            self.playlist.videoTitleList = [NSKeyedUnarchiver unarchiveObjectWithData:[manageObject valueForKey:@"videoTitleList"]];
+//            self.playlist.videoThumbnail = [NSKeyedUnarchiver unarchiveObjectWithData:[manageObject valueForKey:@"videoThumbnail"]];
+//        } else {
+//            NSLog(@"playlist has nil object time:%@ title:%@",[manageObject valueForKey:@"timeStamp"], [manageObject valueForKey:@"playlistTitle"]);
+//        }
+//       
+//    }
+//}
+//
+//- (void)insertPlaylist:(Favorite *)favorite
+//{
+//    
+//    //[self.playlist addPlaylistWithTitle:favorite.videoTitle thumbnail:favorite.videothumbnail andVideoId:favorite.videoId];
+//    NSLog(@"save playlist at title %@",self.playlist.playlistTitle);
+//    [self.playlist.videoIdList addObject:favorite.videoId];
+//    [self.playlist.videoTitleList addObject:favorite.videoTitle];
+//    [self.playlist.videoThumbnail addObject:favorite.videoThumbnail];
+//    
+//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+//    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+//    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
+//    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlistTitle == %@",self.playlist.playlistTitle]];
+//    NSArray *result = [self.fetchedResultsController fetchedObjects];
+//    
+//    NSData *videoIdListData = [NSKeyedArchiver archivedDataWithRootObject:self.playlist.videoIdList];
+//    NSData *videoTitleListData = [NSKeyedArchiver archivedDataWithRootObject:self.playlist.videoTitleList];
+//    NSData *videoThumbnailData = [NSKeyedArchiver archivedDataWithRootObject:self.playlist.videoThumbnail];
+//    
+//    for (NSManagedObject *manageObject in result) {
+//        [manageObject setValue:[NSDate date] forKey:@"timeStamp"];
+//        [manageObject setValue:videoIdListData forKey:@"videoIdList"];
+//        [manageObject setValue:videoTitleListData forKey:@"videoTitleList"];
+//        [manageObject setValue:videoThumbnailData forKey:@"videoThumbnail"];
+//        // Save the context.
+//        NSError *error = nil;
+//        if (![context save:&error]) {
+//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//            abort();
+//        } else {
+//            NSLog(@"update data");
+//        }
+//    }
+//
+//}
+//
 
 - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"view did appear playlisteditdetail");
+    //[self fetchPlaylist];
     [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
      NSLog(@"view did Disappear playlisteditdetail");
-//    for (int i =0 ; i < [self.playlist.videoTitle count]; i++) {
-//        NSLog(@"reordering %@",[self.playlist.videoTitle objectAtIndex:i]);
-//    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,8 +112,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //plus 1 for header title playlist name
-    return [self.playlist.videoId count]+1;
+    //id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    if (self.playlist.videoIdList == nil) {
+        return 1;
+    } else {
+        //NSLog(@"playlist count %lu",(unsigned long)[self.playlist.videoIdList count]);
+        return 1;
+    }
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,13 +137,13 @@
         [cell addGestureRecognizer:lgpr];
         
     }
-    
+    //[self fetchPlaylist];
     if (indexPath.row == 0) {
-        cell.name.text = self.playlist.playTitle;
+        cell.name.text = self.playlist.playlistTitle;
         
         
     }else {
-        cell.name.text = [self.playlist.videoTitle objectAtIndex:indexPath.row-1];
+        cell.name.text = [self.playlist.videoTitleList objectAtIndex:indexPath.row-1];
         cell.addIcon.hidden = YES;
     }
     
@@ -125,7 +192,7 @@
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
         
         NSLog(@"began at %ld",indexPath.row);
-        NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.playTitle];
+        NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.playlistTitle];
         
         alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
                                                     message:message
@@ -157,8 +224,8 @@
 - (void)deleteRowAtIndex:(NSInteger )index
 {
     NSLog(@"delete at %ld", index);
-    [self.playlist.videoId removeObjectAtIndex:index];
-    [self.playlist.videoTitle removeObjectAtIndex:index];
+    [self.playlist.videoIdList removeObjectAtIndex:index];
+    [self.playlist.videoTitleList removeObjectAtIndex:index];
     [self.playlist.videoThumbnail removeObjectAtIndex:index];
     [self.tableView reloadData];
     
@@ -197,16 +264,16 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    NSString *videoTitleToMove = [self.playlist.videoTitle objectAtIndex:sourceIndexPath.row-1];
-    NSString *videoIdToMove = [self.playlist.videoId objectAtIndex:sourceIndexPath.row-1];
+    NSString *videoTitleToMove = [self.playlist.videoTitleList objectAtIndex:sourceIndexPath.row-1];
+    NSString *videoIdToMove = [self.playlist.videoIdList objectAtIndex:sourceIndexPath.row-1];
     NSString *videoThumbnailToMove = [self.playlist.videoThumbnail objectAtIndex:sourceIndexPath.row-1];
     
-    [self.playlist.videoId removeObjectAtIndex:sourceIndexPath.row-1];
-    [self.playlist.videoTitle removeObjectAtIndex:sourceIndexPath.row-1];
+    [self.playlist.videoIdList removeObjectAtIndex:sourceIndexPath.row-1];
+    [self.playlist.videoTitleList removeObjectAtIndex:sourceIndexPath.row-1];
     [self.playlist.videoThumbnail removeObjectAtIndex:sourceIndexPath.row-1];
     
-    [self.playlist.videoId insertObject:videoIdToMove atIndex:destinationIndexPath.row-1];
-    [self.playlist.videoTitle insertObject:videoTitleToMove atIndex:destinationIndexPath.row-1];
+    [self.playlist.videoIdList insertObject:videoIdToMove atIndex:destinationIndexPath.row-1];
+    [self.playlist.videoTitleList insertObject:videoTitleToMove atIndex:destinationIndexPath.row-1];
     [self.playlist.videoThumbnail insertObject:videoThumbnailToMove atIndex:destinationIndexPath.row-1];
     
     
@@ -224,12 +291,111 @@
 
 #pragma mark - delegate PlaylistEditDetailFavoriteController
 
-- (void)addingVideoFromPlayListEditDetailFavorite:(Playlist *)playlist
+- (void)addingVideoFromPlayListEditDetailFavorite:(Favorite *)favorite
 {
    
     //self.playlist = playlist;
-    NSLog(@"Receive from delegate playlisteditdetailfavorite");
+    //[self insertPlaylist:favorite];
+    //[self fetchPlaylist];
+    NSLog(@"Receive from delegate playlisteditdetailfavorite %@",favorite.videoTitle);
     
+}
+
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    self.managedObjectContext = appDelegate.managedObjectContext;
+    
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Edit the entity name as appropriate.
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+    
+    // Edit the sort key as appropriate.
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
+    
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    
+    // Edit the section name key path and cache name if appropriate.
+    // nil for section name key path means "no sections".
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    aFetchedResultsController.delegate = self;
+    self.fetchedResultsController = aFetchedResultsController;
+    
+    NSError *error = nil;
+    if (![self.fetchedResultsController performFetch:&error]) {
+        // Replace this implementation with code to handle the error appropriately.
+        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return _fetchedResultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+{
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        default:
+            return;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableView *tableView = self.tableView;
+    NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+    NSIndexPath *customNewIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row+1 inSection:indexPath.section];
+    
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self.tableView reloadData];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
 }
 
 @end

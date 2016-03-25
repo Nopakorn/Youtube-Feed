@@ -11,9 +11,9 @@
 @interface Favorite : NSObject
 
 @property (nonatomic, retain) NSString  *videoTitle;
-@property (nonatomic, retain) NSString  *videothumbnail;
+@property (nonatomic, retain) NSString  *videoThumbnail;
 @property (nonatomic, retain) NSString  *videoId;
 
-- (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videothumbnail andVideoId:(NSString *)videoId;
+- (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId;
 
 @end

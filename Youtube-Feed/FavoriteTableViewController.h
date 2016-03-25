@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
 #import "Favorite.h"
+#import "Youtube.h"
 
 @interface FavoriteTableViewController : UITableViewController <UIGestureRecognizerDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 {
@@ -19,6 +20,7 @@
 @property (strong, nonatomic) Favorite *favorite;
 
 @property (nonatomic, retain) NSMutableArray  *imageData;
+@property (nonatomic) NSInteger selectedRow;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

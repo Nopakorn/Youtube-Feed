@@ -53,7 +53,7 @@
         
     }
     Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row];
-    cell.name.text = playlist.playTitle;
+    cell.name.text = playlist.playlistTitle;
     return cell;
 }
 
@@ -77,7 +77,7 @@
         
         PlaylistEditDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
-        dest.favorite = self.favorite;
+        //dest.favorite = self.favorite;
         
     }
 

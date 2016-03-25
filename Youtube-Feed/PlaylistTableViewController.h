@@ -13,7 +13,7 @@
 
 
 
-@interface PlaylistTableViewController : UITableViewController <UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
+@interface PlaylistTableViewController : UITableViewController <UIAlertViewDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate>
 {
     UIAlertController *alert;
 }

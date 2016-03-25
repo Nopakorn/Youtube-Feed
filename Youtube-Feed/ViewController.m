@@ -20,6 +20,10 @@
     Boolean searchTableViewFlag;
     Boolean playlistDetailTableViewFlag;
     Boolean genreListTableViewFlag;
+    Boolean favoriteTableViewFlag;
+    Boolean favoriteDidPlayed;
+    Boolean playlistDidPlayed;
+    
     BOOL outOfLengthAlert;
     NSInteger item;
     NSInteger queryIndex;
@@ -37,6 +41,9 @@
     playlistDetailTableViewFlag = false;
     genreListTableViewFlag = false;
     outOfLengthAlert = true;
+    favoriteTableViewFlag = false;
+    favoriteDidPlayed = false;
+    playlistDidPlayed = false;
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
@@ -81,6 +88,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedDeleteFavoriteNotification:)
                                                  name:@"DeleteFavorite" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedFavoriteDidSelectedNotification:)
+                                                 name:@"FavoriteDidSelected" object:nil];
     self.addButton.hidden = YES;
     NSLog(@"View did load in youtube %@",[tabbar.recommendYoutube.titleList objectAtIndex:1]);
 }
@@ -95,6 +106,7 @@
 
     [super viewDidAppear:animated];
     NSLog(@"View did appear in youtube");
+    
     if (recommendTableViewFlag) {
         NSDictionary *playerVers = @{
                                      @"playsinline" : @1,
@@ -129,6 +141,7 @@
         
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
         playlistDetailTableViewFlag = false;
+        playlistDidPlayed = true;
     }
 
     if (genreListTableViewFlag) {
@@ -142,6 +155,20 @@
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
         genreListTableViewFlag = false;
 
+    }
+    
+    if (favoriteTableViewFlag) {
+        NSDictionary *playerVers = @{
+                                     @"playsinline" : @1,
+                                     @"controls" : @0,
+                                     @"showinfo" : @1,
+                                     @"modestbranding" : @1,
+                                     };
+        
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+        favoriteTableViewFlag = false;
+        favoriteDidPlayed = true;
+        
     }
     
 }
@@ -335,6 +362,7 @@
     for (NSManagedObject *manageObject in result) {
         [context deleteObject:manageObject];
     }
+    
 }
 
 
@@ -348,7 +376,7 @@
     [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
     [newManagedObject setValue:favorite.videoId forKey:@"videoId"];
     [newManagedObject setValue:favorite.videoTitle forKey:@"videoTitle"];
-    [newManagedObject setValue:favorite.videothumbnail forKey:@"videoThumbnail"];
+    [newManagedObject setValue:favorite.videoThumbnail forKey:@"videoThumbnail"];
     // Save the context.
     NSError *error = nil;
     if (![context save:&error]) {
@@ -372,11 +400,14 @@
     [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
     [outOflengthAlertTimer invalidate];
 }
-- (void)receivedDeleteFavoriteNotification:(NSNotificationCenter *)notification
+- (void)receivedDeleteFavoriteNotification:(NSNotification *)notification
 {
-    //changing star icon when deleting
-     UIImage *btnImageStar = [UIImage imageNamed:@"star_1.jpg"];
-    [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
+    if (favoriteDidPlayed) {
+        favoriteDidPlayed = false;
+        favoriteTableViewFlag = true;
+        self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+        
+    }
 }
 
 - (void)receivedPlayBackStartedNotification:(NSNotification *) notification
@@ -402,6 +433,15 @@
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     NSLog(@"Received playGenreList");
+}
+
+- (void)receivedFavoriteDidSelectedNotification:(NSNotification *)notification
+{
+    favoriteTableViewFlag = true;
+    self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    NSLog(@"Received favorite");
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

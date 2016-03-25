@@ -14,7 +14,7 @@
         <attribute name="videoTitleList" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Playlist" positionX="-63" positionY="-18" width="128" height="120"/>
         <element name="Favorite" positionX="-63" positionY="18" width="128" height="105"/>
+        <element name="Playlist" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

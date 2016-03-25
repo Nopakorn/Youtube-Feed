@@ -179,12 +179,42 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
+    NSArray *result = [self.fetchedResultsController fetchedObjects];
+    Youtube *youtube = [[Youtube alloc] init];
+    
+    for (NSManagedObject *manageObject in result) {
+        [youtube.videoIdList addObject:[manageObject valueForKey:@"videoId"]];
+        [youtube.titleList addObject:[manageObject valueForKey:@"videoTitle"]];
+        [youtube.thumbnailList addObject:[manageObject valueForKey:@"videoThumbnail"]];
+    }
+    
+    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSDictionary *userInfo = @{@"youtubeObj": youtube,
+                               @"selectedIndex": selected};
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:userInfo];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.selectedRow = indexPath.row;
+
+    NSArray *result = [self.fetchedResultsController fetchedObjects];
+    Youtube *youtube = [[Youtube alloc] init];
     
+    for (NSManagedObject *manageObject in result) {
+        [youtube.videoIdList addObject:[manageObject valueForKey:@"videoId"]];
+        [youtube.titleList addObject:[manageObject valueForKey:@"videoTitle"]];
+        [youtube.thumbnailList addObject:[manageObject valueForKey:@"videoThumbnail"]];
+    }
+    
+    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSDictionary *userInfo = @{@"youtubeObj": youtube,
+                               @"selectedIndex": selected};
+    NSLog(@"post favorite");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"FavoriteDidSelected" object:self userInfo:userInfo];
+    [self.tabBarController setSelectedIndex:0];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Fetched results controller
