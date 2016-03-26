@@ -42,6 +42,7 @@
 //        [self.playlist_List addObject:object];
 //    }
     NSArray *result = [self.fetchedResultsController fetchedObjects];
+    //[result valueForKey:@"videoIdList"] = [[NSMutableArray alloc] initWithCapacity:10];
     self.playlist_List = [NSMutableArray arrayWithArray:result];
     
 }
@@ -92,6 +93,8 @@
     }
     
     [self fetchPlaylist];
+    //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
     if ([self.playlist_List count] == 0) {
         if(indexPath.row == 0) {
             cell.name.text = @"Favorite";
@@ -107,8 +110,8 @@
         }else {
             if (indexPath.row <= [self.playlist_List count]) {
                 
-                NSManagedObject *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
-                cell.name.text = [playlist valueForKey:@"playlistTitle"];
+                Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
+                cell.name.text = playlist.title;
                 
             }else {
                 cell.name.text = @" . . . . ";
@@ -186,7 +189,7 @@
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     
     [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
-    [newManagedObject setValue:title forKey:@"playlistTitle"];
+    [newManagedObject setValue:title forKey:@"title"];
     
     // Save the context.
     NSError *error = nil;
@@ -247,7 +250,7 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
 }
 
 
@@ -267,15 +270,20 @@
         
     } else if ([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
          NSLog(@"prepare playlistdetail");
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+        Playlist *playlistForRow = [[self fetchedResultsController] objectAtIndexPath:customIndexPath];
         PlaylistDetailTableViewController *dest = segue.destinationViewController;
-        //dest.playlist = self.playlist;
+        dest.playlist = playlistForRow;
         
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
         NSLog(@"prepare playlistEdit");
+       
         PlaylistEditTableViewController *dest = segue.destinationViewController;
-        [self fetchPlaylist];
+        //dest.playlist = playlistForRow;
         dest.playlist_List = self.playlist_List;
-        dest.favorite = self.favorite;
+        //dest.favorite = self.favorite;
     }
     
 }

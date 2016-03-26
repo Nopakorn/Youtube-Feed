@@ -96,7 +96,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSLog(@"check object picked %@",self.favorite.videoTitle);
     
@@ -133,10 +133,26 @@
 - (void)saveVideotoPlaylist:(Favorite *)favorite
 {
      NSLog(@"check object passing %@",favorite.videoTitle);
-    [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
     
-    NSLog(@"ADDING VIDEO");
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    YoutubeVideo *youtubeVideo = [NSEntityDescription insertNewObjectForEntityForName:@"YoutubeVideo" inManagedObjectContext:context];
+    youtubeVideo.timeStamp = [NSDate date];
+    youtubeVideo.videoTitle = favorite.videoTitle;
+    youtubeVideo.videoId = favorite.videoId;
+    youtubeVideo.videoThumbnail = favorite.videoThumbnail;
+    youtubeVideo.playlist = self.playlist;
+    youtubeVideo.index = @([self.playlist.youtubeVideos count]);
+    NSLog(@"check index %@",youtubeVideo.index);
+    // Save the context.
+    NSError *error = nil;
+    if (![context save:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
 }
+
 
 
 #pragma mark - Fetched results controller

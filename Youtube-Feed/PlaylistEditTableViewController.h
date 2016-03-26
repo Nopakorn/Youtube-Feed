@@ -11,10 +11,13 @@
 #import "Favorite.h"
 #import "PlaylistTableViewController.h"
 
-@interface PlaylistEditTableViewController : UITableViewController
+@interface PlaylistEditTableViewController : UITableViewController<NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
 @property (nonatomic, retain) NSMutableArray *playlist_List;
+
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end

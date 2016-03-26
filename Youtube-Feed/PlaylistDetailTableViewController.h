@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
 #import "Youtube.h"
-
+#import "YoutubeVideo.h"
 
 
 @interface PlaylistDetailTableViewController : UITableViewController
 
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Playlist *playlist;
+@property (strong, nonatomic) YoutubeVideo *youtubeVideo;
+@property (strong, nonatomic) NSArray *youtubeVideoList;
+
 @property (nonatomic, retain) NSMutableArray  *imageData;
 
 

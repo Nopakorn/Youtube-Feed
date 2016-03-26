@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Playlist.h"
+
 #import "Favorite.h"
 #import "Youtube.h"
 
@@ -16,7 +16,7 @@
     UIAlertController *alert;
 }
 
-@property (strong, nonatomic) Playlist *playlist;
+
 @property (strong, nonatomic) Favorite *favorite;
 
 @property (nonatomic, retain) NSMutableArray  *imageData;

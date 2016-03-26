@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
 #import "Favorite.h"
+#import "YoutubeVideo.h"
 #import "PlaylistEditDetailFavoriteTableViewController.h"
 
 @interface PlaylistEditDetailTableViewController : UITableViewController <PlaylistEditDetailFavoriteControllerDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate>
@@ -17,6 +18,7 @@
 }
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
+@property (nonatomic, retain) NSMutableArray *youtubeVideoList;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

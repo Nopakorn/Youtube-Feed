@@ -26,20 +26,38 @@
 - (void)addingDataToYoutubeObject
 {
     self.youtube = [[Youtube alloc] init];
-    if(self.playlist.videoIdList != 0) {
-        NSLog(@"save to youtube obj");
-        for (int i = 0; i < [self.playlist.videoIdList count]; i++) {
-            [self.youtube.videoIdList addObject:[self.playlist.videoIdList objectAtIndex:i]];
-            [self.youtube.titleList addObject:[self.playlist.videoTitleList objectAtIndex:i]];
-            [self.youtube.thumbnailList addObject:[self.playlist.videoThumbnail objectAtIndex:i]];
-        }
-    }else {
-        NSLog(@"Have no video in the playlist");
+//    if(self.playlist.videoIdList != 0) {
+//        NSLog(@"save to youtube obj");
+//        for (int i = 0; i < [self.playlist.videoIdList count]; i++) {
+//            [self.youtube.videoIdList addObject:[self.playlist.videoIdList objectAtIndex:i]];
+//            [self.youtube.titleList addObject:[self.playlist.videoTitleList objectAtIndex:i]];
+//            [self.youtube.thumbnailList addObject:[self.playlist.videoThumbnail objectAtIndex:i]];
+//        }
+//    }else {
+//        NSLog(@"Have no video in the playlist");
+//    }
+    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
+        YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
+        [self.youtube.videoIdList addObject:youtubeVideo.videoId];
+        [self.youtube.titleList addObject:youtubeVideo.videoTitle];
+        [self.youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+    }
+}
+
+- (NSArray *)youtubeVideoList
+{
+    if (_youtubeVideoList == nil) {
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+        _youtubeVideoList = [self.playlist.youtubeVideos.allObjects sortedArrayUsingDescriptors:@[sortDescriptor]];
+        return _youtubeVideoList;
+    } else {
+        return _youtubeVideoList;
     }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.title = self.playlist.title;
     [self.tableView reloadData];
 }
 
@@ -56,7 +74,8 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.playlist.videoIdList count];
+    //return [self.playlist.videoIdList count];
+    return [self.youtubeVideoList count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,13 +89,15 @@
         
     }
     
-    cell.name.text = [self.playlist.videoTitleList objectAtIndex:indexPath.row];
+    YoutubeVideo *youtubeVideoForRow = [self.youtubeVideoList objectAtIndex:indexPath.row];
+    cell.name.text = youtubeVideoForRow.videoTitle;
+    
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
     
-    if([self.playlist.videoThumbnail objectAtIndex:indexPath.row] != [NSNull null]){
+    if(youtubeVideoForRow.videoThumbnail != nil){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.playlist.videoThumbnail objectAtIndex:indexPath.row]]];
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:youtubeVideoForRow.videoThumbnail]];
             
             if(data){
                 [self.imageData addObject:data];
@@ -107,6 +128,7 @@
 {
     self.selectedRow = indexPath.row;
     NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    [self addingDataToYoutubeObject];
     NSDictionary *userInfo = @{@"youtubeObj": self.youtube,
                                @"selectedIndex": selected};
      NSLog(@"post playlistdetail");

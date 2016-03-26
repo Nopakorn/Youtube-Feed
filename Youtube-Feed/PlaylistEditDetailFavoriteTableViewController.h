@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Favorite.h"
 #import "Playlist.h"
+#import "YoutubeVideo.h"
 
 @protocol PlaylistEditDetailFavoriteControllerDelegate;
 
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
 @property (nonatomic, retain) NSMutableArray  *imageData;
+@property (nonatomic, retain) NSMutableArray *youtubeVideoList;
 
 @property (nonatomic, assign) id<PlaylistEditDetailFavoriteControllerDelegate> delegate;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;

@@ -53,7 +53,7 @@
         
     }
     Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row];
-    cell.name.text = playlist.playlistTitle;
+    cell.name.text = playlist.title;
     return cell;
 }
 
@@ -65,7 +65,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.playlist = [self.playlist_List objectAtIndex:indexPath.row];
-    
+    //self.playlist = []
     [self performSegueWithIdentifier:@"PlaylistEditDetailSegue" sender:nil];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -74,7 +74,9 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"PlaylistEditDetailSegue"]){
-        
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+//        Playlist *playlistForRow = [[self fetchedResultsController] objectAtIndexPath:customIndexPath];
         PlaylistEditDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
         //dest.favorite = self.favorite;

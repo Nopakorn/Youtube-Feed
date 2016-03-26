@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15C50" minimumToolsVersion="Xcode 7.0">
     <entity name="Favorite" syncable="YES">
         <attribute name="timeStamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="videoId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoThumbnail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="videoTitle" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Playlist" representedClassName="" syncable="YES">
-        <attribute name="playlistTitle" optional="YES" attributeType="String" minValueString="0" maxValueString="100" syncable="YES"/>
+    <entity name="Playlist" representedClassName="Playlist" syncable="YES">
         <attribute name="timeStamp" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="videoIdList" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="videoThumbnail" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="videoTitleList" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" minValueString="0" maxValueString="100" syncable="YES"/>
+        <relationship name="youtubeVideos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="YoutubeVideo" inverseName="playlist" inverseEntity="YoutubeVideo" syncable="YES"/>
+    </entity>
+    <entity name="YoutubeVideo" representedClassName="YoutubeVideo" syncable="YES">
+        <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="videoId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoThumbnail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="videoTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="playlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Playlist" inverseName="youtubeVideos" inverseEntity="Playlist" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Favorite" positionX="-63" positionY="18" width="128" height="105"/>
-        <element name="Playlist" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Favorite" positionX="-234" positionY="-15" width="128" height="105"/>
+        <element name="Playlist" positionX="-11" positionY="-52" width="128" height="88"/>
+        <element name="YoutubeVideo" positionX="7" positionY="180" width="128" height="133"/>
     </elements>
 </model>

@@ -20,78 +20,89 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.youtubeVideoList = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setEditing:YES animated:YES];
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.navigationItem.title = self.playlist.playlistTitle;
-    //[self fetchPlaylist];
+    self.navigationItem.title = self.playlist.title;
+    [self fetchYoutubeVideoList];
+    //[self getYt];
+    
 }
 
-//- (void)fetchPlaylist
-//{
-//    NSLog(@"fetch playlist");
-//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-//    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-//    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
-//    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlistTitle == %@",self.playlist.playlistTitle]];
-//     NSArray *result = [self.fetchedResultsController fetchedObjects];
-//    
-//    for (NSManagedObject *manageObject in result) {
-//        if ([manageObject valueForKey:@"videoIdList"] != nil) {
-//            self.playlist.videoIdList = [NSKeyedUnarchiver unarchiveObjectWithData:[manageObject valueForKey:@"videoIdList"]];
-//            self.playlist.videoTitleList = [NSKeyedUnarchiver unarchiveObjectWithData:[manageObject valueForKey:@"videoTitleList"]];
-//            self.playlist.videoThumbnail = [NSKeyedUnarchiver unarchiveObjectWithData:[manageObject valueForKey:@"videoThumbnail"]];
-//        } else {
-//            NSLog(@"playlist has nil object time:%@ title:%@",[manageObject valueForKey:@"timeStamp"], [manageObject valueForKey:@"playlistTitle"]);
-//        }
-//       
-//    }
-//}
-//
-//- (void)insertPlaylist:(Favorite *)favorite
-//{
-//    
-//    //[self.playlist addPlaylistWithTitle:favorite.videoTitle thumbnail:favorite.videothumbnail andVideoId:favorite.videoId];
-//    NSLog(@"save playlist at title %@",self.playlist.playlistTitle);
-//    [self.playlist.videoIdList addObject:favorite.videoId];
-//    [self.playlist.videoTitleList addObject:favorite.videoTitle];
-//    [self.playlist.videoThumbnail addObject:favorite.videoThumbnail];
-//    
-//    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-//    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-//    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
-//    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlistTitle == %@",self.playlist.playlistTitle]];
-//    NSArray *result = [self.fetchedResultsController fetchedObjects];
-//    
-//    NSData *videoIdListData = [NSKeyedArchiver archivedDataWithRootObject:self.playlist.videoIdList];
-//    NSData *videoTitleListData = [NSKeyedArchiver archivedDataWithRootObject:self.playlist.videoTitleList];
-//    NSData *videoThumbnailData = [NSKeyedArchiver archivedDataWithRootObject:self.playlist.videoThumbnail];
-//    
-//    for (NSManagedObject *manageObject in result) {
-//        [manageObject setValue:[NSDate date] forKey:@"timeStamp"];
-//        [manageObject setValue:videoIdListData forKey:@"videoIdList"];
-//        [manageObject setValue:videoTitleListData forKey:@"videoTitleList"];
-//        [manageObject setValue:videoThumbnailData forKey:@"videoThumbnail"];
-//        // Save the context.
-//        NSError *error = nil;
-//        if (![context save:&error]) {
-//            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//            abort();
-//        } else {
-//            NSLog(@"update data");
-//        }
-//    }
-//
-//}
-//
+- (void)fetchYoutubeVideoList
+{
+//    NSMutableArray *fetchYoutube = [NSMutableArray arrayWithArray:self.playlist.youtubeVideos.allObjects];
+    self.youtubeVideoList = [NSMutableArray arrayWithArray:self.playlist.youtubeVideos.allObjects];
+    
+}
+
+- (void)getYt
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"YoutubeVideo" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlist == %@",self.playlist]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    //
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    [self.youtubeVideoList removeAllObjects];
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (int i = 0; i < result.count; i++) {
+        YoutubeVideo *yo = [result objectAtIndex:i];
+        [self.youtubeVideoList addObject:yo];
+        NSLog(@"check fetch: %@ and index: %@",yo.videoTitle, yo.index);
+    }
+
+}
+
+
+- (void)updateYoutubeVideoList
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@",self.playlist.title]];
+    
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (Playlist *playlistObject in result) {
+        NSLog(@"received youtube from playlist");
+        self.youtubeVideoList = [NSMutableArray arrayWithArray:playlistObject.youtubeVideos.allObjects];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)removeYoutubeVideoFromList
+{
+    NSSet *newYoutubeVideoList = [NSSet setWithArray:self.youtubeVideoList];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@",self.playlist.title]];
+    
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (Playlist *playlistObject in result) {
+        NSLog(@"remove youtube from playlist");
+        playlistObject.youtubeVideos = newYoutubeVideoList;
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+
+   
+}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
     NSLog(@"view did appear playlisteditdetail");
     //[self fetchPlaylist];
+    [self getYt];
     [self.tableView reloadData];
 }
 
@@ -112,13 +123,14 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    if (self.playlist.videoIdList == nil) {
-        return 1;
-    } else {
-        //NSLog(@"playlist count %lu",(unsigned long)[self.playlist.videoIdList count]);
-        return 1;
-    }
+
+    return [self.youtubeVideoList count]+1;
+//    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+//    if ([sectionInfo numberOfObjects] == 0) {
+//        return 1;
+//    } else {
+//        return [sectionInfo numberOfObjects]+1;
+//    }
     
 }
 
@@ -139,11 +151,14 @@
     }
     //[self fetchPlaylist];
     if (indexPath.row == 0) {
-        cell.name.text = self.playlist.playlistTitle;
+        cell.name.text = self.playlist.title;
         
         
     }else {
-        cell.name.text = [self.playlist.videoTitleList objectAtIndex:indexPath.row-1];
+//         NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+//        YoutubeVideo *youtubeVideoForRow = [self.fetchedResultsController objectAtIndexPath:customIndexPath];
+        YoutubeVideo *youtubeVideoForRow = [self.youtubeVideoList objectAtIndex:indexPath.row-1];
+        cell.name.text = youtubeVideoForRow.videoTitle;
         cell.addIcon.hidden = YES;
     }
     
@@ -173,7 +188,7 @@
         
         PlaylistEditDetailFavoriteTableViewController *dest = segue.destinationViewController;
         dest.playlist = self.playlist;
-        dest.favorite = self.favorite;
+        dest.youtubeVideoList = self.youtubeVideoList;
         dest.delegate = self;
         
     }
@@ -192,7 +207,7 @@
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
         
         NSLog(@"began at %ld",indexPath.row);
-        NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.playlistTitle];
+        NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.title];
         
         alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
                                                     message:message
@@ -224,11 +239,9 @@
 - (void)deleteRowAtIndex:(NSInteger )index
 {
     NSLog(@"delete at %ld", index);
-    [self.playlist.videoIdList removeObjectAtIndex:index];
-    [self.playlist.videoTitleList removeObjectAtIndex:index];
-    [self.playlist.videoThumbnail removeObjectAtIndex:index];
+    [self.youtubeVideoList removeObjectAtIndex:index];
     [self.tableView reloadData];
-    
+    [self removeYoutubeVideoFromList];
 }
 
 
@@ -264,19 +277,47 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    NSString *videoTitleToMove = [self.playlist.videoTitleList objectAtIndex:sourceIndexPath.row-1];
-    NSString *videoIdToMove = [self.playlist.videoIdList objectAtIndex:sourceIndexPath.row-1];
-    NSString *videoThumbnailToMove = [self.playlist.videoThumbnail objectAtIndex:sourceIndexPath.row-1];
+    NSNumber *sourceNumber = @(sourceIndexPath.row-1);
+    NSNumber *destNumber = @(destinationIndexPath.row-1);
+    YoutubeVideo *youtubeVideoToMove = [self.youtubeVideoList objectAtIndex:sourceIndexPath.row-1];
+    //youtubeVideoToMove.index = destNumber;
+   
+    YoutubeVideo *youtubeVideoToSource = [self.youtubeVideoList objectAtIndex:destinationIndexPath.row-1];
+    youtubeVideoToSource.index = sourceNumber;
+    [self.youtubeVideoList removeObjectAtIndex:sourceIndexPath.row-1];
+//     [self.youtubeVideoList removeObjectAtIndex:destinationIndexPath.row-1];
+    [self.youtubeVideoList insertObject:youtubeVideoToMove atIndex:destinationIndexPath.row-1];
+//    [self.youtubeVideoList insertObject:youtubeVideoToSource atIndex:sourceIndexPath.row-1];
     
-    [self.playlist.videoIdList removeObjectAtIndex:sourceIndexPath.row-1];
-    [self.playlist.videoTitleList removeObjectAtIndex:sourceIndexPath.row-1];
-    [self.playlist.videoThumbnail removeObjectAtIndex:sourceIndexPath.row-1];
     
-    [self.playlist.videoIdList insertObject:videoIdToMove atIndex:destinationIndexPath.row-1];
-    [self.playlist.videoTitleList insertObject:videoTitleToMove atIndex:destinationIndexPath.row-1];
-    [self.playlist.videoThumbnail insertObject:videoThumbnailToMove atIndex:destinationIndexPath.row-1];
+//    [self.youtubeVideoList exchangeObjectAtIndex:youtubeVideoToSource withObjectAtIndex:youtubeVideoToMove];
+    NSMutableArray *newList = [[NSMutableArray alloc] initWithCapacity:10];
+    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
+        YoutubeVideo *y = [self.youtubeVideoList objectAtIndex:i];
+        y.index = @(i);
+        [newList addObject:y];
+        NSLog(@"list: %@ index:%@",y.videoTitle, y.index);
+    }
     
+    NSSet *newYoutubeVideoList = [NSSet setWithArray:newList];
+    //NSOrderedSet *oderedSet = [NSOrderedSet orderedSetWithArray:self.youtubeVideoList];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@",self.playlist.title]];
     
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (Playlist *playlistObject in result) {
+        NSLog(@"reordering youtube from playlist----------------------");
+        //[context deleteObject:playlistObject.youtubeVideos];
+        playlistObject.youtubeVideos = newYoutubeVideoList;
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
@@ -293,10 +334,9 @@
 
 - (void)addingVideoFromPlayListEditDetailFavorite:(Favorite *)favorite
 {
-   
-    //self.playlist = playlist;
-    //[self insertPlaylist:favorite];
-    //[self fetchPlaylist];
+
+    [self updateYoutubeVideoList];
+    //[self.tableView reloadData];
     NSLog(@"Receive from delegate playlisteditdetailfavorite %@",favorite.videoTitle);
     
 }
@@ -315,15 +355,17 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:self.managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"YoutubeVideo" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlist == %@",self.playlist]];
+
     
     // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
-    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+//    
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
     // Edit the section name key path and cache name if appropriate.
@@ -343,59 +385,59 @@
     return _fetchedResultsController;
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-{
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        default:
-            return;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    UITableView *tableView = self.tableView;
-    NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-    NSIndexPath *customNewIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row+1 inSection:indexPath.section];
-    
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            [self.tableView reloadData];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
-}
+//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+//{
+//    [self.tableView beginUpdates];
+//}
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+//           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+//{
+//    switch(type) {
+//        case NSFetchedResultsChangeInsert:
+//            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        default:
+//            return;
+//    }
+//}
+//
+//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+//       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+//      newIndexPath:(NSIndexPath *)newIndexPath
+//{
+//    UITableView *tableView = self.tableView;
+//    NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+//    NSIndexPath *customNewIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row-1 inSection:indexPath.section];
+//    
+//    switch(type) {
+//        case NSFetchedResultsChangeInsert:
+//            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeUpdate:
+//            [self.tableView reloadData];
+//            break;
+//            
+//        case NSFetchedResultsChangeMove:
+//            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//    }
+//}
+//
+//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+//{
+//    [self.tableView endUpdates];
+//}
 
 @end
