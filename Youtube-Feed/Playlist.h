@@ -1,25 +1,24 @@
 //
 //  Playlist.h
-//  Youtube-Feed
+//  KKP-Movie
 //
-//  Created by Siam System Deverlopment on 3/14/2559 BE.
+//  Created by guild on 3/26/2559 BE.
 //  Copyright © 2559 guild. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "Favorite.h"
+#import <CoreData/CoreData.h>
 
-@interface Playlist : NSObject
+@class YoutubeVideo;
 
-@property (strong, nonatomic) Favorite *favorite;
-@property (nonatomic, retain) NSString *playlistTitle;
-@property (nonatomic, retain) NSMutableArray  *videoTitleList;
-@property (nonatomic, retain) NSMutableArray  *videoThumbnail;
-@property (nonatomic, retain) NSMutableArray  *videoIdList;
+NS_ASSUME_NONNULL_BEGIN
 
+@interface Playlist : NSManagedObject
 
-- (void)setTitle:(NSString *) title;
-
-- (void)addPlaylistWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoTshumbnail andVideoId:(NSString *)videoId;
+// Insert code here to declare functionality of your managed object subclass
 
 @end
+
+NS_ASSUME_NONNULL_END
+
+#import "Playlist+CoreDataProperties.h"

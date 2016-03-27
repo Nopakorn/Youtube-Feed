@@ -50,7 +50,7 @@
     
     self.youtube = [[Youtube alloc] init];
     self.favorite = [[Favorite alloc] init];
-    self.playlist = [[Playlist alloc] init];
+    //self.playlist = [[Playlist alloc] init];
     self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
     
     
@@ -474,7 +474,6 @@
     
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];
         PlaylistTableViewController *playlistView = [nav.viewControllers objectAtIndex:0];
-        playlistView.playlist = self.playlist;
         playlistView.favorite = self.favorite;
         playlistView.youtube = self.youtube;
         NSLog(@"select playlist");
@@ -563,8 +562,4 @@
     return _fetchedResultsController;
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    
-}
 @end

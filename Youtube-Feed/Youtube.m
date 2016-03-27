@@ -43,6 +43,7 @@
 
 - (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage
 {
+    searchTerm = [searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     NSString* urlString;
     if (nextPage) {
         urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug&maxResults=25", self.nextPageToken, searchTerm];
