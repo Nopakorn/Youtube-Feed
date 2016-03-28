@@ -208,9 +208,12 @@
     
     if (indexPath == nil) {
         NSLog(@"long press table view but not in row");
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
         NSLog(@"long press began at row %ld", indexPath.row);
-        
+        if ([self.playlist_List count] < indexPath.row) {
+            NSLog(@"long press began at row %ld more then length", indexPath.row);
+            return;
+        }
         alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
                                                     message:@"Are you sure to remove this video from Favorite"
                                              preferredStyle:UIAlertControllerStyleAlert];
@@ -279,11 +282,10 @@
         
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
         NSLog(@"prepare playlistEdit");
-       
+        [self fetchPlaylist];
         PlaylistEditTableViewController *dest = segue.destinationViewController;
-        //dest.playlist = playlistForRow;
         dest.playlist_List = self.playlist_List;
-        //dest.favorite = self.favorite;
+        
     }
     
 }

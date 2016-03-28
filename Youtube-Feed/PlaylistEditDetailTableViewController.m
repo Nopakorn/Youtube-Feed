@@ -32,9 +32,7 @@
 
 - (void)fetchYoutubeVideoList
 {
-//    NSMutableArray *fetchYoutube = [NSMutableArray arrayWithArray:self.playlist.youtubeVideos.allObjects];
-    self.youtubeVideoList = [NSMutableArray arrayWithArray:self.playlist.youtubeVideos.allObjects];
-    
+    self.youtubeVideoList = [NSMutableArray arrayWithArray:self.playlist.youtubeVideos.allObjects];    
 }
 
 - (void)getYt
@@ -287,10 +285,6 @@
     [self.youtubeVideoList removeObjectAtIndex:sourceIndexPath.row-1];
 //     [self.youtubeVideoList removeObjectAtIndex:destinationIndexPath.row-1];
     [self.youtubeVideoList insertObject:youtubeVideoToMove atIndex:destinationIndexPath.row-1];
-//    [self.youtubeVideoList insertObject:youtubeVideoToSource atIndex:sourceIndexPath.row-1];
-    
-    
-//    [self.youtubeVideoList exchangeObjectAtIndex:youtubeVideoToSource withObjectAtIndex:youtubeVideoToMove];
     NSMutableArray *newList = [[NSMutableArray alloc] initWithCapacity:10];
     for (int i = 0; i < [self.youtubeVideoList count]; i++) {
         YoutubeVideo *y = [self.youtubeVideoList objectAtIndex:i];
