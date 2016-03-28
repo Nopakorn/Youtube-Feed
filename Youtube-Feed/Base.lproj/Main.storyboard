@@ -108,7 +108,7 @@
         <scene sceneID="sUW-ig-UcD">
             <objects>
                 <navigationController id="OLY-Rq-FhV" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Setting" image="SettingIcon" id="SB6-Zr-e8i"/>
+                    <tabBarItem key="tabBarItem" title="Setting" image="SettingIcon" selectedImage="SettingIcon" id="SB6-Zr-e8i"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hRb-UM-mow">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -294,7 +294,7 @@
         <scene sceneID="jrz-ld-qod">
             <objects>
                 <navigationController id="wmL-Ix-RcW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Genre" image="GenreIcon" id="nf2-sT-faQ"/>
+                    <tabBarItem key="tabBarItem" title="Genre" image="GenreIcon" selectedImage="GenreIcon" id="nf2-sT-faQ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h64-D3-C6A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -340,25 +340,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNQ-RZ-NbX">
-                                <rect key="frame" x="265" y="383" width="80" height="80"/>
-                                <state key="normal" backgroundImage="playButton"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="175" y="410" width="30" height="30"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="135" y="320" width="48" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="747" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K20-vk-5rW">
+                                <rect key="frame" x="482" y="404" width="28" height="28"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="IvT-i2-287"/>
+                                    <constraint firstAttribute="width" constant="28" id="Wwv-1Z-AeL"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="star_1"/>
+                                <variation key="widthClass=compact">
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                 </variation>
                                 <connections>
-                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6kD-r0-OcI"/>
+                                    <action selector="favoritePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SFw-FM-Wee"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEp-dk-5ZN">
-                                <rect key="frame" x="372" y="395" width="54" height="54"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fkv-79-fz0" customClass="YTPlayerView">
+                                <rect key="frame" x="0.0" y="124" width="600" height="270"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="270" id="Jp0-0l-Z3b"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEp-dk-5ZN">
+                                <rect key="frame" x="526" y="427" width="54" height="54"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="54" id="M37-Ae-x44"/>
+                                    <constraint firstAttribute="width" constant="54" id="jNA-wB-TWh"/>
+                                </constraints>
                                 <state key="normal" backgroundImage="nextButton"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="226" y="410" width="32" height="30"/>
-                                </variation>
                                 <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="276" y="320" width="46" height="30"/>
                                 </variation>
@@ -366,43 +375,69 @@
                                     <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jbn-rM-8b5"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fkv-79-fz0" customClass="YTPlayerView">
-                                <rect key="frame" x="0.0" y="84" width="600" height="270"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYF-N9-Ied">
+                                <rect key="frame" x="20" y="427" width="54" height="54"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="270" id="Jp0-0l-Z3b"/>
+                                    <constraint firstAttribute="height" constant="54" id="4M1-Ch-Gm1"/>
+                                    <constraint firstAttribute="width" constant="54" id="ZBF-JT-DPe"/>
                                 </constraints>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYF-N9-Ied">
-                                <rect key="frame" x="175" y="395" width="54" height="54"/>
                                 <state key="normal" backgroundImage="prevButton"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="127" y="410" width="31" height="30"/>
-                                </variation>
                                 <connections>
                                     <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SWh-GA-BGZ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="747" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K20-vk-5rW">
-                                <rect key="frame" x="482" y="403" width="28" height="28"/>
-                                <state key="normal" backgroundImage="star_1"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                    <rect key="frame" x="306" y="412" width="28" height="28"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNQ-RZ-NbX">
+                                <rect key="frame" x="260" y="414" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="9GR-2q-8o0"/>
+                                    <constraint firstAttribute="width" constant="80" id="tNy-n4-oa9"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="playButton"/>
+                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="135" y="320" width="48" height="30"/>
                                 </variation>
                                 <connections>
-                                    <action selector="favoritePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SFw-FM-Wee"/>
+                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6kD-r0-OcI"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="gYF-N9-Ied" firstAttribute="centerY" secondItem="CNQ-RZ-NbX" secondAttribute="centerY" id="0w0-Qv-jms"/>
                             <constraint firstAttribute="trailing" secondItem="Fkv-79-fz0" secondAttribute="trailing" id="2Sf-2Y-qko"/>
+                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="leading" secondItem="gYF-N9-Ied" secondAttribute="trailing" constant="186" id="55j-5j-whm"/>
+                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="375" id="Ab3-mp-fwc"/>
+                            <constraint firstItem="gYF-N9-Ied" firstAttribute="top" secondItem="CNQ-RZ-NbX" secondAttribute="bottom" constant="-67" id="FHZ-Fx-es5"/>
                             <constraint firstItem="Fkv-79-fz0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z2g-J9-dFs"/>
-                            <constraint firstItem="Fkv-79-fz0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="kUU-zW-dag">
+                            <constraint firstItem="aEp-dk-5ZN" firstAttribute="top" secondItem="CNQ-RZ-NbX" secondAttribute="bottom" constant="-67" id="a0Q-HM-H25"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="K20-vk-5rW" secondAttribute="trailing" constant="70" id="fPO-OP-6Vl"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="gYF-N9-Ied" secondAttribute="leading" id="fal-ud-ncr"/>
+                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="leading" secondItem="gYF-N9-Ied" secondAttribute="trailing" constant="186" id="gGN-cP-8eg"/>
+                            <constraint firstItem="K20-vk-5rW" firstAttribute="top" secondItem="Fkv-79-fz0" secondAttribute="bottom" constant="10" id="iUu-uv-sow"/>
+                            <constraint firstItem="Fkv-79-fz0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="60" id="kUU-zW-dag">
                                 <variation key="heightClass=compact" constant="0.0"/>
                             </constraint>
+                            <constraint firstItem="aEp-dk-5ZN" firstAttribute="leading" secondItem="CNQ-RZ-NbX" secondAttribute="trailing" constant="186" id="ndl-66-Qzq"/>
+                            <constraint firstItem="K20-vk-5rW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="462" id="p0x-Tc-Ige"/>
+                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uhf-Al-nIG"/>
+                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="top" secondItem="Fkv-79-fz0" secondAttribute="bottom" constant="20" id="wmA-Jp-m9u"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="aEp-dk-5ZN" secondAttribute="trailing" id="x50-Q2-OJM"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="0w0-Qv-jms"/>
+                                <exclude reference="55j-5j-whm"/>
+                                <exclude reference="Ab3-mp-fwc"/>
+                                <exclude reference="gGN-cP-8eg"/>
+                                <exclude reference="p0x-Tc-Ige"/>
+                                <exclude reference="ndl-66-Qzq"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="constraints">
+                                <exclude reference="0w0-Qv-jms"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Youtube Display" id="S5U-Xz-iEU"/>
                     <connections>

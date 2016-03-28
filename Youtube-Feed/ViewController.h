@@ -17,12 +17,13 @@
 #import "SearchTableViewController.h"
 
 
-@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate>
 {
     UIAlertController *favoriteAlert;
     NSTimer *favoriteAlertTimer;
     UIAlertController *outOflengthAlert;
     NSTimer *outOflengthAlertTimer;
+    NSTimer *hideNavigation;
 }
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;

@@ -33,10 +33,10 @@
     [super viewDidLoad];
     
     self.tabBarController.delegate = self;
-    self.tabBarItem.image = [[UIImage imageNamed:@"displayIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    //self.tabBarItem.image = [[UIImage imageNamed:@"displayIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     //self.tabBarItem.selectedImage = [[UIImage imageNamed:@"displayIconSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    
+    self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+    self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     
     
     item = 0;
@@ -96,8 +96,37 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedFavoriteDidSelectedNotification:)
                                                  name:@"FavoriteDidSelected" object:nil];
-    self.addButton.hidden = YES;
+    
+    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     NSLog(@"View did load in youtube %@",[tabbar.recommendYoutube.titleList objectAtIndex:1]);
+   
+   
+    
+    UITapGestureRecognizer *tgpr = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(handleTapPressed:)];
+    [self.view addGestureRecognizer:tgpr];
+}
+
+
+- (void)hideNavigation
+{
+    [self.navigationController setNavigationBarHidden:YES animated:UIStatusBarAnimationSlide];
+     self.tabBarController.tabBar.hidden = YES;
+
+}
+
+- (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
+{
+    if (self.tabBarController.tabBar.hidden == YES) {
+        [self.navigationController setNavigationBarHidden:NO animated:UIStatusBarAnimationSlide];
+        self.tabBarController.tabBar.hidden = NO;
+
+    } else {
+        [self.navigationController setNavigationBarHidden:YES animated:UIStatusBarAnimationSlide];
+        self.tabBarController.tabBar.hidden = YES;
+
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -277,6 +306,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Playback Started" object:self];
             [self.playerView playVideo];
             [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
+            //self.playButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
         } else {
             [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
             [self.playerView pauseVideo];
