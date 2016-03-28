@@ -68,14 +68,13 @@
     
     //[self.navigationController setNavigationBarHidden:NO];
     self.playerView.delegate = self;
-    NSDictionary *playerVers = @{
-                                 @"playsinline" : @1,
-                                 @"controls" : @0,
-                                 @"showinfo" : @1,
-                                 @"modestbranding" : @1,
-    };
+    self.playerVers =  @{ @"playsinline" : @1,
+                          @"controls" : @0,
+                          @"showinfo" : @1,
+                          @"modestbranding" : @1,
+                              };
     
-    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedPlayBackStartedNotification:)
@@ -141,64 +140,35 @@
     NSLog(@"View did appear in youtube");
     
     if (recommendTableViewFlag) {
-        NSDictionary *playerVers = @{
-                                     @"playsinline" : @1,
-                                     @"controls" : @0,
-                                     @"showinfo" : @1,
-                                     @"modestbranding" : @1,
-                                     };
-        
-        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         recommendTableViewFlag = false;
     }
     
     if (searchTableViewFlag) {
-        NSDictionary *playerVers = @{
-                                     @"playsinline" : @1,
-                                     @"controls" : @0,
-                                     @"showinfo" : @1,
-                                     @"modestbranding" : @1,
-                                     };
+
         
-        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         searchTableViewFlag = false;
     }
     
     if (playlistDetailTableViewFlag) {
-        NSDictionary *playerVers = @{
-                                     @"playsinline" : @1,
-                                     @"controls" : @0,
-                                     @"showinfo" : @1,
-                                     @"modestbranding" : @1,
-                                     };
-        
-        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         playlistDetailTableViewFlag = false;
         playlistDidPlayed = true;
     }
 
     if (genreListTableViewFlag) {
-        NSDictionary *playerVers = @{
-                                     @"playsinline" : @1,
-                                     @"controls" : @0,
-                                     @"showinfo" : @1,
-                                     @"modestbranding" : @1,
-                                     };
-        
-        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         genreListTableViewFlag = false;
 
     }
     
     if (favoriteTableViewFlag) {
-        NSDictionary *playerVers = @{
-                                     @"playsinline" : @1,
-                                     @"controls" : @0,
-                                     @"showinfo" : @1,
-                                     @"modestbranding" : @1,
-                                     };
-        
-        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         favoriteTableViewFlag = false;
         favoriteDidPlayed = true;
         
@@ -237,6 +207,7 @@
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
+    //[self.playerView cur]
     if (state == kYTPlayerStateEnded) {
         NSLog(@"Ended video");
         item+=1;
@@ -250,14 +221,8 @@
             [self presentViewController:outOflengthAlert animated:YES completion:nil];
             
         }else {
-            NSDictionary *playerVers = @{
-                                         @"playsinline" : @1,
-                                         @"controls" : @0,
-                                         @"showinfo" : @1,
-                                         @"modestbranding" : @1,
-                                         @"autoplay" : @0
-                                         };
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             
         }
         
@@ -280,14 +245,8 @@
             [self presentViewController:outOflengthAlert animated:YES completion:nil];
              item-=1;
         }else {
-            NSDictionary *playerVers = @{
-                                         @"playsinline" : @1,
-                                         @"controls" : @0,
-                                         @"showinfo" : @1,
-                                         @"modestbranding" : @1,
-                                         @"autoplay" : @0
-                                         };
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             
         }
 
@@ -330,14 +289,8 @@
                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
                 item-=1;
             }else {
-                NSDictionary *playerVers = @{
-                                             @"playsinline" : @1,
-                                             @"controls" : @0,
-                                             @"showinfo" : @1,
-                                             @"modestbranding" : @1,
-                                             @"autoplay" : @0
-                                             };
-                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                 
             }
 
@@ -357,14 +310,8 @@
                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
                 item+=1;
             } else {
-                NSDictionary *playerVers = @{
-                                             @"playsinline" : @1,
-                                             @"controls" : @0,
-                                             @"showinfo" : @1,
-                                             @"modestbranding" : @1,
-                                             @"autoplay" : @0
-                                             };
-                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:playerVers];
+
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                 
             }
 

@@ -39,6 +39,7 @@
 
 @property (nonatomic, retain) NSMutableArray  *favoriteList;
 @property (nonatomic, retain) NSArray  *resultFovorite;
+@property (nonatomic, retain) NSDictionary *playerVers;
 
 - (IBAction)buttonPressed:(id)sender;
 - (IBAction)favoritePressed:(id)sender;
