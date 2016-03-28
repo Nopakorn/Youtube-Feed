@@ -1,5 +1,5 @@
 //
-//  Playlist.h
+//  YoutubeVideo.h
 //  KKP-Movie
 //
 //  Created by Siam System Deverlopment on 3/28/2559 BE.
@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class YoutubeVideo;
+@class Playlist;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Playlist : NSManagedObject
+@interface YoutubeVideo : NSManagedObject
 
 // Insert code here to declare functionality of your managed object subclass
 
@@ -21,4 +21,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#import "Playlist+CoreDataProperties.h"
+#import "YoutubeVideo+CoreDataProperties.h"

@@ -278,13 +278,12 @@
     NSNumber *sourceNumber = @(sourceIndexPath.row-1);
     NSNumber *destNumber = @(destinationIndexPath.row-1);
     YoutubeVideo *youtubeVideoToMove = [self.youtubeVideoList objectAtIndex:sourceIndexPath.row-1];
-    //youtubeVideoToMove.index = destNumber;
    
     YoutubeVideo *youtubeVideoToSource = [self.youtubeVideoList objectAtIndex:destinationIndexPath.row-1];
     youtubeVideoToSource.index = sourceNumber;
     [self.youtubeVideoList removeObjectAtIndex:sourceIndexPath.row-1];
-//     [self.youtubeVideoList removeObjectAtIndex:destinationIndexPath.row-1];
     [self.youtubeVideoList insertObject:youtubeVideoToMove atIndex:destinationIndexPath.row-1];
+    
     NSMutableArray *newList = [[NSMutableArray alloc] initWithCapacity:10];
     for (int i = 0; i < [self.youtubeVideoList count]; i++) {
         YoutubeVideo *y = [self.youtubeVideoList objectAtIndex:i];
