@@ -203,11 +203,36 @@
     [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
 
     [self.playerView playVideo];
+    //implementprogress bar
+    self.progressView.progress = 0.0;
+    //[self performSelectorOnMainThread:@selector(makeProgressBarMoving) withObject:nil waitUntilDone:NO];
+}
+- (void)makeProgressBarMoving:(NSTimer *)timer
+{
+    float total = [self.progressView progress];
+    if (total < 1) {
+        float playerCurrentTime = [self.playerView currentTime];
+        NSLog(@"current time %f",playerCurrentTime);
+        self.progressView.progress = (playerCurrentTime / (float)self.playerTotalTime)*10;
+        NSLog(@"progress value %f",(playerCurrentTime / (float)self.playerTotalTime));
+    } else {
+        [self.timerProgress invalidate];
+    }
+    
+    
 }
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
-    //[self.playerView cur]
+    //NSTimeInterval playerTotalTime;
+    if (state == kYTPlayerStatePlaying) {
+        self.playerTotalTime = [self.playerView duration];
+        //NSInteger second = (double)self.playerTotalTime % 60;
+        
+        NSLog(@"check timer: %f",(float)self.playerTotalTime);
+        self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
+    }
+
     if (state == kYTPlayerStateEnded) {
         NSLog(@"Ended video");
         item+=1;

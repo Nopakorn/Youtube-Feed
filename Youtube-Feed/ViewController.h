@@ -36,6 +36,9 @@
 @property (weak,nonatomic) IBOutlet UIButton  *prevButton;
 @property (weak,nonatomic) IBOutlet UIButton  *addButton;
 @property (weak,nonatomic) IBOutlet UIButton  *favoriteButton;
+@property (weak,nonatomic) IBOutlet UIProgressView *progressView;
+@property (strong, nonatomic) NSTimer *timerProgress;
+@property (nonatomic) NSTimeInterval playerTotalTime;
 
 @property (nonatomic, retain) NSMutableArray  *favoriteList;
 @property (nonatomic, retain) NSArray  *resultFovorite;
