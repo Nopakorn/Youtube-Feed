@@ -27,32 +27,35 @@
     [self createGerne];
     //[self insertNewObject];
     //[self fetchData];
-}
-
-- (void)fetchData
-{
-    NSManagedObject *object = [[self.fetchedResultsController fetchedObjects] objectAtIndex:0];
-    NSLog(@"test :%@", [object valueForKey:@"playlistTitle"]);
-}
-
-- (void)insertNewObject
-{
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-
-    [newManagedObject setValue:@"new Playlist" forKey:@"playlistTitle"];
-    
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+        NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+        NSLog(@"YES genre is selected %@",saveGenre);
+        NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
+        self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+        [self callSearchSecondTime:saveGenre];
+        
+    } else {
+        NSLog(@"NO genre isnt selected");
     }
+
 }
 
+- (void)callSearchSecondTime:(NSString *)saveGenre
+{
+     [self.youtube getRecommendSearchYoutube:saveGenre withNextPage:NO];
+    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(130.5, 65.5);
+    spinner.color = [UIColor blackColor];
+    [alert.view addSubview:spinner];
+    [spinner startAnimating];
+    [self presentViewController:alert animated:NO completion:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoId)
+                                                 name:@"LoadVideoId" object:nil];
 
+}
 
 
 - (void)createGerne
@@ -142,6 +145,17 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
+    
+    NSString *genreSelectedString = @"";
+    for(int i = 0 ; i < [self.genreSelected count] ; i++){
+        genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+    }
+    genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];

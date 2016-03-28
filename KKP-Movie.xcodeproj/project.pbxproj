@@ -21,14 +21,15 @@
 		11C1710D1C7186A900E74681 /* Youtube_FeedUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1710C1C7186A900E74681 /* Youtube_FeedUITests.m */; };
 		11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F18B6C1C76D21B0066A8EF /* Youtube.m */; };
 		5C3629501C990F9F003C359F /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C36294F1C990F9F003C359F /* SearchTableViewController.m */; };
-		5C36C6B21CA4EBE900ECF47D /* star_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C36C6B01CA4EBE900ECF47D /* star_1.jpg */; };
-		5C36C6B31CA4EBE900ECF47D /* star_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C36C6B11CA4EBE900ECF47D /* star_2.png */; };
 		5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */; };
 		5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */; };
 		5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */; };
+		5C551CAE1CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */; };
+		5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA91CA8DE7100BECEC7 /* Playlist.m */; };
+		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
+		5C551CB11CA8DE7100BECEC7 /* YoutubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */; };
 		5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */; };
 		5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4191C9678FE00A08005 /* Favorite.m */; };
-		5C67E41D1C96791E00A08005 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E41C1C96791E00A08005 /* Playlist.m */; };
 		5C67E4201C9696F100A08005 /* FavoriteCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E41F1C9696F100A08005 /* FavoriteCustomCell.m */; };
 		5C67E4221C96970300A08005 /* FavoriteCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C67E4211C96970300A08005 /* FavoriteCustomCell.xib */; };
 		5C67E4251C9699C500A08005 /* FavoriteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4241C9699C500A08005 /* FavoriteTableViewController.m */; };
@@ -99,19 +100,23 @@
 		11F18B6C1C76D21B0066A8EF /* Youtube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Youtube.m; sourceTree = "<group>"; };
 		5C36294E1C990F9F003C359F /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
 		5C36294F1C990F9F003C359F /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
-		5C36C6B01CA4EBE900ECF47D /* star_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = star_1.jpg; path = ../../../Desktop/star_1.jpg; sourceTree = "<group>"; };
-		5C36C6B11CA4EBE900ECF47D /* star_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = star_2.png; path = ../../../Desktop/star_2.png; sourceTree = "<group>"; };
 		5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPlaylistPopUpViewController.h; sourceTree = "<group>"; };
 		5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPlaylistPopUpViewController.m; sourceTree = "<group>"; };
 		5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistPopUpCustomCell.xib; sourceTree = "<group>"; };
 		5C4222921C916EBF00C1C525 /* PlaylistPopUpCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistPopUpCustomCell.h; sourceTree = "<group>"; };
 		5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistPopUpCustomCell.m; sourceTree = "<group>"; };
+		5C551CA61CA8DE7100BECEC7 /* Playlist+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Playlist+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Playlist+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5C551CA81CA8DE7100BECEC7 /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playlist.h; sourceTree = "<group>"; };
+		5C551CA91CA8DE7100BECEC7 /* Playlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Playlist.m; sourceTree = "<group>"; };
+		5C551CAA1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YoutubeVideo+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YoutubeVideo+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5C551CAC1CA8DE7100BECEC7 /* YoutubeVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YoutubeVideo.h; sourceTree = "<group>"; };
+		5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YoutubeVideo.m; sourceTree = "<group>"; };
 		5C67E4151C96767E00A08005 /* PlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistTableViewController.h; sourceTree = "<group>"; };
 		5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistTableViewController.m; sourceTree = "<group>"; };
 		5C67E4181C9678FE00A08005 /* Favorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorite.h; sourceTree = "<group>"; };
 		5C67E4191C9678FE00A08005 /* Favorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Favorite.m; sourceTree = "<group>"; };
-		5C67E41B1C96791E00A08005 /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playlist.h; sourceTree = "<group>"; };
-		5C67E41C1C96791E00A08005 /* Playlist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Playlist.m; sourceTree = "<group>"; };
 		5C67E41E1C9696F100A08005 /* FavoriteCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteCustomCell.h; sourceTree = "<group>"; };
 		5C67E41F1C9696F100A08005 /* FavoriteCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteCustomCell.m; sourceTree = "<group>"; };
 		5C67E4211C96970300A08005 /* FavoriteCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteCustomCell.xib; sourceTree = "<group>"; };
@@ -271,8 +276,6 @@
 		11C170E71C7186A800E74681 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5C36C6B01CA4EBE900ECF47D /* star_1.jpg */,
-				5C36C6B11CA4EBE900ECF47D /* star_2.png */,
 				11C170E81C7186A800E74681 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -312,8 +315,6 @@
 				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
 				5C67E4181C9678FE00A08005 /* Favorite.h */,
 				5C67E4191C9678FE00A08005 /* Favorite.m */,
-				5C67E41B1C96791E00A08005 /* Playlist.h */,
-				5C67E41C1C96791E00A08005 /* Playlist.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -369,6 +370,14 @@
 				5CD4C43E1CA28D5100A6C837 /* PlaylistModel.xcdatamodeld */,
 				5CD4C4571CA295B400A6C837 /* DataController.h */,
 				5CD4C4581CA295B400A6C837 /* DataController.m */,
+				5C551CA61CA8DE7100BECEC7 /* Playlist+CoreDataProperties.h */,
+				5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */,
+				5C551CA81CA8DE7100BECEC7 /* Playlist.h */,
+				5C551CA91CA8DE7100BECEC7 /* Playlist.m */,
+				5C551CAA1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.h */,
+				5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */,
+				5C551CAC1CA8DE7100BECEC7 /* YoutubeVideo.h */,
+				5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -480,7 +489,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C36C6B31CA4EBE900ECF47D /* star_2.png in Resources */,
 				5CBA2CE81C97CA280049FE4A /* PlaylistEditDetailCustomCell.xib in Resources */,
 				11C170F71C7186A800E74681 /* LaunchScreen.storyboard in Resources */,
 				5CB425E01C9284A5005DCB46 /* PlaylistCustomCell.xib in Resources */,
@@ -491,7 +499,6 @@
 				11C170F21C7186A800E74681 /* Main.storyboard in Resources */,
 				11BC1A0F1C8E938900285564 /* SettingCustomCell.xib in Resources */,
 				5CBA2CE61C97CA140049FE4A /* PlaylistEditCustomCell.xib in Resources */,
-				5C36C6B21CA4EBE900ECF47D /* star_1.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +573,7 @@
 			files = (
 				5CD4C4591CA295B400A6C837 /* DataController.m in Sources */,
 				5CB425E61C928577005DCB46 /* PlaylistCustomCell.m in Sources */,
+				5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */,
 				5C8679E81CA14E9E0098F9A9 /* GenreListTableViewController.m in Sources */,
 				5CB425D91C928420005DCB46 /* RecommendTableViewController.m in Sources */,
 				11BC1A0D1C8E8B9200285564 /* MainTabBarViewController.m in Sources */,
@@ -576,15 +584,17 @@
 				5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */,
 				5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */,
 				5C3629501C990F9F003C359F /* SearchTableViewController.m in Sources */,
+				5C551CB11CA8DE7100BECEC7 /* YoutubeVideo.m in Sources */,
 				5C67E4251C9699C500A08005 /* FavoriteTableViewController.m in Sources */,
 				5CBA2CEE1C97CC2B0049FE4A /* PlaylistEditDetailCustomCell.m in Sources */,
-				5C67E41D1C96791E00A08005 /* Playlist.m in Sources */,
 				5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */,
 				5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */,
 				5CB425E31C928561005DCB46 /* RecommendCustomCell.m in Sources */,
 				5C8679E21CA1433C0098F9A9 /* GenreTableViewController.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
+				5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */,
 				5CBA2CF41C97CDA30049FE4A /* PlaylistEditDetailTableViewController.m in Sources */,
+				5C551CAE1CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m in Sources */,
 				5C8C98CE1C9023EE0098A3A4 /* FirstSettingTableViewController.m in Sources */,
 				11BC1A0A1C8E8A5D00285564 /* SettingTableViewController.m in Sources */,
 				5CBA2CEB1C97CC150049FE4A /* PlaylistEditCustomCell.m in Sources */,

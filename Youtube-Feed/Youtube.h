@@ -34,5 +34,6 @@
 - (void)callRecommendSearch:(NSMutableArray *)genreSelected withNextPage:(BOOL)nextPage;
 - (void)callSearchByText:(NSString *)text withNextPage:(BOOL)nextPage;
 - (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
+- (void)getRecommendSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
 
 @end

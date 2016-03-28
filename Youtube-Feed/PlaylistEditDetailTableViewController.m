@@ -293,7 +293,6 @@
     }
     
     NSSet *newYoutubeVideoList = [NSSet setWithArray:newList];
-    //NSOrderedSet *oderedSet = [NSOrderedSet orderedSetWithArray:self.youtubeVideoList];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
