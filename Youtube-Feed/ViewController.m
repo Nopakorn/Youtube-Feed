@@ -33,6 +33,11 @@
     [super viewDidLoad];
     
     self.tabBarController.delegate = self;
+    self.tabBarItem.image = [[UIImage imageNamed:@"displayIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    //self.tabBarItem.selectedImage = [[UIImage imageNamed:@"displayIconSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    
+    
     
     item = 0;
     queryIndex = -1;
@@ -50,7 +55,6 @@
     
     self.youtube = [[Youtube alloc] init];
     self.favorite = [[Favorite alloc] init];
-    //self.playlist = [[Playlist alloc] init];
     self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
     
     
@@ -176,8 +180,8 @@
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
 {
     BOOL checkFav = false;
-    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2.png"];
-    UIImage *btnImageStar = [UIImage imageNamed:@"star_1.jpg"];
+    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
+    UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
     
     self.resultFovorite = [self.fetchedResultsController fetchedObjects];
     for (int i = 0; i < [self.resultFovorite count]; i++) {
@@ -196,7 +200,9 @@
     } else {
         [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
     }
-    
+    UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
+    [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
+
     [self.playerView playVideo];
 }
 
@@ -206,6 +212,8 @@
         NSLog(@"Ended video");
         item+=1;
         [self.playerView pauseVideo];
+        UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+        [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if(item == [self.youtube.videoIdList count]){
             NSLog(@"Out of length");
             outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
@@ -233,6 +241,8 @@
         NSLog(@"Video unstarted : %@", [self.youtube.videoIdList objectAtIndex:item]);
         item+=1;
         [self.playerView pauseVideo];
+        UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+        [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if(item == [self.youtube.videoIdList count]) {
             
              NSLog(@"Out of length");
@@ -259,17 +269,27 @@
 {
     if (sender == self.playButton) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Playback Started" object:self];
-        [self.playerView playVideo];
         
-    } else if (sender == self.pauseButton) {
+        UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+        UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
         
-        [self.playerView pauseVideo];
+        if ([[self.playButton imageForState:UIControlStateNormal] isEqual:btnImagePlay]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"Playback Started" object:self];
+            [self.playerView playVideo];
+            [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
+        } else {
+            [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+            [self.playerView pauseVideo];
+
+        }
+        
         
     } else if (sender == self.nextButton) {
         
         item+=1;
         [self.playerView pauseVideo];
+        UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+        [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if (outOfLengthAlert) {
             
             if (item == [self.youtube.videoIdList count]) {
@@ -297,6 +317,8 @@
         
         item-=1;
         [self.playerView pauseVideo];
+        UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+        [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if (outOfLengthAlert) {
             if (item < 0) {
                 NSLog(@"Out of length");
@@ -328,8 +350,8 @@
     NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
     [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
     
-    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2.png"];
-    UIImage *btnImageStar = [UIImage imageNamed:@"star_1.jpg"];
+    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
+    UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
 
     if ([[self.favoriteButton imageForState:UIControlStateNormal] isEqual:btnImageStar]) {
         

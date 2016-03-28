@@ -19,6 +19,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tabBarItem.image = [[UIImage imageNamed:@"settingIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
     self.youtube = [[Youtube alloc] init];
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
@@ -113,7 +115,16 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
-   
+    NSString *genreSelectedString = @"";
+    for(int i = 0 ; i < [self.genreSelected count] ; i++){
+        genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+    }
+    genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];

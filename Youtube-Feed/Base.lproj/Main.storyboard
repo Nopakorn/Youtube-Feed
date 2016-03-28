@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -92,7 +91,7 @@
         <scene sceneID="Vaq-lk-5pR">
             <objects>
                 <navigationController id="oRa-Vd-rDo" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Search" id="HRC-aF-U6X"/>
+                    <tabBarItem key="tabBarItem" title="Search" image="SearchIcon" selectedImage="SearchIconSelected" id="HRC-aF-U6X"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="eUN-rt-afP">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -109,7 +108,7 @@
         <scene sceneID="sUW-ig-UcD">
             <objects>
                 <navigationController id="OLY-Rq-FhV" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Setting" id="SB6-Zr-e8i"/>
+                    <tabBarItem key="tabBarItem" title="Setting" image="SettingIcon" id="SB6-Zr-e8i"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hRb-UM-mow">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -211,6 +210,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.049299123841120937" green="0.052348242495755162" blue="0.059759489528795839" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </tabBar>
                     <connections>
                         <segue destination="pHh-BN-O3A" kind="relationship" relationship="viewControllers" id="Qmd-8Z-Lb9"/>
@@ -290,7 +294,7 @@
         <scene sceneID="jrz-ld-qod">
             <objects>
                 <navigationController id="wmL-Ix-RcW" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Genre" id="nf2-sT-faQ"/>
+                    <tabBarItem key="tabBarItem" title="Genre" image="GenreIcon" id="nf2-sT-faQ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h64-D3-C6A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -307,7 +311,11 @@
         <scene sceneID="MbZ-UI-dms">
             <objects>
                 <navigationController id="pHh-BN-O3A" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Display" id="Q2K-tf-DoK"/>
+                    <tabBarItem key="tabBarItem" title="Display" image="displayIcon" selectedImage="displayIconSelected" id="Q2K-tf-DoK">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qEK-mT-Moc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -332,84 +340,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEp-dk-5ZN">
-                                <rect key="frame" x="339" y="412" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="hNb-85-gug"/>
-                                </constraints>
-                                <state key="normal" title="Next"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNQ-RZ-NbX">
+                                <rect key="frame" x="265" y="383" width="80" height="80"/>
+                                <state key="normal" backgroundImage="playButton"/>
                                 <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="253" y="412" width="32" height="30"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="276" y="320" width="46" height="30"/>
-                                </variation>
-                                <connections>
-                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jbn-rM-8b5"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QeE-5E-bv5">
-                                <rect key="frame" x="151" y="412" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="2QJ-hI-8qK"/>
-                                </constraints>
-                                <state key="normal" title="Pause"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="188" y="412" width="42" height="30"/>
-                                </variation>
-                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
-                                    <rect key="frame" x="208" y="320" width="46" height="30"/>
-                                </variation>
-                                <connections>
-                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8j3-aW-TOf"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYF-N9-Ied">
-                                <rect key="frame" x="215" y="412" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="bFW-PY-nhH"/>
-                                </constraints>
-                                <state key="normal" title="Prev"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="85" y="412" width="31" height="30"/>
-                                </variation>
-                                <connections>
-                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SWh-GA-BGZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K20-vk-5rW">
-                                <rect key="frame" x="411" y="414" width="28" height="28"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="28" id="KVr-zc-fsw"/>
-                                    <constraint firstAttribute="width" constant="28" id="zFG-9M-87U"/>
-                                </constraints>
-                                <state key="normal" title="Favorite" image="star_1.jpg"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                    <rect key="frame" x="306" y="412" width="28" height="28"/>
-                                </variation>
-                                <connections>
-                                    <action selector="favoritePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SFw-FM-Wee"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fkv-79-fz0" customClass="YTPlayerView">
-                                <rect key="frame" x="0.0" y="84" width="600" height="270"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="270" id="Jp0-0l-Z3b"/>
-                                </constraints>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="151" width="400" height="241"/>
-                                </variation>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNQ-RZ-NbX">
-                                <rect key="frame" x="277" y="412" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="R9x-mc-E7s"/>
-                                </constraints>
-                                <state key="normal" title="Play"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="137" y="412" width="30" height="30"/>
+                                    <rect key="frame" x="175" y="410" width="30" height="30"/>
                                 </variation>
                                 <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
                                     <rect key="frame" x="135" y="320" width="48" height="30"/>
@@ -418,37 +353,61 @@
                                     <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6kD-r0-OcI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEp-dk-5ZN">
+                                <rect key="frame" x="372" y="395" width="54" height="54"/>
+                                <state key="normal" backgroundImage="nextButton"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="226" y="410" width="32" height="30"/>
+                                </variation>
+                                <variation key="heightClass=compact-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="276" y="320" width="46" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jbn-rM-8b5"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fkv-79-fz0" customClass="YTPlayerView">
+                                <rect key="frame" x="0.0" y="84" width="600" height="270"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="270" id="Jp0-0l-Z3b"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gYF-N9-Ied">
+                                <rect key="frame" x="175" y="395" width="54" height="54"/>
+                                <state key="normal" backgroundImage="prevButton"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <rect key="frame" x="127" y="410" width="31" height="30"/>
+                                </variation>
+                                <connections>
+                                    <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SWh-GA-BGZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="747" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K20-vk-5rW">
+                                <rect key="frame" x="482" y="403" width="28" height="28"/>
+                                <state key="normal" backgroundImage="star_1"/>
+                                <variation key="widthClass=compact" fixedFrame="YES">
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                    <rect key="frame" x="306" y="412" width="28" height="28"/>
+                                </variation>
+                                <connections>
+                                    <action selector="favoritePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SFw-FM-Wee"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Fkv-79-fz0" secondAttribute="trailing" id="2Sf-2Y-qko"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="QeE-5E-bv5" secondAttribute="bottom" constant="109" id="3fP-ee-t2Q"/>
-                            <constraint firstItem="gYF-N9-Ied" firstAttribute="leading" secondItem="QeE-5E-bv5" secondAttribute="trailing" constant="18" id="6SV-fU-Qhx"/>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="top" secondItem="aEp-dk-5ZN" secondAttribute="top" id="6zW-yC-f3a"/>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="centerX" secondItem="Fkv-79-fz0" secondAttribute="centerX" id="Cq9-JA-umJ"/>
-                            <constraint firstItem="K20-vk-5rW" firstAttribute="top" secondItem="Fkv-79-fz0" secondAttribute="bottom" constant="60" id="FbL-CA-T6X"/>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="baseline" secondItem="gYF-N9-Ied" secondAttribute="baseline" id="Iet-0M-HWP"/>
-                            <constraint firstItem="QeE-5E-bv5" firstAttribute="top" secondItem="gYF-N9-Ied" secondAttribute="top" id="Jo5-3l-Lj9"/>
-                            <constraint firstItem="gYF-N9-Ied" firstAttribute="baseline" secondItem="QeE-5E-bv5" secondAttribute="firstBaseline" id="LBr-rx-LRA"/>
-                            <constraint firstItem="QeE-5E-bv5" firstAttribute="baseline" secondItem="gYF-N9-Ied" secondAttribute="baseline" id="Pgw-N7-kt4"/>
-                            <constraint firstItem="aEp-dk-5ZN" firstAttribute="leading" secondItem="CNQ-RZ-NbX" secondAttribute="trailing" constant="16" id="VlL-fH-mOn"/>
-                            <constraint firstItem="K20-vk-5rW" firstAttribute="leading" secondItem="aEp-dk-5ZN" secondAttribute="trailing" constant="26" id="Vxt-KD-Dhy"/>
                             <constraint firstItem="Fkv-79-fz0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Z2g-J9-dFs"/>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="baseline" secondItem="aEp-dk-5ZN" secondAttribute="firstBaseline" id="a3X-lT-g9i"/>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="leading" secondItem="gYF-N9-Ied" secondAttribute="trailing" constant="16" id="cia-M3-nGZ"/>
                             <constraint firstItem="Fkv-79-fz0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="kUU-zW-dag">
                                 <variation key="heightClass=compact" constant="0.0"/>
                             </constraint>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="baseline" secondItem="aEp-dk-5ZN" secondAttribute="baseline" id="qAt-2b-9Kv"/>
-                            <constraint firstItem="CNQ-RZ-NbX" firstAttribute="top" secondItem="gYF-N9-Ied" secondAttribute="top" id="sXW-hg-GXX"/>
-                            <constraint firstItem="aEp-dk-5ZN" firstAttribute="bottom" secondItem="K20-vk-5rW" secondAttribute="bottom" id="tJc-Ws-DaA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Youtube Display" id="S5U-Xz-iEU"/>
                     <connections>
                         <outlet property="favoriteButton" destination="K20-vk-5rW" id="QdD-rw-VQo"/>
                         <outlet property="nextButton" destination="aEp-dk-5ZN" id="JCg-Rl-MtN"/>
-                        <outlet property="pauseButton" destination="QeE-5E-bv5" id="GJ2-ca-HSY"/>
                         <outlet property="playButton" destination="CNQ-RZ-NbX" id="9qE-t1-rc2"/>
                         <outlet property="playerView" destination="Fkv-79-fz0" id="Vyq-6f-WjL"/>
                         <outlet property="prevButton" destination="gYF-N9-Ied" id="73X-7x-ZXZ"/>
@@ -513,7 +472,7 @@
                     <navigationItem key="navigationItem" title="Playlist" id="ua8-np-Baa">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="YNd-ss-MN4">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cat-Sw-BGV">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <rect key="frame" x="534" y="7" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
@@ -688,7 +647,7 @@
         <scene sceneID="ItQ-tA-GPt">
             <objects>
                 <navigationController id="Dpt-08-DZL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Playlist" id="tVI-pl-jy3"/>
+                    <tabBarItem key="tabBarItem" title="Playlist" image="playlistIcon" selectedImage="playlistIconSelected" id="tVI-pl-jy3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MDo-bk-BHv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -705,7 +664,7 @@
         <scene sceneID="xAp-vE-D5E">
             <objects>
                 <navigationController id="S66-mZ-jE7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Recommend" id="kGG-qk-dv5"/>
+                    <tabBarItem key="tabBarItem" title="Recommend" image="star icon" selectedImage="starIconSelected" id="kGG-qk-dv5"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0N3-R0-7D1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -902,10 +861,23 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jhK-E3-54k" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="MCa-H2-lQc"/>
             </objects>
-            <point key="canvasLocation" x="-306" y="-237"/>
+            <point key="canvasLocation" x="-306" y="-203"/>
         </scene>
     </scenes>
     <resources>
-        <image name="star_1.jpg" width="512" height="512"/>
+        <image name="GenreIcon" width="24" height="24"/>
+        <image name="SearchIcon" width="24" height="24"/>
+        <image name="SearchIconSelected" width="24" height="24"/>
+        <image name="SettingIcon" width="24" height="24"/>
+        <image name="displayIcon" width="24" height="24"/>
+        <image name="displayIconSelected" width="24" height="24"/>
+        <image name="nextButton" width="40" height="40"/>
+        <image name="playButton" width="50" height="50"/>
+        <image name="playlistIcon" width="24" height="24"/>
+        <image name="playlistIconSelected" width="24" height="24"/>
+        <image name="prevButton" width="40" height="40"/>
+        <image name="star icon" width="24" height="24"/>
+        <image name="starIconSelected" width="24" height="24"/>
+        <image name="star_1" width="42" height="40"/>
     </resources>
 </document>

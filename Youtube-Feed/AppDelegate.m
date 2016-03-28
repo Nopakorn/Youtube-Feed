@@ -25,7 +25,7 @@
 {
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 //    MainTabBarViewController *mainTabbar = [storyboard instantiateViewControllerWithIdentifier:@"mainTabbar"];
-//    
+//
 //    UINavigationController *nav = [mainTabbar.viewControllers objectAtIndex:2];
 //    PlaylistTableViewController *playlistView = (PlaylistTableViewController *)[nav.viewControllers objectAtIndex:0];
 //    playlistView.managedObjectContext = self.managedObjectContext;
@@ -33,6 +33,13 @@
 //    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
 //    FirstSettingTableViewController *viewController = (FirstSettingTableViewController *)navigationController.topViewController;
 //    viewController.managedObjectContext = self.managedObjectContext;
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+        NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+        //NSLog(@"YES genre is selected %@",saveGenre);
+    } else {
+         //NSLog(@"NO genre isnt selected");
+    }
+    
     return YES;
 }
 
