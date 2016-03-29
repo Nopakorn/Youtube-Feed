@@ -104,6 +104,7 @@
     UITapGestureRecognizer *tgpr = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(handleTapPressed:)];
     [self.view addGestureRecognizer:tgpr];
+    self.ProgressSlider.value = 0.0;
 }
 
 
@@ -135,9 +136,9 @@
 - (void)viewDidLayoutSubviews
 {
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        NSLog(@"portrait---");
+        
     } else {
-        NSLog(@"landscape");
+        
         if (self.tabBarController.tabBar.hidden == YES) {
             self.topSapceConstraint.constant = 0;
             self.heightPlayerViewConstraint.constant = 300;
@@ -170,7 +171,7 @@
     
     if (searchTableViewFlag) {
 
-        
+    
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         searchTableViewFlag = false;
     }
@@ -227,11 +228,35 @@
 
     [self.playerView playVideo];
     //implementprogress bar
-    self.progressView.progress = 0.0;
-    self.ProgressSlider.value = 0.0;
     
-    //[self performSelectorOnMainThread:@selector(makeProgressBarMoving) withObject:nil waitUntilDone:NO];
+    [self.ProgressSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+    
 }
+
+- (IBAction)sliderValueChanged:(UISlider *)sender
+{
+    NSLog(@"slider value = %f", sender.value);
+    NSInteger startTime = sender.value * self.playerTotalTime;
+    [self.timerProgress invalidate];
+    self.ProgressSlider.value = (double)startTime / self.playerTotalTime;
+    
+    double currentTimeTextChange = sender.value * self.playerTotalTime;
+    NSTimeInterval currentTimeInterval = currentTimeTextChange;
+    self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
+    
+     NSLog(@"startTime value = %ld", (long)startTime);
+    NSDictionary *newPlayerVers =  @{ @"playsinline" : @1,
+                          @"controls" : @0,
+                          @"showinfo" : @1,
+                          @"modestbranding" : @1,
+                                      @"start" : @(startTime)
+                          };
+    
+    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:newPlayerVers];
+
+}
+
+
 
 - (void)makeProgressBarMoving:(NSTimer *)timer
 {
@@ -263,14 +288,21 @@
 {
 
     if (state == kYTPlayerStatePlaying) {
+        
+        UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
+        [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
         self.playerTotalTime = [self.playerView duration];
-        NSLog(@"check timer: %f",(float)self.playerTotalTime);
         self.totalTime.text = [self stringFromTimeInterval:self.playerTotalTime];
         double currentTime = [self.playerView currentTime];
         NSTimeInterval currentTimeInterval = currentTime;
         self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
         
         self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
+        
+    } else if (state == kYTPlayerStatePaused) {
+        [self.timerProgress invalidate];
+         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
     }
 
     if (state == kYTPlayerStateEnded) {

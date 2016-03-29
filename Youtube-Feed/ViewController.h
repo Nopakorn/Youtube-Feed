@@ -56,6 +56,7 @@
 - (IBAction)buttonPressed:(id)sender;
 - (IBAction)favoritePressed:(id)sender;
 
+- (IBAction)sliderValueChanged:(id)sender;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
