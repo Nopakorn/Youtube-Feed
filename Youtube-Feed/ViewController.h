@@ -25,6 +25,7 @@
     NSTimer *outOflengthAlertTimer;
     NSTimer *hideNavigation;
 }
+
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;
 @property (strong, nonatomic) Playlist *playlist;
@@ -37,9 +38,10 @@
 @property (weak, nonatomic) IBOutlet UIButton  *addButton;
 @property (weak, nonatomic) IBOutlet UIButton  *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSapceConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSapceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightPlayerViewConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingPlayerViewConstraint;
 
 @property (weak, nonatomic) IBOutlet UILabel *totalTime;
 @property (weak, nonatomic) IBOutlet UILabel *currentTimePlay;

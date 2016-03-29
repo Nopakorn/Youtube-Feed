@@ -111,9 +111,16 @@
 - (void)hideNavigation
 {
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-     self.tabBarController.tabBar.hidden = YES;
+    self.tabBarController.tabBar.hidden = YES;
      self.topSapceConstraint.constant = 94;
-
+    self.playButton.hidden = YES;
+    self.pauseButton.hidden = YES;
+    self.nextButton.hidden = YES;
+     self.prevButton.hidden = YES;
+    self.favoriteButton.hidden = YES;
+    self.ProgressSlider.hidden = YES;
+    self.totalTime.hidden = YES;
+    self.currentTimePlay.hidden = YES;
 }
 
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
@@ -122,12 +129,29 @@
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
         self.topSapceConstraint.constant = 50;
-       
+        self.playButton.hidden = NO;
+        self.pauseButton.hidden = NO;
+        self.nextButton.hidden = NO;
+        self.prevButton.hidden = NO;
+        self.favoriteButton.hidden = NO;
+        self.ProgressSlider.hidden = NO;
+        self.totalTime.hidden = NO;
+        self.currentTimePlay.hidden = NO;
+
 
     } else {
+        
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
         self.topSapceConstraint.constant = 94;
+        self.playButton.hidden = YES;
+        self.pauseButton.hidden = YES;
+        self.nextButton.hidden = YES;
+        self.prevButton.hidden = YES;
+        self.favoriteButton.hidden = YES;
+        self.ProgressSlider.hidden = YES;
+        self.totalTime.hidden = YES;
+        self.currentTimePlay.hidden = YES;
 
     }
 
@@ -136,16 +160,23 @@
 - (void)viewDidLayoutSubviews
 {
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        if (self.tabBarController.tabBar.hidden == YES) {
+            self.topSapceConstraint.constant = 94;
+        } else {
+            self.topSapceConstraint.constant = 50;
+        }
         
     } else {
         
         if (self.tabBarController.tabBar.hidden == YES) {
             self.topSapceConstraint.constant = 0;
-            self.heightPlayerViewConstraint.constant = 300;
+            //self.heightPlayerViewConstraint.constant = 360;
+            self.bottomSpacingPlayerViewConstraint.constant = 0;
             
         } else {
             self.topSapceConstraint.constant = 0;
-            self.heightPlayerViewConstraint.constant = 230;
+            self.bottomSpacingPlayerViewConstraint.constant = 57;
+            //self.heightPlayerViewConstraint.constant = 230;
 
         }
 
@@ -228,7 +259,7 @@
 
     [self.playerView playVideo];
     //implementprogress bar
-    
+     self.ProgressSlider.value = 0;
     [self.ProgressSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     
 }
@@ -286,6 +317,7 @@
         self.totalTime.text = [self stringFromTimeInterval:self.playerTotalTime];
         double currentTime = [self.playerView currentTime];
         NSTimeInterval currentTimeInterval = currentTime;
+       
         self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
         
         self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
@@ -576,9 +608,9 @@
          NSLog(@"select rocommend");
     }
     
-    if (tabBarController.selectedIndex == 3) {
+    if (tabBarController.selectedIndex == 4) {
         
-        UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:3];
+        UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:4];
         SearchTableViewController *seachView = [nav.viewControllers objectAtIndex:0];
         seachView.delegate = self;
         NSLog(@"select search");

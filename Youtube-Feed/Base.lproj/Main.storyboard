@@ -85,7 +85,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nQ0-Xm-1sy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3906" y="2077"/>
+            <point key="canvasLocation" x="-3527" y="2064"/>
         </scene>
         <!--Search-->
         <scene sceneID="Vaq-lk-5pR">
@@ -102,7 +102,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kcU-Bl-nyM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4636.5" y="2077"/>
+            <point key="canvasLocation" x="-4258" y="2064"/>
         </scene>
         <!--Setting-->
         <scene sceneID="Qcv-Ww-sms">
@@ -203,8 +203,8 @@
                         <segue destination="pHh-BN-O3A" kind="relationship" relationship="viewControllers" id="Qmd-8Z-Lb9"/>
                         <segue destination="S66-mZ-jE7" kind="relationship" relationship="viewControllers" id="tZb-xn-Dh9"/>
                         <segue destination="Dpt-08-DZL" kind="relationship" relationship="viewControllers" id="7bG-3T-cFk"/>
-                        <segue destination="oRa-Vd-rDo" kind="relationship" relationship="viewControllers" id="4YN-D9-b3n"/>
-                        <segue destination="wmL-Ix-RcW" kind="relationship" relationship="viewControllers" id="0HX-7p-W6r"/>
+                        <segue destination="wmL-Ix-RcW" kind="relationship" relationship="viewControllers" id="5jP-2A-JwU"/>
+                        <segue destination="oRa-Vd-rDo" kind="relationship" relationship="viewControllers" id="Mtf-Lc-aMD"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UOU-By-BUa" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -241,7 +241,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qwA-ZO-nVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5734.5" y="2173"/>
+            <point key="canvasLocation" x="-5723" y="2457"/>
         </scene>
         <!--Genre List Table View Controller-->
         <scene sceneID="5EU-dj-9yK">
@@ -270,24 +270,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vwY-hX-Xvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5752.5" y="2999"/>
+            <point key="canvasLocation" x="-5741" y="3283"/>
         </scene>
         <!--Genre-->
         <scene sceneID="jrz-ld-qod">
             <objects>
                 <navigationController id="wmL-Ix-RcW" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Genre" image="GenreIcon" selectedImage="GenreIconSelected" id="nf2-sT-faQ"/>
+                    <navigationItem key="navigationItem" id="20o-GV-Z8C"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h64-D3-C6A">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="aOS-Ib-Dhh" kind="relationship" relationship="rootViewController" id="p8v-Uo-KhN"/>
+                        <segue destination="aOS-Ib-Dhh" kind="relationship" relationship="rootViewController" id="g4D-Mm-Gtp"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rOi-IS-YaS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6568.5" y="2077"/>
+            <point key="canvasLocation" x="-4882" y="1885"/>
         </scene>
         <!--Display-->
         <scene sceneID="MbZ-UI-dms">
@@ -344,6 +345,11 @@
                                         <variation key="heightClass=compact" constant="230"/>
                                     </constraint>
                                 </constraints>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="Jp0-0l-Z3b"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEp-dk-5ZN">
                                 <rect key="frame" x="526" y="467" width="54" height="54"/>
@@ -460,6 +466,7 @@
                                 <variation key="heightClass=compact" constant="0.0"/>
                             </constraint>
                             <constraint firstItem="aEp-dk-5ZN" firstAttribute="centerY" secondItem="CNQ-RZ-NbX" secondAttribute="centerY" id="kgl-XB-zdg"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Fkv-79-fz0" secondAttribute="bottom" constant="57" id="l0E-Zj-i2J"/>
                             <constraint firstItem="aEp-dk-5ZN" firstAttribute="leading" secondItem="CNQ-RZ-NbX" secondAttribute="trailing" constant="186" id="ndl-66-Qzq"/>
                             <constraint firstItem="K20-vk-5rW" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="462" id="p0x-Tc-Ige"/>
                             <constraint firstItem="Uud-3L-0u6" firstAttribute="leading" secondItem="JD9-Br-8qX" secondAttribute="trailing" constant="11" id="pFX-5c-dUu"/>
@@ -481,8 +488,7 @@
                                 <exclude reference="6uG-hi-5fc"/>
                                 <exclude reference="Ab3-mp-fwc"/>
                                 <exclude reference="gGN-cP-8eg"/>
-                                <exclude reference="2ow-r9-LEb"/>
-                                <exclude reference="DQP-vR-4PP"/>
+                                <exclude reference="l0E-Zj-i2J"/>
                                 <exclude reference="BoY-pW-h7T"/>
                                 <exclude reference="CIh-ka-vuT"/>
                                 <exclude reference="YmB-ni-gfJ"/>
@@ -491,6 +497,8 @@
                                 <exclude reference="kgl-XB-zdg"/>
                                 <exclude reference="ndl-66-Qzq"/>
                                 <exclude reference="tfp-M7-mNZ"/>
+                                <exclude reference="2ow-r9-LEb"/>
+                                <exclude reference="DQP-vR-4PP"/>
                                 <exclude reference="CXE-9x-Ud6"/>
                                 <exclude reference="p0x-Tc-Ige"/>
                                 <exclude reference="794-mM-iKd"/>
@@ -502,15 +510,16 @@
                                 <exclude reference="TVS-Lt-qeW"/>
                                 <include reference="6uG-hi-5fc"/>
                                 <exclude reference="uhf-Al-nIG"/>
-                                <exclude reference="2ow-r9-LEb"/>
-                                <include reference="DQP-vR-4PP"/>
-                                <exclude reference="1bM-MO-NhA"/>
+                                <include reference="l0E-Zj-i2J"/>
                                 <exclude reference="BoY-pW-h7T"/>
                                 <exclude reference="CIh-ka-vuT"/>
                                 <exclude reference="YmB-ni-gfJ"/>
                                 <include reference="cLa-lr-XJp"/>
                                 <exclude reference="tfp-M7-mNZ"/>
                                 <exclude reference="x50-Q2-OJM"/>
+                                <exclude reference="2ow-r9-LEb"/>
+                                <include reference="DQP-vR-4PP"/>
+                                <exclude reference="1bM-MO-NhA"/>
                                 <include reference="CXE-9x-Ud6"/>
                                 <exclude reference="fPO-OP-6Vl"/>
                             </mask>
@@ -526,6 +535,7 @@
                     <navigationItem key="navigationItem" title="Now Playing" id="S5U-Xz-iEU"/>
                     <connections>
                         <outlet property="ProgressSlider" destination="JD9-Br-8qX" id="odk-N8-aUI"/>
+                        <outlet property="bottomSpacingPlayerViewConstraint" destination="l0E-Zj-i2J" id="vmv-vb-vW5"/>
                         <outlet property="currentTimePlay" destination="g2e-YF-cHc" id="yTf-CK-XCB"/>
                         <outlet property="favoriteButton" destination="K20-vk-5rW" id="QdD-rw-VQo"/>
                         <outlet property="heightPlayerViewConstraint" destination="Jp0-0l-Z3b" id="HQS-oz-Sm0"/>
@@ -567,10 +577,10 @@
                     <navigationItem key="navigationItem" title="Recommend" id="jqE-7s-urK">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="13v-SU-nBX">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="m5e-rJ-WsZ">
-                                <rect key="frame" x="554" y="2" width="26" height="40"/>
+                                <rect key="frame" x="553" y="8" width="27" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" image="SettingIconSelected">
+                                <state key="normal" image="setting1">
                                     <color key="titleColor" red="0.18431372549019609" green="0.17254901960784313" blue="0.16862745098039217" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -785,7 +795,7 @@
         <scene sceneID="ItQ-tA-GPt">
             <objects>
                 <navigationController id="Dpt-08-DZL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Playlist" image="playlistIcon" selectedImage="playlistIconSelected" id="tVI-pl-jy3"/>
+                    <tabBarItem key="tabBarItem" title="Playlist" image="playlistIcon" selectedImage="playlistSelectedIcon" id="tVI-pl-jy3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MDo-bk-BHv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1003,20 +1013,20 @@
         </scene>
     </scenes>
     <resources>
-        <image name="GenreIcon" width="24" height="24"/>
-        <image name="GenreIconSelected" width="24" height="24"/>
+        <image name="GenreIcon" width="25" height="25"/>
+        <image name="GenreIconSelected" width="25" height="25"/>
         <image name="SearchIcon" width="24" height="24"/>
         <image name="SearchIconSelected" width="24" height="24"/>
-        <image name="SettingIconSelected" width="24" height="24"/>
-        <image name="displayIcon" width="24" height="24"/>
+        <image name="displayIcon" width="25" height="25"/>
         <image name="displayIconSelected" width="24" height="24"/>
         <image name="nextButton" width="40" height="40"/>
         <image name="playButton" width="50" height="50"/>
-        <image name="playlistIcon" width="24" height="24"/>
-        <image name="playlistIconSelected" width="24" height="24"/>
+        <image name="playlistIcon" width="25" height="25"/>
+        <image name="playlistSelectedIcon" width="25" height="25"/>
         <image name="prevButton" width="40" height="40"/>
-        <image name="star icon" width="24" height="24"/>
-        <image name="starIconSelected" width="24" height="24"/>
+        <image name="setting1" width="44" height="44"/>
+        <image name="star icon" width="25" height="25"/>
+        <image name="starIconSelected" width="25" height="25"/>
         <image name="star_1" width="42" height="40"/>
     </resources>
 </document>
