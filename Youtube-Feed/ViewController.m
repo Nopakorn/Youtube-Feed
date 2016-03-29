@@ -96,7 +96,7 @@
                                              selector:@selector(receivedFavoriteDidSelectedNotification:)
                                                  name:@"FavoriteDidSelected" object:nil];
     
-    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+    
     NSLog(@"View did load in youtube %@",[tabbar.recommendYoutube.titleList objectAtIndex:1]);
    
    
@@ -109,23 +109,46 @@
 
 - (void)hideNavigation
 {
-    [self.navigationController setNavigationBarHidden:YES animated:UIStatusBarAnimationSlide];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
      self.tabBarController.tabBar.hidden = YES;
+     self.topSapceConstraint.constant = 94;
 
 }
 
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
 {
     if (self.tabBarController.tabBar.hidden == YES) {
-        [self.navigationController setNavigationBarHidden:NO animated:UIStatusBarAnimationSlide];
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
+        self.topSapceConstraint.constant = 50;
+       
 
     } else {
-        [self.navigationController setNavigationBarHidden:YES animated:UIStatusBarAnimationSlide];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
+        self.topSapceConstraint.constant = 94;
 
     }
 
+}
+
+- (void)viewDidLayoutSubviews
+{
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        NSLog(@"portrait---");
+    } else {
+        NSLog(@"landscape");
+        if (self.tabBarController.tabBar.hidden == YES) {
+            self.topSapceConstraint.constant = 0;
+            self.heightPlayerViewConstraint.constant = 300;
+            
+        } else {
+            self.topSapceConstraint.constant = 0;
+            self.heightPlayerViewConstraint.constant = 230;
+
+        }
+
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,10 +158,10 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-
     [super viewDidAppear:animated];
     NSLog(@"View did appear in youtube");
-    
+    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+
     if (recommendTableViewFlag) {
 
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -205,31 +228,48 @@
     [self.playerView playVideo];
     //implementprogress bar
     self.progressView.progress = 0.0;
+    self.ProgressSlider.value = 0.0;
+    
     //[self performSelectorOnMainThread:@selector(makeProgressBarMoving) withObject:nil waitUntilDone:NO];
 }
+
 - (void)makeProgressBarMoving:(NSTimer *)timer
 {
-    float total = [self.progressView progress];
+    float total = [self.ProgressSlider value];
+    double currentTime = [self.playerView currentTime];
+    NSTimeInterval currentTimeInterval = currentTime;
+    self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
+    
     if (total < 1) {
         float playerCurrentTime = [self.playerView currentTime];
-        NSLog(@"current time %f",playerCurrentTime);
-        self.progressView.progress = (playerCurrentTime / (float)self.playerTotalTime)*10;
-        NSLog(@"progress value %f",(playerCurrentTime / (float)self.playerTotalTime));
+        self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
     } else {
         [self.timerProgress invalidate];
     }
     
-    
 }
+
+- (NSString *)stringFromTimeInterval:(NSTimeInterval)interval {
+    NSInteger ti = (NSInteger)interval;
+    NSInteger seconds = ti % 60;
+    NSInteger minutes = (ti / 60) % 60;
+    //NSInteger hours = (ti / 3600);
+    return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+}
+
+
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
-    //NSTimeInterval playerTotalTime;
+
     if (state == kYTPlayerStatePlaying) {
         self.playerTotalTime = [self.playerView duration];
-        //NSInteger second = (double)self.playerTotalTime % 60;
-        
         NSLog(@"check timer: %f",(float)self.playerTotalTime);
+        self.totalTime.text = [self stringFromTimeInterval:self.playerTotalTime];
+        double currentTime = [self.playerView currentTime];
+        NSTimeInterval currentTimeInterval = currentTime;
+        self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
+        
         self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
     }
 
@@ -281,7 +321,6 @@
 - (void)buttonPressed:(id)sender
 {
     if (sender == self.playButton) {
-        
         
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
@@ -494,6 +533,7 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
+    [hideNavigation invalidate];
     if (tabBarController.selectedIndex == 2) {
     
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];

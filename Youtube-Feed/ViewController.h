@@ -30,13 +30,22 @@
 @property (strong, nonatomic) Playlist *playlist;
 
 @property (strong, nonatomic) IBOutlet YTPlayerView *playerView;
-@property (weak,nonatomic) IBOutlet UIButton  *playButton;
-@property (weak,nonatomic) IBOutlet UIButton  *pauseButton;
-@property (weak,nonatomic) IBOutlet UIButton  *nextButton;
-@property (weak,nonatomic) IBOutlet UIButton  *prevButton;
-@property (weak,nonatomic) IBOutlet UIButton  *addButton;
-@property (weak,nonatomic) IBOutlet UIButton  *favoriteButton;
-@property (weak,nonatomic) IBOutlet UIProgressView *progressView;
+@property (weak, nonatomic) IBOutlet UIButton  *playButton;
+@property (weak, nonatomic) IBOutlet UIButton  *pauseButton;
+@property (weak, nonatomic) IBOutlet UIButton  *nextButton;
+@property (weak, nonatomic) IBOutlet UIButton  *prevButton;
+@property (weak, nonatomic) IBOutlet UIButton  *addButton;
+@property (weak, nonatomic) IBOutlet UIButton  *favoriteButton;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSapceConstraint;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightPlayerViewConstraint;
+
+@property (weak, nonatomic) IBOutlet UILabel *totalTime;
+@property (weak, nonatomic) IBOutlet UILabel *currentTimePlay;
+
+@property (weak, nonatomic) IBOutlet UISlider *ProgressSlider;
+
 @property (strong, nonatomic) NSTimer *timerProgress;
 @property (nonatomic) NSTimeInterval playerTotalTime;
 
