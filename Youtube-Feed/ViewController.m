@@ -33,8 +33,6 @@
     [super viewDidLoad];
     
     self.tabBarController.delegate = self;
-    //self.tabBarItem.image = [[UIImage imageNamed:@"displayIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //self.tabBarItem.selectedImage = [[UIImage imageNamed:@"displayIconSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     

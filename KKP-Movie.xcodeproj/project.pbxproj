@@ -24,6 +24,13 @@
 		5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */; };
 		5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */; };
 		5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */; };
+		5C4BADBB1CAAA624008C465D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADBA1CAAA624008C465D /* CoreMedia.framework */; };
+		5C4BADBD1CAAA631008C465D /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADBC1CAAA631008C465D /* ExternalAccessory.framework */; };
+		5C4BADBF1CAAA63C008C465D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADBE1CAAA63C008C465D /* CoreBluetooth.framework */; };
+		5C4BADC11CAAA64D008C465D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADC01CAAA64C008C465D /* AVFoundation.framework */; };
+		5C4BADC71CAAA80F008C465D /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADC61CAAA80F008C465D /* libc++.1.dylib */; };
+		5C4BADD81CAAB051008C465D /* UIEMultiAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */; };
+		5C4BADDA1CAAB084008C465D /* UIEMultiAccess.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */; };
 		5C551CAE1CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */; };
 		5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA91CA8DE7100BECEC7 /* Playlist.m */; };
 		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
@@ -52,7 +59,6 @@
 		5CD4C43C1CA282CB00A6C837 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CD4C43B1CA282CB00A6C837 /* CoreData.framework */; };
 		5CD4C4401CA28D5100A6C837 /* PlaylistModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5CD4C43E1CA28D5100A6C837 /* PlaylistModel.xcdatamodeld */; };
 		5CD4C4591CA295B400A6C837 /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD4C4581CA295B400A6C837 /* DataController.m */; };
-		82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,6 +111,14 @@
 		5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistPopUpCustomCell.xib; sourceTree = "<group>"; };
 		5C4222921C916EBF00C1C525 /* PlaylistPopUpCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistPopUpCustomCell.h; sourceTree = "<group>"; };
 		5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistPopUpCustomCell.m; sourceTree = "<group>"; };
+		5C4BADBA1CAAA624008C465D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5C4BADBC1CAAA631008C465D /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		5C4BADBE1CAAA63C008C465D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		5C4BADC01CAAA64C008C465D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5C4BADC41CAAA739008C465D /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		5C4BADC61CAAA80F008C465D /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "../../../../usr/lib/libc++.1.dylib"; sourceTree = "<group>"; };
+		5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIEMultiAccess.framework; path = ../../Desktop/kkp/Debug/UIEMultiAccess.framework; sourceTree = "<group>"; };
+		5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UIEMultiAccess.bundle; sourceTree = "<group>"; };
 		5C551CA61CA8DE7100BECEC7 /* Playlist+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Playlist+CoreDataProperties.h"; sourceTree = "<group>"; };
 		5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Playlist+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C551CA81CA8DE7100BECEC7 /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playlist.h; sourceTree = "<group>"; };
@@ -155,7 +169,6 @@
 		5CD4C43F1CA28D5100A6C837 /* PlaylistModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PlaylistModel.xcdatamodel; sourceTree = "<group>"; };
 		5CD4C4571CA295B400A6C837 /* DataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
 		5CD4C4581CA295B400A6C837 /* DataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataController.m; sourceTree = "<group>"; };
-		BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Youtube-Feed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDAB1E741440D88306343CB6 /* Pods-Youtube-Feed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.release.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.release.xcconfig"; sourceTree = "<group>"; };
 		CE71C9F1D08343CD300C4E2D /* Pods-Youtube-Feed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Youtube-Feed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Youtube-Feed/Pods-Youtube-Feed.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -165,8 +178,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C4BADD81CAAB051008C465D /* UIEMultiAccess.framework in Frameworks */,
+				5C4BADC71CAAA80F008C465D /* libc++.1.dylib in Frameworks */,
+				5C4BADC11CAAA64D008C465D /* AVFoundation.framework in Frameworks */,
+				5C4BADBF1CAAA63C008C465D /* CoreBluetooth.framework in Frameworks */,
+				5C4BADBD1CAAA631008C465D /* ExternalAccessory.framework in Frameworks */,
+				5C4BADBB1CAAA624008C465D /* CoreMedia.framework in Frameworks */,
 				5CD4C43C1CA282CB00A6C837 /* CoreData.framework in Frameworks */,
-				82F79623BFFB702AE9AB9E4B /* libPods-Youtube-Feed.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,8 +208,14 @@
 		0F86857DA1F1084B09DA4D29 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */,
+				5C4BADC61CAAA80F008C465D /* libc++.1.dylib */,
+				5C4BADC41CAAA739008C465D /* libc++.tbd */,
+				5C4BADC01CAAA64C008C465D /* AVFoundation.framework */,
+				5C4BADBE1CAAA63C008C465D /* CoreBluetooth.framework */,
+				5C4BADBC1CAAA631008C465D /* ExternalAccessory.framework */,
+				5C4BADBA1CAAA624008C465D /* CoreMedia.framework */,
 				5CD4C43B1CA282CB00A6C837 /* CoreData.framework */,
-				BCB320E459B72BB88EC4F803 /* libPods-Youtube-Feed.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -234,6 +258,7 @@
 		11C170DB1C7186A800E74681 = {
 			isa = PBXGroup;
 			children = (
+				5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */,
 				11C170E61C7186A800E74681 /* Youtube-Feed */,
 				11C171001C7186A800E74681 /* Youtube-FeedTests */,
 				11C1710B1C7186A900E74681 /* Youtube-FeedUITests */,
@@ -497,6 +522,7 @@
 				11C170F41C7186A800E74681 /* Assets.xcassets in Resources */,
 				5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */,
 				11C170F21C7186A800E74681 /* Main.storyboard in Resources */,
+				5C4BADDA1CAAB084008C465D /* UIEMultiAccess.bundle in Resources */,
 				11BC1A0F1C8E938900285564 /* SettingCustomCell.xib in Resources */,
 				5CBA2CE61C97CA140049FE4A /* PlaylistEditCustomCell.xib in Resources */,
 			);
@@ -744,7 +770,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/ssd/Documents/Youtube-Feed/UIEMultiAccess";
 				GCC_PREFIX_HEADER = "Youtube-Feed/PrefixHeader.pch";
 				INFOPLIST_FILE = "Youtube-Feed/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -760,7 +787,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "Youtube-Feed/PrefixHeader.pch";
 				INFOPLIST_FILE = "Youtube-Feed/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

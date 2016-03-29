@@ -289,6 +289,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CF4EA21677BC9B078874DADDD0E2387D /* Pods-Youtube-Feed.release.xcconfig */;
 			buildSettings = {
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MACH_O_TYPE = staticlib;
@@ -324,6 +325,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DEC4564C79071400E7BA5EED14045E79 /* Pods-Youtube-Feed.debug.xcconfig */;
 			buildSettings = {
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MACH_O_TYPE = staticlib;
