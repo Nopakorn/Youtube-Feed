@@ -19,5 +19,6 @@
 @dynamic videoThumbnail;
 @dynamic videoTitle;
 @dynamic playlist;
+@dynamic videoDuration;
 
 @end

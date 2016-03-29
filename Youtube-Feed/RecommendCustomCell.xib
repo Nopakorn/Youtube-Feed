@@ -9,10 +9,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecommendCustomCell" rowHeight="90" id="GK1-WC-Bb3" customClass="RecommendCustomCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <rect key="frame" x="0.0" y="0.0" width="319" height="90"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GK1-WC-Bb3" id="FGn-W3-vVF">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="89"/>
+                <rect key="frame" x="0.0" y="0.0" width="319" height="89"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CzD-0g-2TG">
@@ -26,10 +26,10 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ae-YB-awH">
-                        <rect key="frame" x="64" y="60" width="39" height="21"/>
+                        <rect key="frame" x="64" y="67" width="38" height="13"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="39" id="Xk4-oO-QvC"/>
+                            <constraint firstAttribute="width" constant="38" id="Zbk-vf-X2H"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -37,24 +37,25 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="trailing" secondItem="FGn-W3-vVF" secondAttribute="trailingMargin" id="3cH-wU-y85"/>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" id="4FS-Fk-Cl5"/>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="CzD-0g-2TG" secondAttribute="trailing" constant="8" symbolic="YES" id="AYn-NH-Qka"/>
-                    <constraint firstItem="CzD-0g-2TG" firstAttribute="bottom" secondItem="8ae-YB-awH" secondAttribute="bottom" id="SaB-Rv-ZIs"/>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="8ae-YB-awH" secondAttribute="trailing" constant="8" symbolic="YES" id="Vos-q1-Vjb"/>
-                    <constraint firstItem="8ae-YB-awH" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="52" id="dUc-VV-M9g"/>
-                    <constraint firstItem="CzD-0g-2TG" firstAttribute="leading" secondItem="FGn-W3-vVF" secondAttribute="leadingMargin" id="ivN-Fu-UkW"/>
-                    <constraint firstItem="8ae-YB-awH" firstAttribute="leading" secondItem="FGn-W3-vVF" secondAttribute="leadingMargin" constant="56" id="jKf-DL-jYw"/>
-                    <constraint firstItem="CzD-0g-2TG" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="-3" id="nP0-f6-llA"/>
-                    <constraint firstItem="CzD-0g-2TG" firstAttribute="bottom" secondItem="FGn-W3-vVF" secondAttribute="bottomMargin" id="vpW-BC-BwQ"/>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="baseline" secondItem="8ae-YB-awH" secondAttribute="baseline" id="zza-HQ-Rg4"/>
+                    <constraint firstItem="8ae-YB-awH" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="59" id="3eU-2p-JB3"/>
+                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="8ae-YB-awH" secondAttribute="trailing" constant="9" id="6e4-np-fwM"/>
+                    <constraint firstItem="8ae-YB-awH" firstAttribute="leading" secondItem="FGn-W3-vVF" secondAttribute="leadingMargin" constant="56" id="80U-SS-15I"/>
+                    <constraint firstItem="CzD-0g-2TG" firstAttribute="leading" secondItem="FGn-W3-vVF" secondAttribute="leadingMargin" id="A4C-2E-0Zg"/>
+                    <constraint firstItem="AOX-dL-vUE" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" id="I73-ch-Bej"/>
+                    <constraint firstItem="CzD-0g-2TG" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="-3" id="MF8-GE-fMY"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="AOX-dL-vUE" secondAttribute="trailing" constant="-1" id="bEV-BB-LL7"/>
+                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="CzD-0g-2TG" secondAttribute="trailing" constant="8" symbolic="YES" id="cqP-IY-Jb8"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="8ae-YB-awH" secondAttribute="bottom" constant="1" id="gOn-CA-aR4"/>
+                    <constraint firstItem="CzD-0g-2TG" firstAttribute="bottom" secondItem="AOX-dL-vUE" secondAttribute="bottom" id="hqT-RK-AWj"/>
+                    <constraint firstItem="CzD-0g-2TG" firstAttribute="bottom" secondItem="FGn-W3-vVF" secondAttribute="bottomMargin" id="isW-Da-ehI"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="durationLabel" destination="8ae-YB-awH" id="kVe-IP-MN1"/>
                 <outlet property="name" destination="AOX-dL-vUE" id="Bjk-fu-ZLx"/>
                 <outlet property="thumnail" destination="CzD-0g-2TG" id="deV-tB-yg7"/>
             </connections>
-            <point key="canvasLocation" x="378" y="201"/>
+            <point key="canvasLocation" x="377.5" y="201"/>
         </tableViewCell>
     </objects>
 </document>

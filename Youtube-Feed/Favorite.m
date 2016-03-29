@@ -20,12 +20,12 @@
     return self;
 }
 
-- (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId
+- (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId andDuration:(NSString *)duration
 {
     self.videoId = [NSString stringWithFormat:@"%@", videoId];
     self.videoTitle = [NSString stringWithFormat:@"%@", videoTitle];
     self.videoThumbnail = [NSString stringWithFormat:@"%@", videoThumbnail];
-
+    self.videoDuration = [NSString stringWithFormat:@"%@", duration];
 }
 
 @end

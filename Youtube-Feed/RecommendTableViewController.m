@@ -40,6 +40,7 @@
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
+    NSLog(@"%@",self.recommendYoutube.durationList);
 }
 
 - (void)receivedSettingNotification:(NSNotification *)notification
@@ -87,6 +88,9 @@
     
     cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
     cell.tag = indexPath.row;
+    NSString *duration = [self.recommendYoutube.durationList objectAtIndex:indexPath.row];
+    cell.durationLabel.text = [self durationText:duration];
+    
     cell.thumnail.image = nil;
 //    
     if([self.recommendYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
@@ -164,6 +168,42 @@
                                                  name:@"LoadVideoIdNextPage" object:nil];
     
 }
+
+- (NSString *)durationText:(NSString *)duration
+{
+    NSInteger hours = 0;
+    NSInteger minutes = 0;
+    NSInteger seconds = 0;
+    
+    duration = [duration substringFromIndex:[duration rangeOfString:@"T"].location];
+    
+    while ([duration length] > 1) { //only one letter remains after parsing
+        duration = [duration substringFromIndex:1];
+        
+        NSScanner *scanner = [[NSScanner alloc] initWithString:duration];
+        
+        NSString *durationPart = [[NSString alloc] init];
+        [scanner scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] intoString:&durationPart];
+        
+        NSRange rangeOfDurationPart = [duration rangeOfString:durationPart];
+        
+        duration = [duration substringFromIndex:rangeOfDurationPart.location + rangeOfDurationPart.length];
+        
+        if ([[duration substringToIndex:1] isEqualToString:@"H"]) {
+            hours = [durationPart intValue];
+        }
+        if ([[duration substringToIndex:1] isEqualToString:@"M"]) {
+            minutes = [durationPart intValue];
+        }
+        if ([[duration substringToIndex:1] isEqualToString:@"S"]) {
+            seconds = [durationPart intValue];
+        }
+    }
+    
+    return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+
+}
+
 
 - (void)receivedLoadVideoIdNextPage
 {

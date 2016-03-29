@@ -13,7 +13,8 @@
 @property (nonatomic, retain) NSString  *videoTitle;
 @property (nonatomic, retain) NSString  *videoThumbnail;
 @property (nonatomic, retain) NSString  *videoId;
+@property (nonatomic, retain) NSString  *videoDuration;
 
-- (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId;
+- (void)setFavoriteWithTitle:(NSString *)videoTitle thumbnail:(NSString *)videoThumbnail andVideoId:(NSString *)videoId andDuration:(NSString *)duration;
 
 @end

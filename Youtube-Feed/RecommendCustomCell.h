@@ -10,6 +10,7 @@
 
 @interface RecommendCustomCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 
 @property(weak,nonatomic) IBOutlet UILabel *name;
 @property(weak,nonatomic) IBOutlet UIImageView *thumnail;

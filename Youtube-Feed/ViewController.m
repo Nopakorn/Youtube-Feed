@@ -412,7 +412,8 @@
     NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
     NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
     NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
-    [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId];
+    NSString *videoDuration = [self.youtube.durationList objectAtIndex:item];
+    [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId andDuration:videoDuration];
     
     UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
@@ -463,6 +464,7 @@
     [newManagedObject setValue:favorite.videoId forKey:@"videoId"];
     [newManagedObject setValue:favorite.videoTitle forKey:@"videoTitle"];
     [newManagedObject setValue:favorite.videoThumbnail forKey:@"videoThumbnail"];
+    [newManagedObject setValue:favorite.videoDuration forKey:@"videoDuration"];
     // Save the context.
     NSError *error = nil;
     if (![context save:&error]) {

@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *videoId;
 @property (nullable, nonatomic, retain) NSString *videoThumbnail;
 @property (nullable, nonatomic, retain) NSString *videoTitle;
+@property (nullable, nonatomic, retain) NSString *videoDuration;
 @property (nullable, nonatomic, retain) Playlist *playlist;
 
 @end

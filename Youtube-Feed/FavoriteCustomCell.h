@@ -13,5 +13,6 @@
 @property(weak,nonatomic) IBOutlet UILabel *name;
 @property(weak,nonatomic) IBOutlet UIImageView *thumnail;
 @property(weak,nonatomic) IBOutlet UIImageView *favoriteIcon;
+@property (weak, nonatomic) IBOutlet UILabel *durationLabel;
 
 @end

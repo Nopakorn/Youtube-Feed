@@ -63,6 +63,7 @@
     
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.name.text = [object valueForKey:@"videoTitle"];
+    cell.durationLabel.text = [self durationText:[object valueForKey:@"videoDuration"]];
     cell.favoriteIcon.hidden = YES;
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
@@ -91,7 +92,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 90;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -100,10 +101,6 @@
     self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSLog(@"check object picked %@",self.favorite.videoTitle);
     
-//    self.favorite.videoId = [NSString stringWithFormat:@"%@",[object valueForKey:@"videoId"]];
-//    self.favorite.videoTitle = [NSString stringWithFormat:@"%@",[object valueForKey:@"videoTitle"]];
-//    self.favorite.videothumbnail = [NSString stringWithFormat:@"%@",[object valueForKey:@"videoThumbnail"]];
-
     alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
                                                 message:@"Are you sure to adding this video to playlist"
                                          preferredStyle:UIAlertControllerStyleAlert];
@@ -141,6 +138,7 @@
     youtubeVideo.videoTitle = favorite.videoTitle;
     youtubeVideo.videoId = favorite.videoId;
     youtubeVideo.videoThumbnail = favorite.videoThumbnail;
+    youtubeVideo.videoDuration = favorite.videoDuration;
     youtubeVideo.playlist = self.playlist;
     youtubeVideo.index = @([self.playlist.youtubeVideos count]);
     NSLog(@"check index %@",youtubeVideo.index);
@@ -150,10 +148,44 @@
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
+    
     [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
 }
 
-
+- (NSString *)durationText:(NSString *)duration
+{
+    NSInteger hours = 0;
+    NSInteger minutes = 0;
+    NSInteger seconds = 0;
+    
+    duration = [duration substringFromIndex:[duration rangeOfString:@"T"].location];
+    
+    while ([duration length] > 1) { //only one letter remains after parsing
+        duration = [duration substringFromIndex:1];
+        
+        NSScanner *scanner = [[NSScanner alloc] initWithString:duration];
+        
+        NSString *durationPart = [[NSString alloc] init];
+        [scanner scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] intoString:&durationPart];
+        
+        NSRange rangeOfDurationPart = [duration rangeOfString:durationPart];
+        
+        duration = [duration substringFromIndex:rangeOfDurationPart.location + rangeOfDurationPart.length];
+        
+        if ([[duration substringToIndex:1] isEqualToString:@"H"]) {
+            hours = [durationPart intValue];
+        }
+        if ([[duration substringToIndex:1] isEqualToString:@"M"]) {
+            minutes = [durationPart intValue];
+        }
+        if ([[duration substringToIndex:1] isEqualToString:@"S"]) {
+            seconds = [durationPart intValue];
+        }
+    }
+    
+    return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    
+}
 
 #pragma mark - Fetched results controller
 

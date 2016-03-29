@@ -41,6 +41,7 @@
         [self.youtube.videoIdList addObject:youtubeVideo.videoId];
         [self.youtube.titleList addObject:youtubeVideo.videoTitle];
         [self.youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+        [self.youtube.durationList addObject:youtubeVideo.videoDuration];
     }
 }
 
@@ -91,7 +92,7 @@
     
     YoutubeVideo *youtubeVideoForRow = [self.youtubeVideoList objectAtIndex:indexPath.row];
     cell.name.text = youtubeVideoForRow.videoTitle;
-    
+    cell.durationLabel.text = [self durationText:youtubeVideoForRow.videoDuration];
     cell.tag = indexPath.row;
     cell.thumnail.image = nil;
     
@@ -121,7 +122,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80;
+    return 90;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -137,5 +138,39 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (NSString *)durationText:(NSString *)duration
+{
+    NSInteger hours = 0;
+    NSInteger minutes = 0;
+    NSInteger seconds = 0;
+    
+    duration = [duration substringFromIndex:[duration rangeOfString:@"T"].location];
+    
+    while ([duration length] > 1) { //only one letter remains after parsing
+        duration = [duration substringFromIndex:1];
+        
+        NSScanner *scanner = [[NSScanner alloc] initWithString:duration];
+        
+        NSString *durationPart = [[NSString alloc] init];
+        [scanner scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] intoString:&durationPart];
+        
+        NSRange rangeOfDurationPart = [duration rangeOfString:durationPart];
+        
+        duration = [duration substringFromIndex:rangeOfDurationPart.location + rangeOfDurationPart.length];
+        
+        if ([[duration substringToIndex:1] isEqualToString:@"H"]) {
+            hours = [durationPart intValue];
+        }
+        if ([[duration substringToIndex:1] isEqualToString:@"M"]) {
+            minutes = [durationPart intValue];
+        }
+        if ([[duration substringToIndex:1] isEqualToString:@"S"]) {
+            seconds = [durationPart intValue];
+        }
+    }
+    
+    return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    
+}
 
 @end
