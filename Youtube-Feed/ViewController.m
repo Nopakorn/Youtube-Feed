@@ -235,25 +235,16 @@
 
 - (IBAction)sliderValueChanged:(UISlider *)sender
 {
-    NSLog(@"slider value = %f", sender.value);
+
     NSInteger startTime = sender.value * self.playerTotalTime;
     [self.timerProgress invalidate];
     self.ProgressSlider.value = (double)startTime / self.playerTotalTime;
     
-    double currentTimeTextChange = sender.value * self.playerTotalTime;
-    NSTimeInterval currentTimeInterval = currentTimeTextChange;
+    double currentTimeChange = sender.value * self.playerTotalTime;
+    NSTimeInterval currentTimeInterval = currentTimeChange;
     self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
-    
-     NSLog(@"startTime value = %ld", (long)startTime);
-    NSDictionary *newPlayerVers =  @{ @"playsinline" : @1,
-                          @"controls" : @0,
-                          @"showinfo" : @1,
-                          @"modestbranding" : @1,
-                                      @"start" : @(startTime)
-                          };
-    
-    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:newPlayerVers];
 
+    [self.playerView seekToSeconds:currentTimeChange allowSeekAhead:YES];
 }
 
 
