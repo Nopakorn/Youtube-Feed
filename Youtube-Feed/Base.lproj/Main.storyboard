@@ -310,7 +310,7 @@
             </objects>
             <point key="canvasLocation" x="-2038.5" y="-237"/>
         </scene>
-        <!--Youtube Display-->
+        <!--Now Playing-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
@@ -523,7 +523,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="Youtube Display" id="S5U-Xz-iEU"/>
+                    <navigationItem key="navigationItem" title="Now Playing" id="S5U-Xz-iEU"/>
                     <connections>
                         <outlet property="ProgressSlider" destination="JD9-Br-8qX" id="odk-N8-aUI"/>
                         <outlet property="currentTimePlay" destination="g2e-YF-cHc" id="yTf-CK-XCB"/>
@@ -566,10 +566,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Recommend" id="jqE-7s-urK">
                         <barButtonItem key="rightBarButtonItem" style="plain" id="13v-SU-nBX">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="m5e-rJ-WsZ">
-                                <rect key="frame" x="447" y="7" width="133" height="30"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="m5e-rJ-WsZ">
+                                <rect key="frame" x="498" y="10" width="82" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Setting"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" image="SettingIconSelected">
+                                    <color key="titleColor" red="0.18431372549019609" green="0.17254901960784313" blue="0.16862745098039217" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="zlU-v7-r9o" kind="push" identifier="SettingSegue" id="Vzc-WT-VYH"/>
                                 </connections>
@@ -1003,6 +1006,7 @@
         <image name="GenreIcon" width="24" height="24"/>
         <image name="SearchIcon" width="24" height="24"/>
         <image name="SearchIconSelected" width="24" height="24"/>
+        <image name="SettingIconSelected" width="24" height="24"/>
         <image name="displayIcon" width="24" height="24"/>
         <image name="displayIconSelected" width="24" height="24"/>
         <image name="nextButton" width="40" height="40"/>

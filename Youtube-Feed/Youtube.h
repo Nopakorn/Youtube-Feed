@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSMutableArray *videoIdList;
 @property (nonatomic, retain) NSMutableArray *titleList;
 @property (nonatomic, retain) NSMutableArray *thumbnailList;
+@property (nonatomic, retain) NSMutableArray *durationList;
 
 @property (nonatomic, retain) NSMutableArray *selectedType;
 
