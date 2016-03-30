@@ -31,6 +31,7 @@
 		5C4BADC71CAAA80F008C465D /* libc++.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADC61CAAA80F008C465D /* libc++.1.dylib */; };
 		5C4BADD81CAAB051008C465D /* UIEMultiAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */; };
 		5C4BADDA1CAAB084008C465D /* UIEMultiAccess.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */; };
+		5C4BADEB1CABBAA2008C465D /* FirstScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BADEA1CABBAA2008C465D /* FirstScreenViewController.m */; };
 		5C551CAE1CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */; };
 		5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA91CA8DE7100BECEC7 /* Playlist.m */; };
 		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
@@ -119,6 +120,8 @@
 		5C4BADC61CAAA80F008C465D /* libc++.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.1.dylib"; path = "../../../../usr/lib/libc++.1.dylib"; sourceTree = "<group>"; };
 		5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIEMultiAccess.framework; path = ../../Desktop/kkp/Debug/UIEMultiAccess.framework; sourceTree = "<group>"; };
 		5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UIEMultiAccess.bundle; sourceTree = "<group>"; };
+		5C4BADE91CABBAA2008C465D /* FirstScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstScreenViewController.h; sourceTree = "<group>"; };
+		5C4BADEA1CABBAA2008C465D /* FirstScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstScreenViewController.m; sourceTree = "<group>"; };
 		5C551CA61CA8DE7100BECEC7 /* Playlist+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Playlist+CoreDataProperties.h"; sourceTree = "<group>"; };
 		5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Playlist+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C551CA81CA8DE7100BECEC7 /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playlist.h; sourceTree = "<group>"; };
@@ -347,6 +350,10 @@
 		5CBA2CF51C97E8400049FE4A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5C4BADE91CABBAA2008C465D /* FirstScreenViewController.h */,
+				5C4BADEA1CABBAA2008C465D /* FirstScreenViewController.m */,
+				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
+				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
 				11C170ED1C7186A800E74681 /* ViewController.h */,
 				11C170EE1C7186A800E74681 /* ViewController.m */,
 				5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */,
@@ -355,8 +362,6 @@
 				11BC1A091C8E8A5D00285564 /* SettingTableViewController.m */,
 				11BC1A0B1C8E8B9200285564 /* MainTabBarViewController.h */,
 				11BC1A0C1C8E8B9200285564 /* MainTabBarViewController.m */,
-				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
-				5C8C98CD1C9023EE0098A3A4 /* FirstSettingTableViewController.m */,
 				5CB425D71C928420005DCB46 /* RecommendTableViewController.h */,
 				5CB425D81C928420005DCB46 /* RecommendTableViewController.m */,
 				5C36294E1C990F9F003C359F /* SearchTableViewController.h */,
@@ -606,6 +611,7 @@
 				5C67E4291C96C92200A08005 /* PlaylistDetailTableViewController.m in Sources */,
 				5CD4C4401CA28D5100A6C837 /* PlaylistModel.xcdatamodeld in Sources */,
 				11C170EF1C7186A800E74681 /* ViewController.m in Sources */,
+				5C4BADEB1CABBAA2008C465D /* FirstScreenViewController.m in Sources */,
 				11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */,
 				5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */,
 				5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */,

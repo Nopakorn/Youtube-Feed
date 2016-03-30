@@ -34,7 +34,7 @@
 //    FirstSettingTableViewController *viewController = (FirstSettingTableViewController *)navigationController.topViewController;
 //    viewController.managedObjectContext = self.managedObjectContext;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
-        NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+        //NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
         //NSLog(@"YES genre is selected %@",saveGenre);
     } else {
          //NSLog(@"NO genre isnt selected");

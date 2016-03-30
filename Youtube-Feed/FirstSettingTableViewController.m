@@ -7,7 +7,6 @@
 //
 
 #import "FirstSettingTableViewController.h"
-#import "MainTabBarViewController.h"
 #import "SettingCustomCell.h"
 
 
@@ -25,37 +24,9 @@
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
-    //[self insertNewObject];
-    //[self fetchData];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
-        NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-        NSLog(@"YES genre is selected %@",saveGenre);
-        NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
-        self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
-        [self callSearchSecondTime:saveGenre];
-        
-    } else {
-        NSLog(@"NO genre isnt selected");
-    }
 
 }
 
-- (void)callSearchSecondTime:(NSString *)saveGenre
-{
-     [self.youtube getRecommendSearchYoutube:saveGenre withNextPage:NO];
-    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    spinner.center = CGPointMake(130.5, 65.5);
-    spinner.color = [UIColor blackColor];
-    [alert.view addSubview:spinner];
-    [spinner startAnimating];
-    [self presentViewController:alert animated:NO completion:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedLoadVideoId)
-                                                 name:@"LoadVideoId" object:nil];
-
-}
 
 
 - (void)createGerne
@@ -131,7 +102,6 @@
                 break;
             
             }else if(i == [self.genreSelected count] - 1){
-                NSLog(@"last count");
                 [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
                 break;
             }
@@ -139,7 +109,6 @@
     }else{
         [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
     }
-    NSLog(@"check l %lul",(unsigned long)[self.genreSelected count]);
     [tableView reloadData];
 }
 
@@ -155,89 +124,14 @@
     [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
-    
-    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    spinner.center = CGPointMake(130.5, 65.5);
-    spinner.color = [UIColor blackColor];
-    [alert.view addSubview:spinner];
-    [spinner startAnimating];
-    [self presentViewController:alert animated:NO completion:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedLoadVideoId)
-                                                 name:@"LoadVideoId" object:nil];
-    //[self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
-    
+    [self.delegate firstSettingTableViewControllerDidSelected:self];
+    [self dismissViewControllerAnimated:YES completion:Nil];
 
 }
 
-- (void)receivedLoadVideoId
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [alert dismissViewControllerAnimated:YES completion:nil];
-        [self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
-    });
-    //[self performSegueWithIdentifier:@"SubmitSetting" sender:@0];
 
-}
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([segue.identifier isEqualToString:@"SubmitSetting"]){
-        NSNumber *indexShow = @0;
-        NSLog(@"check youtube video id length %lu",(unsigned long)[self.youtube.videoIdList count]);
-        MainTabBarViewController *dest = segue.destinationViewController;
-        dest.youtube = self.youtube;
-        dest.recommendYoutube = self.youtube;
-        dest.genreSelected = self.genreSelected;
-        [dest setSelectedIndex:indexShow.unsignedIntegerValue];
-        // NAVIGATION HIDE
-        [self.navigationController setNavigationBarHidden:YES];
-       
-    }
-}
 
-#pragma mark - Fetched results controller
-
-- (NSFetchedResultsController *)fetchedResultsController
-{
-    if (_fetchedResultsController != nil) {
-        return _fetchedResultsController;
-    }
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    // Set the batch size to a suitable number.
-    [fetchRequest setFetchBatchSize:20];
-    
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"playlistTitle" ascending:NO];
-    
-    [fetchRequest setSortDescriptors:@[sortDescriptor]];
-    
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
-    aFetchedResultsController.delegate = self;
-    self.fetchedResultsController = aFetchedResultsController;
-    
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch:&error]) {
-        // Replace this implementation with code to handle the error appropriately.
-        // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    
-    return _fetchedResultsController;
-}
 
 
 @end

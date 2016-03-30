@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
+
+@protocol FirstSettingTableViewControllerDelegate;
+
 @interface FirstSettingTableViewController : UITableViewController<UIAlertViewDelegate,UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *alert;
@@ -25,5 +28,12 @@
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, assign) id<FirstSettingTableViewControllerDelegate> delegate;
+@end
+
+
+@protocol FirstSettingTableViewControllerDelegate <NSObject>
+
+- (void)firstSettingTableViewControllerDidSelected:(FirstSettingTableViewController *)searchViewController;
 
 @end
