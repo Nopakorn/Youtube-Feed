@@ -257,7 +257,9 @@
 
     [self.playerView playVideo];
     //implementprogress bar
-     self.ProgressSlider.value = 0;
+    self.ProgressSlider.value = 0;
+    self.currentTimePlay.text = @"00:00";
+    self.totalTime.text = @"00:00";
     [self.ProgressSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
     
 }
@@ -520,6 +522,8 @@
 }
 - (void)receivedDeleteFavoriteNotification:(NSNotification *)notification
 {
+    UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
+    [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
     if (favoriteDidPlayed) {
         favoriteDidPlayed = false;
         favoriteTableViewFlag = true;
