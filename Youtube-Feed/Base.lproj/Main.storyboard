@@ -410,19 +410,19 @@
                                     <action selector="sliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="sFx-9w-Oe0"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g2e-YF-cHc">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g2e-YF-cHc">
                                 <rect key="frame" x="34" y="415" width="48" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="5h6-zD-4ds"/>
+                                    <constraint firstAttribute="width" constant="75" id="5h6-zD-4ds"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uud-3L-0u6">
-                                <rect key="frame" x="522" y="415" width="48" height="21"/>
+                                <rect key="frame" x="522" y="415" width="75" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="3kY-cQ-8Yg"/>
+                                    <constraint firstAttribute="width" constant="75" id="3kY-cQ-8Yg"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -480,6 +480,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="2ow-r9-LEb"/>
+                                <exclude reference="DQP-vR-4PP"/>
                                 <exclude reference="0w0-Qv-jms"/>
                                 <exclude reference="6Be-93-ivs"/>
                                 <exclude reference="FHZ-Fx-es5"/>
@@ -489,6 +491,9 @@
                                 <exclude reference="Ab3-mp-fwc"/>
                                 <exclude reference="gGN-cP-8eg"/>
                                 <exclude reference="l0E-Zj-i2J"/>
+                                <exclude reference="CXE-9x-Ud6"/>
+                                <exclude reference="p0x-Tc-Ige"/>
+                                <exclude reference="794-mM-iKd"/>
                                 <exclude reference="BoY-pW-h7T"/>
                                 <exclude reference="CIh-ka-vuT"/>
                                 <exclude reference="YmB-ni-gfJ"/>
@@ -497,38 +502,33 @@
                                 <exclude reference="kgl-XB-zdg"/>
                                 <exclude reference="ndl-66-Qzq"/>
                                 <exclude reference="tfp-M7-mNZ"/>
-                                <exclude reference="2ow-r9-LEb"/>
-                                <exclude reference="DQP-vR-4PP"/>
-                                <exclude reference="CXE-9x-Ud6"/>
-                                <exclude reference="p0x-Tc-Ige"/>
-                                <exclude reference="794-mM-iKd"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
+                                <exclude reference="2ow-r9-LEb"/>
+                                <include reference="DQP-vR-4PP"/>
+                                <exclude reference="1bM-MO-NhA"/>
                                 <exclude reference="6Be-93-ivs"/>
                                 <exclude reference="TVS-Lt-qeW"/>
                                 <include reference="6uG-hi-5fc"/>
                                 <exclude reference="uhf-Al-nIG"/>
                                 <include reference="l0E-Zj-i2J"/>
+                                <include reference="CXE-9x-Ud6"/>
+                                <exclude reference="fPO-OP-6Vl"/>
                                 <exclude reference="BoY-pW-h7T"/>
                                 <exclude reference="CIh-ka-vuT"/>
                                 <exclude reference="YmB-ni-gfJ"/>
                                 <include reference="cLa-lr-XJp"/>
                                 <exclude reference="tfp-M7-mNZ"/>
                                 <exclude reference="x50-Q2-OJM"/>
-                                <exclude reference="2ow-r9-LEb"/>
-                                <include reference="DQP-vR-4PP"/>
-                                <exclude reference="1bM-MO-NhA"/>
-                                <include reference="CXE-9x-Ud6"/>
-                                <exclude reference="fPO-OP-6Vl"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="constraints">
                                 <exclude reference="0w0-Qv-jms"/>
-                                <include reference="kgl-XB-zdg"/>
                                 <include reference="794-mM-iKd"/>
+                                <include reference="kgl-XB-zdg"/>
                             </mask>
                         </variation>
                     </view>
@@ -537,6 +537,7 @@
                         <outlet property="ProgressSlider" destination="JD9-Br-8qX" id="odk-N8-aUI"/>
                         <outlet property="bottomSpacingPlayerViewConstraint" destination="l0E-Zj-i2J" id="vmv-vb-vW5"/>
                         <outlet property="currentTimePlay" destination="g2e-YF-cHc" id="yTf-CK-XCB"/>
+                        <outlet property="currentTimeWidthConstraint" destination="5h6-zD-4ds" id="hqd-Jt-A9T"/>
                         <outlet property="favoriteButton" destination="K20-vk-5rW" id="QdD-rw-VQo"/>
                         <outlet property="heightPlayerViewConstraint" destination="Jp0-0l-Z3b" id="HQS-oz-Sm0"/>
                         <outlet property="nextButton" destination="aEp-dk-5ZN" id="JCg-Rl-MtN"/>
@@ -545,6 +546,7 @@
                         <outlet property="prevButton" destination="gYF-N9-Ied" id="73X-7x-ZXZ"/>
                         <outlet property="topSapceConstraint" destination="kUU-zW-dag" id="rPA-tV-MC5"/>
                         <outlet property="totalTime" destination="Uud-3L-0u6" id="wUS-WI-HZH"/>
+                        <outlet property="totalTimeWidthConstraint" destination="3kY-cQ-8Yg" id="9Yq-nJ-Pt4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -300,8 +300,16 @@
     NSInteger ti = (NSInteger)interval;
     NSInteger seconds = ti % 60;
     NSInteger minutes = (ti / 60) % 60;
-    //NSInteger hours = (ti / 3600);
-    return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    NSInteger hours = (ti / 3600);
+    if (hours > 0) {
+        //self.totalTimeWidthConstraint.constant = 75;
+         return [NSString stringWithFormat:@"%ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
+    } else {
+        //self.totalTimeWidthConstraint.constant = 48;
+
+        return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    }
+   
 }
 
 

@@ -11,6 +11,8 @@
 @implementation Youtube
 {
     NSString *checkResult;
+    NSString *checkDurationEachVideo;
+    NSInteger nextVideo;
 }
 
 - (id)init
@@ -25,6 +27,7 @@
         self.search = @"search?";
         self.video = @"video?";
         self.youtube_api_key = @"AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug";
+        nextVideo = 0;
     }
     return self;
 }
@@ -230,6 +233,9 @@
             {
                 NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
                 self.searchResults = json;
+                checkDurationEachVideo = @"done";
+                nextVideo++;
+                //NSLog(@"%@",self.searchResults);
                 [self fetchVideosDuration];
             }else{
                 NSLog(@"%@",error);
@@ -245,7 +251,6 @@
         [self.durationList addObject:q[@"contentDetails"][@"duration"]];
         
     }
-   // NSLog(@"duration : %@",self.durationList);
     if (self.durationList.count == self.videoIdList.count) {
         NSLog(@"get duration all done");
         
@@ -266,8 +271,11 @@
         } else if ([checkResult isEqualToString:@"LoadGenreVideoIdNextPage"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoIdNextPage" object:self];
         }
-
+        //nextVideo = 0;
+    } else {
+        [self getVideoDurations:[self.videoIdList objectAtIndex:nextVideo]];
     }
+    
    
 }
 
@@ -280,29 +288,10 @@
         [self.videoIdList addObject:q[@"id"][@"videoId"]];
         [self.titleList addObject:q[@"snippet"][@"title"]];
         [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
-        [self getVideoDurations:q[@"id"][@"videoId"]];
+        //[self getVideoDurations:q[@"id"][@"videoId"]];
     }
-    
-//    if ([checkResult isEqualToString:@"LoadVideoIdFromSearchNextPage"]) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoIdFromSearchNextPage" object:self];
-//        
-//    } else if ([checkResult isEqualToString:@"LoadVideoIdFromSearch"]) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoIdFromSearch" object:self];
-//        
-//    }  else if ([checkResult isEqualToString:@"LoadVideoIdNextPage"]) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoIdNextPage" object:self];
-//        
-//    } else if ([checkResult isEqualToString:@"LoadGenreVideoId"]) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoId" object:self];
-//        
-//    } else if ([checkResult isEqualToString:@"LoadGenreVideoIdNextPage"]) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoIdNextPage" object:self];
-//    }
-//    else if ([checkResult isEqualToString:@"LoadVideoId"]) {
-//        NSLog(@"Load success");
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoId" object:self];
-//        
-//    }
+    [self getVideoDurations:[self.videoIdList objectAtIndex:nextVideo]];
+
 }
 
 @end

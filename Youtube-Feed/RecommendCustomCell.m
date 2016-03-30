@@ -19,12 +19,13 @@
 
     // Configure the view for the selected state
 }
-//-(void)layoutSubviews
-//{
-//    [super layoutSubviews];
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
 //    self.thumnail.contentMode = UIViewContentModeScaleAspectFill;
 //    self.thumnail.clipsToBounds = YES;
 //    self.thumnail.frame = CGRectMake(self.thumnail.frame.origin.x, self.thumnail.frame.origin.y, 100, 50);
-//}
+    self.durationLabel.adjustsFontSizeToFitWidth = YES;
+}
 
 @end

@@ -171,6 +171,37 @@
 
 - (NSString *)durationText:(NSString *)duration
 {
+//    int days = 0, hours = 0, minutes = 0, seconds = 0;
+//    const char *ptr = [duration UTF8String];
+//    NSLog(@"duration %s",ptr);
+//    while(*ptr)
+//    {
+//        if(*ptr == 'P' || *ptr == 'T')
+//        {
+//            ptr++;
+//            continue;
+//        }
+//        
+//        int value, charsRead;
+//        char type;
+//        if(sscanf(ptr, "%d%c%n", &value, &type, &charsRead) != 2)
+//            ;  // handle parse error
+//        if(type == 'D')
+//            days = value;
+//        else if(type == 'H')
+//            hours = value;
+//        else if(type == 'M')
+//            minutes = value;
+//        else if(type == 'S')
+//            seconds = value;
+//        else
+//            ;  // handle invalid type
+//        
+//        ptr += charsRead;
+//    }
+//    
+//    NSTimeInterval interval = ((days * 24 + hours) * 60 + minutes) * 60 + seconds;
+//    return [self stringFromTimeInterval:interval];
     NSInteger hours = 0;
     NSInteger minutes = 0;
     NSInteger seconds = 0;
@@ -199,11 +230,29 @@
             seconds = [durationPart intValue];
         }
     }
+    if (hours != 0) {
+        return [NSString stringWithFormat:@"%ld:%02ld:%02ld",(long)hours, (long)minutes, (long)seconds];
+    } else {
+        return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    }
     
-    return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+
 
 }
 
+- (NSString *)stringFromTimeInterval:(NSTimeInterval)interval {
+    NSInteger ti = (NSInteger)interval;
+    NSInteger seconds = ti % 60;
+    NSInteger minutes = (ti / 60) % 60;
+    NSInteger hours = (ti / 3600);
+    
+    if (hours > 0) {
+        return [NSString stringWithFormat:@"%ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
+    } else {
+        return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    }
+    
+}
 
 - (void)receivedLoadVideoIdNextPage
 {

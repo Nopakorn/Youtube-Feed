@@ -16,7 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L2b-E5-CQl">
-                        <rect key="frame" x="8" y="5" width="95" height="76"/>
+                        <rect key="frame" x="8" y="5" width="99" height="76"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_2" translatesAutoresizingMaskIntoConstraints="NO" id="WGL-nO-gLp">
@@ -26,16 +26,16 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifj-kC-kvB">
-                        <rect key="frame" x="111" y="6" width="157" height="73"/>
+                        <rect key="frame" x="115" y="6" width="153" height="73"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzf-cP-EWZ">
-                        <rect key="frame" x="64" y="68" width="38" height="13"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzf-cP-EWZ">
+                        <rect key="frame" x="49" y="68" width="58" height="13"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="38" id="Cwo-sl-dkf"/>
+                            <constraint firstAttribute="width" constant="58" id="70h-YV-xbW"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -48,15 +48,15 @@
                     <constraint firstItem="L2b-E5-CQl" firstAttribute="bottom" secondItem="F1O-5E-zxH" secondAttribute="bottomMargin" id="9eL-V5-ZSV"/>
                     <constraint firstAttribute="trailingMargin" secondItem="WGL-nO-gLp" secondAttribute="trailing" constant="8" id="E7v-7W-jxy"/>
                     <constraint firstItem="L2b-E5-CQl" firstAttribute="leading" secondItem="F1O-5E-zxH" secondAttribute="leadingMargin" id="GdX-i1-jzi"/>
+                    <constraint firstItem="zzf-cP-EWZ" firstAttribute="bottom" secondItem="L2b-E5-CQl" secondAttribute="bottom" id="Ofg-Xn-dBI"/>
                     <constraint firstItem="ifj-kC-kvB" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="-2" id="OiP-n8-4gd"/>
+                    <constraint firstItem="zzf-cP-EWZ" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="60" id="PCf-py-V4Q"/>
                     <constraint firstItem="WGL-nO-gLp" firstAttribute="leading" secondItem="ifj-kC-kvB" secondAttribute="trailing" constant="8" symbolic="YES" id="UMo-rg-MgS"/>
                     <constraint firstItem="L2b-E5-CQl" firstAttribute="centerY" secondItem="ifj-kC-kvB" secondAttribute="centerY" id="YEH-sT-fxI"/>
                     <constraint firstAttribute="bottomMargin" secondItem="WGL-nO-gLp" secondAttribute="bottom" constant="27" id="dbh-a4-DaI"/>
-                    <constraint firstItem="L2b-E5-CQl" firstAttribute="bottom" secondItem="zzf-cP-EWZ" secondAttribute="bottom" id="g1c-Ss-K0f"/>
-                    <constraint firstItem="zzf-cP-EWZ" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="60" id="kDw-9W-BUh"/>
-                    <constraint firstItem="zzf-cP-EWZ" firstAttribute="leading" secondItem="F1O-5E-zxH" secondAttribute="leadingMargin" constant="56" id="mFY-rt-ez9"/>
+                    <constraint firstItem="zzf-cP-EWZ" firstAttribute="leading" secondItem="F1O-5E-zxH" secondAttribute="leadingMargin" constant="41" id="egH-TM-Tdg"/>
+                    <constraint firstItem="ifj-kC-kvB" firstAttribute="leading" secondItem="zzf-cP-EWZ" secondAttribute="trailing" constant="8" symbolic="YES" id="pdI-zn-vLQ"/>
                     <constraint firstItem="WGL-nO-gLp" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="18" id="tkr-tw-4DM"/>
-                    <constraint firstItem="ifj-kC-kvB" firstAttribute="leading" secondItem="zzf-cP-EWZ" secondAttribute="trailing" constant="9" id="xBg-Xd-ZVh"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

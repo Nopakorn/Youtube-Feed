@@ -62,6 +62,8 @@
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *totalTimeWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *currentTimeWidthConstraint;
 
 @end
 
