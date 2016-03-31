@@ -884,7 +884,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     return _fetchedResultsController;
 }
 
-
+- (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
+{
+    if (distanceX == 1 && distanceY == 0) {
+         NSLog(@"RIGTH");
+        [self buttonPressed:self.nextButton];
+    }else if (distanceX == -1 && distanceY == 0) {
+         NSLog(@"LEFT");
+        [self buttonPressed:self.prevButton];
+    }else if (distanceX == 0 && distanceY == 1) {
+         NSLog(@"BOTTOM");
+        [self buttonPressed:self.prevButton];
+    }else if (distanceX == 0 && distanceY == -1) {
+         NSLog(@"TOP");
+        [self buttonPressed:self.nextButton];
+    }
+    return YES;
+}
 
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
@@ -936,7 +952,7 @@ BOOL backFact = YES;
            
             //NSLog(@"in tabbar controller");
             [_focusManager setFocusRootView:_containerView];
-            [_focusManager setHidden:NO];
+            [_focusManager setHidden:YES];
             [_focusManager moveFocus:4];
             backFact = YES;
         }
@@ -962,6 +978,11 @@ BOOL backFact = YES;
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
     NSLog(@"Long press %@", [self getButtonName:button]);
+    return YES;
+}
+- (BOOL)umaDidLongPressButton:(UMAInputButtonType)button state:(UMAInputGestureRecognizerState)state
+{
+
     return YES;
 }
 
