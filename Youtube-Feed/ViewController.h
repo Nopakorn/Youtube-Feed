@@ -18,7 +18,7 @@
 
 #import <UIEMultiAccess/UIEMultiAccess.h>
 
-@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate>
+@interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UMAFocusManagerDelegate>
 {
     UIAlertController *favoriteAlert;
     NSTimer *favoriteAlertTimer;
@@ -26,6 +26,8 @@
     NSTimer *outOflengthAlertTimer;
     NSTimer *hideNavigation;
 }
+@property (nonatomic) UMAApplication *umaApp;
+@property (nonatomic, strong) UMAFocusManager *focusManager;
 
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;

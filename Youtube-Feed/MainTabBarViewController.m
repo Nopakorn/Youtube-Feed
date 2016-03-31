@@ -78,7 +78,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     //focus
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-    [_focusManager setFocusRootView:[self.tabBarController.viewControllers objectAtIndex:0].view];
+    [_focusManager setFocusRootView:self.tabBar];
     //[_focusManager setFocusRootView:self.tabBar];
 
     [_focusManager setHidden:NO];
@@ -167,7 +167,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     //self.passValue = @"test";
-    [_focusManager moveFocus:4];    // Give focus to the first icon.
+    [_focusManager moveFocus:1];    // Give focus to the first icon.
     
     [_hidManager setConnectionCallback:_connectionBlock];
     [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout

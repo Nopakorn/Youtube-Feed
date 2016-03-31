@@ -40,12 +40,12 @@ static const NSInteger kHeightForHeaderInSection = 33;
 static const NSTimeInterval kHidDeviceControlTimeout = 5;
 NSString *const kIsManualConnection = @"is_manual_connection";
 
-@interface ViewController () <UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
+@interface ViewController () <UMAAppDiscoveryDelegate, UMAApplicationDelegate>
 
-@property (nonatomic, strong) UMAFocusManager *focusManager;
+
 @property (nonatomic, strong) NSArray *applications;
 @property (nonatomic) BOOL remoteScreen;
-@property (nonatomic) UMAApplication *umaApp;
+
 @property (nonatomic) UMAHIDManager *hidManager;
 @property (nonatomic) UMAInputDevice *connectedDevice;
 @property (copy, nonatomic) void (^discoveryBlock)(UMAInputDevice *, NSError *);
@@ -172,8 +172,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     //focus
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-    [_focusManager setFocusRootView:_containerView];
-    [_focusManager setHidden:NO];
+    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+    [_focusManager setHidden:YES];
     [self prepareBlocks];
     [_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
@@ -361,7 +361,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidAppear:animated];
     NSLog(@"View did appear in youtube");
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-
+    
+    
+    
+   
     if (recommendTableViewFlag) {
 
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -383,9 +386,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
 
     if (genreListTableViewFlag) {
-
+        NSLog(@"in genreList");
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         genreListTableViewFlag = false;
+        
 
     }
     
@@ -396,8 +400,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         favoriteDidPlayed = true;
         
     }
-    [_focusManager setFocusRootView:_containerView];
-    [_focusManager moveFocus:4];    // Give focus to the first icon.
+    
+    [_umaApp addViewController:self];
+    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+    
+    
+    
+    [_focusManager moveFocus:1];    // Give focus to the first icon.
+    //[_focusManager setDelegate:self];
     
     [_hidManager setConnectionCallback:_connectionBlock];
     [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
@@ -555,7 +566,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             
         }
-
+        
     }
 }
 
@@ -740,7 +751,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     genreListTableViewFlag = true;
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
-    NSLog(@"Received playGenreList");
+    //NSLog(@"Received playGenreList");
+     NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], item);
 }
 
 - (void)receivedFavoriteDidSelectedNotification:(NSNotification *)notification
@@ -906,7 +918,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"Press down %@",[self getButtonName:button]);
     return YES;
 }
-BOOL backFact = NO;
+BOOL backFact = YES;
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
@@ -914,14 +926,18 @@ BOOL backFact = NO;
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         
         if (backFact) {
-            NSLog(@"in tabbar controller");
-            [_focusManager setFocusRootView:_containerView];
-            [_focusManager moveFocus:4];
-            backFact = NO;
-        } else {
-            NSLog(@"in main view");
+            //NSLog(@"in main view");
+            [_focusManager setHidden:NO];
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
             [_focusManager moveFocus:1];
+            backFact = NO;
+            
+        } else {
+           
+            //NSLog(@"in tabbar controller");
+            [_focusManager setFocusRootView:_containerView];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:4];
             backFact = YES;
         }
         
@@ -931,6 +947,14 @@ BOOL backFact = NO;
     } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
         [self hideNavigation];
         return YES;
+        
+    } else if ([[self getButtonName:button] isEqualToString:@"Right"]){
+        NSLog(@"Right button");
+        return NO;
+        
+    }  else if ([[self getButtonName:button] isEqualToString:@"Left"]){
+        NSLog(@"Right button");
+        return NO;
     }
     return YES;
 }

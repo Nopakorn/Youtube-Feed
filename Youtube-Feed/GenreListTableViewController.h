@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
 @interface GenreListTableViewController : UITableViewController
 {

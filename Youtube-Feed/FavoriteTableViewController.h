@@ -11,6 +11,8 @@
 #import "Favorite.h"
 #import "Youtube.h"
 
+#import <UIEMultiAccess/UIEMultiAccess.h>
+
 @interface FavoriteTableViewController : UITableViewController <UIGestureRecognizerDelegate, UIAlertViewDelegate, NSFetchedResultsControllerDelegate>
 {
     UIAlertController *alert;

@@ -11,6 +11,7 @@
 #import "Youtube.h"
 #import "YoutubeVideo.h"
 
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
 @interface PlaylistDetailTableViewController : UITableViewController
 

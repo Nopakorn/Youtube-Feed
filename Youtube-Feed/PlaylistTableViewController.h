@@ -11,7 +11,7 @@
 #import "Favorite.h"
 #import "Youtube.h"
 
-
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
 @interface PlaylistTableViewController : UITableViewController <UIAlertViewDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate>
 {
