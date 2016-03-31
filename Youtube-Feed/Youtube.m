@@ -13,6 +13,7 @@
     NSString *checkResult;
     NSString *checkDurationEachVideo;
     NSInteger nextVideo;
+    int indexNexPage;
 }
 
 - (id)init
@@ -27,7 +28,9 @@
         self.search = @"search?";
         self.video = @"video?";
         self.youtube_api_key = @"AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug";
+        self.videoIdListForGetDuration = @"";
         nextVideo = 0;
+        indexNexPage = 0;
     }
     return self;
 }
@@ -64,7 +67,7 @@
                 NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
                 self.searchResults = json;
                 checkResult = @"LoadGenreVideoIdNextPage";
-                [self fetchVideos];
+                [self fetchVideos:nextPage];
                 
             }else{
                 
@@ -90,7 +93,7 @@
                 NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
                 self.searchResults = json;
                 checkResult = @"LoadGenreVideoId";
-                [self fetchVideos];
+                [self fetchVideos:nextPage];
                 
             }else{
                 NSLog(@"%@",error);
@@ -122,7 +125,7 @@
                 NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
                 self.searchResults = json;
                 checkResult = @"LoadVideoIdNextPage";
-                [self fetchVideos];
+                [self fetchVideos:nextPage];
                 
             }else{
                 NSLog(@"%@",error);
@@ -148,7 +151,7 @@
                 NSDictionary* json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
                 self.searchResults = json;
                 checkResult = @"LoadVideoId";
-                [self fetchVideos];
+                [self fetchVideos:nextPage];
             }else{
                 NSLog(@"%@",error);
             }
@@ -180,7 +183,7 @@
                 self.searchResults = json;
                 checkResult = @"LoadVideoIdFromSearchNextPage";
                 
-                [self fetchVideos];
+                [self fetchVideos:nextPage];
             }else{
                 NSLog(@"%@",error);
             }
@@ -206,7 +209,7 @@
                 self.searchResults = json;
                 checkResult = @"LoadVideoIdFromSearch";
                 
-                [self fetchVideos];
+                [self fetchVideos:nextPage];
             }else{
                 NSLog(@"%@",error);
             }
@@ -249,11 +252,8 @@
     NSArray *items = self.searchResults[@"items"];
     for (NSDictionary* q in items) {
         [self.durationList addObject:q[@"contentDetails"][@"duration"]];
-        
     }
-    if (self.durationList.count == self.videoIdList.count) {
-        NSLog(@"get duration all done");
-        
+  
         if ([checkResult isEqualToString:@"LoadVideoId"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadVideoId" object:self];
         } else if ([checkResult isEqualToString:@"LoadVideoIdFromSearchNextPage"]) {
@@ -271,15 +271,10 @@
         } else if ([checkResult isEqualToString:@"LoadGenreVideoIdNextPage"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoIdNextPage" object:self];
         }
-        //nextVideo = 0;
-    } else {
-        [self getVideoDurations:[self.videoIdList objectAtIndex:nextVideo]];
-    }
-    
-   
+
 }
 
--(void)fetchVideos
+-(void)fetchVideos:(BOOL)nextPage
 {
     NSArray* items = self.searchResults[@"items"];
     self.nextPageToken = self.searchResults[@"nextPageToken"];
@@ -290,8 +285,23 @@
         [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
         //[self getVideoDurations:q[@"id"][@"videoId"]];
     }
-    [self getVideoDurations:[self.videoIdList objectAtIndex:nextVideo]];
+    
+    if (nextPage) {
+        indexNexPage += 25;
+        self.videoIdListForGetDuration = @"";
+        for (int i = indexNexPage; i < [self.videoIdList count]; i++) {
+            self.videoIdListForGetDuration = [NSString stringWithFormat:@"%@,%@", self.videoIdListForGetDuration, [self.videoIdList objectAtIndex:i]];
+        }
+        
+    } else {
+        
+        for (int i = 0; i < [self.videoIdList count]; i++) {
+            self.videoIdListForGetDuration = [NSString stringWithFormat:@"%@,%@", self.videoIdListForGetDuration, [self.videoIdList objectAtIndex:i]];
+        }
 
+    }
+    
+    [self getVideoDurations:self.videoIdListForGetDuration];
 }
 
 @end

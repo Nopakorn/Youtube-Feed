@@ -9,8 +9,49 @@
 #import "ViewController.h"
 #import "MainTabBarViewController.h"
 #import "AppDelegate.h"
+#import <UIEMultiAccess/UIEMultiAccess.h>
+#import <UIEMultiAccess/DNApplicationManager.h>
+#import <UIEMultiAccess/DNAppCatalog.h>
+#import <UIEMultiAccess/UMAApplicationInfo.h>
 
-@interface ViewController ()
+typedef NS_ENUM(NSInteger, SectionType) {
+    SECTION_TYPE_SETTINGS,
+    SECTION_TYPE_LAST_CONNECTED_DEVICE,
+    SECTION_TYPE_CONNECTED_DEVICE,
+    SECTION_TYPE_DISCOVERED_DEVICES,
+};
+
+typedef NS_ENUM(NSInteger, AlertType) {
+    ALERT_TYPE_FAIL_TO_CONNECT,
+    ALERT_TYPE_DISCOVERY_TIMEOUT,
+};
+
+static NSString *const kSettingsManualConnectionTitle = @"Manual Connection";
+static NSString *const kSettingsManualConnectionSubTitle =
+@"Be able to select a device which you want to connect.";
+static NSString *const kDeviceNone = @"No Name";
+static NSString *const kAddressNone = @"No Address";
+
+static const NSInteger kNumberOfSectionsInTableView = 4;
+static NSString *const kRowNum = @"rowNum";
+static NSString *const kHeaderText = @"headerText";
+static NSString *const kTitleText = @"HID Device Sample";
+static const NSInteger kHeightForHeaderInSection = 33;
+static const NSTimeInterval kHidDeviceControlTimeout = 5;
+NSString *const kIsManualConnection = @"is_manual_connection";
+
+@interface ViewController () <UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
+
+@property (nonatomic, strong) UMAFocusManager *focusManager;
+@property (nonatomic, strong) NSArray *applications;
+@property (nonatomic) BOOL remoteScreen;
+@property (nonatomic) UMAApplication *umaApp;
+@property (nonatomic) UMAHIDManager *hidManager;
+@property (nonatomic) UMAInputDevice *connectedDevice;
+@property (copy, nonatomic) void (^discoveryBlock)(UMAInputDevice *, NSError *);
+@property (copy, nonatomic) void (^connectionBlock)(UMAInputDevice *, NSError *);
+@property (copy, nonatomic) void (^disconnectionBlock)(UMAInputDevice *, NSError *);
+@property (nonatomic) NSMutableArray *inputDevices;
 
 @end
 
@@ -28,9 +69,29 @@
     NSInteger item;
     NSInteger queryIndex;
 }
+- (id)init
+{
+    if(self = [super init]){
+//        UMAApplication *umaApp = [UMAApplication sharedApplication];
+//        [umaApp addViewController:self];
+    }
+    _inputDevices = [NSMutableArray array];
+    return self;
+
+}
+- (void)dealloc
+{
+    // Be sure unregister itself
+    if (!_remoteScreen) {
+        UMAApplication *umaApp = [UMAApplication sharedApplication];
+        [umaApp removeViewController:self];
+    }
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     
     self.tabBarController.delegate = self;
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
@@ -94,31 +155,138 @@
                                              selector:@selector(receivedFavoriteDidSelectedNotification:)
                                                  name:@"FavoriteDidSelected" object:nil];
     
-    
-    NSLog(@"View did load in youtube %@",[tabbar.recommendYoutube.titleList objectAtIndex:1]);
-   
    
     
     UITapGestureRecognizer *tgpr = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(handleTapPressed:)];
     [self.view addGestureRecognizer:tgpr];
     self.ProgressSlider.value = 0.0;
+    
+#pragma setup UMA in ViewDidload
+    _inputDevices = [NSMutableArray array];
+    _umaApp = [UMAApplication sharedApplication];
+    _umaApp.delegate = self;
+    _hidManager = [_umaApp requestHIDManager];
+    
+    [_umaApp addViewController:self];
+    
+    //focus
+    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+    [_focusManager setFocusRootView:_containerView];
+    [_focusManager setHidden:NO];
+    [self prepareBlocks];
+    [_hidManager setDisconnectionCallback:_disconnectionBlock];
+}
+
+- (void)prepareBlocks
+{
+    __weak typeof(self) weakSelf = self;
+    
+    //
+    // Block of Discovery Completion
+    //
+    _discoveryBlock = ^(UMAInputDevice *device, NSError *error) {
+        UIAlertView *alertView;
+        
+        switch ([error code]) {
+            case kUMADiscoveryDone: // Intentionally stops by the app
+            case kUMADiscoveryFailed: // Discovery failed with some reason
+                //[weakSelf.refreshControl endRefreshing];
+                break;
+            case kUMADiscoveryTimeout: // Timeout occurred
+                [weakSelf.hidManager stopDiscoverDevice];
+                alertView = [[UIAlertView alloc] initWithTitle:@"Discovery of HID Device finished"
+                                                       message:@"If you would like to discover again, pull down the view."
+                                                      delegate:weakSelf
+                                             cancelButtonTitle:@"OK"
+                                             otherButtonTitles:nil, nil];
+                alertView.tag = ALERT_TYPE_DISCOVERY_TIMEOUT;
+                [alertView show];
+                //[weakSelf.refreshControl endRefreshing];
+                break;
+            case kUMADiscoveryDiscovered:       // Device discovered
+                /* Get discovered devices and reload table*/
+                [weakSelf.inputDevices addObject:device];
+                //[weakSelf.sampleTableView reloadData];
+                break;
+            case kUMADiscoveryStarted:
+                break;
+            default:
+                break;
+        }
+    };
+    [_hidManager setDiscoveryCallback:_discoveryBlock];
+    
+    //
+    // Block of Connection Complete
+    //
+    _connectionBlock = ^(UMAInputDevice *device, NSError *error) {
+        UIAlertView *alertView;
+        switch ([error code]) {
+            case kUMAConnectedSuccess:
+                [weakSelf.hidManager stopDiscoverDevice];
+                weakSelf.connectedDevice = device;
+                //[weakSelf.sampleTableView reloadData];
+                break;
+            case kUMAConnectedTimeout:
+            case kUMAConnectedFailed:
+                alertView =
+                [[UIAlertView alloc] initWithTitle:@"Connection timeout occurred."
+                                           message:@"Reset the last memory and start to discovery?"
+                                          delegate:weakSelf
+                                 cancelButtonTitle:@"No"
+                                 otherButtonTitles:@"Yes", nil];
+                alertView.tag = ALERT_TYPE_FAIL_TO_CONNECT;
+                [alertView show];
+                break;
+            default:
+                break;
+                
+        }
+    };
+    [_hidManager setConnectionCallback:_connectionBlock];
+    
+    //
+    // Block of Disonnection Complete
+    //
+    _disconnectionBlock = ^(UMAInputDevice *device, NSError *error) {
+        weakSelf.connectedDevice = nil;
+        //[weakSelf.sampleTableView reloadData];
+    };
+    [_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
 
 
 - (void)hideNavigation
 {
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    self.tabBarController.tabBar.hidden = YES;
-     self.topSapceConstraint.constant = 94;
-    self.playButton.hidden = YES;
-    self.pauseButton.hidden = YES;
-    self.nextButton.hidden = YES;
-     self.prevButton.hidden = YES;
-    self.favoriteButton.hidden = YES;
-    self.ProgressSlider.hidden = YES;
-    self.totalTime.hidden = YES;
-    self.currentTimePlay.hidden = YES;
+    if (self.tabBarController.tabBar.hidden == YES) {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+        self.tabBarController.tabBar.hidden = NO;
+        self.topSapceConstraint.constant = 94;
+        self.playButton.hidden = NO;
+        self.pauseButton.hidden = NO;
+        self.nextButton.hidden = NO;
+        self.prevButton.hidden = NO;
+        self.favoriteButton.hidden = NO;
+        self.ProgressSlider.hidden = NO;
+        self.totalTime.hidden = NO;
+        self.currentTimePlay.hidden = NO;
+        [_focusManager setHidden:NO];
+    } else {
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+        self.tabBarController.tabBar.hidden = YES;
+        self.topSapceConstraint.constant = 94;
+        self.playButton.hidden = YES;
+        self.pauseButton.hidden = YES;
+        self.nextButton.hidden = YES;
+        self.prevButton.hidden = YES;
+        self.favoriteButton.hidden = YES;
+        self.ProgressSlider.hidden = YES;
+        self.totalTime.hidden = YES;
+        self.currentTimePlay.hidden = YES;
+        [_focusManager setHidden:YES];
+    }
+    
 }
 
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
@@ -135,7 +303,8 @@
         self.ProgressSlider.hidden = NO;
         self.totalTime.hidden = NO;
         self.currentTimePlay.hidden = NO;
-
+        [_focusManager setHidden:NO];
+         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
 
     } else {
         
@@ -150,6 +319,7 @@
         self.ProgressSlider.hidden = YES;
         self.totalTime.hidden = YES;
         self.currentTimePlay.hidden = YES;
+        [_focusManager setHidden:YES];
 
     }
 
@@ -226,7 +396,15 @@
         favoriteDidPlayed = true;
         
     }
+    [_focusManager setFocusRootView:_containerView];
+    [_focusManager moveFocus:4];    // Give focus to the first icon.
     
+    [_hidManager setConnectionCallback:_connectionBlock];
+    [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
+                                    WithDiscoveryInterval:kHidDeviceControlTimeout
+                                    WithConnectionTimeout:kHidDeviceControlTimeout];
+    [_hidManager startDiscoverWithDeviceName:nil];
+
 }
 
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
@@ -601,6 +779,7 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     [hideNavigation invalidate];
+    [_focusManager setHidden:NO];
     if (tabBarController.selectedIndex == 2) {
     
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];
@@ -691,6 +870,135 @@
     }
 
     return _fetchedResultsController;
+}
+
+
+
+
+- (NSString *)getButtonName:(UMAInputButtonType)button
+{
+    switch (button) {
+        case kUMAInputButtonTypeBack:
+            return @"Back";
+        case kUMAInputButtonTypeDown:
+            return @"Down";
+        case kUMAInputButtonTypeHome:
+            return @"Home";
+        case kUMAInputButtonTypeLeft:
+            return @"Left";
+        case kUMAInputButtonTypeMain:
+            return @"Main";
+        case kUMAInputButtonTypeRight:
+            return @"Right";
+        case kUMAInputButtonTypeUp:
+            return @"UP";
+        case kUMAInputButtonTypeVR:
+            return @"VR";
+        default:
+            return @"Unknown";
+    }
+}
+
+#pragma mark - UMARemoteInputEventDelegate
+
+- (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
+{
+    NSLog(@"Press down %@",[self getButtonName:button]);
+    return YES;
+}
+BOOL backFact = NO;
+
+- (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
+{
+    NSLog(@"Press up %@", [self getButtonName:button]);
+    if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+        
+        if (backFact) {
+            NSLog(@"in tabbar controller");
+            [_focusManager setFocusRootView:_containerView];
+            [_focusManager moveFocus:4];
+            backFact = NO;
+        } else {
+            NSLog(@"in main view");
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager moveFocus:1];
+            backFact = YES;
+        }
+        
+    } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+        return NO;
+        
+    } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
+        [self hideNavigation];
+        return YES;
+    }
+    return YES;
+}
+
+- (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
+{
+    NSLog(@"Long press %@", [self getButtonName:button]);
+    return YES;
+}
+
+- (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
+{
+    NSLog(@"Double click %@", [self getButtonName:button]);
+    return YES;
+}
+
+- (void)umaDidAccelerometerUpdate:(UMAAcceleration)acceleration
+{
+    NSLog(@"Accer x=%f, y=%f, z=%f", acceleration.x, acceleration.y, acceleration.z);
+}
+
+
+
+
+#pragma mark - UMAAppDiscoveryDelegate
+- (void)didDiscoverySucceed:(NSArray *)appInfo
+{
+    NSLog(@"didDiscoverySucceed");
+    if(appInfo) {
+        int i = 0;
+        for (UMAApplicationInfo *app in appInfo) {
+            NSLog(@"-------------[app(%d)]----------------",i);
+            NSLog(@"id    :%@",[app stringProperty:PROP_APP_ID withDefault:@"-"]);
+            NSLog(@"name  :%@",[app stringProperty:PROP_APP_NAME withDefault:@"-"]);
+            NSLog(@"cname :%@",[app stringProperty:PROP_APP_VENDOR withDefault:@"-"]);
+            NSLog(@"text  :%@",[app stringProperty:PROP_APP_DESCRIPTION withDefault:@"-"]);
+            NSLog(@"cat   :%@",[app stringProperty:PROP_APP_CATEGORY withDefault:@"-"]);
+            NSLog(@"url   :%@",[app stringProperty:PROP_APP_URL withDefault:@"-"]);
+            NSLog(@"schema:%@",[app stringProperty:PROP_APP_SCHEMA withDefault:@"-"]);
+            NSLog(@"icon  :%@",[app stringProperty:PROP_APP_ICON_URL withDefault:@"-"]);
+            NSLog(@"new   :%d",[app integerProperty:PROP_APP_NEW withDefault:-1]);
+            NSLog(@"recmt :%d",[app integerProperty:PROP_APP_RECMD withDefault:-1]);
+            NSLog(@"date  :%@",[app stringProperty:PROP_APP_DATE withDefault:@"-"]);
+            NSLog(@"dev2  :%d",[app integerProperty:PROP_APP_DEV2 withDefault:-1]);
+            NSLog(@"drive :%d",[app integerProperty:PROP_APP_DRIVE withDefault:-1]);
+            i++;
+        }
+    }
+}
+#pragma mark - UMAApplicationDelegate
+
+- (UIViewController *)uma:(UMAApplication *)application requestRootViewController:(UIScreen *)screen {
+    // This sample does not use this delegate
+    return nil;
+}
+
+- (void)didDiscoveryFail:(int)reason withMessage:(NSString *)message;
+{
+    NSLog(@"app discovery failed. (%@)", message);
+}
+- (void)uma:(UMAApplication *)application didConnectInputDevice:(UMAInputDevice *)device
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+}
+
+- (void)uma:(UMAApplication *)application didDisconnectInputDevice:(UMAInputDevice *)device
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 @end

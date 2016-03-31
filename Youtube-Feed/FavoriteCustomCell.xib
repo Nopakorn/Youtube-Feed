@@ -15,10 +15,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="89"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L2b-E5-CQl">
-                        <rect key="frame" x="8" y="5" width="99" height="76"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star_2" translatesAutoresizingMaskIntoConstraints="NO" id="WGL-nO-gLp">
                         <rect key="frame" x="276" y="26" width="28" height="28"/>
                         <constraints>
@@ -41,6 +37,10 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L2b-E5-CQl">
+                        <rect key="frame" x="8" y="5" width="99" height="76"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="L2b-E5-CQl" firstAttribute="top" secondItem="F1O-5E-zxH" secondAttribute="topMargin" constant="-3" id="4MS-La-1Jo"/>

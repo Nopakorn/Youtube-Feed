@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 #import "Playlist.h"
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
 @interface MainTabBarViewController : UITabBarController
 

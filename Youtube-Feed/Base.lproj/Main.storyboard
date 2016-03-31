@@ -595,6 +595,7 @@
                     <connections>
                         <outlet property="ProgressSlider" destination="JD9-Br-8qX" id="odk-N8-aUI"/>
                         <outlet property="bottomSpacingPlayerViewConstraint" destination="l0E-Zj-i2J" id="vmv-vb-vW5"/>
+                        <outlet property="containerView" destination="8bC-Xf-vdC" id="pVP-mg-Q8N"/>
                         <outlet property="currentTimePlay" destination="g2e-YF-cHc" id="yTf-CK-XCB"/>
                         <outlet property="currentTimeWidthConstraint" destination="5h6-zD-4ds" id="hqd-Jt-A9T"/>
                         <outlet property="favoriteButton" destination="K20-vk-5rW" id="QdD-rw-VQo"/>

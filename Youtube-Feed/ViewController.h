@@ -16,6 +16,7 @@
 #import "RecommendTableViewController.h"
 #import "SearchTableViewController.h"
 
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
 @interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate>
 {
@@ -64,6 +65,10 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *totalTimeWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *currentTimeWidthConstraint;
+
+@property (strong, nonatomic) IBOutlet UIView *containerView;
+
+
 
 @end
 

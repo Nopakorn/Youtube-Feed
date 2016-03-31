@@ -22,6 +22,8 @@
 @property (nonatomic, copy) NSString *nextPageToken;
 @property (nonatomic, copy) NSString *prevPageToken;
 
+@property (nonatomic, copy) NSString *videoIdListForGetDuration;
+
 @property (nonatomic, retain) NSMutableArray *videoIdList;
 @property (nonatomic, retain) NSMutableArray *titleList;
 @property (nonatomic, retain) NSMutableArray *thumbnailList;

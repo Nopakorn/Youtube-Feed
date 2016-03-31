@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 
+#import <UIEMultiAccess/UIEMultiAccess.h>
+
 @protocol RecommendTableViewControllerDelegate;
 
 @interface RecommendTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>

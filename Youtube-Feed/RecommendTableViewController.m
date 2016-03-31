@@ -40,7 +40,6 @@
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
-    NSLog(@"%@",self.recommendYoutube.durationList);
 }
 
 - (void)receivedSettingNotification:(NSNotification *)notification
@@ -117,7 +116,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 90;
+    return 100;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -171,37 +170,7 @@
 
 - (NSString *)durationText:(NSString *)duration
 {
-//    int days = 0, hours = 0, minutes = 0, seconds = 0;
-//    const char *ptr = [duration UTF8String];
-//    NSLog(@"duration %s",ptr);
-//    while(*ptr)
-//    {
-//        if(*ptr == 'P' || *ptr == 'T')
-//        {
-//            ptr++;
-//            continue;
-//        }
-//        
-//        int value, charsRead;
-//        char type;
-//        if(sscanf(ptr, "%d%c%n", &value, &type, &charsRead) != 2)
-//            ;  // handle parse error
-//        if(type == 'D')
-//            days = value;
-//        else if(type == 'H')
-//            hours = value;
-//        else if(type == 'M')
-//            minutes = value;
-//        else if(type == 'S')
-//            seconds = value;
-//        else
-//            ;  // handle invalid type
-//        
-//        ptr += charsRead;
-//    }
-//    
-//    NSTimeInterval interval = ((days * 24 + hours) * 60 + minutes) * 60 + seconds;
-//    return [self stringFromTimeInterval:interval];
+
     NSInteger hours = 0;
     NSInteger minutes = 0;
     NSInteger seconds = 0;

@@ -10,8 +10,10 @@
 #import "MainTabBarViewController.h"
 #import "PlaylistTableViewController.h"
 #import "FirstSettingTableViewController.h"
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UMAApplicationDelegate>
+@property (nonatomic) UIViewController *rootViewController; // Root view controller for the secondary display
 
 @end
 
@@ -23,22 +25,34 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    MainTabBarViewController *mainTabbar = [storyboard instantiateViewControllerWithIdentifier:@"mainTabbar"];
-//
-//    UINavigationController *nav = [mainTabbar.viewControllers objectAtIndex:2];
-//    PlaylistTableViewController *playlistView = (PlaylistTableViewController *)[nav.viewControllers objectAtIndex:0];
-//    playlistView.managedObjectContext = self.managedObjectContext;
-//    NSLog(@"check call maintabbar %lu", [mainTabbar.viewControllers count]);
-//    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-//    FirstSettingTableViewController *viewController = (FirstSettingTableViewController *)navigationController.topViewController;
-//    viewController.managedObjectContext = self.managedObjectContext;
+    UMAApplication *umaApp = [UMAApplication sharedApplication];
+    [umaApp setDelegate:self];
+    [umaApp setStatusBarStyle:kUMAStatusBarStyleBlack]; // Show status bar widget on secondary screen.
+    [umaApp setBeepSoundEnabled:YES];      // Enable beep sound when HID input event received.
+    [umaApp setVoiceOverEnabled:YES];      // Enable speech when a view gets focus.
+    [umaApp setAutoStart:YES];
+    [umaApp setup];
+    if ([umaApp isSecondScreenAvailable]) {
+        [umaApp setDisplayType:kUMADisplayHDMI];
+        [umaApp startProjection];
+    } else {
+        NSLog (@"Second display is not connected");
+    }
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
         //NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
         //NSLog(@"YES genre is selected %@",saveGenre);
     } else {
          //NSLog(@"NO genre isnt selected");
     }
+    
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    UMAApplication *umaApp = [UMAApplication sharedApplication];
+    [umaApp handleOpenURL:url];
     
     return YES;
 }
@@ -136,5 +150,11 @@
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+#pragma mark - UMAApplicationDelegate
+
+- (UIViewController *)uma:(UMAApplication *)application requestRootViewController:(UIScreen *)screen
+{
+    return _rootViewController;
+}
 
 @end
