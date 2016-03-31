@@ -66,6 +66,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     Boolean playlistDidPlayed;
     
     BOOL outOfLengthAlert;
+    BOOL isSeekForward;
+    BOOL isSeekBackward;
     NSInteger item;
     NSInteger queryIndex;
 }
@@ -476,13 +478,37 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSTimeInterval currentTimeInterval = currentTime;
     self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
     
-    if (total < 1) {
-        float playerCurrentTime = [self.playerView currentTime];
-        self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
-    } else {
-        [self.timerProgress invalidate];
+    if (isSeekForward) {
+        if (total < 1) {
+            float playerCurrentTime = [self.playerView currentTime];
+            playerCurrentTime+=5;
+            self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
+            [self.playerView seekToSeconds:playerCurrentTime allowSeekAhead:YES];
+            
+        } else {
+            [self.timerProgress invalidate];
+        }
+
+    } else if (isSeekBackward){
+        if (total < 1) {
+            float playerCurrentTime = [self.playerView currentTime];
+            playerCurrentTime-=5;
+            self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
+            [self.playerView seekToSeconds:playerCurrentTime allowSeekAhead:YES];
+            
+        } else {
+            [self.timerProgress invalidate];
+        }
+        
+    }else {
+        if (total < 1) {
+            float playerCurrentTime = [self.playerView currentTime];
+            self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
+        } else {
+            [self.timerProgress invalidate];
+        }
+
     }
-    
 }
 
 - (NSString *)stringFromTimeInterval:(NSTimeInterval)interval {
@@ -517,7 +543,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
        
         self.currentTimePlay.text = [self stringFromTimeInterval:currentTimeInterval];
         
-        self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
+        self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
         
     } else if (state == kYTPlayerStatePaused) {
         [self.timerProgress invalidate];
@@ -982,7 +1008,19 @@ BOOL backFact = YES;
 }
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button state:(UMAInputGestureRecognizerState)state
 {
-
+    if ([[self getButtonName:button] isEqualToString:@"Right"]) {
+        if (state == 0) {
+            isSeekForward = true;
+        } else {
+            isSeekForward = false;
+        }
+    } else if ([[self getButtonName:button] isEqualToString:@"Left"]){
+        if (state == 0) {
+            isSeekBackward = true;
+        } else {
+            isSeekBackward = false;
+        }
+    }
     return YES;
 }
 
