@@ -59,9 +59,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @end
 
 @implementation FavoriteTableViewController
-
+{
+    BOOL isAlertShowUp;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
+    isAlertShowUp = NO;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     NSLog(@"favorite view did load");
@@ -454,75 +457,72 @@ BOOL backFactFavorite = YES;
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up in playlist");
-    if ([[self getButtonName:button] isEqualToString:@"Back"]) {
-        //
-        
-        if (backFactFavorite) {
-            NSLog(@"in tabbar controller");
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:2];
-            backFactFavorite = NO;
-            
-        } else {
-            
-            NSLog(@"in main view");
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager moveFocus:1];
-            backFactFavorite = YES;
+    if (isAlertShowUp) {
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+            isAlertShowUp = false;
+        } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+            [self deleteRowAtIndex:[_focusManager focusIndex]];
+            [alert dismissViewControllerAnimated:YES completion:nil];
+            isAlertShowUp = false;
         }
-        
-    } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
-        return NO;
-        
-    } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
-        
-        return YES;
+    } else {
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            //
+            
+            if (backFactFavorite) {
+                NSLog(@"in tabbar controller");
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager moveFocus:3];
+                backFactFavorite = NO;
+                
+            } else {
+                
+                NSLog(@"in main view");
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager moveFocus:1];
+                backFactFavorite = YES;
+            }
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+            return NO;
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
+            
+            return YES;
+        }
+
+    
     }
     return YES;
 }
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
-    //    CGPoint p = [gestureRecognizer locationInView:self.tableView];
-    //
-    //    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    NSLog(@"Long press %@ at %ld", [self getButtonName:button], (long)[_focusManager focusIndex]);
+    alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
+                                                        message:@"Are you sure to remove this video from Favorite"
+                                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    //    if (indexPath == nil) {
-    //        NSLog(@"long press table view but not in row");
-    //    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
-    //        NSLog(@"long press began at row %ld", indexPath.row);
-    //        if ([self.playlist_List count] < indexPath.row) {
-    //            NSLog(@"long press began at row %ld more then length", indexPath.row);
-    //            return;
-    //        }
-    //        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
-    //                                                    message:@"Are you sure to remove this video from Favorite"
-    //                                             preferredStyle:UIAlertControllerStyleAlert];
-    //
-    //        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-    //                                                     style:UIAlertActionStyleDefault
-    //                                                   handler:^(UIAlertAction *action){
-    //
-    //                                                       [self deleteRowAtIndex:indexPath.row];
-    //                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-    //                                                   }];
-    //
-    //        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-    //                                                         style:UIAlertActionStyleDefault
-    //                                                       handler:^(UIAlertAction *action){
-    //
-    //                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-    //                                                       }];
-    //        [alert addAction:ok];
-    //        [alert addAction:cancel];
-    //        [self presentViewController:alert animated:YES completion:nil];
-    //
-    //    } else {
-    //        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
-    //    }
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action){
     
-    return NO;
+                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
+                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+                                                       }];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction *action){
+    
+                                                               [alert dismissViewControllerAnimated:YES completion:nil];
+                                                           }];
+    [alert addAction:ok];
+    //[alert addAction:cancel];
+    [self presentViewController:alert animated:YES completion:nil];
+    isAlertShowUp = YES;
+    return YES;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
