@@ -68,6 +68,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL outOfLengthAlert;
     BOOL isSeekForward;
     BOOL isSeekBackward;
+    BOOL backFact;
     NSInteger item;
     NSInteger queryIndex;
 }
@@ -110,6 +111,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     favoriteTableViewFlag = false;
     favoriteDidPlayed = false;
     playlistDidPlayed = false;
+    backFact = YES;
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
@@ -174,7 +176,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     //focus
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+    [_focusManager setFocusRootView:_containerView];
     [_focusManager setHidden:YES];
     [self prepareBlocks];
     [_hidManager setDisconnectionCallback:_disconnectionBlock];
@@ -273,7 +275,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.ProgressSlider.hidden = NO;
         self.totalTime.hidden = NO;
         self.currentTimePlay.hidden = NO;
-        [_focusManager setHidden:NO];
+        [_focusManager setHidden:YES];
     } else {
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
@@ -305,7 +307,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.ProgressSlider.hidden = NO;
         self.totalTime.hidden = NO;
         self.currentTimePlay.hidden = NO;
-        [_focusManager setHidden:NO];
+        [_focusManager setHidden:YES];
          hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
 
     } else {
@@ -405,13 +407,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+    [_focusManager setFocusRootView:_containerView];
     
     
     
-    [_focusManager moveFocus:1];    // Give focus to the first icon.
+    [_focusManager moveFocus:4];    // Give focus to the first icon.
     //[_focusManager setDelegate:self];
-    
+    [_focusManager setHidden:YES];
     [_hidManager setConnectionCallback:_connectionBlock];
     [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
                                     WithDiscoveryInterval:kHidDeviceControlTimeout
@@ -818,6 +820,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [hideNavigation invalidate];
     [_focusManager setHidden:NO];
+    backFact = YES;
     if (tabBarController.selectedIndex == 2) {
     
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:2];
@@ -960,7 +963,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"Press down %@",[self getButtonName:button]);
     return YES;
 }
-BOOL backFact = YES;
+
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
@@ -968,7 +971,7 @@ BOOL backFact = YES;
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         
         if (backFact) {
-            //NSLog(@"in main view");
+            NSLog(@"backFact %id",backFact);
             [_focusManager setHidden:NO];
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
             [_focusManager moveFocus:1];

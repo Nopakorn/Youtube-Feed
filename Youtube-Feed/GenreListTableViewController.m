@@ -85,7 +85,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"View did disappear");
+    NSLog(@"View did didappear");
 #pragma setup UMA in ViewDidAppear in GenreListTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
