@@ -199,6 +199,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
+    [_focusManager setHidden:NO];
+
     [_focusManager moveFocus:1];    // Give focus to the first icon.
     
 //    [_hidManager setConnectionCallback:_connectionBlock];
@@ -206,6 +208,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //                                    WithDiscoveryInterval:kHidDeviceControlTimeout
 //                                    WithConnectionTimeout:kHidDeviceControlTimeout];
 //    [_hidManager startDiscoverWithDeviceName:nil];
+}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear RecommendedController");
+    [_focusManager setHidden:YES];
 }
 
 - (void)didReceiveMemoryWarning {

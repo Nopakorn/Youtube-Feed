@@ -87,19 +87,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
+    [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
 }
 
-- (void) viewDidDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-     NSLog(@"View did disappear");
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear GenreController");
+    [_focusManager setHidden:YES];
 }
+
 
 - (void)createGerne
 {
     self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
     NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

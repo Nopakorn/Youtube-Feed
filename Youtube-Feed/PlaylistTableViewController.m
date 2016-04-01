@@ -84,6 +84,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear PlaylistController");
+    [_focusManager setHidden:YES];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     
@@ -91,6 +98,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
+    [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
 }
 
@@ -196,7 +204,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self performSegueWithIdentifier:@"FavoriteSegue" sender:nil];
         
     }else if(indexPath.row == [self.playlist_List count]+1) {
-        
+        NSLog(@"in createnew");
         [self createNewPlaylist];
         
     }else {

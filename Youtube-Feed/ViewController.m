@@ -422,6 +422,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear Viewcontroller");
+    [hideNavigation invalidate];
+    [_focusManager setHidden:YES];
+
+}
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
 {
     BOOL checkFav = false;

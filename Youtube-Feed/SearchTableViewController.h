@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import  "Youtube.h"
 
+#import <UIEMultiAccess/UIEMultiAccess.h>
 
 @protocol SearchTableViewControllerDelegate;
 

@@ -75,12 +75,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setHidden:NO];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear PlaylistController");
+    [_focusManager setHidden:YES];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
+    [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
 
 }

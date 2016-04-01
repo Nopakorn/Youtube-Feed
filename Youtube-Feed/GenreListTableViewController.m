@@ -77,6 +77,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setHidden:NO];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear GenreListController");
+    [_focusManager setHidden:YES];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -90,6 +97,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
+    [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
 
 }
