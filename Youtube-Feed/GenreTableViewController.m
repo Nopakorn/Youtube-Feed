@@ -58,12 +58,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @end
 
 @implementation GenreTableViewController
-
+{
+    BOOL backFactGenre;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.genreYoutube = [[Youtube alloc] init];
-    
+    backFactGenre = YES;
     //self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
@@ -195,6 +197,27 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
 }
 
+
+
+- (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
+{
+    //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
+    //NSLog(@"in tabbar %id",backFactPlaylist);
+    if (backFactGenre == 0) {
+        
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:1];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            [_focusManager moveFocus:4];
+            
+        }
+        
+    }
+    
+    
+    return NO;
+}
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {
     switch (button) {
@@ -227,7 +250,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     return YES;
 }
 
-BOOL backFactGenre = YES;
+
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {

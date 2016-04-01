@@ -63,6 +63,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation PlaylistTableViewController
 {
     BOOL isAlertShowUp;
+    BOOL backFactPlaylist;
 }
 
 
@@ -71,6 +72,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidLoad];
     isAlertShowUp = NO;
+    backFactPlaylist = YES;
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
@@ -252,11 +254,28 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)saveNewPlaylist:(NSString *)text
 {
     NSString *title = text;
-    [self insertNewPlaylist:title];
+    if ([text isEqualToString:@""]) {
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:@"You need to Type Your Playlist Name"
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       //[self saveNewPlaylist:[[alert.textFields objectAtIndex:0] text]];
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        //[alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        [self insertNewPlaylist:title];
+    }
+    
 }
 - (void)insertNewPlaylist:(NSString *)title
 {
-
+    
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
     NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
@@ -287,7 +306,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSLog(@"long press began at row %ld more then length", indexPath.row);
             return;
         }
-         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this plalist", nil)];
+         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
                                                     message:description
                                              preferredStyle:UIAlertControllerStyleAlert];
@@ -353,7 +372,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         Playlist *playlistForRow = [[self fetchedResultsController] objectAtIndexPath:customIndexPath];
         PlaylistDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = playlistForRow;
-        
+        NSLog(@"");
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
         NSLog(@"prepare playlistEdit");
         [self fetchPlaylist];
@@ -461,6 +480,28 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.tableView endUpdates];
 }
 
+- (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
+{
+    //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
+    //NSLog(@"in tabbar %id",backFactPlaylist);
+    if (backFactPlaylist == 0) {
+        
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            NSLog(@"search");
+            [_focusManager moveFocus:1];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            NSLog(@"search");
+            [_focusManager moveFocus:4];
+            
+        }
+        
+    }
+    
+    
+    return NO;
+}
+
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {
@@ -493,7 +534,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"Press Down in Playlist");
     return YES;
 }
-BOOL backFactPlaylist = YES;
+
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {

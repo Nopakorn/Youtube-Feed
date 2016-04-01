@@ -98,12 +98,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSLog(@"check object picked %@",self.favorite.videoTitle);
-//     NSString *description = [NSString stringWithFormat:NSLocalizedString(@"", nil)];
+//    NSLog(@"check object picked %@",self.favorite.videoTitle);
+//     NSString *description = [NSString stringWithFormat:@"Adding to %@",self.playlist.title];
 //    alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
-//                                                message:@"Are you sure to adding this video to playlist"
+//                                                message:description
 //                                         preferredStyle:UIAlertControllerStyleAlert];
 //    
 //    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
@@ -114,16 +114,16 @@
 //                                                   [alert dismissViewControllerAnimated:YES completion:nil];
 //                                               }];
 //    
-//    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-//                                                 style:UIAlertActionStyleDefault
-//                                               handler:^(UIAlertAction *action){
-//                                                   
-//                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-//                                               }];
+////    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+////                                                 style:UIAlertActionStyleDefault
+////                                               handler:^(UIAlertAction *action){
+////                                                   
+////                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+////                                               }];
 //    [alert addAction:ok];
-//    [alert addAction:cancel];
-//    [self presentViewController:alert animated:YES completion:nil];
-//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+////    [alert addAction:cancel];
+    //[self presentViewController:alert animated:YES completion:nil];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self saveVideotoPlaylist:self.favorite];
 }
 
@@ -131,9 +131,8 @@
 - (void)saveVideotoPlaylist:(Favorite *)favorite
 {
      NSLog(@"check object passing %@",favorite.videoTitle);
-    
     if ([self checkPlaylist:favorite]) {
-        NSLog(@"duplicate VIDEO IN PLAYLIST");
+        
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"This video is already in the Playlist", nil)];
         
         alert = [UIAlertController alertControllerWithTitle:@""
@@ -149,7 +148,24 @@
         [self presentViewController:alert animated:YES completion:nil];
        
     } else {
-        NSLog(@"NO");
+
+        NSLog(@"check object picked %@",self.favorite.videoTitle);
+        NSString *description = [NSString stringWithFormat:@"Adding Video to %@",self.playlist.title];
+        alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
+                                                    message:description
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       //[self saveVideotoPlaylist:self.favorite];
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
         NSManagedObjectContext *context = [appDelegate managedObjectContext];
         YoutubeVideo *youtubeVideo = [NSEntityDescription insertNewObjectForEntityForName:@"YoutubeVideo" inManagedObjectContext:context];
@@ -160,7 +176,7 @@
         youtubeVideo.videoDuration = favorite.videoDuration;
         youtubeVideo.playlist = self.playlist;
         youtubeVideo.index = @([self.playlist.youtubeVideos count]);
-        NSLog(@"check index %@",youtubeVideo.index);
+
         // Save the context.
         NSError *error = nil;
         if (![context save:&error]) {

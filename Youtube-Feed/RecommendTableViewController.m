@@ -61,12 +61,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation RecommendTableViewController
 {
     BOOL nextPage;
+    BOOL backFactRecommended ;
+    BOOL inTabbar;
 }
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     nextPage = true;
+    backFactRecommended = YES;
+    inTabbar = false;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.recommendYoutube = [[Youtube alloc] init];
@@ -397,10 +401,28 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
 }
 
-- (void)focusManager:(UMAFocusManager *)manager didFocusChange:(UIView *)newView oldView:(UIView *)oldView
+
+
+- (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-//    NSLog(@"newView %@",newView);
-//    NSLog(@"oldView %@",oldView);
+    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
+    NSLog(@"in tabbar %id",backFactRecommended);
+    if (backFactRecommended == 0) {
+        
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            NSLog(@"search");
+            [_focusManager moveFocus:1];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            NSLog(@"search");
+            [_focusManager moveFocus:4];
+            
+        }
+  
+    }
+    
+    
+    return NO;
 }
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
@@ -445,7 +467,8 @@ BOOL backFactRecommended = YES;
         if (backFactRecommended) {
             NSLog(@"in tabbar controller");
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:2];
+            [_focusManager moveFocus:1];
+            inTabbar = YES;
             backFactRecommended = NO;
             
         } else {
@@ -454,6 +477,8 @@ BOOL backFactRecommended = YES;
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager moveFocus:4];
             backFactRecommended = YES;
+            inTabbar = NO;
+
         }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {

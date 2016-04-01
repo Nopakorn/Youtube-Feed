@@ -205,9 +205,7 @@
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
         
         NSLog(@"began at %ld",indexPath.row);
-        NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.title];
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from playlists", nil)];
-
         alert = [UIAlertController alertControllerWithTitle:@""
                                                     message:description
                                              preferredStyle:UIAlertControllerStyleAlert];

@@ -853,11 +853,11 @@
             </objects>
             <point key="canvasLocation" x="-1075.5" y="2287"/>
         </scene>
-        <!--Playlist-->
+        <!--Playlists-->
         <scene sceneID="ItQ-tA-GPt">
             <objects>
                 <navigationController id="Dpt-08-DZL" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Playlist" image="playlistIcon" selectedImage="playlistSelectedIcon" id="tVI-pl-jy3"/>
+                    <tabBarItem key="tabBarItem" title="Playlists" image="playlistIcon" selectedImage="playlistSelectedIcon" id="tVI-pl-jy3"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="MDo-bk-BHv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -870,11 +870,11 @@
             </objects>
             <point key="canvasLocation" x="-2038.5" y="1327"/>
         </scene>
-        <!--Recommend-->
+        <!--Recommended-->
         <scene sceneID="xAp-vE-D5E">
             <objects>
                 <navigationController id="S66-mZ-jE7" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Recommend" image="star icon" selectedImage="starIconSelected" id="kGG-qk-dv5"/>
+                    <tabBarItem key="tabBarItem" title="Recommended" image="star icon" selectedImage="starIconSelected" id="kGG-qk-dv5"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0N3-R0-7D1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

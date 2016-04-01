@@ -438,6 +438,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
     
+    //self.navigationItem.title = [self.youtube.titleList objectAtIndex:item];
+    
     self.resultFovorite = [self.fetchedResultsController fetchedObjects];
     for (int i = 0; i < [self.resultFovorite count]; i++) {
         
@@ -926,6 +928,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
  float level = 0.0;
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     if (backFact) {
         //limitation of volume level
         if (level < 0) {
@@ -949,6 +952,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         return YES;
         
     } else {
+        
+//        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+//            NSLog(@"search");
+//            [_focusManager moveFocus:1];
+//
+//        } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 1) {
+//            NSLog(@"search");
+//            [_focusManager moveFocus:3];
+//            
+//        }
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:1];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            [_focusManager moveFocus:4];
+            
+        }
+
+
         return NO;
     }
     
@@ -1010,8 +1032,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"Press up %@", [self getButtonName:button]);
     
-    if (self.tabBarController.tabBar.hidden == YES) {
+    if (self.tabBarController.tabBar.hidden == YES && backFact == NO) {
         [self hideNavigation];
+    } else {
+        NSLog(@"in tabbar");
+        [hideNavigation invalidate];
     }
     
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
@@ -1020,7 +1045,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSLog(@"backFact %id",backFact);
             [_focusManager setHidden:NO];
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            //[_focusManager setFocusable:[self.tabBarController.viewControllers objectAtIndex:4].view value:NO];
             [_focusManager moveFocus:1];
+          
             backFact = NO;
             
         } else {
