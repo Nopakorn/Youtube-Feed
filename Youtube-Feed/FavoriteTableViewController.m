@@ -67,6 +67,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     isAlertShowUp = NO;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
     NSLog(@"favorite view did load");
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
@@ -211,9 +213,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSLog(@"long press table view but not in row");
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         NSLog(@"long press began at row %ld", indexPath.row);
-        
-        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
-                                                    message:@"Are you sure to remove this video from Favorite"
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
+
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
                                              preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
@@ -508,8 +511,10 @@ BOOL backFactFavorite = YES;
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
     NSLog(@"Long press %@ at %ld", [self getButtonName:button], (long)[_focusManager focusIndex]);
-    alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
-                                                        message:@"Are you sure to remove this video from Favorite"
+    NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
+
+    alert = [UIAlertController alertControllerWithTitle:@""
+                                                        message:description
                                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"

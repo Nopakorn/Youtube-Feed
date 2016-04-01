@@ -77,6 +77,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
+    
 #pragma setup UMA in ViewDidload in RecommendTableView
     //    _inputDevices = [NSMutableArray array];
     _umaApp = [UMAApplication sharedApplication];

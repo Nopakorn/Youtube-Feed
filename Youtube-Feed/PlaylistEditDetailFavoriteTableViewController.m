@@ -23,6 +23,7 @@
     
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
 
 }
 
@@ -100,7 +101,7 @@
     //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSLog(@"check object picked %@",self.favorite.videoTitle);
-    
+     NSString *description = [NSString stringWithFormat:NSLocalizedString(@"", nil)];
     alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
                                                 message:@"Are you sure to adding this video to playlist"
                                          preferredStyle:UIAlertControllerStyleAlert];
@@ -131,25 +132,65 @@
 {
      NSLog(@"check object passing %@",favorite.videoTitle);
     
+    if ([self checkPlaylist:favorite]) {
+        NSLog(@"duplicate VIDEO IN PLAYLIST");
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"This video is already in the Playlist", nil)];
+        
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+       
+    } else {
+        NSLog(@"NO");
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+        YoutubeVideo *youtubeVideo = [NSEntityDescription insertNewObjectForEntityForName:@"YoutubeVideo" inManagedObjectContext:context];
+        youtubeVideo.timeStamp = [NSDate date];
+        youtubeVideo.videoTitle = favorite.videoTitle;
+        youtubeVideo.videoId = favorite.videoId;
+        youtubeVideo.videoThumbnail = favorite.videoThumbnail;
+        youtubeVideo.videoDuration = favorite.videoDuration;
+        youtubeVideo.playlist = self.playlist;
+        youtubeVideo.index = @([self.playlist.youtubeVideos count]);
+        NSLog(@"check index %@",youtubeVideo.index);
+        // Save the context.
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+        
+        [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
+    }
+}
+
+- (BOOL)checkPlaylist:(Favorite *)favorite
+{
+    BOOL flag = false;
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    YoutubeVideo *youtubeVideo = [NSEntityDescription insertNewObjectForEntityForName:@"YoutubeVideo" inManagedObjectContext:context];
-    youtubeVideo.timeStamp = [NSDate date];
-    youtubeVideo.videoTitle = favorite.videoTitle;
-    youtubeVideo.videoId = favorite.videoId;
-    youtubeVideo.videoThumbnail = favorite.videoThumbnail;
-    youtubeVideo.videoDuration = favorite.videoDuration;
-    youtubeVideo.playlist = self.playlist;
-    youtubeVideo.index = @([self.playlist.youtubeVideos count]);
-    NSLog(@"check index %@",youtubeVideo.index);
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"YoutubeVideo" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlist == %@",self.playlist]];
+    
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    
+    for (YoutubeVideo *youtubeObject in result) {
+        if ([youtubeObject.videoId isEqualToString:favorite.videoId]) {
+            flag = true;
+            break;
+        }
     }
     
-    [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
+    return flag;
 }
 
 - (NSString *)durationText:(NSString *)duration

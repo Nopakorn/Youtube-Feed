@@ -24,6 +24,8 @@
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
+    [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
 
 }
 
@@ -114,19 +116,39 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
-    
-    NSString *genreSelectedString = @"";
-    for(int i = 0 ; i < [self.genreSelected count] ; i++){
-        genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+    if ([self.genreList count] == 0) {
+        NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                    
+                                                
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        [alert addAction:ok];
+        //[alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        
+        NSString *genreSelectedString = @"";
+        for(int i = 0 ; i < [self.genreSelected count] ; i++){
+            genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+        }
+        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.delegate firstSettingTableViewControllerDidSelected:self];
+        [self dismissViewControllerAnimated:YES completion:Nil];
     }
-    genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     
-    [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [self.delegate firstSettingTableViewControllerDidSelected:self];
-    [self dismissViewControllerAnimated:YES completion:Nil];
-
+    
 }
 
 

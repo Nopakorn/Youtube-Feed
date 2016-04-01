@@ -206,9 +206,10 @@
         
         NSLog(@"began at %ld",indexPath.row);
         NSString *message = [NSString stringWithFormat:@"Are you sure to remove this video from %@",self.playlist.title];
-        
-        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
-                                                    message:message
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from playlists", nil)];
+
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
                                              preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"

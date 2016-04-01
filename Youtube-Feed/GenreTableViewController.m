@@ -68,6 +68,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
      NSLog(@"View did load");
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Genre", nil)];
 #pragma setup UMA in ViewDidload in GenreTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;

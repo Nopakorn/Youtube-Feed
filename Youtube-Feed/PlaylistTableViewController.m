@@ -72,6 +72,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
+//    [[self tabBarItem] setTitle:[NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)]];
+    self.navigationController.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
+
+//    self.editButton.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)];
+    //self.navigationController.tabBarItem.title =
+    [self.editButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)] forState:UIControlStateNormal];
     
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
@@ -165,7 +172,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     if ([self.playlist_List count] == 0) {
         if(indexPath.row == 0) {
-            cell.name.text = @"Favorite";
+            
+            cell.name.text = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
         }else {
             cell.name.text = @" . . . . ";
         }
@@ -173,7 +181,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         
         if(indexPath.row == 0) {
-            cell.name.text = @"Favorite";
+            cell.name.text = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
             
         }else {
             if (indexPath.row <= [self.playlist_List count]) {

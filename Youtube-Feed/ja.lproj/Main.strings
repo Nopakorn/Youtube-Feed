@@ -1,0 +1,84 @@
+
+/* Class = "UITableViewController"; title = "Setting"; ObjectID = "6HI-kr-p9O"; */
+"6HI-kr-p9O.title" = "Setting";
+
+/* Class = "UITabBarItem"; title = "Search"; ObjectID = "HRC-aF-U6X"; */
+"HRC-aF-U6X.title" = "検索";
+
+/* Class = "UIBarButtonItem"; title = "Submit"; ObjectID = "J3D-ez-SoZ"; */
+"J3D-ez-SoZ.title" = "Submit";
+
+/* Class = "UINavigationItem"; title = "Favorite"; ObjectID = "Loj-rv-jK6"; */
+"Loj-rv-jK6.title" = "Favorite";
+
+/* Class = "UITabBarItem"; title = "Display"; ObjectID = "Q2K-tf-DoK"; */
+"Q2K-tf-DoK.title" = "再生中";
+
+/* Class = "UINavigationItem"; title = "Playlist Edit"; ObjectID = "RaM-kr-Umb"; */
+"RaM-kr-Umb.title" = "Playlist Edit";
+
+/* Class = "UINavigationItem"; title = "Now Playing"; ObjectID = "S5U-Xz-iEU"; */
+"S5U-Xz-iEU.title" = "Now Playing";
+
+/* Class = "UINavigationItem"; title = "Playlist Edit Detail"; ObjectID = "Slb-SM-i8O"; */
+"Slb-SM-i8O.title" = "Playlist Edit Detail";
+
+/* Class = "UILabel"; text = "00:00"; ObjectID = "Uud-3L-0u6"; */
+"Uud-3L-0u6.text" = "00:00";
+
+/* Class = "UILabel"; text = "Loading...."; ObjectID = "ViT-Wg-2ON"; */
+"ViT-Wg-2ON.text" = "Loading....";
+
+/* Class = "UINavigationItem"; title = "Favorite"; ObjectID = "Voy-Dj-zCg"; */
+"Voy-Dj-zCg.title" = "Favorite";
+
+/* Class = "UILabel"; text = "Playlist"; ObjectID = "X7Y-U6-9FE"; */
+"X7Y-U6-9FE.text" = "Playlist";
+
+/* Class = "UILabel"; text = "Setting"; ObjectID = "Z6r-Rq-tci"; */
+"Z6r-Rq-tci.text" = "Setting";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "bnd-Pt-toW"; */
+"bnd-Pt-toW.normalTitle" = "Cancel";
+
+/* Class = "UIButton"; normalTitle = "Edit"; ObjectID = "cat-Sw-BGV"; */
+"cat-Sw-BGV.normalTitle" = "Edit";
+
+/* Class = "UILabel"; text = "00:00"; ObjectID = "g2e-YF-cHc"; */
+"g2e-YF-cHc.text" = "00:00";
+
+/* Class = "UINavigationItem"; title = "Search"; ObjectID = "h2c-RF-tVU"; */
+"h2c-RF-tVU.title" = "Search";
+
+/* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "jR7-cp-3z6"; */
+"jR7-cp-3z6.normalTitle" = "Submit";
+
+/* Class = "UINavigationItem"; title = "Genre"; ObjectID = "jei-mz-Vz8"; */
+"jei-mz-Vz8.title" = "Genre";
+
+/* Class = "UINavigationItem"; title = "Recommend"; ObjectID = "jqE-7s-urK"; */
+"jqE-7s-urK.title" = "Recommend";
+
+/* Class = "UITabBarItem"; title = "Recommend"; ObjectID = "kGG-qk-dv5"; */
+"kGG-qk-dv5.title" = "おすすめ";
+
+/* Class = "UINavigationItem"; title = "Setting"; ObjectID = "lXn-IB-OwO"; */
+"lXn-IB-OwO.title" = "Setting";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "mJx-de-yNO"; */
+"mJx-de-yNO.normalTitle" = "OK";
+
+/* Class = "UITabBarItem"; title = "Genre"; ObjectID = "nf2-sT-faQ"; */
+"nf2-sT-faQ.title" = "ジャンル";
+
+/* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "q68-2K-5G2"; */
+"q68-2K-5G2.normalTitle" = "Submit";
+
+/* Class = "UITabBarItem"; title = "Playlist"; ObjectID = "tVI-pl-jy3"; */
+"tVI-pl-jy3.title" = "プレイリスト";
+
+/* Class = "UINavigationItem"; title = "Playlist"; ObjectID = "ua8-np-Baa"; */
+"ua8-np-Baa.title" = "Playlist";
+
+/* Class = "UINavigationItem"; title = "Playlist Detail"; ObjectID = "ub5-eo-Kht"; */
+"ub5-eo-Kht.title" = "Playlist Detail";

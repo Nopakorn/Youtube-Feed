@@ -1,0 +1,26 @@
+/* 
+  Localizable.strings
+  KKP-Movie
+
+  Created by Siam System Deverlopment on 4/1/2559 BE.
+  Copyright © 2559 guild. All rights reserved.
+*/
+
+"Playlists" = "Playlists";
+"Edit Button" = "Edit";
+"Favorites" = "Favorites";
+
+"Genre" = "Genre";
+"Search" = "Search";
+"Start" = "Start";
+"Delete this item from favorites" = "Delete this item from favorites.";
+"Please select at least one genre" = "Please select at least one genre.";
+"Initial Setting" = "Initial Setting";
+"Setting" = "Setting";
+"Edit Playlist" = "Edit Playlist";
+"This video is already in the Playlist" = "This video is already in the Playlist.";
+"Delete this item from playlists" = "Delete this item from playlists.";
+"This video is already in the Playlist" = "This video is already in the Playlist.";
+"Recommended" = "Recommended";
+"Save" = "Save";
+"Initial Setting" = "Inital Setting";

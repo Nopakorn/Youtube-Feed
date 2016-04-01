@@ -66,7 +66,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.customizableViewControllers = nil;
     UITableView *view = (UITableView *)self.moreNavigationController.topViewController.view;
     view.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
+
+
      _inputDevices = [NSMutableArray array];
 #pragma setup UMA in ViewDidloadTABBAR
     _inputDevices = [NSMutableArray array];

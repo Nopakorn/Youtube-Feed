@@ -32,6 +32,7 @@
 		5C4BADD81CAAB051008C465D /* UIEMultiAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */; };
 		5C4BADDA1CAAB084008C465D /* UIEMultiAccess.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */; };
 		5C4BADEB1CABBAA2008C465D /* FirstScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BADEA1CABBAA2008C465D /* FirstScreenViewController.m */; };
+		5C4BADFC1CAE1DBB008C465D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5C4BADFE1CAE1DBB008C465D /* Localizable.strings */; };
 		5C551CAE1CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */; };
 		5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA91CA8DE7100BECEC7 /* Playlist.m */; };
 		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
@@ -122,6 +123,10 @@
 		5C4BADD91CAAB084008C465D /* UIEMultiAccess.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UIEMultiAccess.bundle; sourceTree = "<group>"; };
 		5C4BADE91CABBAA2008C465D /* FirstScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstScreenViewController.h; sourceTree = "<group>"; };
 		5C4BADEA1CABBAA2008C465D /* FirstScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstScreenViewController.m; sourceTree = "<group>"; };
+		5C4BADFA1CAE1D88008C465D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
+		5C4BADFB1CAE1D89008C465D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		5C4BADFD1CAE1DBB008C465D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		5C4BADFF1CAE1DC5008C465D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5C551CA61CA8DE7100BECEC7 /* Playlist+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Playlist+CoreDataProperties.h"; sourceTree = "<group>"; };
 		5C551CA71CA8DE7100BECEC7 /* Playlist+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Playlist+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C551CA81CA8DE7100BECEC7 /* Playlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Playlist.h; sourceTree = "<group>"; };
@@ -297,6 +302,7 @@
 				5C67E4261C96B15E00A08005 /* Models */,
 				5CBA2CF51C97E8400049FE4A /* Controller */,
 				5CD4C43D1CA2890D00A6C837 /* PrefixHeader.pch */,
+				5C4BADFE1CAE1DBB008C465D /* Localizable.strings */,
 			);
 			path = "Youtube-Feed";
 			sourceTree = "<group>";
@@ -501,6 +507,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 11C170DB1C7186A800E74681;
 			productRefGroup = 11C170E51C7186A800E74681 /* Products */;
@@ -520,6 +527,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CBA2CE81C97CA280049FE4A /* PlaylistEditDetailCustomCell.xib in Resources */,
+				5C4BADFC1CAE1DBB008C465D /* Localizable.strings in Resources */,
 				11C170F71C7186A800E74681 /* LaunchScreen.storyboard in Resources */,
 				5CB425E01C9284A5005DCB46 /* PlaylistCustomCell.xib in Resources */,
 				5C67E4221C96970300A08005 /* FavoriteCustomCell.xib in Resources */,
@@ -674,6 +682,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				11C170F11C7186A800E74681 /* Base */,
+				5C4BADFA1CAE1D88008C465D /* ja */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -682,8 +691,18 @@
 			isa = PBXVariantGroup;
 			children = (
 				11C170F61C7186A800E74681 /* Base */,
+				5C4BADFB1CAE1D89008C465D /* ja */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		5C4BADFE1CAE1DBB008C465D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C4BADFD1CAE1DBB008C465D /* en */,
+				5C4BADFF1CAE1DC5008C465D /* ja */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

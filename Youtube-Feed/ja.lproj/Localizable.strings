@@ -1,0 +1,28 @@
+/* 
+  Localizable.strings
+  KKP-Movie
+
+  Created by Siam System Deverlopment on 4/1/2559 BE.
+  Copyright © 2559 guild. All rights reserved.
+*/
+
+
+"Playlists" = "プレイリスト";
+"Edit Button" = "編集";
+"Favorites" = "お気に入り";
+"Genre" = "ジャンル";
+"Search" = "検索";
+"Start" = "はじめる";
+"Recommended"= "おすすめ";
+"Delete this item from favorites" = "お気に入りを解除します";
+"Please select at least one genre" = "全てのチェックを外すことはできません";
+"Initial Setting" = "初期設定";
+"Setting" = "設定";
+"Edit Playlist" = "プレイリスト編集";
+"This video is already in the Playlist" = "すでに登録済です";
+"Delete this item from playlists" = "プレイリストを解除します";
+"Save" = "完了";
+
+"Initial Setting" = "初期設定";
+
+"This video is already in the Playlist" = "すでに登録済です";

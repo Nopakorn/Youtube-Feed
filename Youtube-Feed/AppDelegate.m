@@ -8,8 +8,13 @@
 
 #import "AppDelegate.h"
 #import "MainTabBarViewController.h"
+
 #import "PlaylistTableViewController.h"
 #import "FirstSettingTableViewController.h"
+#import "ViewController.h"
+#import "GenreTableViewController.h"
+#import "SearchTableViewController.h"
+
 #import <UIEMultiAccess/UIEMultiAccess.h>
 
 @interface AppDelegate ()<UMAApplicationDelegate>
@@ -25,6 +30,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+
+
     UMAApplication *umaApp = [UMAApplication sharedApplication];
     [umaApp setDelegate:self];
     [umaApp setStatusBarStyle:kUMAStatusBarStyleBlack]; // Show status bar widget on secondary screen.

@@ -28,7 +28,7 @@
     
     [self createGenre];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-
+    self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Setting", nil)];
 }
 - (void)createGenre
 {
@@ -93,9 +93,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     NSString *item = [self.genreList objectAtIndex:indexPath.row];
     if([self.genreSelected count] != 0 ){
         for (int i=0; i < [self.genreSelected count]; i++) {
+            
+            if ([[self.genreSelected objectAtIndex:i] isEqualToString:@""]) {
+                [self.genreSelected removeObjectAtIndex:i];
+                //break;
+            }
+            
             if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
                 [self.genreSelected removeObjectAtIndex:i];
                 break;
@@ -109,35 +116,66 @@
     }else{
         [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
     }
+    NSLog(@"check genre selected %@",self.genreSelected);
     [tableView reloadData];
 
 }
 
 - (IBAction)submitButtonPressed:(id)sender
 {
-    NSString *genreSelectedString = @"";
-    for(int i = 0 ; i < [self.genreSelected count] ; i++){
-        genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+    //clear
+    for (int i=0; i < [self.genreSelected count]; i++) {
+        
+        if ([[self.genreSelected objectAtIndex:i] isEqualToString:@""]) {
+            [self.genreSelected removeObjectAtIndex:i];
+            //break;
+        }
     }
-    genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
-    
-    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
-    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    spinner.center = CGPointMake(130.5, 65.5);
-    spinner.color = [UIColor blackColor];
-    [alert.view addSubview:spinner];
-    [spinner startAnimating];
-    [self presentViewController:alert animated:NO completion:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedLoadVideoId)
-                                                 name:@"LoadVideoId" object:nil];
+    NSLog(@"genreSelected %lu",(unsigned long)[self.genreSelected count]);
+    if ([self.genreSelected count] == 0) {
+        NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        [alert addAction:ok];
+        //[alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    } else {
+        
+        NSString *genreSelectedString = @"";
+        for(int i = 0 ; i < [self.genreSelected count] ; i++){
+            genreSelectedString = [NSString stringWithFormat:@"%@%@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+        }
+        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self.youtube callRecommendSearch:self.genreSelected withNextPage:NO];
+        
+        alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        spinner.center = CGPointMake(130.5, 65.5);
+        spinner.color = [UIColor blackColor];
+        [alert.view addSubview:spinner];
+        [spinner startAnimating];
+        [self presentViewController:alert animated:NO completion:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedLoadVideoId)
+                                                     name:@"LoadVideoId" object:nil];
+    }
+   
     //[self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
     
     
