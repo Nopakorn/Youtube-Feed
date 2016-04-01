@@ -101,30 +101,30 @@
     //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
     NSLog(@"check object picked %@",self.favorite.videoTitle);
-     NSString *description = [NSString stringWithFormat:NSLocalizedString(@"", nil)];
-    alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
-                                                message:@"Are you sure to adding this video to playlist"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                 style:UIAlertActionStyleDefault
-                                               handler:^(UIAlertAction *action){
-                                                   
-                                                   [self saveVideotoPlaylist:self.favorite];
-                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-                                               }];
-    
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-                                                 style:UIAlertActionStyleDefault
-                                               handler:^(UIAlertAction *action){
-                                                   
-                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-                                               }];
-    [alert addAction:ok];
-    [alert addAction:cancel];
-    [self presentViewController:alert animated:YES completion:nil];
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+//     NSString *description = [NSString stringWithFormat:NSLocalizedString(@"", nil)];
+//    alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
+//                                                message:@"Are you sure to adding this video to playlist"
+//                                         preferredStyle:UIAlertControllerStyleAlert];
+//    
+//    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+//                                                 style:UIAlertActionStyleDefault
+//                                               handler:^(UIAlertAction *action){
+//                                                   
+//                                                   [self saveVideotoPlaylist:self.favorite];
+//                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+//                                               }];
+//    
+//    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+//                                                 style:UIAlertActionStyleDefault
+//                                               handler:^(UIAlertAction *action){
+//                                                   
+//                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+//                                               }];
+//    [alert addAction:ok];
+//    [alert addAction:cancel];
+//    [self presentViewController:alert animated:YES completion:nil];
+//    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self saveVideotoPlaylist:self.favorite];
 }
 
 

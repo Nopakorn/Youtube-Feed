@@ -116,6 +116,15 @@
 
 - (IBAction)submitButtonPressed:(id)sender
 {
+    //clear
+    for (int i=0; i < [self.genreSelected count]; i++) {
+        
+        if ([[self.genreSelected objectAtIndex:i] isEqualToString:@""]) {
+            [self.genreSelected removeObjectAtIndex:i];
+            //break;
+        }
+    }
+
     if ([self.genreList count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""

@@ -29,7 +29,17 @@
     [self createGenre];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Setting", nil)];
+    [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+    NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
+    self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+}
+
 - (void)createGenre
 {
     self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
@@ -98,10 +108,10 @@
     if([self.genreSelected count] != 0 ){
         for (int i=0; i < [self.genreSelected count]; i++) {
             
-            if ([[self.genreSelected objectAtIndex:i] isEqualToString:@""]) {
-                [self.genreSelected removeObjectAtIndex:i];
-                //break;
-            }
+//            if ([[self.genreSelected objectAtIndex:i] isEqualToString:@""]) {
+//                [self.genreSelected removeObjectAtIndex:i];
+//                //break;
+//            }
             
             if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
                 [self.genreSelected removeObjectAtIndex:i];
@@ -150,7 +160,7 @@
         [self presentViewController:alert animated:YES completion:nil];
         
     } else {
-        
+        NSLog(@"not zero");
         NSString *genreSelectedString = @"";
         for(int i = 0 ; i < [self.genreSelected count] ; i++){
             genreSelectedString = [NSString stringWithFormat:@"%@%@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
