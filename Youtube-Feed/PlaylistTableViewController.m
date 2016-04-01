@@ -73,11 +73,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
-//    [[self tabBarItem] setTitle:[NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)]];
-    self.navigationController.tabBarItem.title = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
-
-//    self.editButton.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)];
-    //self.navigationController.tabBarItem.title =
     [self.editButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)] forState:UIControlStateNormal];
     
 #pragma setup UMA in ViewDidload in PlaylistTableView

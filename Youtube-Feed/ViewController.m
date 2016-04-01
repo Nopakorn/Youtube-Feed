@@ -14,6 +14,8 @@
 #import <UIEMultiAccess/DNAppCatalog.h>
 #import <UIEMultiAccess/UMAApplicationInfo.h>
 
+
+
 typedef NS_ENUM(NSInteger, SectionType) {
     SECTION_TYPE_SETTINGS,
     SECTION_TYPE_LAST_CONNECTED_DEVICE,
@@ -921,6 +923,37 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     return _fetchedResultsController;
 }
 
+ float level = 0.0;
+- (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
+{
+    if (backFact) {
+        //limitation of volume level
+        if (level < 0) {
+            level = 0.0;
+        } else if (level > 1) {
+            level = 1.0;
+        }
+        
+        NSLog(@"in main view %lu    %ld",(unsigned long)distance, (long)direction);
+        if ((long)direction == 1) {
+            NSLog(@"goes up");
+            level += 0.05;
+            NSLog(@"level %f",level);
+            [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
+        } else {
+            NSLog(@"goes down");
+            level -= 0.05;
+             NSLog(@"level %f",level);
+            [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
+        }
+        return YES;
+        
+    } else {
+        return NO;
+    }
+    
+}
+
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
     if (distanceX == 1 && distanceY == 0) {
@@ -976,6 +1009,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up %@", [self getButtonName:button]);
+    
+    if (self.tabBarController.tabBar.hidden == YES) {
+        [self hideNavigation];
+    }
+    
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         
         if (backFact) {
@@ -998,7 +1036,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         return NO;
         
     } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
-        [self hideNavigation];
+        
+        //[self hideNavigation];
+        [self favoritePressed:self.favoriteButton];
         return YES;
         
     } else if ([[self getButtonName:button] isEqualToString:@"Right"]){

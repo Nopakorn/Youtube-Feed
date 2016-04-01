@@ -15,8 +15,9 @@
 #import "PlaylistTableViewController.h"
 #import "RecommendTableViewController.h"
 #import "SearchTableViewController.h"
-
 #import <UIEMultiAccess/UIEMultiAccess.h>
+
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UMAFocusManagerDelegate>
 {
