@@ -20,9 +20,12 @@
 "Setting" = "設定";
 "Edit Playlist" = "プレイリスト編集";
 "This video is already in the Playlist" = "すでに登録済です";
-"Delete this item from playlists" = "プレイリストを解除します";
+"Delete this item from playlists" = "プレイリストから動画を解除します";
+"Delete this playlist" = "プレイリストを解除します";
 "Save" = "完了";
 
 "Initial Setting" = "初期設定";
 
 "This video is already in the Playlist" = "すでに登録済です";
+"Now Playing" = "再生中";
+

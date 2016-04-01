@@ -349,11 +349,11 @@
             </objects>
             <point key="canvasLocation" x="-4882" y="1885"/>
         </scene>
-        <!--Display-->
+        <!--Now Playing-->
         <scene sceneID="MbZ-UI-dms">
             <objects>
                 <navigationController id="pHh-BN-O3A" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Display" image="displayIcon" selectedImage="displayIconSelected" id="Q2K-tf-DoK">
+                    <tabBarItem key="tabBarItem" title="Now Playing" image="displayIcon" selectedImage="displayIconSelected" id="Q2K-tf-DoK">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
                         </userDefinedRuntimeAttributes>

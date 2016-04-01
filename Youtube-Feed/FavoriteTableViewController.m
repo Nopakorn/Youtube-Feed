@@ -170,7 +170,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.name.text = [object valueForKey:@"videoTitle"];
-    cell.favoriteIcon.hidden = YES;
+    cell.favoriteIcon.hidden = NO;
     cell.tag = indexPath.row;
     cell.durationLabel.text = [self durationText:[object valueForKey:@"videoDuration"]];
     cell.thumnail.image = nil;
@@ -524,13 +524,7 @@ BOOL backFactFavorite = YES;
                                                            [self deleteRowAtIndex:[_focusManager focusIndex]];
                                                            [alert dismissViewControllerAnimated:YES completion:nil];
                                                        }];
-    
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-                                                             style:UIAlertActionStyleDefault
-                                                           handler:^(UIAlertAction *action){
-    
-                                                               [alert dismissViewControllerAnimated:YES completion:nil];
-                                                           }];
+
     [alert addAction:ok];
     //[alert addAction:cancel];
     [self presentViewController:alert animated:YES completion:nil];

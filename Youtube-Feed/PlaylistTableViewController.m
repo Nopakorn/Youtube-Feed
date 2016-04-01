@@ -61,14 +61,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @end
 
 @implementation PlaylistTableViewController
-
+{
+    BOOL isAlertShowUp;
+}
 
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    isAlertShowUp = NO;
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
@@ -285,8 +287,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSLog(@"long press began at row %ld more then length", indexPath.row);
             return;
         }
-        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
-                                                    message:@"Are you sure to remove this video from Favorite"
+         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this plalist", nil)];
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
                                              preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
@@ -495,75 +498,75 @@ BOOL backFactPlaylist = YES;
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up in playlist");
-    if ([[self getButtonName:button] isEqualToString:@"Back"]) {
-        //
-       
-        if (backFactPlaylist) {
-            NSLog(@"in tabbar controller");
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:3];
-            backFactPlaylist = NO;
-            
-        } else {
-            
-            NSLog(@"in main view");
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager moveFocus:4];
-            backFactPlaylist = YES;
+    if (isAlertShowUp) {
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            [alert dismissViewControllerAnimated:YES completion:nil];
+            isAlertShowUp = false;
+        } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+            [self deleteRowAtIndex:[_focusManager focusIndex]];
+            [alert dismissViewControllerAnimated:YES completion:nil];
+            isAlertShowUp = false;
         }
+    } else {
         
-    } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
-        return NO;
-        
-    } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
-        
-        return YES;
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            //
+            
+            if (backFactPlaylist) {
+                NSLog(@"in tabbar controller");
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager moveFocus:3];
+                backFactPlaylist = NO;
+                
+            } else {
+                
+                NSLog(@"in main view");
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager moveFocus:4];
+                backFactPlaylist = YES;
+            }
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+            return NO;
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
+            
+            return YES;
+        }
+
+    
     }
-    return YES;
+        return YES;
 }
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
-//    CGPoint p = [gestureRecognizer locationInView:self.tableView];
-//    
-//    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-    
-//    if (indexPath == nil) {
-//        NSLog(@"long press table view but not in row");
-//    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
-//        NSLog(@"long press began at row %ld", indexPath.row);
-//        if ([self.playlist_List count] < indexPath.row) {
-//            NSLog(@"long press began at row %ld more then length", indexPath.row);
-//            return;
-//        }
-//        alert = [UIAlertController alertControllerWithTitle:@"Delete Video"
-//                                                    message:@"Are you sure to remove this video from Favorite"
-//                                             preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-//                                                     style:UIAlertActionStyleDefault
-//                                                   handler:^(UIAlertAction *action){
-//                                                       
-//                                                       [self deleteRowAtIndex:indexPath.row];
-//                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-//                                                   }];
-//        
-//        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-//                                                         style:UIAlertActionStyleDefault
-//                                                       handler:^(UIAlertAction *action){
-//                                                           
-//                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-//                                                       }];
-//        [alert addAction:ok];
-//        [alert addAction:cancel];
-//        [self presentViewController:alert animated:YES completion:nil];
-//        
-//    } else {
-//        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
-//    }
+    NSLog(@"Long press %ld", (long)[_focusManager focusIndex]);
+    if ([_focusManager focusIndex] > 0 && [_focusManager focusIndex] < [self.playlist_List count] + 1) {
+        NSLog(@"can delete able");
+            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
+        
+            alert = [UIAlertController alertControllerWithTitle:@""
+                                                        message:description
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+        
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action){
+        
+                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
+                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+                                                       }];
+        
+            [alert addAction:ok];
+            //[alert addAction:cancel];
+            [self presentViewController:alert animated:YES completion:nil];
+            isAlertShowUp = YES;
+    }
 
-    return NO;
+
+
+    return YES;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button

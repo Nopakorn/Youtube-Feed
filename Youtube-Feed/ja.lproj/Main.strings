@@ -18,7 +18,7 @@
 "RaM-kr-Umb.title" = "Playlist Edit";
 
 /* Class = "UINavigationItem"; title = "Now Playing"; ObjectID = "S5U-Xz-iEU"; */
-"S5U-Xz-iEU.title" = "Now Playing";
+"S5U-Xz-iEU.title" = "再生中";
 
 /* Class = "UINavigationItem"; title = "Playlist Edit Detail"; ObjectID = "Slb-SM-i8O"; */
 "Slb-SM-i8O.title" = "Playlist Edit Detail";
@@ -51,7 +51,7 @@
 "h2c-RF-tVU.title" = "Search";
 
 /* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "jR7-cp-3z6"; */
-"jR7-cp-3z6.normalTitle" = "Submit";
+"jR7-cp-3z6.normalTitle" = "完了";
 
 /* Class = "UINavigationItem"; title = "Genre"; ObjectID = "jei-mz-Vz8"; */
 "jei-mz-Vz8.title" = "Genre";
@@ -72,7 +72,7 @@
 "nf2-sT-faQ.title" = "ジャンル";
 
 /* Class = "UIButton"; normalTitle = "Submit"; ObjectID = "q68-2K-5G2"; */
-"q68-2K-5G2.normalTitle" = "Submit";
+"q68-2K-5G2.normalTitle" = "完了";
 
 /* Class = "UITabBarItem"; title = "Playlist"; ObjectID = "tVI-pl-jy3"; */
 "tVI-pl-jy3.title" = "プレイリスト";
