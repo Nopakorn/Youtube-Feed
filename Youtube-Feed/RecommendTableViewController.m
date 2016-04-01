@@ -405,17 +405,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
+    //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     NSLog(@"in tabbar %id",backFactRecommended);
     if (backFactRecommended == 0) {
         
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            NSLog(@"search");
+           
             [_focusManager moveFocus:1];
             
         } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            NSLog(@"search");
+
             [_focusManager moveFocus:4];
+            
+        } else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 1) {
+ 
+            [_focusManager moveFocus:4];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 0) {
+
+            [_focusManager moveFocus:1];
             
         }
   
@@ -424,6 +432,44 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     return NO;
 }
+- (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
+{
+    NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+    if (backFactRecommended) {
+        return YES;
+    } else {
+        
+        if (distanceX == 1 && distanceY == 0) {
+            NSLog(@"RIGTH");
+            if ([_focusManager focusIndex] == 0) {
+                [_focusManager moveFocus:1];
+                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+            } else if ([_focusManager focusIndex] == 3) {
+                [_focusManager moveFocus:1];
+            }
+        }else if (distanceX == -1 && distanceY == 0) {
+            NSLog(@"LEFT");
+            if ([_focusManager focusIndex] == 0) {
+                [_focusManager moveFocus:4];
+            } else if ([_focusManager focusIndex] == 2) {
+                [_focusManager moveFocus:4];
+            }
+        }else if (distanceX == 0 && distanceY == 1) {
+            NSLog(@"BOTTOM");
+            
+        }else if (distanceX == 0 && distanceY == -1) {
+            NSLog(@"TOP");
+            
+        }
+        return NO;
+        
+        
+    }
+    
+    
+}
+
+
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {

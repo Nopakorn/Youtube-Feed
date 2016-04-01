@@ -953,22 +953,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     } else {
         
-//        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-//            NSLog(@"search");
-//            [_focusManager moveFocus:1];
-//
-//        } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 1) {
-//            NSLog(@"search");
-//            [_focusManager moveFocus:3];
-//            
-//        }
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            [_focusManager moveFocus:1];
-            
-        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            [_focusManager moveFocus:4];
+            NSLog(@"search");
+            [_focusManager moveFocus:2];
+
+        } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 1) {
+            NSLog(@"search");
+            [_focusManager moveFocus:3];
             
         }
+//        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+//            [_focusManager moveFocus:1];
+//            
+//        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+//            [_focusManager moveFocus:4];
+//            
+//        }
 
 
         return NO;
@@ -978,20 +978,45 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    if (distanceX == 1 && distanceY == 0) {
-         NSLog(@"RIGTH");
-        [self buttonPressed:self.nextButton];
-    }else if (distanceX == -1 && distanceY == 0) {
-         NSLog(@"LEFT");
-        [self buttonPressed:self.prevButton];
-    }else if (distanceX == 0 && distanceY == 1) {
-         NSLog(@"BOTTOM");
-        [self buttonPressed:self.prevButton];
-    }else if (distanceX == 0 && distanceY == -1) {
-         NSLog(@"TOP");
-        [self buttonPressed:self.nextButton];
+    if (backFact) {
+        if (distanceX == 1 && distanceY == 0) {
+            NSLog(@"RIGTH");
+            [self buttonPressed:self.nextButton];
+        }else if (distanceX == -1 && distanceY == 0) {
+            NSLog(@"LEFT");
+            [self buttonPressed:self.prevButton];
+        }else if (distanceX == 0 && distanceY == 1) {
+            NSLog(@"BOTTOM");
+            [self buttonPressed:self.prevButton];
+        }else if (distanceX == 0 && distanceY == -1) {
+            NSLog(@"TOP");
+            [self buttonPressed:self.nextButton];
+        }
+        return YES;
+        
+    } else {
+        
+        if (distanceX == 1 && distanceY == 0) {
+            NSLog(@"RIGTH");
+            if ([_focusManager focusIndex] == 3) {
+                [_focusManager moveFocus:2];
+                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+            }
+            
+        }else if (distanceX == -1 && distanceY == 0) {
+            NSLog(@"LEFT");
+            if ([_focusManager focusIndex] == 1) {
+                [_focusManager moveFocus:3];
+            }
+        }else if (distanceX == 0 && distanceY == 1) {
+           
+            
+        }else if (distanceX == 0 && distanceY == -1) {
+        }
+        return NO;
+    
     }
-    return YES;
+    
 }
 
 
@@ -1046,7 +1071,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [_focusManager setHidden:NO];
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
             //[_focusManager setFocusable:[self.tabBarController.viewControllers objectAtIndex:4].view value:NO];
-            [_focusManager moveFocus:1];
+            [_focusManager moveFocus:2];
           
             backFact = NO;
             

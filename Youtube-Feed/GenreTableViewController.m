@@ -209,15 +209,57 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [_focusManager moveFocus:1];
             
         } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            [_focusManager moveFocus:4];
+            [_focusManager moveFocus:3];
+            
+        }  else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:2];
             
         }
+
         
     }
     
     
     return NO;
 }
+
+- (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
+{
+    NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+    if (backFactGenre) {
+        return YES;
+    } else {
+        
+        if (distanceX == 1 && distanceY == 0) {
+            if ([_focusManager focusIndex] == 2) {
+                [_focusManager moveFocus:2];
+                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+            } else if ([_focusManager focusIndex] == 3) {
+                [_focusManager moveFocus:1];
+            }
+        }else if (distanceX == -1 && distanceY == 0) {
+            NSLog(@"LEFT");
+            if ([_focusManager focusIndex] == 0) {
+                [_focusManager moveFocus:3];
+            }
+        }else if (distanceX == 0 && distanceY == 1) {
+            NSLog(@"BOTTOM");
+            
+        }else if (distanceX == 0 && distanceY == -1) {
+            NSLog(@"TOP");
+            
+        }
+        return NO;
+        
+        
+    }
+    
+    
+}
+
+
+
+
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {
     switch (button) {
@@ -261,7 +303,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (backFactGenre) {
             NSLog(@"in tabbar controller");
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:4];
+            [_focusManager moveFocus:1];
             backFactGenre = NO;
             
         } else {

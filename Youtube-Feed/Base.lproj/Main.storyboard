@@ -202,6 +202,12 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ver.0.001.211575" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaY-b4-O80">
+                                <rect key="frame" x="430" y="530" width="150" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -218,6 +224,13 @@
                             <constraint firstItem="LfV-Ki-ogf" firstAttribute="centerY" secondItem="nnf-bP-WeR" secondAttribute="centerY" id="WdH-Dh-cqi"/>
                             <constraint firstItem="aZk-YT-cEc" firstAttribute="top" secondItem="LfV-Ki-ogf" secondAttribute="bottom" id="YXs-eb-JvM"/>
                             <constraint firstAttribute="trailingMargin" secondItem="LfV-Ki-ogf" secondAttribute="trailing" constant="-20" id="bQS-U9-NHf"/>
+                            <constraint firstItem="jaY-b4-O80" firstAttribute="top" secondItem="pka-cv-Scc" secondAttribute="bottom" constant="466" id="hg5-oY-rmK">
+                                <variation key="heightClass=compact" constant="300"/>
+                                <variation key="widthClass=compact" constant="474"/>
+                            </constraint>
+                            <constraint firstItem="jaY-b4-O80" firstAttribute="leading" secondItem="nnf-bP-WeR" secondAttribute="leadingMargin" constant="410" id="utf-pF-tjs">
+                                <variation key="widthClass=compact" constant="231"/>
+                            </constraint>
                             <constraint firstItem="LfV-Ki-ogf" firstAttribute="centerX" secondItem="nnf-bP-WeR" secondAttribute="centerX" id="vgv-wZ-dYo"/>
                             <constraint firstItem="ViT-Wg-2ON" firstAttribute="leading" secondItem="LfV-Ki-ogf" secondAttribute="trailing" constant="-340" id="vl2-fB-AGN"/>
                         </constraints>
@@ -228,6 +241,11 @@
                                 <exclude reference="WdH-Dh-cqi"/>
                                 <exclude reference="vl2-fB-AGN"/>
                                 <exclude reference="L8u-01-RH9"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="jaY-b4-O80"/>
                             </mask>
                         </variation>
                     </view>
@@ -241,7 +259,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fnt-Fs-Lhb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4813.5" y="430"/>
+            <point key="canvasLocation" x="-4814" y="430"/>
         </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="XeX-Ur-dpP">
