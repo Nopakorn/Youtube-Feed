@@ -263,6 +263,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.tableView reloadData];
     
     self.searchText = searchBar.text;
+    NSLog(@"search text %@",searchBar.text);
+    
+    self.searchYoutube = [[Youtube alloc] init];
     [self.searchYoutube callSearchByText:searchBar.text withNextPage:NO];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.center = CGPointMake(self.view.center.x, 85.5);
