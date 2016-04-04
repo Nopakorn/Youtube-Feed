@@ -81,17 +81,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
 #pragma setup UMA in ViewDidload in RecommendTableView
     //    _inputDevices = [NSMutableArray array];
-    _umaApp = [UMAApplication sharedApplication];
-    _umaApp.delegate = self;
-    //    _hidManager = [_umaApp requestHIDManager];
-    //
-    [_umaApp addViewController:self];
-    //
-    //    //focus
-    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-    [_focusManager setHidden:NO];
-    [_focusManager moveFocus:5];
+//    _umaApp = [UMAApplication sharedApplication];
+//    _umaApp.delegate = self;
+//    //    _hidManager = [_umaApp requestHIDManager];
+//    //
+//    [_umaApp addViewController:self];
+//    //
+//    //    //focus
+//    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+//    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//    [_focusManager setHidden:NO];
+//    [_focusManager moveFocus:5];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -105,12 +105,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidAppear:animated];
 #pragma setup UMA in ViewDidAppear in RecommendTableView
-    [_umaApp addViewController:self];
-    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-    [_focusManager setHidden:NO];
-    
-    [_focusManager moveFocus:5];    // Give focus to the first icon.
+//    [_umaApp addViewController:self];
+//    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+//    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//    [_focusManager setHidden:NO];
+//    
+//    [_focusManager moveFocus:5];    // Give focus to the first icon.
 }
 
 - (void)didReceiveMemoryWarning {

@@ -205,9 +205,9 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ver.0.001.211575" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaY-b4-O80">
-                                <rect key="frame" x="430" y="530" width="150" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ver.0.001.211575" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaY-b4-O80">
+                                <rect key="frame" x="430" y="530" width="102" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -231,12 +231,12 @@
                             <constraint firstAttribute="trailingMargin" secondItem="LfV-Ki-ogf" secondAttribute="trailing" constant="-20" id="bQS-U9-NHf"/>
                             <constraint firstItem="jaY-b4-O80" firstAttribute="top" secondItem="pka-cv-Scc" secondAttribute="bottom" constant="466" id="hg5-oY-rmK">
                                 <variation key="heightClass=compact" constant="300"/>
-                                <variation key="widthClass=compact" constant="474"/>
+                                <variation key="widthClass=compact" constant="540"/>
                             </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="btr-WP-wDA" secondAttribute="trailing" constant="-20" id="pmB-AI-MK9"/>
                             <constraint firstItem="btr-WP-wDA" firstAttribute="top" secondItem="pka-cv-Scc" secondAttribute="bottom" id="s7S-wC-L7z"/>
                             <constraint firstItem="jaY-b4-O80" firstAttribute="leading" secondItem="nnf-bP-WeR" secondAttribute="leadingMargin" constant="410" id="utf-pF-tjs">
-                                <variation key="widthClass=compact" constant="231"/>
+                                <variation key="widthClass=compact" constant="220"/>
                             </constraint>
                             <constraint firstItem="LfV-Ki-ogf" firstAttribute="centerX" secondItem="nnf-bP-WeR" secondAttribute="centerX" id="vgv-wZ-dYo"/>
                             <constraint firstItem="ViT-Wg-2ON" firstAttribute="leading" secondItem="LfV-Ki-ogf" secondAttribute="trailing" constant="-340" id="vl2-fB-AGN"/>
@@ -246,12 +246,12 @@
                                 <exclude reference="btr-WP-wDA"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="2OO-zF-Ufq"/>
-                                <exclude reference="7jC-5t-2jJ"/>
-                                <exclude reference="WdH-Dh-cqi"/>
                                 <exclude reference="N5J-6B-gpY"/>
                                 <exclude reference="pmB-AI-MK9"/>
                                 <exclude reference="s7S-wC-L7z"/>
+                                <exclude reference="2OO-zF-Ufq"/>
+                                <exclude reference="7jC-5t-2jJ"/>
+                                <exclude reference="WdH-Dh-cqi"/>
                                 <exclude reference="vl2-fB-AGN"/>
                                 <exclude reference="66V-aP-lfq"/>
                                 <exclude reference="L8u-01-RH9"/>

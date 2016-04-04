@@ -35,9 +35,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    NSLog(@"in viewDidAppaer setting");
     NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+    NSLog(@"saveGenre = %@", saveGenre);
     NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
     self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+    [self.tableView reloadData];
 }
 
 - (void)createGenre
@@ -163,7 +166,7 @@
         NSLog(@"not zero");
         NSString *genreSelectedString = @"";
         for(int i = 0 ; i < [self.genreSelected count] ; i++){
-            genreSelectedString = [NSString stringWithFormat:@"%@%@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+            genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
         }
         genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         
