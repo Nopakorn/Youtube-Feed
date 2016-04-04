@@ -20,7 +20,7 @@
     self.youtube = [[Youtube alloc] init];
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     [self.navigationController setNavigationBarHidden:YES];
-    //[[UIApplication sharedApplication] setStatusBarHidden:YES];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     self.loadingLabel.hidden = YES;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
@@ -39,7 +39,7 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    return NO;
+    return YES;
 }
 
 - (void)callSearchSecondTime:(NSString *)saveGenre

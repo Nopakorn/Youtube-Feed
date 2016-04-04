@@ -101,7 +101,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tabBarController.delegate = self;
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
     item = 0;
     queryIndex = -1;
@@ -262,10 +262,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 - (void)hideNavigation
 {
     if (self.tabBarController.tabBar.hidden == YES) {
+       
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
         self.topSapceConstraint.constant = 94;
@@ -279,6 +284,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.currentTimePlay.hidden = NO;
         [_focusManager setHidden:YES];
     } else {
+        
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
         self.topSapceConstraint.constant = 94;
@@ -298,6 +304,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
 {
     if (self.tabBarController.tabBar.hidden == YES) {
+        
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
         self.topSapceConstraint.constant = 50;
@@ -313,6 +320,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
          hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
 
     } else {
+        
+        [hideNavigation invalidate];
         
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;

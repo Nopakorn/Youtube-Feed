@@ -30,7 +30,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+    [application setStatusBarHidden:YES];
 
 
     UMAApplication *umaApp = [UMAApplication sharedApplication];

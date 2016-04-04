@@ -231,7 +231,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="LfV-Ki-ogf" secondAttribute="trailing" constant="-20" id="bQS-U9-NHf"/>
                             <constraint firstItem="jaY-b4-O80" firstAttribute="top" secondItem="pka-cv-Scc" secondAttribute="bottom" constant="466" id="hg5-oY-rmK">
                                 <variation key="heightClass=compact" constant="300"/>
-                                <variation key="widthClass=compact" constant="540"/>
+                                <variation key="widthClass=compact" constant="600"/>
                             </constraint>
                             <constraint firstAttribute="trailingMargin" secondItem="btr-WP-wDA" secondAttribute="trailing" constant="-20" id="pmB-AI-MK9"/>
                             <constraint firstItem="btr-WP-wDA" firstAttribute="top" secondItem="pka-cv-Scc" secondAttribute="bottom" id="s7S-wC-L7z"/>
