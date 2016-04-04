@@ -26,6 +26,7 @@
     UIAlertController *outOflengthAlert;
     NSTimer *outOflengthAlertTimer;
     NSTimer *hideNavigation;
+    BOOL shouldHideStatusBar;
 }
 @property (nonatomic) UMAApplication *umaApp;
 @property (nonatomic, strong) UMAFocusManager *focusManager;

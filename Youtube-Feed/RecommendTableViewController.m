@@ -82,7 +82,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                  name:@"SettingDidSelected" object:nil];
     NSLog(@"view did load recommend");
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
-
+    
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
      _umaApp = [UMAApplication sharedApplication];

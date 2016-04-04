@@ -21,7 +21,7 @@
 @property (nonatomic, copy) NSString *part;
 @property (nonatomic, copy) NSString *nextPageToken;
 @property (nonatomic, copy) NSString *prevPageToken;
-
+@property (nonatomic, copy) NSString *regionCode;
 @property (nonatomic, copy) NSString *videoIdListForGetDuration;
 
 @property (nonatomic, retain) NSMutableArray *videoIdList;
