@@ -41,15 +41,16 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="CzD-0g-2TG" secondAttribute="trailing" constant="8" symbolic="YES" id="1rK-nW-Qeu"/>
+                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="CzD-0g-2TG" secondAttribute="trailing" constant="8" id="1rK-nW-Qeu"/>
                     <constraint firstItem="AOX-dL-vUE" firstAttribute="trailing" secondItem="FGn-W3-vVF" secondAttribute="trailingMargin" id="4W8-2q-3TO"/>
                     <constraint firstItem="8ae-YB-awH" firstAttribute="bottom" secondItem="CzD-0g-2TG" secondAttribute="bottom" id="5Qr-lv-A6s"/>
                     <constraint firstItem="CzD-0g-2TG" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="-3" id="LsR-ji-GYL"/>
                     <constraint firstItem="CzD-0g-2TG" firstAttribute="leading" secondItem="FGn-W3-vVF" secondAttribute="leadingMargin" id="ddv-gR-GhA"/>
                     <constraint firstItem="CzD-0g-2TG" firstAttribute="top" secondItem="AOX-dL-vUE" secondAttribute="top" id="doW-IU-VVD"/>
-                    <constraint firstItem="8ae-YB-awH" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="57" id="icw-nR-7Aj"/>
+                    <constraint firstItem="8ae-YB-awH" firstAttribute="top" secondItem="FGn-W3-vVF" secondAttribute="topMargin" constant="57" identifier="TopSpace" id="icw-nR-7Aj"/>
                     <constraint firstAttribute="bottomMargin" secondItem="AOX-dL-vUE" secondAttribute="bottom" id="ilA-w4-kKf"/>
-                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="8ae-YB-awH" secondAttribute="trailing" constant="8" id="sc4-eS-zSz"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="8ae-YB-awH" secondAttribute="bottom" identifier="BottomSpace" id="qbY-gr-iV0"/>
+                    <constraint firstItem="AOX-dL-vUE" firstAttribute="leading" secondItem="8ae-YB-awH" secondAttribute="trailing" constant="8" identifier="TrailingSpaceToName" id="sc4-eS-zSz"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

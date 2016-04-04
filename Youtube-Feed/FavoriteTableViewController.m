@@ -261,6 +261,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [youtube.videoIdList addObject:[manageObject valueForKey:@"videoId"]];
         [youtube.titleList addObject:[manageObject valueForKey:@"videoTitle"]];
         [youtube.thumbnailList addObject:[manageObject valueForKey:@"videoThumbnail"]];
+        [youtube.durationList addObject:[manageObject valueForKey:@"videoDuration"]];
     }
     
     NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
@@ -281,6 +282,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [youtube.videoIdList addObject:[manageObject valueForKey:@"videoId"]];
         [youtube.titleList addObject:[manageObject valueForKey:@"videoTitle"]];
         [youtube.thumbnailList addObject:[manageObject valueForKey:@"videoThumbnail"]];
+        [youtube.durationList addObject:[manageObject valueForKey:@"videoDuration"]];
     }
     
     NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];

@@ -292,7 +292,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.currentTimePlay.hidden = YES;
         [_focusManager setHidden:YES];
     }
-    
+
 }
 
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
@@ -330,6 +330,41 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
 
 }
+
+- (void)hideNavWithFact:(BOOL )fact
+{
+    if (fact) {
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
+        self.tabBarController.tabBar.hidden = YES;
+        self.topSapceConstraint.constant = 94;
+        self.playButton.hidden = YES;
+        self.pauseButton.hidden = YES;
+        self.nextButton.hidden = YES;
+        self.prevButton.hidden = YES;
+        self.favoriteButton.hidden = YES;
+        self.ProgressSlider.hidden = YES;
+        self.totalTime.hidden = YES;
+        self.currentTimePlay.hidden = YES;
+        
+    } else {
+        
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+        self.tabBarController.tabBar.hidden = NO;
+        self.topSapceConstraint.constant = 50;
+        self.playButton.hidden = NO;
+        self.pauseButton.hidden = NO;
+        self.nextButton.hidden = NO;
+        self.prevButton.hidden = NO;
+        self.favoriteButton.hidden = NO;
+        self.ProgressSlider.hidden = NO;
+        self.totalTime.hidden = NO;
+        self.currentTimePlay.hidden = NO;
+        
+    }
+
+}
+
+
 
 - (void)viewDidLayoutSubviews
 {
@@ -678,12 +713,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)favoritePressed:(id)sender
 {
+    NSLog(@"favorite check youtube %@", self.youtube.titleList);
     NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
     NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
     NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
     NSString *videoDuration = [self.youtube.durationList objectAtIndex:item];
+    //self.favorite = [[Favorite alloc] init];
     [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId andDuration:videoDuration];
-    
+    NSLog(@"favorite check favorite %@", self.favorite.videoTitle);
     UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
 
@@ -928,7 +965,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
  float level = 0.0;
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     if (backFact) {
         //limitation of volume level
         if (level < 0) {
@@ -962,14 +998,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [_focusManager moveFocus:3];
             
         }
-//        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-//            [_focusManager moveFocus:1];
-//            
-//        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-//            [_focusManager moveFocus:4];
-//            
-//        }
-
 
         return NO;
     }
@@ -978,6 +1006,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
+    [self hideNavWithFact:NO];
+    [hideNavigation invalidate];
     if (backFact) {
         if (distanceX == 1 && distanceY == 0) {
             NSLog(@"RIGTH");
@@ -992,6 +1022,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSLog(@"TOP");
             [self buttonPressed:self.nextButton];
         }
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         return YES;
         
     } else {
@@ -1056,15 +1087,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up %@", [self getButtonName:button]);
-    
-    if (self.tabBarController.tabBar.hidden == YES && backFact == NO) {
-        [self hideNavigation];
-    } else {
-        NSLog(@"in tabbar");
-        [hideNavigation invalidate];
-    }
-    
+    [self hideNavWithFact:NO];
+    [hideNavigation invalidate];
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+        
         
         if (backFact) {
             NSLog(@"backFact %id",backFact);
@@ -1082,6 +1108,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [_focusManager setHidden:YES];
             [_focusManager moveFocus:4];
             backFact = YES;
+            hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
@@ -1107,10 +1134,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
     NSLog(@"Long press %@", [self getButtonName:button]);
+    
     return YES;
 }
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button state:(UMAInputGestureRecognizerState)state
 {
+    [self hideNavWithFact:NO];
+    [hideNavigation invalidate];
     if ([[self getButtonName:button] isEqualToString:@"Right"]) {
         if (state == 0) {
             isSeekForward = true;
@@ -1124,6 +1154,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             isSeekBackward = false;
         }
     }
+    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     return YES;
 }
 

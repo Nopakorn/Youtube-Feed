@@ -24,14 +24,13 @@
     
     self.loadingLabel.hidden = YES;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+        
                 NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
                 NSLog(@"YES genre is selected %@",saveGenre);
                 NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
                 self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
                 [self callSearchSecondTime:saveGenre];
-        
         //[self performSegueWithIdentifier:@"SettingView" sender:@0];
-        
     } else {
 
         [self performSegueWithIdentifier:@"SettingView" sender:@0];
