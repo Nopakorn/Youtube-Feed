@@ -101,7 +101,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tabBarController.delegate = self;
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    shouldHideStatusBar = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:shouldHideStatusBar];
     
     item = 0;
     queryIndex = -1;
@@ -264,16 +265,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)prefersStatusBarHidden
 {
+    //return shouldHideStatusBar;
     return YES;
 }
 
 - (void)hideNavigation
 {
     if (self.tabBarController.tabBar.hidden == YES) {
-       
+//        shouldHideStatusBar = NO;
+//        [self setNeedsStatusBarAppearanceUpdate];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
-        self.topSapceConstraint.constant = 94;
+        //self.topSapceConstraint.constant = 94;
         self.playButton.hidden = NO;
         self.pauseButton.hidden = NO;
         self.nextButton.hidden = NO;
@@ -284,10 +287,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.currentTimePlay.hidden = NO;
         [_focusManager setHidden:YES];
     } else {
-        
+        shouldHideStatusBar = YES;
+        [self setNeedsStatusBarAppearanceUpdate];
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
-        self.topSapceConstraint.constant = 94;
+        //self.topSapceConstraint.constant = 204;
         self.playButton.hidden = YES;
         self.pauseButton.hidden = YES;
         self.nextButton.hidden = YES;
@@ -304,10 +308,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
 {
     if (self.tabBarController.tabBar.hidden == YES) {
-        
+        //self.topSapceConstraint.constant = 94;
+//        shouldHideStatusBar = NO;
+//        [self setNeedsStatusBarAppearanceUpdate];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
-        self.topSapceConstraint.constant = 50;
+        
         self.playButton.hidden = NO;
         self.pauseButton.hidden = NO;
         self.nextButton.hidden = NO;
@@ -321,11 +327,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     } else {
         
+        //self.topSapceConstraint.constant = 204;
         [hideNavigation invalidate];
-        
+//        shouldHideStatusBar = YES;
+//        [self setNeedsStatusBarAppearanceUpdate];
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
-        self.topSapceConstraint.constant = 94;
+       
         self.playButton.hidden = YES;
         self.pauseButton.hidden = YES;
         self.nextButton.hidden = YES;
@@ -422,7 +430,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     if (searchTableViewFlag) {
-
     
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         searchTableViewFlag = false;
