@@ -65,6 +65,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL isAlertShowUp;
     BOOL backFactPlaylist;
     NSInteger indexFocus;
+    NSInteger indexFocusTabbar;
 }
 
 
@@ -74,6 +75,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidLoad];
     isAlertShowUp = NO;
     backFactPlaylist = YES;
+    indexFocusTabbar = 1;
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
@@ -115,37 +117,52 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    
+    NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];
+        if (backFactPlaylist) {
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-                [_focusManager moveFocus:indexFocus];
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
+            
         }
         
     } else {
         
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];
+        if (backFactPlaylist) {
             
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-                [_focusManager moveFocus:indexFocus];
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
             
         }
         
@@ -385,7 +402,26 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     //NSLog(@"in tabbar %id",backFactPlaylist);
     if (backFactPlaylist == 0) {
-        
+        if (direction == 1) {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 1;
+            }
+        } else {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 1;
+            }
+            
+            
+        }
+
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
             NSLog(@"search");
             [_focusManager moveFocus:1];
@@ -424,6 +460,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         if (distanceX == 1 && distanceY == 0) {
             NSLog(@"RIGTH");
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 1;
+            }
             if ([_focusManager focusIndex] == 1) {
                 [_focusManager moveFocus:1];
                 NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
@@ -432,6 +475,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
         }else if (distanceX == -1 && distanceY == 0) {
             NSLog(@"LEFT");
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 1;
+            }
             if ([_focusManager focusIndex] == 0) {
                 [_focusManager moveFocus:4];
             } else if ([_focusManager focusIndex] == 3) {

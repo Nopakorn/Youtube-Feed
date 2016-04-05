@@ -64,6 +64,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL backFactRecommended;
     BOOL inTabbar;
     NSInteger indexFocus;
+    NSInteger indexFocusTabbar;
 }
 @synthesize delegate = _delegate;
 
@@ -186,41 +187,50 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        //[_focusManager moveFocus:5];
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];    // Give focus to the first icon.
+        if (backFactRecommended) {
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-//                NSInteger index = [_focusManager focusIndex]+2;
-//                NSLog(@"index %ld",(long)index);
-                [_focusManager moveFocus:indexFocus];    // Give focus to the first icon.
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
             
         }
         
-        
     } else {
         
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        //[_focusManager moveFocus:5];
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];    // Give focus to the first icon.
+        if (backFactRecommended) {
             
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-//                NSInteger index = [_focusManager focusIndex]+2;
-//                 NSLog(@"index %ld",(long)index);
-                [_focusManager moveFocus:indexFocus];    // Give focus to the first icon.
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
             
         }
 
@@ -251,7 +261,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
-    
+    indexFocusTabbar = 1;
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -271,6 +281,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear RecommendedController");
     [_focusManager setHidden:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -457,27 +468,44 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
     //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
-    NSLog(@"in tabbar %id",backFactRecommended);
+    //NSLog(@"in tabbar %id",backFactRecommended);
     if (backFactRecommended == 0) {
-        
-        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-           
-            [_focusManager moveFocus:1];
-            
-        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+        //update focus on tabbar
+        if (direction == 1) {
 
-            [_focusManager moveFocus:4];
-            
-        } else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 1) {
- 
-            [_focusManager moveFocus:4];
-            
-        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 0) {
+            if ([_focusManager focusIndex] == 0 && distance == 1) {
+                indexFocusTabbar = 4;
 
-            [_focusManager moveFocus:1];
+            }else if ([_focusManager focusIndex] == 3 && distance == 1) {
+                indexFocusTabbar = 3;
+
+            }else if ([_focusManager focusIndex] == 2 && distance == 1) {
+                indexFocusTabbar = 1;
+            }
+        } else {
+            
+            if ([_focusManager focusIndex] == 0 && distance == 1) {
+                indexFocusTabbar = 3;
+            } else if ([_focusManager focusIndex] == 2 && distance == 1) {
+                indexFocusTabbar = 4;
+            } else if ([_focusManager focusIndex] == 3 && distance == 1) {
+                indexFocusTabbar = 1;
+            }
             
         }
-        NSLog(@"in tabbar %ld",(long)[_focusManager focusIndex]);
+
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:1];
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            [_focusManager moveFocus:4];
+        } else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 1) {
+            [_focusManager moveFocus:4];
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:1];
+        }
+        
+        
+        NSLog(@"in tabbar %ld direction %ld",(long)indexFocusTabbar, (long)direction);
        
     }
     
@@ -499,18 +527,41 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         if (distanceX == 1 && distanceY == 0) {
             NSLog(@"RIGTH");
+            
+            if ([_focusManager focusIndex] == 0 ) {
+                indexFocusTabbar = 3;
+            } else if ([_focusManager focusIndex] == 2 ) {
+                indexFocusTabbar = 4;
+            } else if ([_focusManager focusIndex] == 3 ) {
+                indexFocusTabbar = 1;
+            }
+
             if ([_focusManager focusIndex] == 0) {
                 [_focusManager moveFocus:1];
-                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+             
+        
             } else if ([_focusManager focusIndex] == 3) {
                 [_focusManager moveFocus:1];
+               
             }
         }else if (distanceX == -1 && distanceY == 0) {
             NSLog(@"LEFT");
+            if ([_focusManager focusIndex] == 0 ) {
+                indexFocusTabbar = 4;
+                
+            } else if ([_focusManager focusIndex] == 3 ) {
+                indexFocusTabbar = 3;
+                
+            } else if ([_focusManager focusIndex] == 2 ) {
+                indexFocusTabbar = 1;
+            }
+
             if ([_focusManager focusIndex] == 0) {
                 [_focusManager moveFocus:4];
+                
             } else if ([_focusManager focusIndex] == 2) {
                 [_focusManager moveFocus:4];
+                
             }
         }else if (distanceX == 0 && distanceY == 1) {
             NSLog(@"BOTTOM");

@@ -73,6 +73,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL backFact;
     NSInteger item;
     NSInteger queryIndex;
+    NSInteger indexFocusTabbar;
 }
 - (id)init
 {
@@ -103,7 +104,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
     shouldHideStatusBar = NO;
     [[UIApplication sharedApplication] setStatusBarHidden:shouldHideStatusBar];
-    
+    indexFocusTabbar = 2;
     item = 0;
     queryIndex = -1;
     recommendTableViewFlag = false;
@@ -178,6 +179,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                                                              action:@selector(handleLongPressLeft:)];
     lgpr_left.minimumPressDuration = 1.5;
     [self.prevButton addGestureRecognizer:lgpr_left];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
 #pragma setup UMA in ViewDidload
     _inputDevices = [NSMutableArray array];
@@ -430,7 +433,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     
     
-    
+    indexFocusTabbar = 2;
    
     if (recommendTableViewFlag) {
 
@@ -468,12 +471,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     
-//    UILongPressGestureRecognizer *lgpr_right = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-//                                                                                       action:@selector(handleLongPressRight:)];
-//    lgpr_right.minimumPressDuration = 1.5;
-//    [self.nextButton addGestureRecognizer:lgpr_right];
-    
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -491,6 +489,35 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_hidManager startDiscoverWithDeviceName:nil];
 
 }
+
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    NSLog(@"View changing %ld", (long)indexFocusTabbar);
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        if (backFact == 0) {
+
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
+            
+        }
+        
+    } else {
+        
+        if (backFact == 0) {
+            
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
+        }
+        
+    }
+    
+}
+
+
+
 
 - (void)handleLongPressRight:(UILongPressGestureRecognizer *)gestureRecognizer
 {
@@ -524,6 +551,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"viewDidDisappear Viewcontroller");
     [hideNavigation invalidate];
     [_focusManager setHidden:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
    
 }
 
@@ -1025,6 +1053,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
  float level = 0.0;
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     if (backFact) {
         //limitation of volume level
         if (level < 0) {
@@ -1049,6 +1078,27 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     } else {
         
+        
+        if (direction == 1) {
+            if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 2;
+            }
+        } else {
+            if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 4;
+            }
+
+        
+        }
+        
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
             NSLog(@"search");
             [_focusManager moveFocus:2];
@@ -1071,6 +1121,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (backFact) {
         if (distanceX == 1 && distanceY == 0) {
             NSLog(@"RIGTH");
+            
             [self buttonPressed:self.nextButton];
         }else if (distanceX == -1 && distanceY == 0) {
             NSLog(@"LEFT");
@@ -1089,13 +1140,31 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         if (distanceX == 1 && distanceY == 0) {
             NSLog(@"RIGTH");
+            if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 4;
+            }
+            
             if ([_focusManager focusIndex] == 3) {
                 [_focusManager moveFocus:2];
-                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+               
             }
             
         }else if (distanceX == -1 && distanceY == 0) {
             NSLog(@"LEFT");
+           
+            if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 2;
+            }
+
+
             if ([_focusManager focusIndex] == 1) {
                 [_focusManager moveFocus:3];
             }

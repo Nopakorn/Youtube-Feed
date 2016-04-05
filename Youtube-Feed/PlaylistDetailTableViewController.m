@@ -61,11 +61,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation PlaylistDetailTableViewController
 {
     NSInteger indexFocus;
+    NSInteger indexFocusTabbar;
     BOOL backFactPlaylistDetail;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    indexFocusTabbar = 1;
     [self addingDataToYoutubeObject];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 #pragma setup UMA in ViewDidload in PlaylistDetailTableView
@@ -106,37 +107,52 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    
+    NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];
+        if (backFactPlaylistDetail) {
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-                [_focusManager moveFocus:indexFocus];
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
+            
         }
         
     } else {
         
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];
+        if (backFactPlaylistDetail) {
             
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-                [_focusManager moveFocus:indexFocus];
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
             
         }
         
@@ -293,7 +309,26 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
     if (backFactPlaylistDetail == 0) {
-        
+        if (direction == 1) {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 1;
+            }
+        } else {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 1;
+            }
+            
+            
+        }
+
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
             NSLog(@"search");
             [_focusManager moveFocus:1];
@@ -331,6 +366,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         
         if (distanceX == 1 && distanceY == 0) {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 1;
+            }
             
             if ([_focusManager focusIndex] == 1) {
                 [_focusManager moveFocus:1];
@@ -339,6 +381,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
             
         }else if (distanceX == -1 && distanceY == 0) {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 4;
+            }else if ([_focusManager focusIndex] == 3) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 1;
+            }
             
             if ([_focusManager focusIndex] == 0) {
                 [_focusManager moveFocus:4];

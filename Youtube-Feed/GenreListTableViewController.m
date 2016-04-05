@@ -60,12 +60,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     BOOL nextPage;
     NSInteger indexFocus;
+    NSInteger indexFocusTabbar;
     BOOL backFactGenreList;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     nextPage = true;
+    indexFocusTabbar = 1;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.searchTerm;
@@ -109,43 +111,59 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    
+    NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];
+        if (backFactGenreList) {
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-                [_focusManager moveFocus:indexFocus];
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
+            
         }
         
     } else {
         
-        [_focusManager setFocusRootView:self.tableView];
-        [_focusManager setHidden:NO];
-        
-        if (indexFocus == 24) {
-            [_focusManager moveFocus:1];
+        if (backFactGenreList) {
             
+            [_focusManager setFocusRootView:self.tableView];
+            [_focusManager setHidden:NO];
+            if (indexFocus == 24) {
+                [_focusManager moveFocus:1];
+            } else {
+                
+                if (indexFocus == 0) {
+                    [_focusManager moveFocus:2];
+                } else {
+                    [_focusManager moveFocus:indexFocus];
+                }
+                
+            }
         } else {
             
-            if (indexFocus == 0) {
-                [_focusManager moveFocus:2];
-            } else {
-                [_focusManager moveFocus:indexFocus];
-            }
+            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
+            [_focusManager moveFocus:indexFocusTabbar];
             
         }
         
     }
     
 }
+
 
 #pragma mark - Table view data source
 
@@ -307,6 +325,26 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     if (backFactGenreList == 0) {
         
+        if (direction == 1) {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 1;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 2;
+            }
+        } else {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 1;
+            }
+            
+            
+        }
+
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
             [_focusManager moveFocus:1];
             
@@ -329,6 +367,55 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     return NO;
 }
 
+- (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
+{
+    NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+    if (backFactGenreList) {
+        return YES;
+    } else {
+        
+        if (distanceX == 1 && distanceY == 0) {
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 2;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 1;
+            }
+            
+            if ([_focusManager focusIndex] == 2) {
+                [_focusManager moveFocus:2];
+                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+            } else if ([_focusManager focusIndex] == 3) {
+                [_focusManager moveFocus:1];
+            }
+        }else if (distanceX == -1 && distanceY == 0) {
+            NSLog(@"LEFT");
+            if ([_focusManager focusIndex] == 0) {
+                indexFocusTabbar = 3;
+            }else if ([_focusManager focusIndex] == 1) {
+                indexFocusTabbar = 1;
+            }else if ([_focusManager focusIndex] == 2) {
+                indexFocusTabbar = 2;
+            }
+            
+            if ([_focusManager focusIndex] == 0) {
+                [_focusManager moveFocus:3];
+            }
+        }else if (distanceX == 0 && distanceY == 1) {
+            NSLog(@"BOTTOM");
+            
+        }else if (distanceX == 0 && distanceY == -1) {
+            NSLog(@"TOP");
+            
+        }
+        return NO;
+        
+        
+    }
+    
+    
+}
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {
