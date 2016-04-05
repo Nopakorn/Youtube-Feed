@@ -59,7 +59,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @end
 
 @implementation PlaylistDetailTableViewController
-
+{
+    NSInteger indexFocus;
+    BOOL backFactPlaylistDetail;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -80,6 +83,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear PlaylistController");
     [_focusManager setHidden:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,8 +99,52 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [_focusManager setHidden:NO];
         [_focusManager moveFocus:1];    // Give focus to the first icon.
     }
-   
+    
+    backFactPlaylistDetail = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+        }
+        
+    } else {
+        
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+            
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+            
+        }
+        
+    }
+    
+}
+
+
 - (void)addingDataToYoutubeObject
 {
     self.youtube = [[Youtube alloc] init];
@@ -242,6 +290,67 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
 }
 
+- (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
+{
+    if (backFactPlaylistDetail == 0) {
+        
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            NSLog(@"search");
+            [_focusManager moveFocus:1];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            NSLog(@"search");
+            [_focusManager moveFocus:4];
+            
+        } else if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 1) {
+            NSLog(@"search");
+            [_focusManager moveFocus:4];
+            
+        } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 0) {
+            NSLog(@"search");
+            [_focusManager moveFocus:1];
+            
+        }
+        
+    }
+    
+
+    indexFocus = [_focusManager focusIndex];
+    if (direction == 0) {
+        indexFocus+=2;
+    }
+    
+    return NO;
+}
+
+- (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
+{
+    
+    if (backFactPlaylistDetail) {
+        return YES;
+    } else {
+        
+        if (distanceX == 1 && distanceY == 0) {
+            
+            if ([_focusManager focusIndex] == 1) {
+                [_focusManager moveFocus:1];
+            } else if ([_focusManager focusIndex] == 3) {
+                [_focusManager moveFocus:1];
+            }
+            
+        }else if (distanceX == -1 && distanceY == 0) {
+            
+            if ([_focusManager focusIndex] == 0) {
+                [_focusManager moveFocus:4];
+            } else if ([_focusManager focusIndex] == 3) {
+                [_focusManager moveFocus:4];
+            }
+        }
+        return NO;
+        
+    }
+}
+
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {
@@ -274,7 +383,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"Press Down in Playlist");
     return YES;
 }
-BOOL backFactPlaylistDetail = YES;
+
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
@@ -283,14 +392,13 @@ BOOL backFactPlaylistDetail = YES;
         //
         
         if (backFactPlaylistDetail) {
-            //NSLog(@"in tabbar controller");
+
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:3];
+            [_focusManager moveFocus:1];
             backFactPlaylistDetail = NO;
             
         } else {
-            
-           // NSLog(@"in main view");
+
             [_focusManager setFocusRootView:self.tableView];
             if ([self.youtubeVideoList count] == 0) {
                 [_focusManager setHidden:YES];

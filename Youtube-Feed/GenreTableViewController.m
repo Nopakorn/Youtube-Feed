@@ -60,7 +60,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation GenreTableViewController
 {
     BOOL backFactGenre;
+    NSInteger indexFocus;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -94,6 +96,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -101,7 +105,50 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear GenreController");
     [_focusManager setHidden:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+
 }
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+        }
+        
+    } else {
+        
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+            
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+            
+        }
+        
+    }
+    
+}
+
 
 
 - (void)createGerne
@@ -217,11 +264,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [_focusManager moveFocus:2];
             
         }
-
+        
         
     }
     
-    
+    indexFocus = [_focusManager focusIndex];
+    if (direction == 0) {
+        indexFocus+=2;
+    }
+
     return NO;
 }
 

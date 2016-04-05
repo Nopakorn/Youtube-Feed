@@ -339,8 +339,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         //self.topSapceConstraint.constant = 204;
         [hideNavigation invalidate];
-//        shouldHideStatusBar = YES;
-//        [self setNeedsStatusBarAppearanceUpdate];
+
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
        
@@ -503,7 +502,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         isSeekForward = false;
          hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     }
-    
 }
 
 - (void)handleLongPressLeft:(UILongPressGestureRecognizer *)gestureRecognizer
@@ -526,8 +524,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"viewDidDisappear Viewcontroller");
     [hideNavigation invalidate];
     [_focusManager setHidden:YES];
-
+   
 }
+
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
 {
     BOOL checkFav = false;

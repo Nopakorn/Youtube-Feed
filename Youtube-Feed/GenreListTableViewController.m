@@ -59,6 +59,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation GenreListTableViewController
 {
     BOOL nextPage;
+    NSInteger indexFocus;
+    BOOL backFactGenreList;
 }
 
 - (void)viewDidLoad {
@@ -67,6 +69,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.searchTerm;
+    backFactGenreList = YES;
 #pragma setup UMA in ViewDidload in GenreListTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -82,6 +85,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear GenreListController");
     [_focusManager setHidden:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -99,7 +103,48 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
+    
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
 
+- (void)orientationChanged:(NSNotification *)notification
+{
+    
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+        }
+        
+    } else {
+        
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+            
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+            
+        }
+        
+    }
+    
 }
 
 #pragma mark - Table view data source
@@ -214,8 +259,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.tableView.tableFooterView = nil;
         [self.tableView reloadData];
         nextPage = true;
-        //tell viewcontroller to update youtube obj
-        //[self.delegate recommendTableViewControllerNextPage:self];
+
     });
     
 }
@@ -259,6 +303,32 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
 }
 
+- (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
+{
+    if (backFactGenreList == 0) {
+        
+        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:1];
+            
+        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+            [_focusManager moveFocus:3];
+            
+        }  else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 0) {
+            [_focusManager moveFocus:2];
+            
+        }
+        
+        
+    }
+
+    indexFocus = [_focusManager focusIndex];
+    if (direction == 0) {
+        indexFocus+=2;
+    }
+    
+    return NO;
+}
+
 
 - (NSString *)getButtonName:(UMAInputButtonType)button
 {
@@ -292,7 +362,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     return YES;
 }
 
-BOOL backFactGenreList = YES;
+
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
@@ -303,7 +373,7 @@ BOOL backFactGenreList = YES;
         if (backFactGenreList) {
             NSLog(@"in tabbar controller");
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:4];
+            [_focusManager moveFocus:1];
             backFactGenreList = NO;
             
         } else {

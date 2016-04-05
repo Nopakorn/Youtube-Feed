@@ -61,7 +61,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation RecommendTableViewController
 {
     BOOL nextPage;
-    BOOL backFactRecommended ;
+    BOOL backFactRecommended;
     BOOL inTabbar;
     NSInteger indexFocus;
 }
@@ -198,7 +198,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else {
 //                NSInteger index = [_focusManager focusIndex]+2;
 //                NSLog(@"index %ld",(long)index);
-                [_focusManager moveFocus:indexFocus+2];    // Give focus to the first icon.
+                [_focusManager moveFocus:indexFocus];    // Give focus to the first icon.
             }
             
         }
@@ -219,7 +219,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else {
 //                NSInteger index = [_focusManager focusIndex]+2;
 //                 NSLog(@"index %ld",(long)index);
-                [_focusManager moveFocus:indexFocus+2];    // Give focus to the first icon.
+                [_focusManager moveFocus:indexFocus];    // Give focus to the first icon.
             }
             
         }
@@ -478,13 +478,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
         }
         NSLog(@"in tabbar %ld",(long)[_focusManager focusIndex]);
-        return YES;
-    } else {
-        NSLog(@"in view %ld",(long)[_focusManager focusIndex]);
-        NSLog(@"check focus index %ld",(long)[_focusManager focusIndex]);
-        indexFocus = [_focusManager focusIndex];
-        return NO;
+       
     }
+    
+    indexFocus = [_focusManager focusIndex];
+    if (direction == 0) {
+        indexFocus+=2;
+    }
+
+    return NO;
+   
 
 }
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
@@ -557,14 +560,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"Press Down in Recommended %@",[self getButtonName:button]);
     return YES;
 }
-BOOL backFactRecommended = YES;
+
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up in Recommended %id", backFactRecommended);
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
 //
-        NSLog(@"Reccomened Current view in focus %@", [_focusManager focusedView]);
+       
         if (backFactRecommended) {
             NSLog(@"in tabbar controller");
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
@@ -576,7 +579,7 @@ BOOL backFactRecommended = YES;
             
             NSLog(@"in main view");
             [_focusManager setFocusRootView:self.tableView];
-            [_focusManager moveFocus:4];
+            [_focusManager moveFocus:1];
             backFactRecommended = YES;
             inTabbar = NO;
 

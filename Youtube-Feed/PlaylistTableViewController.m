@@ -64,6 +64,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     BOOL isAlertShowUp;
     BOOL backFactPlaylist;
+    NSInteger indexFocus;
 }
 
 
@@ -95,6 +96,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear PlaylistController");
     [_focusManager setHidden:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -106,7 +109,51 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
+
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+        }
+        
+    } else {
+        
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];
+            
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+            
+        }
+        
+    }
+    
+}
+
+
 
 - (void)fetchPlaylist
 {
@@ -359,6 +406,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     
+    indexFocus = [_focusManager focusIndex];
+    if (direction == 0) {
+        indexFocus+=2;
+    }
     
     return NO;
 }
@@ -441,7 +492,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [alert dismissViewControllerAnimated:YES completion:nil];
             isAlertShowUp = false;
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
-            //[self deleteRowAtIndex:[_focusManager focusIndex]];
+
             [alert dismissViewControllerAnimated:YES completion:nil];
             isAlertShowUp = false;
         }
@@ -479,29 +530,29 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %ld", (long)[_focusManager focusIndex]);
-    if ([_focusManager focusIndex] > 0 && [_focusManager focusIndex] < [self.playlist_List count] + 1) {
-        NSLog(@"can delete able");
-            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
-        
-            alert = [UIAlertController alertControllerWithTitle:@""
-                                                        message:description
-                                                 preferredStyle:UIAlertControllerStyleAlert];
-        
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action){
-        
-//                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
-                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-                                                       }];
-        
-            [alert addAction:ok];
-            [self presentViewController:alert animated:YES completion:nil];
-            isAlertShowUp = YES;
-    }
-
-
+//    NSLog(@"Long press %ld", (long)[_focusManager focusIndex]);
+//    if ([_focusManager focusIndex] > 0 && [_focusManager focusIndex] < [self.playlist_List count] + 1) {
+//        NSLog(@"can delete able");
+//            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
+//        
+//            alert = [UIAlertController alertControllerWithTitle:@""
+//                                                        message:description
+//                                                 preferredStyle:UIAlertControllerStyleAlert];
+//        
+//            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction *action){
+//        
+////                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
+//                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+//                                                       }];
+//        
+//            [alert addAction:ok];
+//            [self presentViewController:alert animated:YES completion:nil];
+//            isAlertShowUp = YES;
+//    }
+//
+//
 
     return YES;
 }
@@ -545,6 +596,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
     }
 }
+
 #pragma mark - UMAApplicationDelegate
 
 - (UIViewController *)uma:(UMAApplication *)application requestRootViewController:(UIScreen *)screen {
