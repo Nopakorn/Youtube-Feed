@@ -88,23 +88,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
-    [_focusManager setHidden:NO];
-    [_focusManager moveFocus:1];    // Give focus to the first icon.
-
+    
+    if ([self.youtubeVideoList count] == 0) {
+        [_focusManager setHidden:YES];
+    } else {
+        [_focusManager setHidden:NO];
+        [_focusManager moveFocus:1];    // Give focus to the first icon.
+    }
+   
 }
 - (void)addingDataToYoutubeObject
 {
     self.youtube = [[Youtube alloc] init];
-//    if(self.playlist.videoIdList != 0) {
-//        NSLog(@"save to youtube obj");
-//        for (int i = 0; i < [self.playlist.videoIdList count]; i++) {
-//            [self.youtube.videoIdList addObject:[self.playlist.videoIdList objectAtIndex:i]];
-//            [self.youtube.titleList addObject:[self.playlist.videoTitleList objectAtIndex:i]];
-//            [self.youtube.thumbnailList addObject:[self.playlist.videoThumbnail objectAtIndex:i]];
-//        }
-//    }else {
-//        NSLog(@"Have no video in the playlist");
-//    }
+
     for (int i = 0; i < [self.youtubeVideoList count]; i++) {
         YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
         [self.youtube.videoIdList addObject:youtubeVideo.videoId];
@@ -144,7 +140,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //return [self.playlist.videoIdList count];
+   
     return [self.youtubeVideoList count];
 }
 
@@ -296,7 +292,13 @@ BOOL backFactPlaylistDetail = YES;
             
            // NSLog(@"in main view");
             [_focusManager setFocusRootView:self.tableView];
-            [_focusManager moveFocus:1];
+            if ([self.youtubeVideoList count] == 0) {
+                [_focusManager setHidden:YES];
+            }else{
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:1];
+            }
+            
             backFactPlaylistDetail = YES;
         }
         

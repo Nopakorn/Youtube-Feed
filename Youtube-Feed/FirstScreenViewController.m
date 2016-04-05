@@ -23,18 +23,30 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     
     self.loadingLabel.hidden = YES;
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
-        
-                NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-                NSLog(@"YES genre is selected %@",saveGenre);
-                NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
-                self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
-                [self callSearchSecondTime:saveGenre];
-        //[self performSegueWithIdentifier:@"SettingView" sender:@0];
-    } else {
+    
+    //tutorial has been showed
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"tutorialPass"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
-        [self performSegueWithIdentifier:@"SettingView" sender:@0];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+            
+            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+            NSLog(@"YES genre is selected %@",saveGenre);
+            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
+            self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+            [self callSearchSecondTime:saveGenre];
+            //[self performSegueWithIdentifier:@"SettingView" sender:@0];
+        } else {
+            
+            [self performSegueWithIdentifier:@"SettingView" sender:@0];
+        }
+        
+    } else {
+        
+            [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
     }
+    
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -132,4 +144,6 @@
     genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     [self callSearchFirstTime:genreSelectedString];
 }
+
+
 @end
