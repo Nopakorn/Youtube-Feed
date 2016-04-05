@@ -11,8 +11,10 @@
 #import "Favorite.h"
 #import "PlaylistTableViewController.h"
 
-@interface PlaylistEditTableViewController : UITableViewController<NSFetchedResultsControllerDelegate>
-
+@interface PlaylistEditTableViewController : UITableViewController<NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
+{
+    UIAlertController *alert; 
+}
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
 @property (nonatomic, retain) NSMutableArray *playlist_List;

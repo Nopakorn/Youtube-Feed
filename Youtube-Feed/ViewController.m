@@ -169,6 +169,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.view addGestureRecognizer:tgpr];
     self.ProgressSlider.value = 0.0;
     
+    UILongPressGestureRecognizer *lgpr_right = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                             action:@selector(handleLongPressRight:)];
+    lgpr_right.minimumPressDuration = 1.5;
+    [self.nextButton addGestureRecognizer:lgpr_right];
+    
+    UILongPressGestureRecognizer *lgpr_left = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                             action:@selector(handleLongPressLeft:)];
+    lgpr_left.minimumPressDuration = 1.5;
+    [self.prevButton addGestureRecognizer:lgpr_left];
+    
 #pragma setup UMA in ViewDidload
     _inputDevices = [NSMutableArray array];
     _umaApp = [UMAApplication sharedApplication];
@@ -458,6 +468,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     
+    
+//    UILongPressGestureRecognizer *lgpr_right = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+//                                                                                       action:@selector(handleLongPressRight:)];
+//    lgpr_right.minimumPressDuration = 1.5;
+//    [self.nextButton addGestureRecognizer:lgpr_right];
+    
+    
+    
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:_containerView];
@@ -474,6 +492,33 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_hidManager startDiscoverWithDeviceName:nil];
 
 }
+
+- (void)handleLongPressRight:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    [hideNavigation invalidate];
+    if (gestureRecognizer.state == 2) {
+        isSeekForward = true;
+        
+    } else {
+        isSeekForward = false;
+         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+    }
+    
+}
+
+- (void)handleLongPressLeft:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    [hideNavigation invalidate];
+    if (gestureRecognizer.state == 2) {
+        isSeekBackward = true;
+        
+    } else {
+        isSeekBackward= false;
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+    }
+    
+}
+
 
 - (void)viewDidDisappear:(BOOL)animated
 {

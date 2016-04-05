@@ -110,13 +110,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)fetchPlaylist
 {
-//    NSArray *result = [self.fetchedResultsController fetchedObjects];
-//    for (int i = 0; i < result.count; i++) {
-//        NSManagedObject *object = [result objectAtIndex:i];
-//        [self.playlist_List addObject:object];
-//    }
+
     NSArray *result = [self.fetchedResultsController fetchedObjects];
-    //[result valueForKey:@"videoIdList"] = [[NSMutableArray alloc] initWithCapacity:10];
     self.playlist_List = [NSMutableArray arrayWithArray:result];
     
 }
@@ -143,11 +138,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     
     if ([sectionInfo numberOfObjects] == 0) {
-        return 2;
+        return 1;
         
     } else {
-        //for favorite and . . . row
-        return [sectionInfo numberOfObjects]+2;
+        //for favorite row
+        return [sectionInfo numberOfObjects]+1;
 
     }
 }
@@ -160,37 +155,28 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
         //add gesture ;
-        UILongPressGestureRecognizer *lgpr = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-                                                                                           action:@selector(handleLongPress:)];
-        lgpr.minimumPressDuration = 1.5;
-        [cell addGestureRecognizer:lgpr];
+//        UILongPressGestureRecognizer *lgpr = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+//                                                                                           action:@selector(handleLongPress:)];
+//        lgpr.minimumPressDuration = 1.5;
+//        [cell addGestureRecognizer:lgpr];
     }
     
     [self fetchPlaylist];
     //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     if ([self.playlist_List count] == 0) {
-        if(indexPath.row == 0) {
-            
-            cell.name.text = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
-        }else {
-            cell.name.text = @" . . . . ";
-        }
-
+        cell.name.text = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
+        
     } else {
         
         if(indexPath.row == 0) {
             cell.name.text = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
             
-        }else {
-            if (indexPath.row <= [self.playlist_List count]) {
-                
-                Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
-                cell.name.text = playlist.title;
-                
-            }else {
-                cell.name.text = @" . . . . ";
-            }
+        } else {
+            
+            Playlist *playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
+            cell.name.text = playlist.title;
+           
         }
         
     }
@@ -210,143 +196,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if( indexPath.row == 0 ) {
         [self performSegueWithIdentifier:@"FavoriteSegue" sender:nil];
         
-    }else if(indexPath.row == [self.playlist_List count]+1) {
-        NSLog(@"in createnew");
-        [self createNewPlaylist];
-        
-    }else {
-        NSLog(@"perfrom playlistdetail");
+    } else {
+
         self.playlist = [self.playlist_List objectAtIndex:indexPath.row-1];
         [self performSegueWithIdentifier:@"PlaylistDetailSegue" sender:nil];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (void)createNewPlaylist
-{
-    alert = [UIAlertController alertControllerWithTitle:@"Create New Playlist"
-                                                message:@"Type your playlist name"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                 style:UIAlertActionStyleDefault
-                                               handler:^(UIAlertAction *action){
-                                                   
-                                                   [self saveNewPlaylist:[[alert.textFields objectAtIndex:0] text]];
-                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-                                               }];
-    
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction *action){
-        
-                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-    [alert addAction:ok];
-    [alert addAction:cancel];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
-       textField.placeholder = @"New playlist name";
-    }];
-    [self presentViewController:alert animated:YES completion:nil];
-
-}
-
-- (void)saveNewPlaylist:(NSString *)text
-{
-    NSString *title = text;
-    if ([text isEqualToString:@""]) {
-        alert = [UIAlertController alertControllerWithTitle:@""
-                                                    message:@"You need to Type Your Playlist Name"
-                                             preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction *action){
-                                                       
-                                                       //[self saveNewPlaylist:[[alert.textFields objectAtIndex:0] text]];
-                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-        //[alert addAction:ok];
-        [self presentViewController:alert animated:YES completion:nil];
-    } else {
-        [self insertNewPlaylist:title];
-    }
-    
-}
-- (void)insertNewPlaylist:(NSString *)title
-{
-    
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
-    
-    [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
-    [newManagedObject setValue:title forKey:@"title"];
-    
-    // Save the context.
-    NSError *error = nil;
-    if (![context save:&error]) {
-        
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-
-}
-- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
-{
-    CGPoint p = [gestureRecognizer locationInView:self.tableView];
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-    
-    if (indexPath == nil) {
-        NSLog(@"long press table view but not in row");
-    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
-        NSLog(@"long press began at row %ld", indexPath.row);
-        if ([self.playlist_List count] < indexPath.row) {
-            NSLog(@"long press began at row %ld more then length", indexPath.row);
-            return;
-        }
-         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
-        alert = [UIAlertController alertControllerWithTitle:@""
-                                                    message:description
-                                             preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction *action){
-                                                       
-                                                       [self deleteRowAtIndex:indexPath.row];
-                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-        
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action){
-                                                           
-                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-                                                       }];
-        [alert addAction:ok];
-        [alert addAction:cancel];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    } else {
-        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
-    }
-    
-}
-
-- (void)deleteRowAtIndex:(NSInteger )index
-{
-    NSLog(@"delete at %ld", index);
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    [context deleteObject:[[self.fetchedResultsController fetchedObjects] objectAtIndex:index-1]];
-    
-    NSError *error = nil;
-    if (![context save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
 }
 
 
@@ -361,20 +216,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if ([segue.identifier isEqualToString:@"FavoriteSegue"]){
         
         FavoriteTableViewController *dest = segue.destinationViewController;
-        //dest.playlist = self.playlist;
         dest.favorite = self.favorite;
         
     } else if ([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
-         NSLog(@"prepare playlistdetail");
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
         Playlist *playlistForRow = [[self fetchedResultsController] objectAtIndexPath:customIndexPath];
         PlaylistDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = playlistForRow;
-        NSLog(@"");
+
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
-        NSLog(@"prepare playlistEdit");
+
         [self fetchPlaylist];
         PlaylistEditTableViewController *dest = segue.destinationViewController;
         dest.playlist_List = self.playlist_List;
@@ -588,7 +441,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [alert dismissViewControllerAnimated:YES completion:nil];
             isAlertShowUp = false;
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
-            [self deleteRowAtIndex:[_focusManager focusIndex]];
+            //[self deleteRowAtIndex:[_focusManager focusIndex]];
             [alert dismissViewControllerAnimated:YES completion:nil];
             isAlertShowUp = false;
         }
@@ -639,12 +492,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction *action){
         
-                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
+//                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
                                                            [alert dismissViewControllerAnimated:YES completion:nil];
                                                        }];
         
             [alert addAction:ok];
-            //[alert addAction:cancel];
             [self presentViewController:alert animated:YES completion:nil];
             isAlertShowUp = YES;
     }

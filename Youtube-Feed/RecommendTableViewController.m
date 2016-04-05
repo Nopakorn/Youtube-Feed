@@ -63,6 +63,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL nextPage;
     BOOL backFactRecommended ;
     BOOL inTabbar;
+    NSInteger indexFocus;
 }
 @synthesize delegate = _delegate;
 
@@ -82,6 +83,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                  name:@"SettingDidSelected" object:nil];
     NSLog(@"view did load recommend");
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
@@ -175,6 +180,52 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         //[weakSelf.sampleTableView reloadData];
     };
     [_hidManager setDisconnectionCallback:_disconnectionBlock];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    NSLog(@"View changing");
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        //[_focusManager moveFocus:5];
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];    // Give focus to the first icon.
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+//                NSInteger index = [_focusManager focusIndex]+2;
+//                NSLog(@"index %ld",(long)index);
+                [_focusManager moveFocus:indexFocus+2];    // Give focus to the first icon.
+            }
+            
+        }
+        
+        
+    } else {
+        
+        [_focusManager setFocusRootView:self.tableView];
+        [_focusManager setHidden:NO];
+        //[_focusManager moveFocus:5];
+        if (indexFocus == 24) {
+            [_focusManager moveFocus:1];    // Give focus to the first icon.
+            
+        } else {
+            
+            if (indexFocus == 0) {
+                [_focusManager moveFocus:2];
+            } else {
+//                NSInteger index = [_focusManager focusIndex]+2;
+//                 NSLog(@"index %ld",(long)index);
+                [_focusManager moveFocus:indexFocus+2];    // Give focus to the first icon.
+            }
+            
+        }
+
+    }
+
 }
 
 
@@ -426,11 +477,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [_focusManager moveFocus:1];
             
         }
-  
+        NSLog(@"in tabbar %ld",(long)[_focusManager focusIndex]);
+        return YES;
+    } else {
+        NSLog(@"in view %ld",(long)[_focusManager focusIndex]);
+        NSLog(@"check focus index %ld",(long)[_focusManager focusIndex]);
+        indexFocus = [_focusManager focusIndex];
+        return NO;
     }
-    
-    
-    return NO;
+
 }
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
