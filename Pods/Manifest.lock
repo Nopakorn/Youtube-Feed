@@ -1,5 +1,5 @@
 PODS:
-  - youtube-ios-player-helper (0.1.5)
+  - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
   - youtube-ios-player-helper (from `https://github.com/youtube/youtube-ios-player-helper`,
@@ -16,6 +16,6 @@ CHECKOUT OPTIONS:
     :git: https://github.com/youtube/youtube-ios-player-helper
 
 SPEC CHECKSUMS:
-  youtube-ios-player-helper: 921da8927a575debc293a94c678c658f38cde150
+  youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
 COCOAPODS: 0.39.0
