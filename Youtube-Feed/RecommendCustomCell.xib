@@ -48,6 +48,11 @@
                     <constraint firstAttribute="trailingMargin" secondItem="AOX-dL-vUE" secondAttribute="trailing" id="o8e-Ao-oIR"/>
                     <constraint firstAttribute="bottomMargin" secondItem="8ae-YB-awH" secondAttribute="bottom" identifier="BottomSpace" id="qbY-gr-iV0"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="qbY-gr-iV0"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="durationLabel" destination="8ae-YB-awH" id="kVe-IP-MN1"/>

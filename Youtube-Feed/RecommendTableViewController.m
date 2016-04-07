@@ -71,7 +71,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidLoad {
     [super viewDidLoad];
     nextPage = true;
-    backFactRecommended = YES;
+    
     inTabbar = false;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -257,6 +257,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     //global objects
+    backFactRecommended = YES;
       NSLog(@"view did appear recommend");
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
@@ -515,11 +516,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (direction == 0) {
             indexFocus+=2;
             if (indexFocus == [self.recommendYoutube.videoIdList count]) {
-                
+                 NSLog(@"Its %lu", (unsigned long)[self.recommendYoutube.videoIdList count]);
                 //reload data nextPage
                 if (nextPage) {
-                    indexFocus = 1;
+                    
                     NSLog(@"indexFocus last item %ld",(long)indexFocus);
+//                    if ([self.recommendYoutube.videoIdList count] >= 100) {
+//                        indexFocus = 4;
+//                    } else {
+//                        indexFocus = 1;
+//                    }
+                    indexFocus = 1;
                     [self launchReload];
                     
                 } else {

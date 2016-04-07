@@ -123,7 +123,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -148,7 +148,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }

@@ -66,6 +66,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL backFactPlaylist;
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
+    NSInteger numberOfPlaylists;
 }
 
 
@@ -74,8 +75,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidLoad];
     isAlertShowUp = NO;
-    backFactPlaylist = YES;
     indexFocusTabbar = 1;
+    numberOfPlaylists = 0;
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
@@ -104,7 +105,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    
+    backFactPlaylist = YES;
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -122,12 +123,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (backFactPlaylist) {
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
+            if (indexFocus == numberOfPlaylists-1) {
                 [_focusManager moveFocus:1];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -147,12 +148,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
+            if (indexFocus == numberOfPlaylists-1) {
                 [_focusManager moveFocus:1];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -200,7 +201,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    
+    numberOfPlaylists = [sectionInfo numberOfObjects];
     if ([sectionInfo numberOfObjects] == 0) {
         return 1;
         

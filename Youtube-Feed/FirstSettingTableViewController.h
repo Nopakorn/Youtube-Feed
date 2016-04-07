@@ -25,6 +25,8 @@
 @property(weak,nonatomic) IBOutlet UIButton  *submitButton;
 - (IBAction)submitButtonPressed:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;

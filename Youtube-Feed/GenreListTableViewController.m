@@ -71,7 +71,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.searchTerm;
-    backFactGenreList = YES;
+   
 #pragma setup UMA in ViewDidload in GenreListTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -99,6 +99,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"View did didappear");
+     backFactGenreList = YES;
 #pragma setup UMA in ViewDidAppear in GenreListTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -116,12 +117,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (backFactGenreList) {
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
+            if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
                 [_focusManager moveFocus:1];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -141,12 +142,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
+            if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
                 [_focusManager moveFocus:1];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -277,6 +278,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.tableView.tableFooterView = nil;
         [self.tableView reloadData];
         nextPage = true;
+        [_focusManager moveFocus:indexFocus];
 
     });
     
@@ -323,48 +325,67 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    if (backFactGenreList == 0) {
+    if (nextPage == 0) {
+        return YES;
+    } else {
         
-        if (direction == 1) {
-            if ([_focusManager focusIndex] == 0) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 1;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 2;
-            }
-        } else {
-            if ([_focusManager focusIndex] == 0) {
-                indexFocusTabbar = 2;
-            }else if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 1;
+        if (backFactGenreList == 0) {
+            
+            if (direction == 1) {
+                if ([_focusManager focusIndex] == 0) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 1;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 2;
+                }
+            } else {
+                if ([_focusManager focusIndex] == 0) {
+                    indexFocusTabbar = 2;
+                }else if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 1;
+                }
+                
+                
             }
             
+            if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+                [_focusManager moveFocus:1];
+                
+            } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+                [_focusManager moveFocus:3];
+                
+            }  else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 0) {
+                [_focusManager moveFocus:2];
+                
+            }
             
         }
-
-        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            [_focusManager moveFocus:1];
-            
-        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            [_focusManager moveFocus:3];
-            
-        }  else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 0) {
-            [_focusManager moveFocus:2];
+        
+        indexFocus = [_focusManager focusIndex];
+        if (direction == 0) {
+            indexFocus+=2;
+            if (indexFocus == [self.genreYoutube.videoIdList count]) {
+                
+                //reload data nextPage
+                if (nextPage) {
+                    indexFocus = 1;
+                    NSLog(@"indexFocus last item %ld",(long)indexFocus);
+                    [self launchReload];
+                    
+                } else {
+                    NSLog(@"Its still loading api");
+                }
+            }
             
         }
         
-        
-    }
-
-    indexFocus = [_focusManager focusIndex];
-    if (direction == 0) {
-        indexFocus+=2;
-    }
+        return NO;
     
-    return NO;
+    }
+   
 }
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY

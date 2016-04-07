@@ -26,7 +26,7 @@
     [self createGerne];
     [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
-
+    self.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
 }
 
 

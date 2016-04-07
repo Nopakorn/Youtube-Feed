@@ -63,6 +63,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL isAlertShowUp;
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
+    NSInteger numberOfFavorites;
     BOOL backFactFavorite;
 }
 
@@ -70,6 +71,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidLoad];
     isAlertShowUp = NO;
     indexFocusTabbar = 1;
+    numberOfFavorites = 0;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -95,6 +97,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    backFactFavorite = YES;
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -112,12 +115,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (backFactFavorite) {
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
+            if (indexFocus == numberOfFavorites-1) {
                 [_focusManager moveFocus:1];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -137,12 +140,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
+            if (indexFocus == numberOfFavorites-1) {
                 [_focusManager moveFocus:1];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -210,6 +213,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     //fetch data
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+    numberOfFavorites = [sectionInfo numberOfObjects];
     return [sectionInfo numberOfObjects];
 }
 

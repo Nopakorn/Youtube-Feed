@@ -814,17 +814,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     if ([[self.favoriteButton imageForState:UIControlStateNormal] isEqual:btnImageStar]) {
         
-        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
-        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-        [self presentViewController:favoriteAlert animated:YES completion:nil];
-        [self.favoriteList addObject:self.favorite];
+//        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
+//        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+//        [self presentViewController:favoriteAlert animated:YES completion:nil];
+//        [self.favoriteList addObject:self.favorite];
         [self insertFavorite:self.favorite];
         [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
     } else {
         
-        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Delete From Favorite" preferredStyle:UIAlertControllerStyleAlert];
-        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-        [self presentViewController:favoriteAlert animated:YES completion:nil];
+//        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Delete From Favorite" preferredStyle:UIAlertControllerStyleAlert];
+//        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
+//        [self presentViewController:favoriteAlert animated:YES completion:nil];
         [self deleteFavorite:self.favorite];
         [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
     }
