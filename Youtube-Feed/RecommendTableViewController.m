@@ -87,7 +87,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
@@ -190,12 +190,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (backFactRecommended) {
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
-                [_focusManager moveFocus:1];
+            if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
+                [_focusManager moveFocus:indexFocus];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -215,12 +215,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager setHidden:NO];
-            if (indexFocus == 24) {
-                [_focusManager moveFocus:1];
+            if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
+                [_focusManager moveFocus:indexFocus];
             } else {
                 
                 if (indexFocus == 0) {
-                    [_focusManager moveFocus:2];
+                    [_focusManager moveFocus:1];
                 } else {
                     [_focusManager moveFocus:indexFocus];
                 }
@@ -268,13 +268,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
 
-    [_focusManager moveFocus:1];    // Give focus to the first icon.
+    [_focusManager moveFocus:1];
     
-//    [_hidManager setConnectionCallback:_connectionBlock];
-//    [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
-//                                    WithDiscoveryInterval:kHidDeviceControlTimeout
-//                                    WithConnectionTimeout:kHidDeviceControlTimeout];
-//    [_hidManager startDiscoverWithDeviceName:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -457,6 +453,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.tableView.tableFooterView = nil;
         [self.tableView reloadData];
         nextPage = true;
+        [_focusManager moveFocus:indexFocus];
         //tell viewcontroller to update youtube obj
         //self.delegate recommendTableViewControllerNextPage:self];
     });
@@ -469,53 +466,72 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     //NSLog(@"in tabbar %id",backFactRecommended);
-    if (backFactRecommended == 0) {
-        //update focus on tabbar
-        if (direction == 1) {
-
-            if ([_focusManager focusIndex] == 0 && distance == 1) {
-                indexFocusTabbar = 4;
-
-            }else if ([_focusManager focusIndex] == 3 && distance == 1) {
-                indexFocusTabbar = 3;
-
-            }else if ([_focusManager focusIndex] == 2 && distance == 1) {
-                indexFocusTabbar = 1;
+    if (nextPage == 0) {
+        return YES;
+        
+    } else {
+        
+        if (backFactRecommended == 0) {
+            //update focus on tabbar
+            if (direction == 1) {
+                
+                if ([_focusManager focusIndex] == 0 && distance == 1) {
+                    indexFocusTabbar = 4;
+                    
+                }else if ([_focusManager focusIndex] == 3 && distance == 1) {
+                    indexFocusTabbar = 3;
+                    
+                }else if ([_focusManager focusIndex] == 2 && distance == 1) {
+                    indexFocusTabbar = 1;
+                }
+            } else {
+                
+                if ([_focusManager focusIndex] == 0 && distance == 1) {
+                    indexFocusTabbar = 3;
+                } else if ([_focusManager focusIndex] == 2 && distance == 1) {
+                    indexFocusTabbar = 4;
+                } else if ([_focusManager focusIndex] == 3 && distance == 1) {
+                    indexFocusTabbar = 1;
+                }
+                
             }
-        } else {
             
-            if ([_focusManager focusIndex] == 0 && distance == 1) {
-                indexFocusTabbar = 3;
-            } else if ([_focusManager focusIndex] == 2 && distance == 1) {
-                indexFocusTabbar = 4;
-            } else if ([_focusManager focusIndex] == 3 && distance == 1) {
-                indexFocusTabbar = 1;
+            if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+                [_focusManager moveFocus:1];
+            } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
+                [_focusManager moveFocus:4];
+            } else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 1) {
+                [_focusManager moveFocus:4];
+            } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 0) {
+                [_focusManager moveFocus:1];
             }
+            
+            
+            NSLog(@"in tabbar %ld direction %ld",(long)indexFocusTabbar, (long)direction);
             
         }
-
-        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            [_focusManager moveFocus:1];
-        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            [_focusManager moveFocus:4];
-        } else if ([_focusManager focusIndex] == 2 && distance == 1 && direction == 1) {
-            [_focusManager moveFocus:4];
-        } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 0) {
-            [_focusManager moveFocus:1];
+        
+        indexFocus = [_focusManager focusIndex];
+        if (direction == 0) {
+            indexFocus+=2;
+            if (indexFocus == [self.recommendYoutube.videoIdList count]) {
+                
+                //reload data nextPage
+                if (nextPage) {
+                    indexFocus = 1;
+                    NSLog(@"indexFocus last item %ld",(long)indexFocus);
+                    [self launchReload];
+                    
+                } else {
+                    NSLog(@"Its still loading api");
+                }
+            }
         }
         
-        
-        NSLog(@"in tabbar %ld direction %ld",(long)indexFocusTabbar, (long)direction);
-       
+        return NO;
+
     }
     
-    indexFocus = [_focusManager focusIndex];
-    if (direction == 0) {
-        indexFocus+=2;
-    }
-
-    return NO;
-   
 
 }
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
