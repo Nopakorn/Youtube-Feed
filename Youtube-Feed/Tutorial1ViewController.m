@@ -17,7 +17,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        
+//        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1"];
+//        [self.image1Bg setImage:portriatBg1];
+    
+    } else {
+        
+//        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1_Landscape"];
+//        [self.image1Bg setImage:portriatBg1];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
