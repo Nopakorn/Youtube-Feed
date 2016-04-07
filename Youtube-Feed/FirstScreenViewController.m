@@ -25,9 +25,15 @@
     self.loadingLabel.hidden = YES;
     
     //tutorial has been showed
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"tutorialPass"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
             
@@ -36,7 +42,7 @@
             NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
             self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
             [self callSearchSecondTime:saveGenre];
-            //[self performSegueWithIdentifier:@"SettingView" sender:@0];
+
         } else {
             
             [self performSegueWithIdentifier:@"SettingView" sender:@0];
@@ -44,9 +50,9 @@
         
     } else {
         
-            [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
+        [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
     }
-    
+
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -135,7 +141,7 @@
 
 - (void)firstSettingTableViewControllerDidSelected:(FirstSettingTableViewController *)firstSettingViewController
 {
-    
+    NSLog(@"first setting did selected");
     self.genreSelected = firstSettingViewController.genreSelected;
     NSString *genreSelectedString = @"";
     for(int i = 0 ; i < [self.genreSelected count] ; i++){

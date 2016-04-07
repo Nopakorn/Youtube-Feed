@@ -929,29 +929,29 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    UIViewController *newVC = segue.destinationViewController;
-    
-    [ViewController setPresentationStyleForSelfController:self presentingController:newVC];
-}
-
-+ (void)setPresentationStyleForSelfController:(UIViewController *)selfController presentingController:(UIViewController *)presentingController
-{
-    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)])
-    {
-        //iOS 8.0 and above
-        presentingController.providesPresentationContextTransitionStyle = YES;
-        presentingController.definesPresentationContext = YES;
-        
-        [presentingController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
-    }
-    else
-    {
-        [selfController setModalPresentationStyle:UIModalPresentationCurrentContext];
-        [selfController.navigationController setModalPresentationStyle:UIModalPresentationCurrentContext];
-    }
-}
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    UIViewController *newVC = segue.destinationViewController;
+//    
+//    [ViewController setPresentationStyleForSelfController:self presentingController:newVC];
+//}
+//
+//+ (void)setPresentationStyleForSelfController:(UIViewController *)selfController presentingController:(UIViewController *)presentingController
+//{
+//    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)])
+//    {
+//        //iOS 8.0 and above
+//        presentingController.providesPresentationContextTransitionStyle = YES;
+//        presentingController.definesPresentationContext = YES;
+//        
+//        [presentingController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+//    }
+//    else
+//    {
+//        [selfController setModalPresentationStyle:UIModalPresentationCurrentContext];
+//        [selfController.navigationController setModalPresentationStyle:UIModalPresentationCurrentContext];
+//    }
+//}
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {

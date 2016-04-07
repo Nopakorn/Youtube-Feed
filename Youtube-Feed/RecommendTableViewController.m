@@ -516,24 +516,30 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (direction == 0) {
             indexFocus+=2;
             if (indexFocus == [self.recommendYoutube.videoIdList count]) {
-                 NSLog(@"Its %lu", (unsigned long)[self.recommendYoutube.videoIdList count]);
                 //reload data nextPage
                 if (nextPage) {
-                    
-                    NSLog(@"indexFocus last item %ld",(long)indexFocus);
-//                    if ([self.recommendYoutube.videoIdList count] >= 100) {
-//                        indexFocus = 4;
-//                    } else {
-//                        indexFocus = 1;
-//                    }
-                    indexFocus = 1;
+                    indexFocus = 0;
                     [self launchReload];
                     
                 } else {
                     NSLog(@"Its still loading api");
                 }
             }
+
+        } else {
+            if (indexFocus == 0) {
+                //reload data nextPage
+                if (nextPage) {
+                    indexFocus = 0;
+                    [self launchReload];
+                    
+                } else {
+                    NSLog(@"Its still loading api");
+                }
+            }
+
         }
+        
         
         return NO;
 

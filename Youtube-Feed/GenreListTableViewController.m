@@ -368,11 +368,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (direction == 0) {
             indexFocus+=2;
             if (indexFocus == [self.genreYoutube.videoIdList count]) {
-                
                 //reload data nextPage
                 if (nextPage) {
-                    indexFocus = 1;
-                    NSLog(@"indexFocus last item %ld",(long)indexFocus);
+                    indexFocus = 0;
                     [self launchReload];
                     
                 } else {
@@ -380,6 +378,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 }
             }
             
+        } else {
+
+            if (indexFocus == 0) {
+                //reload data nextPage
+                if (nextPage) {
+                    indexFocus = 0;
+                    [self launchReload];
+                    
+                } else {
+                    NSLog(@"Its still loading api");
+                }
+            }
+
+        
         }
         
         return NO;

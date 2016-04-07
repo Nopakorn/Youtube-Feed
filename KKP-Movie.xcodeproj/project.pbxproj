@@ -23,6 +23,10 @@
 		5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */; };
 		5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */; };
 		5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */; };
+		5C46DAA31CB64B7D0035837E /* Tutorial2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C46DAA21CB64B7D0035837E /* Tutorial2ViewController.m */; };
+		5C46DAA61CB64E870035837E /* Tutorial1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C46DAA51CB64E870035837E /* Tutorial1ViewController.m */; };
+		5C46DAA91CB652140035837E /* Tutorial3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C46DAA81CB652140035837E /* Tutorial3ViewController.m */; };
+		5C46DAAC1CB654E60035837E /* Tutorial4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C46DAAB1CB654E60035837E /* Tutorial4ViewController.m */; };
 		5C4BADBB1CAAA624008C465D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADBA1CAAA624008C465D /* CoreMedia.framework */; };
 		5C4BADBD1CAAA631008C465D /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADBC1CAAA631008C465D /* ExternalAccessory.framework */; };
 		5C4BADBF1CAAA63C008C465D /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C4BADBE1CAAA63C008C465D /* CoreBluetooth.framework */; };
@@ -116,6 +120,14 @@
 		5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistPopUpCustomCell.xib; sourceTree = "<group>"; };
 		5C4222921C916EBF00C1C525 /* PlaylistPopUpCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistPopUpCustomCell.h; sourceTree = "<group>"; };
 		5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistPopUpCustomCell.m; sourceTree = "<group>"; };
+		5C46DAA11CB64B7D0035837E /* Tutorial2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial2ViewController.h; sourceTree = "<group>"; };
+		5C46DAA21CB64B7D0035837E /* Tutorial2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tutorial2ViewController.m; sourceTree = "<group>"; };
+		5C46DAA41CB64E870035837E /* Tutorial1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial1ViewController.h; sourceTree = "<group>"; };
+		5C46DAA51CB64E870035837E /* Tutorial1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tutorial1ViewController.m; sourceTree = "<group>"; };
+		5C46DAA71CB652140035837E /* Tutorial3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial3ViewController.h; sourceTree = "<group>"; };
+		5C46DAA81CB652140035837E /* Tutorial3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tutorial3ViewController.m; sourceTree = "<group>"; };
+		5C46DAAA1CB654E60035837E /* Tutorial4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tutorial4ViewController.h; sourceTree = "<group>"; };
+		5C46DAAB1CB654E60035837E /* Tutorial4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tutorial4ViewController.m; sourceTree = "<group>"; };
 		5C4BADBA1CAAA624008C465D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		5C4BADBC1CAAA631008C465D /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		5C4BADBE1CAAA63C008C465D /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
@@ -352,6 +364,21 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		5C46DAA01CB64B5C0035837E /* TutorialViews */ = {
+			isa = PBXGroup;
+			children = (
+				5C46DAA11CB64B7D0035837E /* Tutorial2ViewController.h */,
+				5C46DAA21CB64B7D0035837E /* Tutorial2ViewController.m */,
+				5C46DAA41CB64E870035837E /* Tutorial1ViewController.h */,
+				5C46DAA51CB64E870035837E /* Tutorial1ViewController.m */,
+				5C46DAA71CB652140035837E /* Tutorial3ViewController.h */,
+				5C46DAA81CB652140035837E /* Tutorial3ViewController.m */,
+				5C46DAAA1CB654E60035837E /* Tutorial4ViewController.h */,
+				5C46DAAB1CB654E60035837E /* Tutorial4ViewController.m */,
+			);
+			name = TutorialViews;
+			sourceTree = "<group>";
+		};
 		5C67E4261C96B15E00A08005 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +393,7 @@
 		5CBA2CF51C97E8400049FE4A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				5C46DAA01CB64B5C0035837E /* TutorialViews */,
 				5C4BADE91CABBAA2008C465D /* FirstScreenViewController.h */,
 				5C4BADEA1CABBAA2008C465D /* FirstScreenViewController.m */,
 				5C8C98CC1C9023EE0098A3A4 /* FirstSettingTableViewController.h */,
@@ -635,10 +663,12 @@
 				5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */,
 				5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */,
 				5C3629501C990F9F003C359F /* SearchTableViewController.m in Sources */,
+				5C46DAA91CB652140035837E /* Tutorial3ViewController.m in Sources */,
 				5C551CB11CA8DE7100BECEC7 /* YoutubeVideo.m in Sources */,
 				5C67E4251C9699C500A08005 /* FavoriteTableViewController.m in Sources */,
 				5CBA2CEE1C97CC2B0049FE4A /* PlaylistEditDetailCustomCell.m in Sources */,
 				5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */,
+				5C46DAAC1CB654E60035837E /* Tutorial4ViewController.m in Sources */,
 				5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */,
 				5CB425E31C928561005DCB46 /* RecommendCustomCell.m in Sources */,
 				5C8679E21CA1433C0098F9A9 /* GenreTableViewController.m in Sources */,
@@ -652,8 +682,10 @@
 				11C170E91C7186A800E74681 /* main.m in Sources */,
 				5C67E4201C9696F100A08005 /* FavoriteCustomCell.m in Sources */,
 				5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */,
+				5C46DAA61CB64E870035837E /* Tutorial1ViewController.m in Sources */,
 				5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */,
 				11BC1A131C8EC2D200285564 /* SettingCustomCell.m in Sources */,
+				5C46DAA31CB64B7D0035837E /* Tutorial2ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
