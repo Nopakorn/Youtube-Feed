@@ -65,6 +65,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger indexFocusTabbar;
     NSInteger numberOfFavorites;
     BOOL backFactFavorite;
+    BOOL portraitFact;
+    BOOL landscapeFact;
 }
 
 - (void)viewDidLoad {
@@ -98,6 +100,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     backFactFavorite = YES;
+    portraitFact = YES;
+    landscapeFact = YES;
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -112,51 +116,58 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (backFactFavorite) {
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager setHidden:NO];
-            if (indexFocus == numberOfFavorites-1) {
-                [_focusManager moveFocus:1];
-            } else {
-                
-                if (indexFocus == 0) {
+        if (portraitFact) {
+            if (backFactFavorite) {
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager setHidden:NO];
+                if (indexFocus == numberOfFavorites-1) {
                     [_focusManager moveFocus:1];
                 } else {
-                    [_focusManager moveFocus:indexFocus];
+                    
+                    if (indexFocus == 0) {
+                        [_focusManager moveFocus:1];
+                    } else {
+                        [_focusManager moveFocus:indexFocus];
+                    }
+                    
                 }
+            } else {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
                 
             }
-        } else {
-            
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-            
+            portraitFact = NO;
+            landscapeFact = YES;
         }
         
     } else {
-        
-        if (backFactFavorite) {
-            
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager setHidden:NO];
-            if (indexFocus == numberOfFavorites-1) {
-                [_focusManager moveFocus:1];
-            } else {
+        if (landscapeFact) {
+            if (backFactFavorite) {
                 
-                if (indexFocus == 0) {
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager setHidden:NO];
+                if (indexFocus == numberOfFavorites-1) {
                     [_focusManager moveFocus:1];
                 } else {
-                    [_focusManager moveFocus:indexFocus];
+                    
+                    if (indexFocus == 0) {
+                        [_focusManager moveFocus:1];
+                    } else {
+                        [_focusManager moveFocus:indexFocus];
+                    }
+                    
                 }
+            } else {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
                 
             }
-        } else {
-            
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-            
+            portraitFact = YES;
+            landscapeFact = NO;
         }
         
     }

@@ -324,6 +324,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         //self.topSapceConstraint.constant = 94;
 //        shouldHideStatusBar = NO;
 //        [self setNeedsStatusBarAppearanceUpdate];
+        [hideNavigation invalidate];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
         
@@ -470,8 +471,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -493,26 +494,61 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    NSLog(@"View changing %ld", (long)indexFocusTabbar);
-    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (backFact == 0) {
-
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
+    UIDevice *device = notification.object;
+    switch (device.orientation) {
+        case UIDeviceOrientationPortrait:
+            if (backFact == 0) {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
+                
+            }
+            break;
             
-        }
-        
-    } else {
-        
-        if (backFact == 0) {
+        case UIDeviceOrientationLandscapeLeft:
+            if (backFact == 0) {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
+                
+            }
+            break;
             
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-        }
-        
+        case UIDeviceOrientationLandscapeRight:
+            if (backFact == 0) {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
+                
+            }
+            break;
+  
+        default:
+            break;
     }
+//    NSLog(@"View changing %ld", (long)indexFocusTabbar);
+//    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+//        if (backFact == 0) {
+//
+//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//            [_focusManager setHidden:NO];
+//            [_focusManager moveFocus:indexFocusTabbar];
+//            
+//        }
+//        
+//    } else {
+//        
+//        if (backFact == 0) {
+//            
+//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//            [_focusManager setHidden:NO];
+//            [_focusManager moveFocus:indexFocusTabbar];
+//        }
+//        
+//    }
     
 }
 

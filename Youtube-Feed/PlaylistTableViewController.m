@@ -64,6 +64,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     BOOL isAlertShowUp;
     BOOL backFactPlaylist;
+    BOOL portraitFact;
+    BOOL landscapeFact;
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
     NSInteger numberOfPlaylists;
@@ -106,6 +108,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     backFactPlaylist = YES;
+    portraitFact = YES;
+    landscapeFact = YES;
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -120,51 +124,59 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (backFactPlaylist) {
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager setHidden:NO];
-            if (indexFocus == numberOfPlaylists-1) {
-                [_focusManager moveFocus:1];
-            } else {
-                
-                if (indexFocus == 0) {
+        if (portraitFact) {
+            if (backFactPlaylist) {
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager setHidden:NO];
+                if (indexFocus == numberOfPlaylists-1) {
                     [_focusManager moveFocus:1];
                 } else {
-                    [_focusManager moveFocus:indexFocus];
+                    
+                    if (indexFocus == 0) {
+                        [_focusManager moveFocus:1];
+                    } else {
+                        [_focusManager moveFocus:indexFocus];
+                    }
+                    
                 }
+            } else {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
                 
             }
-        } else {
-            
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-            
+            portraitFact = NO;
+            landscapeFact = YES;
         }
         
     } else {
-        
-        if (backFactPlaylist) {
-            
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager setHidden:NO];
-            if (indexFocus == numberOfPlaylists-1) {
-                [_focusManager moveFocus:1];
-            } else {
+        if (landscapeFact) {
+            if (backFactPlaylist) {
                 
-                if (indexFocus == 0) {
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager setHidden:NO];
+                if (indexFocus == numberOfPlaylists-1) {
                     [_focusManager moveFocus:1];
                 } else {
-                    [_focusManager moveFocus:indexFocus];
+                    
+                    if (indexFocus == 0) {
+                        [_focusManager moveFocus:1];
+                    } else {
+                        [_focusManager moveFocus:indexFocus];
+                    }
+                    
                 }
+            } else {
+                
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
                 
             }
-        } else {
-            
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-            
+            portraitFact = YES;
+            landscapeFact = NO;
+
         }
         
     }

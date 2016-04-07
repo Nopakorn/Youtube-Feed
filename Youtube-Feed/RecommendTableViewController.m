@@ -63,6 +63,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL nextPage;
     BOOL backFactRecommended;
     BOOL inTabbar;
+    BOOL portraitFact;
+    BOOL landscapeFact;
+    
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
 }
@@ -72,6 +75,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidLoad];
     nextPage = true;
     
+
     inTabbar = false;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -185,55 +189,64 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
+
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (backFactRecommended) {
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager setHidden:NO];
-            if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
-                [_focusManager moveFocus:indexFocus];
+        if (portraitFact) {
+            if (backFactRecommended) {
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager setHidden:NO];
+                if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
+                    [_focusManager moveFocus:indexFocus];
+                } else {
+                    
+                    if (indexFocus == 0) {
+                        [_focusManager moveFocus:1];
+                    } else {
+                        [_focusManager moveFocus:indexFocus];
+                    }
+                    
+                }
             } else {
                 
-                if (indexFocus == 0) {
-                    [_focusManager moveFocus:1];
-                } else {
-                    [_focusManager moveFocus:indexFocus];
-                }
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
                 
             }
-        } else {
-            
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-            
+            portraitFact = NO;
+            landscapeFact = YES;
         }
+
         
     } else {
         
-        if (backFactRecommended) {
-            
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager setHidden:NO];
-            if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
-                [_focusManager moveFocus:indexFocus];
+        if (landscapeFact) {
+            if (backFactRecommended) {
+                
+                [_focusManager setFocusRootView:self.tableView];
+                [_focusManager setHidden:NO];
+                if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
+                    [_focusManager moveFocus:indexFocus];
+                } else {
+                    
+                    if (indexFocus == 0) {
+                        [_focusManager moveFocus:1];
+                    } else {
+                        [_focusManager moveFocus:indexFocus];
+                    }
+                    
+                }
             } else {
                 
-                if (indexFocus == 0) {
-                    [_focusManager moveFocus:1];
-                } else {
-                    [_focusManager moveFocus:indexFocus];
-                }
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
+                [_focusManager moveFocus:indexFocusTabbar];
                 
             }
-        } else {
-            
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:indexFocusTabbar];
-            
+            portraitFact = YES;
+            landscapeFact = NO;
         }
-
     }
 
 }
@@ -263,6 +276,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
     indexFocusTabbar = 1;
+    portraitFact = YES;
+    landscapeFact = YES;
+    //[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -271,7 +289,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     [_focusManager moveFocus:1];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
