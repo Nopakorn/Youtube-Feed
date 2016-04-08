@@ -20,6 +20,7 @@
 		11C1710D1C7186A900E74681 /* Youtube_FeedUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C1710C1C7186A900E74681 /* Youtube_FeedUITests.m */; };
 		11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F18B6C1C76D21B0066A8EF /* Youtube.m */; };
 		5C3629501C990F9F003C359F /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C36294F1C990F9F003C359F /* SearchTableViewController.m */; };
+		5C39BDFF1CB764230099EBBF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C39BE011CB764230099EBBF /* Main.storyboard */; };
 		5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */; };
 		5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */; };
 		5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C4222931C916EBF00C1C525 /* PlaylistPopUpCustomCell.m */; };
@@ -39,7 +40,6 @@
 		5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA91CA8DE7100BECEC7 /* Playlist.m */; };
 		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
 		5C551CB11CA8DE7100BECEC7 /* YoutubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */; };
-		5C560DA11CB366DF00F5B97F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5C560DA01CB366DF00F5B97F /* Main.storyboard */; };
 		5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */; };
 		5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4191C9678FE00A08005 /* Favorite.m */; };
 		5C67E4201C9696F100A08005 /* FavoriteCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E41F1C9696F100A08005 /* FavoriteCustomCell.m */; };
@@ -115,6 +115,8 @@
 		11F18B6C1C76D21B0066A8EF /* Youtube.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Youtube.m; sourceTree = "<group>"; };
 		5C36294E1C990F9F003C359F /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
 		5C36294F1C990F9F003C359F /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
+		5C39BE001CB764230099EBBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5C39BE041CB776C90099EBBF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
 		5C42228D1C9169B000C1C525 /* AddPlaylistPopUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPlaylistPopUpViewController.h; sourceTree = "<group>"; };
 		5C42228E1C9169B000C1C525 /* AddPlaylistPopUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPlaylistPopUpViewController.m; sourceTree = "<group>"; };
 		5C4222901C916E5700C1C525 /* PlaylistPopUpCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaylistPopUpCustomCell.xib; sourceTree = "<group>"; };
@@ -148,7 +150,6 @@
 		5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YoutubeVideo+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C551CAC1CA8DE7100BECEC7 /* YoutubeVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YoutubeVideo.h; sourceTree = "<group>"; };
 		5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YoutubeVideo.m; sourceTree = "<group>"; };
-		5C560DA01CB366DF00F5B97F /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = ../../../.Trash/Main.storyboard; sourceTree = "<group>"; };
 		5C67E4151C96767E00A08005 /* PlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistTableViewController.h; sourceTree = "<group>"; };
 		5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistTableViewController.m; sourceTree = "<group>"; };
 		5C67E4181C9678FE00A08005 /* Favorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorite.h; sourceTree = "<group>"; };
@@ -317,7 +318,7 @@
 				11BC1A141C8EC31700285564 /* Views */,
 				11BC1A101C8E939300285564 /* CustomCells */,
 				11C170F31C7186A800E74681 /* Assets.xcassets */,
-				5C560DA01CB366DF00F5B97F /* Main.storyboard */,
+				5C39BE011CB764230099EBBF /* Main.storyboard */,
 				11C170F51C7186A800E74681 /* LaunchScreen.storyboard */,
 				11C170F81C7186A800E74681 /* Info.plist */,
 				11C170E71C7186A800E74681 /* Supporting Files */,
@@ -571,7 +572,7 @@
 				5C67E4221C96970300A08005 /* FavoriteCustomCell.xib in Resources */,
 				5CF4FB491CB27BF6007EB1DA /* Assets.bundle in Resources */,
 				5CB425DE1C928494005DCB46 /* RecommendCustomCell.xib in Resources */,
-				5C560DA11CB366DF00F5B97F /* Main.storyboard in Resources */,
+				5C39BDFF1CB764230099EBBF /* Main.storyboard in Resources */,
 				11C170F41C7186A800E74681 /* Assets.xcassets in Resources */,
 				5C4222911C916E5700C1C525 /* PlaylistPopUpCustomCell.xib in Resources */,
 				5CF4FB451CB27547007EB1DA /* UIEMultiAccess.bundle in Resources */,
@@ -728,6 +729,16 @@
 				5C4BADFB1CAE1D89008C465D /* ja */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		5C39BE011CB764230099EBBF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5C39BE001CB764230099EBBF /* Base */,
+				5C39BE041CB776C90099EBBF /* ja */,
+			);
+			name = Main.storyboard;
+			path = ../../../.Trash;
 			sourceTree = "<group>";
 		};
 		5C4BADFE1CAE1DBB008C465D /* Localizable.strings */ = {

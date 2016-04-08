@@ -20,4 +20,5 @@
 @property (nonatomic, retain) NSMutableArray *imageData;
 @property (nonatomic) NSInteger selectedRow;
 
+@property (weak, nonatomic) IBOutlet UIButton *backGenreButton;
 @end

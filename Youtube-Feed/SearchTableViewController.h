@@ -18,6 +18,7 @@
     UIActivityIndicatorView *spinner;
 }
 
+@property (weak, nonatomic) IBOutlet UILabel *searchTitle;
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Youtube *searchYoutube;
 @property (nonatomic, retain) NSMutableArray  *imageData;

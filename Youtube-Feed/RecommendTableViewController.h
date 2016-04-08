@@ -21,6 +21,7 @@
     
 
 }
+@property (weak, nonatomic) IBOutlet UILabel *recommendedTitle;
 
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Youtube *recommendYoutube;

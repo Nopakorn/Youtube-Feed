@@ -78,7 +78,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
-    
+    self.searchTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
 #pragma setup UMA in ViewDidload in RecommendTableView
     //    _inputDevices = [NSMutableArray array];
 //    _umaApp = [UMAApplication sharedApplication];
@@ -108,7 +108,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //    [_umaApp addViewController:self];
 //    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
 //    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-//    [_focusManager setHidden:NO];
+    [_focusManager setHidden:YES];
 //    
 //    [_focusManager moveFocus:5];    // Give focus to the first icon.
 }

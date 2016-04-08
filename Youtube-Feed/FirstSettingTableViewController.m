@@ -34,6 +34,8 @@
 - (void)createGerne
 {
     self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
+    //add initial genre
+    [self.genreSelected addObject:[self.genreList objectAtIndex:0]];
     NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
 }
 
@@ -111,6 +113,35 @@
     }else{
         [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
     }
+    //clear
+    for (int i=0; i < [self.genreSelected count]; i++) {
+        
+        if ([[self.genreSelected objectAtIndex:i] isEqualToString:@""]) {
+            [self.genreSelected removeObjectAtIndex:i];
+            //break;
+        }
+    }
+    NSLog(@"check genre selected %@",self.genreSelected);
+    
+    if ([self.genreSelected count] == 0) {
+        NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        [alert addAction:ok];
+        //[alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
+
     [tableView reloadData];
 }
 

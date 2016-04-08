@@ -89,7 +89,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"view did load recommend");
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
     
-    
+    self.recommendedTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     

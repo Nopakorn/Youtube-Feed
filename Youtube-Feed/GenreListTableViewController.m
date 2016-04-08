@@ -74,6 +74,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.searchTerm;
    
+    
+//    UIImage *genreIcon = [UIImage imageNamed:@"genre1"];
+//    UIImageView *genreIconview = [[UIImageView alloc] initWithImage:genreIcon];
+//    genreIconview.frame = CGRectMake(0, 0, 22, 22);
+//    
+//    [self.backGenreButton setImage:genreIconview forState:UIControlStateNormal];
+    CGFloat spacing = 5;
+    self.backGenreButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
+    self.backGenreButton.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, 0);
 #pragma setup UMA in ViewDidload in GenreListTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
