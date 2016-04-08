@@ -188,12 +188,6 @@
         [self dismissViewControllerAnimated:YES completion:Nil];
     }
     
-    
 }
-
-
-
-
-
 
 @end

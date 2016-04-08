@@ -356,6 +356,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.totalTime.hidden = YES;
         self.currentTimePlay.hidden = YES;
         [_focusManager setHidden:YES];
+        
 
     }
 
