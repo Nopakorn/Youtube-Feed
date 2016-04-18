@@ -17,6 +17,7 @@
 {
     UIActivityIndicatorView *spinner;
 }
+@property (weak, nonatomic) IBOutlet UIImageView *searchIconTitle;
 
 @property (weak, nonatomic) IBOutlet UILabel *searchTitle;
 @property (strong, nonatomic) Youtube *youtube;

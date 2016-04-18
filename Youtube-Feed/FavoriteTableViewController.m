@@ -102,12 +102,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactFavorite = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    
+
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
-    [_focusManager setHidden:NO];
-    [_focusManager moveFocus:1];    // Give focus to the first icon.
+    if (numberOfFavorites == 0) {
+        [_focusManager setHidden:YES];
+    } else {
+        [_focusManager setHidden:NO];
+        [_focusManager moveFocus:1];
+    }
+
+//    [_focusManager setHidden:NO];
+//    [_focusManager moveFocus:1];    // Give focus to the first icon.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     backFactFavorite = YES;
 }
@@ -225,7 +234,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //fetch data
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     numberOfFavorites = [sectionInfo numberOfObjects];
-    return [sectionInfo numberOfObjects];
+       return [sectionInfo numberOfObjects];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -662,6 +671,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             if (backFactFavorite) {
                 NSLog(@"in tabbar controller");
                 [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager setHidden:NO];
                 [_focusManager moveFocus:1];
                 backFactFavorite = NO;
                 
@@ -670,6 +680,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 NSLog(@"in main view");
                 [_focusManager setFocusRootView:self.tableView];
                 [_focusManager moveFocus:1];
+               
                 backFactFavorite = YES;
             }
             

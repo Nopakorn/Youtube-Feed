@@ -79,6 +79,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
     self.searchTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
+    self.searchIconTitle.hidden = YES;
 #pragma setup UMA in ViewDidload in RecommendTableView
     //    _inputDevices = [NSMutableArray array];
 //    _umaApp = [UMAApplication sharedApplication];

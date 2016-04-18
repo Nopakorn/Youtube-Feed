@@ -90,7 +90,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
     
     self.recommendedTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
-    
+    self.recommendedIconTitle.hidden = YES;
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
 #pragma setup UMA in ViewDidload in RecommendTableView
@@ -271,7 +271,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     //global objects
     backFactRecommended = YES;
-      NSLog(@"view did appear recommend");
+    NSLog(@"view did appear recommend");
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;

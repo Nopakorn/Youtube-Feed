@@ -16,6 +16,7 @@
     UIAlertController *alert;
 }
 
+@property (weak, nonatomic) IBOutlet UIImageView *genreIconTitle;
 @property (strong, nonatomic) Youtube *genreYoutube;
 @property (nonatomic, copy) NSString *searchTerm;
 

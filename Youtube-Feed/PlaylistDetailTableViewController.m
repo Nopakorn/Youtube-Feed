@@ -456,12 +456,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (backFactPlaylistDetail) {
 
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
+            [_focusManager setHidden:NO];
             [_focusManager moveFocus:1];
             backFactPlaylistDetail = NO;
             
         } else {
 
             [_focusManager setFocusRootView:self.tableView];
+            //[_focusManager moveFocus:1];
             if ([self.youtubeVideoList count] == 0) {
                 [_focusManager setHidden:YES];
             }else{

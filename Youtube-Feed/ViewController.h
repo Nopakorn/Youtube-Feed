@@ -44,7 +44,6 @@
 @property (weak, nonatomic) IBOutlet UIButton  *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSapceConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightPlayerViewConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomSpacingPlayerViewConstraint;
 
@@ -73,6 +72,8 @@
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *playerViewTopConstraint;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *playerViewBottomConstraint;
 @end
 

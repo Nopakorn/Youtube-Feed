@@ -84,6 +84,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self fetchPlaylist];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
     self.playlistTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
+    self.playlistsIconTitle.hidden = YES;
     
     [self.editButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)] forState:UIControlStateNormal];
     

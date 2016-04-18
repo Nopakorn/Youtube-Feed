@@ -18,6 +18,7 @@
     UIAlertController *alert;
 }
 
+@property (weak, nonatomic) IBOutlet UIImageView *playlistsIconTitle;
 @property (weak, nonatomic) IBOutlet UILabel *playlistTitle;
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;

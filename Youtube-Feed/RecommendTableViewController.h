@@ -19,8 +19,9 @@
     //NSInteger selectedRow;    
     UIActivityIndicatorView *spinner;
     
-
 }
+
+@property (weak, nonatomic) IBOutlet UIImageView *recommendedIconTitle;
 @property (weak, nonatomic) IBOutlet UILabel *recommendedTitle;
 
 @property (strong, nonatomic) Youtube *youtube;

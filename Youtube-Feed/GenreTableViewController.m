@@ -77,6 +77,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self createGerne];
      NSLog(@"View did load");
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Genre", nil)];
+    self.genreIconTitle.hidden = YES;
 //    UIImage *imageGenre = [UIImage imageNamed:@"genre1"];
 //    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:imageGenre];
 #pragma setup UMA in ViewDidload in GenreTableView

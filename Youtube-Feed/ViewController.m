@@ -181,7 +181,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.prevButton addGestureRecognizer:lgpr_left];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
 #pragma setup UMA in ViewDidload
     _inputDevices = [NSMutableArray array];
     _umaApp = [UMAApplication sharedApplication];
@@ -193,6 +193,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //focus
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:_containerView];
+    [_focusManager moveFocus:4];
     [_focusManager setHidden:YES];
     [self prepareBlocks];
     [_hidManager setDisconnectionCallback:_disconnectionBlock];
@@ -321,7 +322,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
 {
     if (self.tabBarController.tabBar.hidden == YES) {
-        //self.topSapceConstraint.constant = 94;
 //        shouldHideStatusBar = NO;
 //        [self setNeedsStatusBarAppearanceUpdate];
         [hideNavigation invalidate];
@@ -340,8 +340,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
          hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
 
     } else {
-        
-        //self.topSapceConstraint.constant = 204;
+
         [hideNavigation invalidate];
 
         [self.navigationController setNavigationBarHidden:YES animated:NO];
@@ -367,7 +366,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (fact) {
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
-        self.topSapceConstraint.constant = 94;
         self.playButton.hidden = YES;
         self.pauseButton.hidden = YES;
         self.nextButton.hidden = YES;
@@ -378,10 +376,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.currentTimePlay.hidden = YES;
         
     } else {
-        
+        NSLog(@"with fact NO");
+        //[hideNavigation invalidate];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
-        self.topSapceConstraint.constant = 50;
         self.playButton.hidden = NO;
         self.pauseButton.hidden = NO;
         self.nextButton.hidden = NO;
@@ -390,6 +388,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.ProgressSlider.hidden = NO;
         self.totalTime.hidden = NO;
         self.currentTimePlay.hidden = NO;
+        //hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         
     }
 
@@ -401,22 +400,29 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
         if (self.tabBarController.tabBar.hidden == YES) {
-            self.topSapceConstraint.constant = 94;
+            
+            self.playerViewTopConstraint.constant = 0;
+            self.playerViewBottomConstraint.constant = 0;
+
         } else {
-            self.topSapceConstraint.constant = 50;
+            self.playerViewTopConstraint.constant = 111;
+            self.playerViewBottomConstraint.constant = 200;
         }
         
     } else {
         
         if (self.tabBarController.tabBar.hidden == YES) {
-            self.topSapceConstraint.constant = 0;
-            //self.heightPlayerViewConstraint.constant = 360;
+            NSLog(@"view horizontal hided");
+            self.playerViewTopConstraint.constant = 0;
             self.bottomSpacingPlayerViewConstraint.constant = 0;
             
         } else {
-            self.topSapceConstraint.constant = 0;
+            NSLog(@"view horizontal not hided");
+            //self.playerViewTopConstraint.constant = 111;
+            self.playerViewBottomConstraint.constant = 200;
+            //--
+            self.playerViewTopConstraint.constant = 22;
             self.bottomSpacingPlayerViewConstraint.constant = 57;
-            //self.heightPlayerViewConstraint.constant = 230;
 
         }
 
@@ -1278,12 +1284,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         return NO;
         
     } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
         
         //[self hideNavigation];
         [self favoritePressed:self.favoriteButton];
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         return YES;
         
     } else if ([[self getButtonName:button] isEqualToString:@"Right"]){
