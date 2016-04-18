@@ -18,6 +18,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      self.navigationItem.hidesBackButton = YES;
+    self.navigationController.navigationBarHidden = YES;
+    
+    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"tutorial/HTML/tutorial04" ofType:@"html"];
+    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    NSURL *baseURL = [NSURL fileURLWithPath:htmlFile];
+    [self.tutorialWebView loadHTMLString:htmlString baseURL:baseURL];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -26,6 +32,10 @@
 }
 
 
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 - (IBAction)submitTutorialButtonPressed:(id)sender
 {

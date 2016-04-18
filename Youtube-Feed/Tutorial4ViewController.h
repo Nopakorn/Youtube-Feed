@@ -16,5 +16,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *prevButtonTutorial;
 - (IBAction)prevButtonTutorialPressed:(id)sender;
+@property (weak, nonatomic) IBOutlet UIWebView *tutorialWebView;
 
 @end

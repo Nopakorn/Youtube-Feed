@@ -18,4 +18,5 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintLeadingPrevButtonTutorial;
 
+@property (weak, nonatomic) IBOutlet UIWebView *tutorialWebView;
 @end

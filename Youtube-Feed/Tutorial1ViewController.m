@@ -18,6 +18,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    self.navigationController.navigationBarHidden = YES;
+    
+    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"tutorial/HTML/tutorial01" ofType:@"html"];
+    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    NSURL *baseURL = [NSURL fileURLWithPath:htmlFile];
+    [self.tutorialWebView loadHTMLString:htmlString baseURL:baseURL];
+    
+    
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSNumber *value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+    [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
 - (void)orientationChanged:(NSNotification *)notification
@@ -39,6 +53,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 
 /*
 #pragma mark - Navigation

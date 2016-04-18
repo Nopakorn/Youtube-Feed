@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *nextButtonTutorial;
 
 
+@property (weak, nonatomic) IBOutlet UIWebView *tutorialWebView;
 
 - (IBAction)nextButtonTutorialPressed:(id)sender;
 
