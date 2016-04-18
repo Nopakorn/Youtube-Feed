@@ -134,6 +134,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     //[self.navigationController setNavigationBarHidden:NO];
+
     self.playerView.delegate = self;
     self.playerVers =  @{ @"playsinline" : @1,
                           @"controls" : @0,
@@ -168,6 +169,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     UITapGestureRecognizer *tgpr = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(handleTapPressed:)];
     [self.view addGestureRecognizer:tgpr];
+    
+    UITapGestureRecognizer *tgpr_webView = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                           action:@selector(handleTapPressedOnWebView:)];
+    tgpr_webView.delegate = self;
+    [self.playerView addGestureRecognizer:tgpr_webView];
+    
+    
     self.ProgressSlider.value = 0.0;
     
     UILongPressGestureRecognizer *lgpr_right = [[UILongPressGestureRecognizer alloc] initWithTarget:self
@@ -319,8 +327,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+
+- (void)handleTapPressedOnWebView:(UIGestureRecognizer *)gestureRecognizer
+{
+    NSLog(@"handleTapPressed on web view event");
+    [self hideNavWithFact:NO];
+    [hideNavigation invalidate];
+    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+}
+
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
 {
+    NSLog(@"handleTapPressed event");
     if (self.tabBarController.tabBar.hidden == YES) {
 //        shouldHideStatusBar = NO;
 //        [self setNeedsStatusBarAppearanceUpdate];
@@ -536,26 +558,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         default:
             break;
     }
-//    NSLog(@"View changing %ld", (long)indexFocusTabbar);
-//    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-//        if (backFact == 0) {
-//
-//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-//            [_focusManager setHidden:NO];
-//            [_focusManager moveFocus:indexFocusTabbar];
-//            
-//        }
-//        
-//    } else {
-//        
-//        if (backFact == 0) {
-//            
-//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-//            [_focusManager setHidden:NO];
-//            [_focusManager moveFocus:indexFocusTabbar];
-//        }
-//        
-//    }
     
 }
 
@@ -708,12 +710,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
 
 
-
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
+    NSLog(@"playerView state changing");
 
     if (state == kYTPlayerStatePlaying) {
-        
+         NSLog(@"video play");
         UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
         [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
         self.playerTotalTime = [self.playerView duration];
@@ -726,9 +728,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.timerProgress = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(makeProgressBarMoving:) userInfo:nil repeats:YES];
         
     } else if (state == kYTPlayerStatePaused) {
+        NSLog(@"video paused");
         [self.timerProgress invalidate];
          UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
          [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+//        [self hideNavWithFact:NO];
+//        [hideNavigation invalidate];
     }
 
     if (state == kYTPlayerStateEnded) {
@@ -750,7 +755,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     }else if (state == kYTPlayerErrorVideoNotFound) {
-        
+//        [self hideNavWithFact:NO];
+//        [hideNavigation invalidate];
         NSLog(@"Video not found : %@", [self.youtube.videoIdList objectAtIndex:item]);
         
     }else if (state == kYTPlayerStateUnstarted) {
@@ -1313,6 +1319,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button state:(UMAInputGestureRecognizerState)state
 {
+    NSLog(@"long press begin");
     [self hideNavWithFact:NO];
     [hideNavigation invalidate];
     if ([[self getButtonName:button] isEqualToString:@"Right"]) {
