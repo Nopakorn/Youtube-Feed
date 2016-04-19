@@ -34,20 +34,20 @@
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
-- (void)orientationChanged:(NSNotification *)notification
-{
-    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        
-//        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1"];
-//        [self.image1Bg setImage:portriatBg1];
-    
-    } else {
-        
-//        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1_Landscape"];
-//        [self.image1Bg setImage:portriatBg1];
-    }
-
-}
+//- (void)orientationChanged:(NSNotification *)notification
+//{
+//    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+//        
+////        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1"];
+////        [self.image1Bg setImage:portriatBg1];
+//    
+//    } else {
+//        
+////        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1_Landscape"];
+////        [self.image1Bg setImage:portriatBg1];
+//    }
+//
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -59,6 +59,16 @@
     return YES;
 }
 
+//- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+//{
+//    return UIInterfaceOrientationMaskPortrait;
+//}
+
+//- (BOOL)shouldAutorotate
+//{
+//    NSLog(@"calling auto rotate");
+//    return NO;
+//}
 
 /*
 #pragma mark - Navigation

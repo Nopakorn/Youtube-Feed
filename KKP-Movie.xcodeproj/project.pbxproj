@@ -41,6 +41,7 @@
 		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
 		5C551CB11CA8DE7100BECEC7 /* YoutubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */; };
 		5C57EB881CC4D675001DC64E /* tutorial in Resources */ = {isa = PBXBuildFile; fileRef = 5C57EB871CC4D675001DC64E /* tutorial */; };
+		5C57EB8B1CC5F7C1001DC64E /* TutorialNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */; };
 		5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */; };
 		5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4191C9678FE00A08005 /* Favorite.m */; };
 		5C67E4201C9696F100A08005 /* FavoriteCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E41F1C9696F100A08005 /* FavoriteCustomCell.m */; };
@@ -152,6 +153,8 @@
 		5C551CAC1CA8DE7100BECEC7 /* YoutubeVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YoutubeVideo.h; sourceTree = "<group>"; };
 		5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YoutubeVideo.m; sourceTree = "<group>"; };
 		5C57EB871CC4D675001DC64E /* tutorial */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tutorial; path = ../../../Desktop/tutorial; sourceTree = "<group>"; };
+		5C57EB891CC5F7C1001DC64E /* TutorialNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialNavigationController.h; sourceTree = "<group>"; };
+		5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialNavigationController.m; sourceTree = "<group>"; };
 		5C67E4151C96767E00A08005 /* PlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistTableViewController.h; sourceTree = "<group>"; };
 		5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistTableViewController.m; sourceTree = "<group>"; };
 		5C67E4181C9678FE00A08005 /* Favorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorite.h; sourceTree = "<group>"; };
@@ -371,6 +374,8 @@
 		5C46DAA01CB64B5C0035837E /* TutorialViews */ = {
 			isa = PBXGroup;
 			children = (
+				5C57EB891CC5F7C1001DC64E /* TutorialNavigationController.h */,
+				5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */,
 				5C46DAA11CB64B7D0035837E /* Tutorial2ViewController.h */,
 				5C46DAA21CB64B7D0035837E /* Tutorial2ViewController.m */,
 				5C46DAA41CB64E870035837E /* Tutorial1ViewController.h */,
@@ -675,6 +680,7 @@
 				5CBA2CF11C97CD370049FE4A /* PlaylistEditTableViewController.m in Sources */,
 				5C46DAAC1CB654E60035837E /* Tutorial4ViewController.m in Sources */,
 				5CBA2CF91C97EAFD0049FE4A /* PlaylistEditDetailFavoriteTableViewController.m in Sources */,
+				5C57EB8B1CC5F7C1001DC64E /* TutorialNavigationController.m in Sources */,
 				5CB425E31C928561005DCB46 /* RecommendCustomCell.m in Sources */,
 				5C8679E21CA1433C0098F9A9 /* GenreTableViewController.m in Sources */,
 				11C170EC1C7186A800E74681 /* AppDelegate.m in Sources */,
