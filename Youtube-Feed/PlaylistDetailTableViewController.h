@@ -19,11 +19,11 @@
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) YoutubeVideo *youtubeVideo;
 @property (strong, nonatomic) NSArray *youtubeVideoList;
-@property (nonatomic, retain) NSString *playlistTitleCheck;
 @property (nonatomic, retain) NSMutableArray  *imageData;
 
 @property (nonatomic) BOOL playlistDetailPlaying;
 @property (nonatomic) NSInteger selectedRow;
-
+@property (nonatomic) NSInteger playlistIndex;
+@property (nonatomic, copy) NSString *playlistIndexCheck;
 @end
 

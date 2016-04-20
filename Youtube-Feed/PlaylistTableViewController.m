@@ -81,7 +81,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     isAlertShowUp = NO;
     indexFocusTabbar = 1;
     numberOfPlaylists = 0;
-    
+     self.playlistIndexCheck = @"NO";
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
@@ -115,14 +115,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (self.favoritePlaying) {
         self.selectedRow = selectedIndex;
     } else if (self.playlistDetailPlaying) {
-        self.playlistTitleCheck = [notification.userInfo objectForKey:@"playlistTitleCheck"];
-        NSLog(@"from playlist %@",self.playlistTitleCheck);
+        self.playlistIndexCheck = [notification.userInfo objectForKey:@"playlistIndexCheck"];
         self.selectedRow = selectedIndex;
     } else {
-        self.playlistTitleCheck = @"";
+        self.playlistIndexCheck = @"NO";
+
     }
     
-    NSLog(@"Recevied in playlist favorite check : %i, playlistDetail check : %i", self.favoritePlaying, self.playlistDetailPlaying);
+    NSLog(@"Recevied in playlist favorite check : %i, playlistDetail check : %@", self.favoritePlaying, self.playlistIndexCheck);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -333,7 +333,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         dest.playlist = playlistForRow;
         dest.playlistDetailPlaying = self.playlistDetailPlaying;
         dest.selectedRow = self.selectedRow;
-        dest.playlistTitleCheck = self.playlistTitleCheck;
+        dest.playlistIndex = customIndexPath.row;
+        dest.playlistIndexCheck = self.playlistIndexCheck;
+        
+        NSLog(@"indexCheck %@",self.playlistIndexCheck);
 
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
 

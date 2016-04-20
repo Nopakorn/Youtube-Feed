@@ -228,6 +228,11 @@
         [alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
         
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row == 0) {
+        
+        NSLog(@"began at %ld",indexPath.row);
+        [self renamePlaylistTitle];
+        
     } else {
         NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
     }
@@ -241,6 +246,59 @@
     [self removeYoutubeVideoFromList];
 }
 
+- (void)renamePlaylistTitle
+{
+    NSString *title = self.playlist.title;
+    alert = [UIAlertController alertControllerWithTitle:@"Edit playlist name"
+                                                message:self.playlist.title
+                                         preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                 style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction *action){
+                                                   
+                                                   [self saveNewPlaylistTitle:[[alert.textFields objectAtIndex:0] text]];
+                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                               }];
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+    [alert addAction:ok];
+    [alert addAction:cancel];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField){
+        textField.text = title;
+    }];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+- (void)saveNewPlaylistTitle:(NSString *)text
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@",self.playlist.title]];
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (Playlist *playlistObject in result) {
+        NSLog(@"rename playlist title----------------------");
+        playlistObject.title = text;
+        NSError *error = nil;
+        if (![context save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+            
+        } else {
+            
+            self.navigationItem.title = text;
+            [self.tableView reloadData];
+        }
+    }
+}
 
 # pragma mark - editmode
 

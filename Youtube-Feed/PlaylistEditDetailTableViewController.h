@@ -12,7 +12,7 @@
 #import "YoutubeVideo.h"
 #import "PlaylistEditDetailFavoriteTableViewController.h"
 
-@interface PlaylistEditDetailTableViewController : UITableViewController <PlaylistEditDetailFavoriteControllerDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate>
+@interface PlaylistEditDetailTableViewController : UITableViewController <PlaylistEditDetailFavoriteControllerDelegate, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 {
     UIAlertController *alert;
 }

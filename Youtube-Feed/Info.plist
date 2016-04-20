@@ -21,10 +21,14 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string></string>
+			<string>com.ssd.kkpmovie</string>
 			<key>CFBundleURLSchemes</key>
-			<array/>
+			<array>
+				<string>kkpmovie</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>

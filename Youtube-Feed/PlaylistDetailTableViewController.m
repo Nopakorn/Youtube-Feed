@@ -77,13 +77,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-    if ([self.playlistTitleCheck isEqualToString:self.playlist.title]) {
-        self.playlistDetailPlaying = YES;
-
-    } else {
+    
+    NSString *indexCheck = [NSString stringWithFormat:@"%@",self.playlistIndexCheck];
+    
+    NSLog(@"indexCheck %@",indexCheck);
+    if ([indexCheck isEqualToString:@"NO"]) {
         self.playlistDetailPlaying = NO;
+        
+    } else {
+        NSInteger index = [indexCheck integerValue];
+        if (self.playlistIndex == index) {
+            self.playlistDetailPlaying = YES;
+        } else {
+            self.playlistDetailPlaying = NO;
+        }
     }
-    NSLog(@"detail check %@",self.playlistTitleCheck);
+    NSLog(@"detail check %i",self.playlistDetailPlaying);
+    //[self.tableView reloadData];
    #pragma setup UMA in ViewDidload in PlaylistDetailTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -100,15 +110,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
     self.playlistDetailPlaying = [[notification.userInfo objectForKey:@"playlistDetailFact"] boolValue];
-    NSString *playlistTitle = [notification.userInfo objectForKey:@"playlistTitleCheck"];
+    NSInteger playlistIndexCheck = [[notification.userInfo objectForKey:@"playlistIndexCheck"] integerValue];
     
-    if ([playlistTitle isEqualToString:self.playlist.title]) {
-        //self.playlistDetailPlaying = YES;
-        self.playlistTitleCheck = playlistTitle;
+    if (playlistIndexCheck == self.playlistIndex) {
         if (self.playlistDetailPlaying) {
             if ([self.youtubeVideoList count] == [youtube.videoIdList count]) {
                 if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
-                    
+                    self.playlistDetailPlaying = YES;
                     self.selectedRow = selectedIndex;
                     [self.tableView reloadData];
                     
@@ -144,14 +152,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     portraitFact = YES;
     landscapeFact = YES;
     
-//    if ([self.playlistTitleCheck isEqualToString:self.playlist.title]) {
-//        self.playlistDetailPlaying = YES;
-//        NSLog(@"YES");
-//    } else {
-//        self.playlistDetailPlaying = NO;
-//        NSLog(@"NO");
-//    }
-//    NSLog(@"detail check %@",self.playlistTitleCheck);
     NSLog(@"viewDidappear Playlistdetail");
     
     
@@ -346,7 +346,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"duration? = %@",[self.youtube.durationList objectAtIndex:indexPath.row]);
     NSDictionary *userInfo = @{@"youtubeObj": self.youtube,
                                @"selectedIndex": selected,
-                               @"playlistTitle": self.playlist.title};
+                               @"playlistIndex": @(self.playlistIndex) };
      NSLog(@"post playlistdetail");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PlaylistDetailDidSelected" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
