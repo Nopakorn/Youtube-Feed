@@ -72,7 +72,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.genreYoutube = [[Youtube alloc] init];
     backFactGenre = YES;
     indexFocusTabbar = 1;
-    //self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
      NSLog(@"View did load");
@@ -80,6 +79,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.genreIconTitle.hidden = YES;
 //    UIImage *imageGenre = [UIImage imageNamed:@"genre1"];
 //    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:imageGenre];
+    
 #pragma setup UMA in ViewDidload in GenreTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;

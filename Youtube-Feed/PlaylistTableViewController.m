@@ -114,12 +114,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (self.favoritePlaying) {
         self.selectedRow = selectedIndex;
-    }
-    
-    if (self.playlistDetailPlaying) {
+    } else if (self.playlistDetailPlaying) {
         self.playlistTitleCheck = [notification.userInfo objectForKey:@"playlistTitleCheck"];
         NSLog(@"from playlist %@",self.playlistTitleCheck);
         self.selectedRow = selectedIndex;
+    } else {
+        self.playlistTitleCheck = @"";
     }
     
     NSLog(@"Recevied in playlist favorite check : %i, playlistDetail check : %i", self.favoritePlaying, self.playlistDetailPlaying);

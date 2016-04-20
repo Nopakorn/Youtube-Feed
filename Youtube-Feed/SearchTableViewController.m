@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     ALERT_TYPE_FAIL_TO_CONNECT,
     ALERT_TYPE_DISCOVERY_TIMEOUT,
 };
-
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 static NSString *const kSettingsManualConnectionTitle = @"Manual Connection";
 static NSString *const kSettingsManualConnectionSubTitle =
 @"Be able to select a device which you want to connect.";
@@ -60,7 +60,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 @implementation SearchTableViewController
 {
     BOOL nextPage;
+    BOOL didReceivedFromYoutubePlaying;
 }
+
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad {
@@ -80,19 +82,34 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
     self.searchTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
     self.searchIconTitle.hidden = YES;
-#pragma setup UMA in ViewDidload in RecommendTableView
-    //    _inputDevices = [NSMutableArray array];
-//    _umaApp = [UMAApplication sharedApplication];
-//    _umaApp.delegate = self;
-//    //    _hidManager = [_umaApp requestHIDManager];
-//    //
-//    [_umaApp addViewController:self];
-//    //
-//    //    //focus
-//    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-//    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-//    [_focusManager setHidden:NO];
-//    [_focusManager moveFocus:5];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
+
+
+}
+
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    self.searchPlaying = [[notification.userInfo objectForKey:@"searchFact"] boolValue];
+    if (self.searchPlaying) {
+        if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[self.searchYoutube.videoIdList objectAtIndex:selectedIndex]])
+        {
+            didReceivedFromYoutubePlaying = YES;
+            self.selectedRow = selectedIndex;
+            [self.tableView reloadData];
+            
+        }
+        
+    } else {
+        
+        didReceivedFromYoutubePlaying = NO;
+        [self.tableView reloadData];
+    }
+    NSLog(@"recevied search %i",self.searchPlaying);
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -105,13 +122,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if (self.searchPlaying) {
+        didReceivedFromYoutubePlaying = YES;
+    } else {
+        didReceivedFromYoutubePlaying = NO;
+        NSLog(@"not in search");
+    }
+
 #pragma setup UMA in ViewDidAppear in RecommendTableView
-//    [_umaApp addViewController:self];
-//    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
-//    [_focusManager setFocusRootView:self.tabBarController.tabBar];
     [_focusManager setHidden:YES];
-//    
-//    [_focusManager moveFocus:5];    // Give focus to the first icon.
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -150,6 +170,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSString *duration = [self.searchYoutube.durationList objectAtIndex:indexPath.row];
     cell.durationLabel.text = [self durationText:duration];
     cell.thumnail.image = nil;
+    
+    if (didReceivedFromYoutubePlaying) {
+        if (indexPath.row == self.selectedRow) {
+            cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+        } else {
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+    }
+
     //
     if([self.searchYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

@@ -110,6 +110,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (![[self.navigationController viewControllers] containsObject:self]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
+        self.favoritePlaying = NO;
     }
 }
 
