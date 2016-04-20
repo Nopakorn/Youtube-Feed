@@ -117,8 +117,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
-    currentPlayingFact = [[notification.userInfo objectForKey:@"recommendFact"] boolValue];
-    if (currentPlayingFact) {
+    self.recommendPlaying = [[notification.userInfo objectForKey:@"recommendFact"] boolValue];
+    if (self.recommendPlaying) {
         if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[self.recommendYoutube.videoIdList objectAtIndex:selectedIndex]])
         {
             didReceivedFromYoutubePlaying = YES;
@@ -127,7 +127,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
         }
     }
-    NSLog(@"recevied recommend %i",currentPlayingFact);
+    NSLog(@"recevied recommend %i",self.recommendPlaying);
 
 }
 
@@ -303,7 +303,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     landscapeFact = YES;
     //[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    if (currentPlayingFact) {
+    if (self.recommendPlaying) {
         didReceivedFromYoutubePlaying = YES;
     } else {
         didReceivedFromYoutubePlaying = NO;
@@ -363,7 +363,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-    
+//    if (indexPath.row == self.selectedRow) {
+//        cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+//    } else {
+//        cell.contentView.backgroundColor = [UIColor whiteColor];
+//    }
     cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
     cell.tag = indexPath.row;
     NSString *duration = [self.recommendYoutube.durationList objectAtIndex:indexPath.row];

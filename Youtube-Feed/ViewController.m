@@ -1068,7 +1068,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:1];
         RecommendTableViewController *rec = [nav.viewControllers objectAtIndex:0];
         rec.delegate = self;
-        //rec.selectedRow = item;
+        rec.selectedRow = item;
+        rec.recommendPlaying = recommendFact;
         NSLog(@"select recommend");
         
 

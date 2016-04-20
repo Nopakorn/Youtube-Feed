@@ -34,7 +34,7 @@
 
 @property (nonatomic, assign) id<RecommendTableViewControllerDelegate> delegate;
 @property (nonatomic) NSInteger selectedRow;
-
+@property (nonatomic) BOOL recommendPlaying;
 @end
 
 @protocol RecommendTableViewControllerDelegate <NSObject>
