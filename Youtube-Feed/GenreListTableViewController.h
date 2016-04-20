@@ -18,7 +18,11 @@
 @property (strong, nonatomic) Youtube *genreYoutube;
 @property (nonatomic, copy) NSString *searchTerm;
 @property (nonatomic, retain) NSMutableArray *imageData;
+
+@property (nonatomic) NSInteger selectedIndex;
 @property (nonatomic) NSInteger selectedRow;
+@property (nonatomic, copy) NSString *genreType;
+@property (nonatomic) BOOL genreListPlaying;
 
 @property (weak, nonatomic) IBOutlet UIButton *backGenreButton;
 @end

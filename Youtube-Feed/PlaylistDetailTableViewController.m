@@ -99,22 +99,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
-    //self.playlistDetailPlaying = [[notification.userInfo objectForKey:@"playlistDetailFact"] boolValue];
+    self.playlistDetailPlaying = [[notification.userInfo objectForKey:@"playlistDetailFact"] boolValue];
     NSString *playlistTitle = [notification.userInfo objectForKey:@"playlistTitleCheck"];
     
     if ([playlistTitle isEqualToString:self.playlist.title]) {
-        self.playlistDetailPlaying = YES;
+        //self.playlistDetailPlaying = YES;
         self.playlistTitleCheck = playlistTitle;
         if (self.playlistDetailPlaying) {
-            if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
-                
-                self.selectedRow = selectedIndex;
-                [self.tableView reloadData];
-                
+            if ([self.youtubeVideoList count] == [youtube.videoIdList count]) {
+                if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
+                    
+                    self.selectedRow = selectedIndex;
+                    [self.tableView reloadData];
+                    
+                }
             }
         }
     } else {
         self.playlistDetailPlaying = NO;
+        [self.tableView reloadData];
     }
     
     

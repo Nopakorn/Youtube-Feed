@@ -139,14 +139,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
 {
+    Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
     self.favoritePlaying = [[notification.userInfo objectForKey:@"favoriteFact"] boolValue];
-
+    NSArray *result = [self.fetchedResultsController fetchedObjects];
+    
     if (self.favoritePlaying) {
-        self.selectedRow = selectedIndex;
+        if ([youtube.videoIdList count] == [result count]) {
+            self.selectedRow = selectedIndex;
+            [self.tableView reloadData];
+
+        }
+        
+    } else {
         [self.tableView reloadData];
     }
-    //NSLog(@"Recevied in favorite %i",self.favoritePlaying);
+    NSLog(@"Recevied in favorite %i",self.favoritePlaying);
 }
 
 - (void)orientationChanged:(NSNotification *)notification

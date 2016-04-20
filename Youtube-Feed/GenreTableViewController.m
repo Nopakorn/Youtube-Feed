@@ -79,7 +79,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.genreIconTitle.hidden = YES;
 //    UIImage *imageGenre = [UIImage imageNamed:@"genre1"];
 //    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:imageGenre];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
+
 #pragma setup UMA in ViewDidload in GenreTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -88,6 +91,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
+}
+
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    self.genreListPlaying = [[notification.userInfo objectForKey:@"genreListFact"] boolValue];
+    NSString *genreTypeString = [notification.userInfo objectForKey:@"genreType"];
+    if (self.genreListPlaying) {
+
+        if ([genreTypeString isEqualToString:self.searchTerm]) {
+            self.genreType = genreTypeString;
+            self.selectedIndex = selectedIndex;
+        }
+    }
+  
+    
+    NSLog(@"Recevied in genre %@ index %li",self.genreType, (long)self.selectedIndex);
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -271,6 +291,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         GenreListTableViewController *dest = segue.destinationViewController;
         dest.genreYoutube = self.genreYoutube;
         dest.searchTerm = self.searchTerm;
+        dest.genreType = self.genreType;
+        dest.selectedIndex = self.selectedIndex;
     }
 }
 

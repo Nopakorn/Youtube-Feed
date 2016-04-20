@@ -81,6 +81,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL genreListFact;
     BOOL searchFact;
     NSString *playlistTitleCheck;
+    NSString *genreType;
 }
 - (id)init
 {
@@ -130,7 +131,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     genreListFact = NO;
     recommendFact = YES;
     playlistTitleCheck = @"";
-    
+    genreType = @"";
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
     
@@ -735,7 +736,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                 @"playlistDetailFact":@(playlistDetailFact),
                                 @"searchFact":@(searchFact),
                                 @"genreListFact":@(genreListFact),
-                                @"playlistTitleCheck":playlistTitleCheck };
+                                @"playlistTitleCheck":playlistTitleCheck,
+                                @"genreType":genreType };
     
     
     if (state == kYTPlayerStatePlaying) {
@@ -1005,6 +1007,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    genreType = [notification.userInfo objectForKey:@"genreType"];
     //NSLog(@"Received playGenreList");
      NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], item);
 }
@@ -1120,6 +1123,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     searchFact = YES;
     genreListFact = NO;
     recommendFact = NO;
+    
     
     self.youtube = searchViewController.searchYoutube;
     item = searchViewController.selectedRow;

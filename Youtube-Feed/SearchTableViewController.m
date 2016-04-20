@@ -128,7 +128,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         didReceivedFromYoutubePlaying = NO;
         NSLog(@"not in search");
     }
-
+    [self.tableView reloadData];
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_focusManager setHidden:YES];
     

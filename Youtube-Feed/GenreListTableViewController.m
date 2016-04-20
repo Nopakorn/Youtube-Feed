@@ -40,6 +40,7 @@ static NSString *const kTitleText = @"HID Device Sample";
 static const NSInteger kHeightForHeaderInSection = 33;
 static const NSTimeInterval kHidDeviceControlTimeout = 5;
 NSString *const kIsManualConnection = @"is_manual_connection";
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @interface GenreListTableViewController ()<UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
 
@@ -74,7 +75,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.searchTerm;
    
-    
+    if ([self.genreType isEqualToString:self.searchTerm]) {
+        self.genreListPlaying = YES;
+        
+    } else {
+        self.genreListPlaying = NO;
+    }
 //    UIImage *genreIcon = [UIImage imageNamed:@"genre1"];
 //    UIImageView *genreIconview = [[UIImageView alloc] initWithImage:genreIcon];
 //    genreIconview.frame = CGRectMake(0, 0, 22, 22);
@@ -83,6 +89,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     CGFloat spacing = 5;
     self.backGenreButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, spacing);
     self.backGenreButton.titleEdgeInsets = UIEdgeInsetsMake(0, spacing, 0, 0);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
+    
 #pragma setup UMA in ViewDidload in GenreListTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -93,12 +104,41 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setHidden:NO];
 }
 
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    self.genreListPlaying = [[notification.userInfo objectForKey:@"genreListFact"] boolValue];
+    NSString *genreTypeString = [notification.userInfo objectForKey:@"genreType"];
+    
+    if (self.genreListPlaying) {
+        if ([genreTypeString isEqualToString:self.searchTerm]) {
+            if ([youtube.videoIdList count] == [self.genreYoutube.videoIdList count]) {
+                self.genreType = genreTypeString;
+                self.selectedIndex = selectedIndex;
+                [self.tableView reloadData];
+            }
+            
+        }
+    } else {
+        [self.tableView reloadData];
+    }
+    
+    
+   
+    NSLog(@"Recevied in genreList %@",self.genreType);
+}
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear GenreListController");
     [_focusManager setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    if (![[self.navigationController viewControllers] containsObject:self]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
+        self.genreListPlaying = NO;
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -214,6 +254,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSString *duration = [self.genreYoutube.durationList objectAtIndex:indexPath.row];
     cell.durationLabel.text = [self durationText:duration];
     cell.thumnail.image = nil;
+    
+    if (self.genreListPlaying) {
+        if (indexPath.row == self.selectedIndex) {
+            cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+        } else {
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+    }
     //
     if([self.genreYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -246,8 +296,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     self.selectedRow = indexPath.row;
     NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
-    NSDictionary *userInfo = @{@"youtubeObj": self.genreYoutube,
-                               @"selectedIndex": selected};
+    NSDictionary *userInfo = @{ @"youtubeObj": self.genreYoutube,
+                               @"selectedIndex": selected,
+                               @"genreType":self.searchTerm };
     NSLog(@"post genrelistdetail %lu",(unsigned long)[self.genreYoutube.titleList count]);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PlayGenreListDidSelected" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
