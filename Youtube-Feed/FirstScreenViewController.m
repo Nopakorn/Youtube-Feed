@@ -25,8 +25,8 @@
     self.loadingLabel.hidden = YES;
     
     //tutorial has been showed
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
+//    [[NSUserDefaults standardUserDefaults] synchronize];
 
     
 }

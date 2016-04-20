@@ -41,7 +41,7 @@ static NSString *const kTitleText = @"HID Device Sample";
 static const NSInteger kHeightForHeaderInSection = 33;
 static const NSTimeInterval kHidDeviceControlTimeout = 5;
 NSString *const kIsManualConnection = @"is_manual_connection";
-
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 @interface PlaylistDetailTableViewController ()<UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
 
 @property (nonatomic, strong) UMAFocusManager *focusManager;
@@ -65,6 +65,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL backFactPlaylistDetail;
     BOOL landscapeFact;
     BOOL portraitFact;
+    BOOL didReceivedFromYoutubePlaying;
+
 }
 
 - (void)viewDidLoad {
@@ -72,7 +74,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     indexFocusTabbar = 1;
     [self addingDataToYoutubeObject];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-#pragma setup UMA in ViewDidload in PlaylistDetailTableView
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
+    if ([self.playlistTitleCheck isEqualToString:self.playlist.title]) {
+        self.playlistDetailPlaying = YES;
+
+    } else {
+        self.playlistDetailPlaying = NO;
+    }
+    NSLog(@"detail check %@",self.playlistTitleCheck);
+   #pragma setup UMA in ViewDidload in PlaylistDetailTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
     [_umaApp addViewController:self];
@@ -80,6 +92,33 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
+    NSLog(@"viewdidload playlistDetail");
+}
+
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    //self.playlistDetailPlaying = [[notification.userInfo objectForKey:@"playlistDetailFact"] boolValue];
+    NSString *playlistTitle = [notification.userInfo objectForKey:@"playlistTitleCheck"];
+    
+    if ([playlistTitle isEqualToString:self.playlist.title]) {
+        self.playlistDetailPlaying = YES;
+        self.playlistTitleCheck = playlistTitle;
+        if (self.playlistDetailPlaying) {
+            if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
+                
+                self.selectedRow = selectedIndex;
+                [self.tableView reloadData];
+                
+            }
+        }
+    } else {
+        self.playlistDetailPlaying = NO;
+    }
+    
+    
+    NSLog(@"Recevied in playlistdetail %i",self.playlistDetailPlaying);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -87,7 +126,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear PlaylistController");
     [_focusManager setHidden:YES];
+   
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    if (![[self.navigationController viewControllers] containsObject:self]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
+         self.playlistDetailPlaying = NO;
+    }
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -95,6 +140,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactPlaylistDetail = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    
+//    if ([self.playlistTitleCheck isEqualToString:self.playlist.title]) {
+//        self.playlistDetailPlaying = YES;
+//        NSLog(@"YES");
+//    } else {
+//        self.playlistDetailPlaying = NO;
+//        NSLog(@"NO");
+//    }
+//    NSLog(@"detail check %@",self.playlistTitleCheck);
+    NSLog(@"viewDidappear Playlistdetail");
+    
+    
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -109,6 +166,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     backFactPlaylistDetail = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    //[self.tableView reloadData];
 }
 
 - (void)orientationChanged:(NSNotification *)notification
@@ -232,6 +290,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     
+    if (self.playlistDetailPlaying) {
+        if (indexPath.row == self.selectedRow) {
+            cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+        } else {
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
+    }
+
     YoutubeVideo *youtubeVideoForRow = [self.youtubeVideoList objectAtIndex:indexPath.row];
     cell.name.text = youtubeVideoForRow.videoTitle;
     cell.durationLabel.text = [self durationText:youtubeVideoForRow.videoDuration];
@@ -269,11 +337,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedRow = indexPath.row;
-    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    //self.selectedRow = indexPath.row;
+    NSString *selected = [NSString stringWithFormat:@"%lu",indexPath.row];
     [self addingDataToYoutubeObject];
+    NSLog(@"duration? = %@",[self.youtube.durationList objectAtIndex:indexPath.row]);
     NSDictionary *userInfo = @{@"youtubeObj": self.youtube,
-                               @"selectedIndex": selected};
+                               @"selectedIndex": selected,
+                               @"playlistTitle": self.playlist.title};
      NSLog(@"post playlistdetail");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PlaylistDetailDidSelected" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];

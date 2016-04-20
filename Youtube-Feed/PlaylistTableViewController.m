@@ -69,6 +69,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
     NSInteger numberOfPlaylists;
+    NSInteger selectedFavorite;
+    NSInteger selectedPlaylistDetail;
 }
 
 
@@ -79,6 +81,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     isAlertShowUp = NO;
     indexFocusTabbar = 1;
     numberOfPlaylists = 0;
+    
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self fetchPlaylist];
@@ -88,6 +91,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     [self.editButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)] forState:UIControlStateNormal];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
+
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -97,6 +104,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
 
+}
+
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    self.favoritePlaying = [[notification.userInfo objectForKey:@"favoriteFact"] boolValue];
+    self.playlistDetailPlaying = [[notification.userInfo objectForKey:@"playlistDetailFact"] boolValue];
+    
+    if (self.favoritePlaying) {
+        self.selectedRow = selectedIndex;
+    }
+    
+    if (self.playlistDetailPlaying) {
+        self.playlistTitleCheck = [notification.userInfo objectForKey:@"playlistTitleCheck"];
+        NSLog(@"from playlist %@",self.playlistTitleCheck);
+        self.selectedRow = selectedIndex;
+    }
+    
+    NSLog(@"Recevied in playlist favorite check : %i, playlistDetail check : %i", self.favoritePlaying, self.playlistDetailPlaying);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -242,8 +268,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     [self fetchPlaylist];
-    //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
     if ([self.playlist_List count] == 0) {
         cell.name.text = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
         
@@ -294,9 +318,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"FavoriteSegue"]){
-        
+
         FavoriteTableViewController *dest = segue.destinationViewController;
         dest.favorite = self.favorite;
+        dest.selectedRow = self.selectedRow;
+        dest.favoritePlaying = self.favoritePlaying;
         
     } else if ([segue.identifier isEqualToString:@"PlaylistDetailSegue"]) {
         
@@ -305,6 +331,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         Playlist *playlistForRow = [[self fetchedResultsController] objectAtIndexPath:customIndexPath];
         PlaylistDetailTableViewController *dest = segue.destinationViewController;
         dest.playlist = playlistForRow;
+        dest.playlistDetailPlaying = self.playlistDetailPlaying;
+        dest.selectedRow = self.selectedRow;
+        dest.playlistTitleCheck = self.playlistTitleCheck;
 
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
 

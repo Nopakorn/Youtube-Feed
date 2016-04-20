@@ -23,6 +23,11 @@
 @property (strong, nonatomic) Playlist *playlist;
 @property (strong, nonatomic) Favorite *favorite;
 
+@property (nonatomic) NSInteger selectedRow;
+@property (nonatomic) BOOL favoritePlaying;
+@property (nonatomic) BOOL playlistDetailPlaying;
+@property (nonatomic, retain) NSString *playlistTitleCheck;
+
 @property(strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray *playlist_List;
 

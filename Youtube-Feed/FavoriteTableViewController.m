@@ -43,6 +43,8 @@ static const NSInteger kHeightForHeaderInSection = 33;
 static const NSTimeInterval kHidDeviceControlTimeout = 5;
 NSString *const kIsManualConnection = @"is_manual_connection";
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
 @interface FavoriteTableViewController ()<UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
 
 @property (nonatomic, strong) UMAFocusManager *focusManager;
@@ -67,6 +69,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL backFactFavorite;
     BOOL portraitFact;
     BOOL landscapeFact;
+    BOOL didReceivedFromYoutubePlaying;
+    BOOL currentPlayingFact;
+    NSArray *youtubeFavorite;
 }
 
 - (void)viewDidLoad {
@@ -78,7 +83,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
-    NSLog(@"favorite view did load");
+
+    //fetchdata for checking when youtube is playing
+    youtubeFavorite = [self.fetchedResultsController fetchedObjects];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
+
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -92,9 +103,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear PlaylistController");
+ 
+    didReceivedFromYoutubePlaying = false;
     [_focusManager setHidden:YES];
-     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+    if (![[self.navigationController viewControllers] containsObject:self]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -102,7 +118,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactFavorite = YES;
     portraitFact = YES;
     landscapeFact = YES;
-    
 
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
@@ -115,10 +130,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [_focusManager moveFocus:1];
     }
 
-//    [_focusManager setHidden:NO];
-//    [_focusManager moveFocus:1];    // Give focus to the first icon.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     backFactFavorite = YES;
+
+}
+
+
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    self.favoritePlaying = [[notification.userInfo objectForKey:@"favoriteFact"] boolValue];
+
+    if (self.favoritePlaying) {
+        self.selectedRow = selectedIndex;
+        [self.tableView reloadData];
+    }
+    //NSLog(@"Recevied in favorite %i",self.favoritePlaying);
 }
 
 - (void)orientationChanged:(NSNotification *)notification
@@ -234,7 +261,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //fetch data
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
     numberOfFavorites = [sectionInfo numberOfObjects];
-       return [sectionInfo numberOfObjects];
+    return [sectionInfo numberOfObjects];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,6 +280,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         lgpr.minimumPressDuration = 1.5;
         [cell addGestureRecognizer:lgpr];
         
+    }
+    
+    if (self.favoritePlaying) {
+        if (indexPath.row == self.selectedRow) {
+            cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+        } else {
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
     }
     
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -375,7 +412,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
     NSDictionary *userInfo = @{@"youtubeObj": youtube,
                                @"selectedIndex": selected};
-    NSLog(@"post favorite");
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"FavoriteDidSelected" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];

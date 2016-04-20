@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     ALERT_TYPE_FAIL_TO_CONNECT,
     ALERT_TYPE_DISCOVERY_TIMEOUT,
 };
-
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 static NSString *const kSettingsManualConnectionTitle = @"Manual Connection";
 static NSString *const kSettingsManualConnectionSubTitle =
 @"Be able to select a device which you want to connect.";
@@ -66,6 +66,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL portraitFact;
     BOOL landscapeFact;
     
+    BOOL didReceivedFromYoutubePlaying;
+    BOOL currentPlayingFact;
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
 }
@@ -74,8 +76,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidLoad {
     [super viewDidLoad];
     nextPage = true;
-    
-
+    didReceivedFromYoutubePlaying = NO;
+    currentPlayingFact = NO;
     inTabbar = false;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -91,7 +93,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.recommendedTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
     self.recommendedIconTitle.hidden = YES;
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubePlayingNotification:)
+                                                 name:@"YoutubePlaying" object:nil];
     
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
@@ -108,6 +112,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //    [self prepareBlocks];
 //    [_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
+
+- (void)receivedYoutubePlayingNotification:(NSNotification *)notification
+{
+    Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
+    currentPlayingFact = [[notification.userInfo objectForKey:@"recommendFact"] boolValue];
+    if (currentPlayingFact) {
+        if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[self.recommendYoutube.videoIdList objectAtIndex:selectedIndex]])
+        {
+            didReceivedFromYoutubePlaying = YES;
+            self.selectedRow = selectedIndex;
+            [self.tableView reloadData];
+            
+        }
+    }
+    NSLog(@"recevied recommend %i",currentPlayingFact);
+
+}
+
 
 - (void)prepareBlocks
 {
@@ -271,7 +294,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     //global objects
     backFactRecommended = YES;
-    NSLog(@"view did appear recommend");
+    NSLog(@"view did appear recommend with selected row %ld",(long)self.selectedRow);
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
@@ -280,7 +303,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     landscapeFact = YES;
     //[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+    if (currentPlayingFact) {
+        didReceivedFromYoutubePlaying = YES;
+    } else {
+        didReceivedFromYoutubePlaying = NO;
+        NSLog(@"not in recommend");
+    }
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -289,13 +317,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     [_focusManager moveFocus:1];
     
-    
+    [self.tableView reloadData];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear RecommendedController");
     [_focusManager setHidden:YES];
+    //didReceivedFromYoutubePlaying = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
@@ -324,6 +353,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RecommendCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
         
+    }
+    if (didReceivedFromYoutubePlaying) {
+        if (indexPath.row == self.selectedRow) {
+            cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+        } else {
+            cell.contentView.backgroundColor = [UIColor whiteColor];
+        }
+    } else {
+        cell.contentView.backgroundColor = [UIColor whiteColor];
     }
     
     cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
@@ -354,6 +392,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     return cell;
 }
+
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -74,6 +74,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger item;
     NSInteger queryIndex;
     NSInteger indexFocusTabbar;
+    
+    BOOL favoriteFact;
+    BOOL recommendFact;
+    BOOL playlistDetailFact;
+    BOOL genreListFact;
+    BOOL searchFact;
+    NSString *playlistTitleCheck;
 }
 - (id)init
 {
@@ -116,6 +123,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     favoriteDidPlayed = false;
     playlistDidPlayed = false;
     backFact = YES;
+    
+    favoriteFact = NO;
+    playlistDetailFact = NO;
+    searchFact = NO;
+    genreListFact = NO;
+    recommendFact = YES;
+    playlistTitleCheck = @"";
     
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
@@ -713,9 +727,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
     NSLog(@"playerView state changing");
-
+    NSString *selected = [NSString stringWithFormat:@"%lu",item];
+    NSDictionary *userInfo = @{ @"youtubeCurrentPlaying": selected,
+                                @"youtubeObj":self.youtube,
+                                @"favoriteFact":@(favoriteFact),
+                                @"recommendFact":@(recommendFact),
+                                @"playlistDetailFact":@(playlistDetailFact),
+                                @"searchFact":@(searchFact),
+                                @"genreListFact":@(genreListFact),
+                                @"playlistTitleCheck":playlistTitleCheck };
+    
+    
     if (state == kYTPlayerStatePlaying) {
-         NSLog(@"video play");
+        NSLog(@"video play");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubePlaying" object:self userInfo:userInfo];
         UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
         [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
         self.playerTotalTime = [self.playerView duration];
@@ -773,7 +798,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
             [self presentViewController:outOflengthAlert animated:YES completion:nil];
              item-=1;
-        }else {
+        } else {
 
             [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             
@@ -955,14 +980,29 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)receivedPlaylistDetailNotification:(NSNotification *)notification
 {
     playlistDetailTableViewFlag = true;
+    
+    favoriteFact = NO;
+    recommendFact = NO;
+    searchFact = NO;
+    genreListFact = NO;
+    playlistDetailFact = YES;
+    
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    playlistTitleCheck = [notification.userInfo objectForKey:@"playlistTitle"];
     NSLog(@"Received playlistDetail");
 }
 
 - (void)receivedGenreListNotification:(NSNotification *)notification
 {
     genreListTableViewFlag = true;
+    
+    favoriteFact = NO;
+    recommendFact = NO;
+    searchFact = NO;
+    genreListFact = YES;
+    playlistDetailFact = NO;
+    
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     //NSLog(@"Received playGenreList");
@@ -972,6 +1012,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)receivedFavoriteDidSelectedNotification:(NSNotification *)notification
 {
     favoriteTableViewFlag = true;
+    
+    favoriteFact = YES;
+    recommendFact = NO;
+    searchFact = NO;
+    genreListFact = NO;
+    playlistDetailFact = NO;
+    
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     NSLog(@"Received favorite");
@@ -1021,7 +1068,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:1];
         RecommendTableViewController *rec = [nav.viewControllers objectAtIndex:0];
         rec.delegate = self;
-         NSLog(@"select rocommend");
+        //rec.selectedRow = item;
+        NSLog(@"select recommend");
+        
+
     }
     
     if (tabBarController.selectedIndex == 4) {
@@ -1038,6 +1088,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController
 {
     recommendTableViewFlag = true;
+    
+    favoriteFact = NO;
+    playlistDetailFact = NO;
+    recommendFact = NO;
+    searchFact = NO;
+    genreListFact = NO;
+    recommendFact = YES;
+    
     self.youtube = recommendViewController.recommendYoutube;
     item = recommendViewController.selectedRow;
     NSLog(@"recommend did selected");
@@ -1054,6 +1112,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)searchTableViewControllerDidSelected:(SearchTableViewController *)searchViewController
 {
     searchTableViewFlag = true;
+    
+    favoriteFact = NO;
+    playlistDetailFact = NO;
+    recommendFact = NO;
+    searchFact = YES;
+    genreListFact = NO;
+    recommendFact = NO;
+    
     self.youtube = searchViewController.searchYoutube;
     item = searchViewController.selectedRow;
      NSLog(@"Received Search");

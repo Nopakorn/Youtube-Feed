@@ -22,6 +22,7 @@
 @property (strong, nonatomic) Favorite *favorite;
 
 @property (nonatomic, retain) NSMutableArray  *imageData;
+@property (nonatomic) BOOL favoritePlaying;
 @property (nonatomic) NSInteger selectedRow;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
