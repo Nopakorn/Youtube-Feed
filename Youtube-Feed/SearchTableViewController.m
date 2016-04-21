@@ -101,6 +101,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             self.selectedRow = selectedIndex;
             [self.tableView reloadData];
             
+        } else {
+            
+            didReceivedFromYoutubePlaying = NO;
         }
         
     } else {

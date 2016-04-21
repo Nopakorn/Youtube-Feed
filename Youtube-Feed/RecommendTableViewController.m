@@ -70,6 +70,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL currentPlayingFact;
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
+    NSInteger markHighlightIndex;
 }
 @synthesize delegate = _delegate;
 
@@ -78,6 +79,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     nextPage = true;
     didReceivedFromYoutubePlaying = NO;
     currentPlayingFact = NO;
+    markHighlightIndex = 0;
     inTabbar = false;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -123,8 +125,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         {
             didReceivedFromYoutubePlaying = YES;
             self.selectedRow = selectedIndex;
-            [self.tableView reloadData];
+            NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView endUpdates];
+            //[self.tableView reloadData];
             
+        } else {
+            didReceivedFromYoutubePlaying = NO;
         }
     }
     NSLog(@"recevied recommend %i",self.recommendPlaying);
@@ -357,6 +367,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (didReceivedFromYoutubePlaying) {
         if (indexPath.row == self.selectedRow) {
             cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+            markHighlightIndex = indexPath.row;
         } else {
             cell.contentView.backgroundColor = [UIColor whiteColor];
         }
