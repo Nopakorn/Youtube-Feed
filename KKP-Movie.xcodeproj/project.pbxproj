@@ -40,6 +40,7 @@
 		5C551CAF1CA8DE7100BECEC7 /* Playlist.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CA91CA8DE7100BECEC7 /* Playlist.m */; };
 		5C551CB01CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */; };
 		5C551CB11CA8DE7100BECEC7 /* YoutubeVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */; };
+		5C5701F51CC8915200AF729C /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5701F41CC8915200AF729C /* Genre.m */; };
 		5C57EB881CC4D675001DC64E /* tutorial in Resources */ = {isa = PBXBuildFile; fileRef = 5C57EB871CC4D675001DC64E /* tutorial */; };
 		5C57EB8B1CC5F7C1001DC64E /* TutorialNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */; };
 		5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */; };
@@ -152,6 +153,8 @@
 		5C551CAB1CA8DE7100BECEC7 /* YoutubeVideo+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YoutubeVideo+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5C551CAC1CA8DE7100BECEC7 /* YoutubeVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YoutubeVideo.h; sourceTree = "<group>"; };
 		5C551CAD1CA8DE7100BECEC7 /* YoutubeVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YoutubeVideo.m; sourceTree = "<group>"; };
+		5C5701F31CC8915200AF729C /* Genre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Genre.h; sourceTree = "<group>"; };
+		5C5701F41CC8915200AF729C /* Genre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Genre.m; sourceTree = "<group>"; };
 		5C57EB871CC4D675001DC64E /* tutorial */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tutorial; path = ../../../Desktop/tutorial; sourceTree = "<group>"; };
 		5C57EB891CC5F7C1001DC64E /* TutorialNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialNavigationController.h; sourceTree = "<group>"; };
 		5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialNavigationController.m; sourceTree = "<group>"; };
@@ -395,6 +398,8 @@
 				11F18B6C1C76D21B0066A8EF /* Youtube.m */,
 				5C67E4181C9678FE00A08005 /* Favorite.h */,
 				5C67E4191C9678FE00A08005 /* Favorite.m */,
+				5C5701F31CC8915200AF729C /* Genre.h */,
+				5C5701F41CC8915200AF729C /* Genre.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -671,6 +676,7 @@
 				5C4BADEB1CABBAA2008C465D /* FirstScreenViewController.m in Sources */,
 				11F18B6D1C76D21B0066A8EF /* Youtube.m in Sources */,
 				5C4222941C916EBF00C1C525 /* PlaylistPopUpCustomCell.m in Sources */,
+				5C5701F51CC8915200AF729C /* Genre.m in Sources */,
 				5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */,
 				5C3629501C990F9F003C359F /* SearchTableViewController.m in Sources */,
 				5C46DAA91CB652140035837E /* Tutorial3ViewController.m in Sources */,

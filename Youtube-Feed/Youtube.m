@@ -55,9 +55,10 @@
 {
     NSLog(@"regionCode %@",self.regionCode);
     searchTerm = [searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    NSString *escapedString = [searchTerm stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSString* urlString;
     if (nextPage) {
-        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", self.nextPageToken, searchTerm, self.youtube_api_key, self.regionCode];
+        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", self.nextPageToken, escapedString, self.youtube_api_key, self.regionCode];
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         
         NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -83,7 +84,7 @@
         
     } else {
         
-        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", searchTerm, self.youtube_api_key, self.regionCode];
+        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", escapedString , self.youtube_api_key, self.regionCode];
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         
         NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -112,10 +113,12 @@
 
 - (void)getRecommendSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage
 {
-
+    
+    NSString *escapedString = [searchTerm stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
     if (nextPage) {
     
-        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", self.nextPageToken, searchTerm, self.youtube_api_key, self.regionCode];
+        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", self.nextPageToken, escapedString, self.youtube_api_key, self.regionCode];
         
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         
@@ -141,7 +144,7 @@
         
     } else {
         
-        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", searchTerm, self.youtube_api_key, self.regionCode];
+        NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@+music&type=video&key=%@&maxResults=25&regionCode=%@", escapedString, self.youtube_api_key, self.regionCode];
         
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         

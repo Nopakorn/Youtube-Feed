@@ -22,14 +22,21 @@
     self.youtube = [[Youtube alloc] init];
     
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
+    self.genreIdSelected = [[NSMutableArray alloc] initWithCapacity:10];
+    //self.genreIdList = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self createGerne];
+    //[self createGerne];
     [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
     self.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
+    
+    
 }
 
-
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 - (void)createGerne
 {
@@ -79,9 +86,11 @@
 - (BOOL)checkmark:(NSInteger )row
 {
     NSString *item = [self.genreList objectAtIndex:row];
-    if(self.genreSelected != 0){
-        for (int i = 0; i < [self.genreSelected count]; i++) {
-            if([[self.genreSelected objectAtIndex:i] isEqualToString:item]){
+    NSString *itemId = [self.genreIdList objectAtIndex:row];
+    
+    if(self.genreIdSelected != 0){
+        for (int i = 0; i < [self.genreIdSelected count]; i++) {
+            if([[self.genreIdSelected objectAtIndex:i] isEqualToString:itemId]){
                 return true;
                 
             }
@@ -113,6 +122,23 @@
     }else{
         [self.genreSelected addObject:[self.genreList objectAtIndex:indexPath.row]];
     }
+    //
+    NSString *itemId = [self.genreIdList objectAtIndex:indexPath.row];
+    if([self.genreIdSelected count] != 0 ){
+        for (int i=0; i < [self.genreIdSelected count]; i++) {
+            if([[self.genreIdSelected objectAtIndex:i] isEqualToString:itemId]){
+                [self.genreIdSelected removeObjectAtIndex:i];
+                break;
+                
+            }else if(i == [self.genreIdSelected count] - 1){
+                [self.genreIdSelected addObject:[self.genreIdList objectAtIndex:indexPath.row]];
+                break;
+            }
+        }
+    }else{
+        [self.genreIdSelected addObject:[self.genreIdList objectAtIndex:indexPath.row]];
+    }
+
     //clear
     for (int i=0; i < [self.genreSelected count]; i++) {
         
@@ -121,7 +147,15 @@
             //break;
         }
     }
-    NSLog(@"check genre selected %@",self.genreSelected);
+    for (int i=0; i < [self.genreIdSelected count]; i++) {
+        
+        if ([[self.genreIdSelected objectAtIndex:i] isEqualToString:@""]) {
+            [self.genreIdSelected removeObjectAtIndex:i];
+            //break;
+        }
+    }
+    
+    NSLog(@"check genre selected %@ id %@",self.genreSelected, self.genreIdSelected);
     
     if ([self.genreSelected count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
@@ -156,7 +190,7 @@
         }
     }
 
-    if ([self.genreList count] == 0) {
+    if ([self.genreSelected count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
                                                     message:description
@@ -176,12 +210,18 @@
     } else {
         
         NSString *genreSelectedString = @"";
+        NSString *genreIdSelectedString = @"";
+
         for(int i = 0 ; i < [self.genreSelected count] ; i++){
             genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+            genreIdSelectedString = [NSString stringWithFormat:@"%@ %@", genreIdSelectedString, [self.genreIdSelected objectAtIndex:i]];
+
         }
         genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        genreIdSelectedString = [genreIdSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
         
         [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
+        [[NSUserDefaults standardUserDefaults] setObject:genreIdSelectedString forKey:@"genreIdSelectedString"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"genreSelectedFact"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         [self.delegate firstSettingTableViewControllerDidSelected:self];

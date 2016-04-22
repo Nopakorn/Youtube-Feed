@@ -10,6 +10,7 @@
 #import "GenreListTableViewController.h"
 #import "SettingCustomCell.h"
 #import "AppDelegate.h"
+#import "MainTabBarViewController.h"
 
 #import <UIEMultiAccess/UIEMultiAccess.h>
 #import <UIEMultiAccess/DNApplicationManager.h>
@@ -201,7 +202,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)createGerne
 {
-    self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
+    MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
+    self.genreList = tabbar.genreTitles;
+
+//    self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
     NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
 }
 

@@ -18,7 +18,9 @@
 @property (strong, nonatomic) Youtube *youtube;
 @property (nonatomic, retain) NSMutableArray *selectedType;
 @property (nonatomic, retain) NSMutableArray *genreList;
+@property (nonatomic, retain) NSMutableArray *genreIdList;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
+@property (nonatomic, retain) NSMutableArray *genreIdSelected;
 
 @property(weak,nonatomic) IBOutlet UIButton  *submitButton;
 
