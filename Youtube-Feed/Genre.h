@@ -14,6 +14,7 @@
 }
 @property (nonatomic, copy) NSString *youtube_api_key;
 @property (nonatomic, copy) NSString *regionCode;
+@property (nonatomic, copy) NSString *language;
 @property (nonatomic, copy) NSString *hl;
 @property (nonatomic, retain) NSMutableArray *genreTitles;
 @property (nonatomic, retain) NSMutableArray *genreIds;

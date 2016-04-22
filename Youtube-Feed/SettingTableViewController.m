@@ -22,6 +22,7 @@
     self.tabBarItem.image = [[UIImage imageNamed:@"settingIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
     self.youtube = [[Youtube alloc] init];
+    
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.genreIdSelected = [[NSMutableArray alloc] initWithCapacity:10];
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
@@ -29,7 +30,7 @@
     self.genreList = tabbar.genreTitles;
     self.genreIdList = tabbar.genreIds;
     self.genreIdSelected = tabbar.genreIdSelected;
-     NSLog(@"id list = %@", self.genreIdList);
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Setting", nil)];
     [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
@@ -39,13 +40,14 @@
 {
     [super viewDidAppear:animated];
     NSLog(@"in viewDidAppaer setting");
-    
-//    NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-//    NSLog(@"saveGenre = %@", saveGenre);
-//    NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
-//    self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+//    self.genre = [[Genre alloc] init];
+//    NSString *language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+//    NSString *genreLanguage = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreLanguage"];
+//    if ([language isEqualToString:genreLanguage]) {
+//        
+//    }
+//    [self callGenre];
     [self.genreSelected removeAllObjects];
-    
     NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
     NSLog(@"saveGenreId = %@", saveGenreId);
     NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
@@ -62,13 +64,51 @@
     }
     NSLog(@"reset genre = %@", self.genreSelected);
     [self.tableView reloadData];
+//    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+//    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+//    spinner.center = CGPointMake(130.5, 65.5);
+//    spinner.color = [UIColor blackColor];
+//    [alert.view addSubview:spinner];
+//    [spinner startAnimating];
+//    [self presentViewController:alert animated:NO completion:nil];
+
 }
 
-- (void)createGenre
+- (void)callGenre
 {
-    self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
-    NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
+    [self.genre getGenreFromYoutube];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedGenre)
+                                                 name:@"LoadGenreTitle" object:nil];
 }
+- (void)receivedGenre
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.genreList = self.genre.genreTitles;
+        self.genreIdList = self.genre.genreIds;
+        [self.genreSelected removeAllObjects];
+        
+        NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
+        NSLog(@"saveGenreId = %@", saveGenreId);
+        NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+        self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
+        
+        for (int i = 0; i < [self.genreIdSelected count]; i++) {
+            for (int j = 0; j < [self.genreIdList count]; j++) {
+                
+                if ([[self.genreIdSelected objectAtIndex:i] isEqualToString:[self.genreIdList objectAtIndex:j]]) {
+                    [self.genreSelected addObject:[self.genreList objectAtIndex:j]];
+                }
+            }
+        }
+        NSLog(@"reset genre = %@", self.genreSelected);
+        [alert dismissViewControllerAnimated:YES completion:nil];
+        [self.tableView reloadData];
+
+    });
+
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

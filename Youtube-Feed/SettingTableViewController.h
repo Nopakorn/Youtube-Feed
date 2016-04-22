@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
+#import "Genre.h"
 
 @interface SettingTableViewController : UITableViewController<UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate>
 {
@@ -16,6 +17,7 @@
 }
 
 @property (strong, nonatomic) Youtube *youtube;
+@property (strong, nonatomic) Genre *genre;
 @property (nonatomic, retain) NSMutableArray *selectedType;
 @property (nonatomic, retain) NSMutableArray *genreList;
 @property (nonatomic, retain) NSMutableArray *genreIdList;

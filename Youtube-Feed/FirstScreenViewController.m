@@ -47,15 +47,13 @@
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
             self.spinner.hidden = NO;
             [self.spinner startAnimating];
-            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
-            self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
-            
-            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
-            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
-            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
-            
-            [self callSearchSecondTime:saveGenre];
+//            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+//            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
+//            self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+//            
+//            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
+//            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+//            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
             if (!receivedGenre) {
                 [self callGenreSecondTime];
             }
@@ -81,13 +79,12 @@
 
 - (void)callSearchSecondTime:(NSString *)saveGenre
 {
-   
+    
     [self.youtube getRecommendSearchYoutube:saveGenre withNextPage:NO];
     [self.spinner startAnimating];
     [self.view addSubview:self.spinner];
      self.loadingLabel.hidden = NO;
-    //[self presentViewController:alert animated:NO completion:nil];
-    
+    //[self presentViewController:alert animated:NO completion:nil];    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoId)
                                                  name:@"LoadVideoId" object:nil];
@@ -114,7 +111,7 @@
                                              selector:@selector(receivedGenre)
                                                  name:@"LoadGenreTitle" object:nil];
 }
-
+//
 - (void)callGenreSecondTime
 {
     [self.genre getGenreFromYoutube];
@@ -122,16 +119,39 @@
                                              selector:@selector(receivedGenreSecondtime)
                                                  name:@"LoadGenreTitle" object:nil];
 }
-
+//
 - (void)receivedGenreSecondtime
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"received genre");
         receivedGenre = YES;
-        [self callPerformTabbar];
+        //[self callPerformTabbar];
+        [self.genreSelected removeAllObjects];
+        
+        NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
+        NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+        
+        self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
+        for (int i = 0; i < [self.genreIdSelected count]; i++) {
+            for (int j = 0; j < [self.genre.genreIds count]; j++) {
+                
+                if ([[self.genreIdSelected objectAtIndex:i] isEqualToString:[self.genre.genreIds objectAtIndex:j]]) {
+                    [self.genreSelected addObject:[self.genre.genreTitles objectAtIndex:j]];
+                }
+            }
+        }
+        
+        NSString *genreSelectedString = @"";
+        for(int i = 0 ; i < [self.genreSelected count] ; i++){
+            genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
+            
+        }
+        
+        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        [self callSearchSecondTime:genreSelectedString];
     });
 }
-
+//
 - (void)receivedGenre
 {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -158,6 +178,7 @@
     } else {
         NSLog(@"not YET");
     }
+
 }
 
 - (void)didReceiveMemoryWarning {
