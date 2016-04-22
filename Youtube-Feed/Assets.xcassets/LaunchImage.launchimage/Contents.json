@@ -4,7 +4,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "KKP-LS-R5.5.png",
+      "filename" : "KKP_LauchScreen(5.5).png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -13,7 +13,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "KKP-LS(landscape)R5.5.png",
+      "filename" : "KKP_landscape(new).png",
       "minimum-system-version" : "8.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -22,7 +22,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "667h",
-      "filename" : "KKP-LS-R4.7.png",
+      "filename" : "KKP_LauchScreen(4.7).png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -30,7 +30,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "KKP-LS-2x.png",
+      "filename" : "KKP_LauchScreen(2x).png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -39,7 +39,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "KKP-LS-R4.png",
+      "filename" : "KKP_LauchScreen(r4).png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -47,21 +47,21 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "KKP-LS-1x.png",
+      "filename" : "KKP_LauchScreen(1x).png",
       "extent" : "full-screen",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "KKP-LS-2x-1.png",
+      "filename" : "KKP_LauchScreen(2x)-1.png",
       "extent" : "full-screen",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "KKP-LS-R4.7-1.png",
+      "filename" : "KKP_LauchScreen(r4)-1.png",
       "extent" : "full-screen",
       "subtype" : "retina4",
       "scale" : "2x"

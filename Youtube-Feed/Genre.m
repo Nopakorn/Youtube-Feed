@@ -23,10 +23,10 @@
         self.youtube_api_key = @"AIzaSyAPT3PRTZdTQDdoOtwviiC0FQPpJvfQlWE";
         NSLocale *currentLocale = [NSLocale currentLocale];
         self.regionCode = [currentLocale objectForKey:NSLocaleCountryCode];
-        self.language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+        //self.language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
         checkResult = @"";
         
-        if ([self.language isEqualToString:@"ja"]) {
+        if ([self.regionCode isEqualToString:@"JP"]) {
             self.hl = @"ja-JP";
         } else {
             self.hl = @"en-US";

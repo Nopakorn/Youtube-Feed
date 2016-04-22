@@ -46,6 +46,7 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
             self.spinner.hidden = NO;
+            self.loadingLabel.hidden = NO;
             [self.spinner startAnimating];
 //            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
 //            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
@@ -54,9 +55,9 @@
 //            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
 //            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
 //            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
-            if (!receivedGenre) {
-                [self callGenreSecondTime];
-            }
+            //if (!receivedGenre) {
+            [self callGenreSecondTime];
+            //}
             
         } else {
             self.loadingLabel.hidden = NO;

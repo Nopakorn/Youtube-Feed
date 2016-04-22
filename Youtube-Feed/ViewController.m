@@ -1378,7 +1378,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }  else if ([[self getButtonName:button] isEqualToString:@"Left"]){
         NSLog(@"Right button");
         return NO;
+    } else if ([[self getButtonName:button] isEqualToString:@"Home"]){
+        NSLog(@"Home button");
+        return NO;
     }
+
     return YES;
 }
 
