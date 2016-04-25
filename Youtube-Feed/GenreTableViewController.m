@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     ALERT_TYPE_FAIL_TO_CONNECT,
     ALERT_TYPE_DISCOVERY_TIMEOUT,
 };
-
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 static NSString *const kSettingsManualConnectionTitle = @"Manual Connection";
 static NSString *const kSettingsManualConnectionSubTitle =
 @"Be able to select a device which you want to connect.";
@@ -83,7 +83,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x3B4C4E);
 #pragma setup UMA in ViewDidload in GenreTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;

@@ -94,7 +94,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-    //self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4E6366);
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x3B4C4E);
     //[self.navigationItem.backBarButtonItem setTitle:@""];
 
 #pragma setup UMA in ViewDidload in PlaylistTableView

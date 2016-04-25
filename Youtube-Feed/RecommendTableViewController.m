@@ -99,6 +99,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
     [self.settingButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Setting", nil)] forState:UIControlStateNormal];
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x3B4C4E);
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
      _umaApp = [UMAApplication sharedApplication];

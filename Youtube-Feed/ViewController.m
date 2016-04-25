@@ -1336,6 +1336,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up %@", [self getButtonName:button]);
+    if (self.tabBarController.tabBar.hidden == YES && [[self getButtonName:button] isEqualToString:@"Back"]) {
+        backFact = NO;
+        
+    }
     [self hideNavWithFact:NO];
     [hideNavigation invalidate];
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {

@@ -70,7 +70,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     view.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setSelectedIndex:0];
     
-    
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] } forState:UIControlStateNormal];
     
     
      _inputDevices = [NSMutableArray array];
