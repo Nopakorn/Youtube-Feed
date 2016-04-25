@@ -81,7 +81,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
     self.searchTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
-    self.searchIconTitle.hidden = YES;
+    //self.searchIconTitle.hidden = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];

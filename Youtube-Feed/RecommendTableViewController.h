@@ -31,6 +31,7 @@
 @property (nonatomic, retain) NSMutableArray *videoId;
 @property (nonatomic, retain) NSMutableArray *imageData;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
+@property (weak, nonatomic) IBOutlet UIButton *settingButton;
 
 @property (nonatomic, assign) id<RecommendTableViewControllerDelegate> delegate;
 @property (nonatomic) NSInteger selectedRow;

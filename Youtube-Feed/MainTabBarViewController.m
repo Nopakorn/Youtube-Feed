@@ -64,9 +64,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidLoad];
     NSLog(@"view did Load Tabbar");
     self.customizableViewControllers = nil;
+    self.tabBarController.tabBar.barTintColor = [UIColor blackColor];
     UITableView *view = (UITableView *)self.moreNavigationController.topViewController.view;
+    
     view.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setSelectedIndex:0];
+    
+    
+    
+    
      _inputDevices = [NSMutableArray array];
 #pragma setup UMA in ViewDidloadTABBAR
     _inputDevices = [NSMutableArray array];

@@ -89,7 +89,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-
+    
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -713,22 +713,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             //
-            
-            if (backFactFavorite) {
-                NSLog(@"in tabbar controller");
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:1];
-                backFactFavorite = NO;
-                
-            } else {
-                
-                NSLog(@"in main view");
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager moveFocus:1];
-               
-                backFactFavorite = YES;
-            }
+            [self.navigationController popViewControllerAnimated:YES];
+//            if (backFactFavorite) {
+//                NSLog(@"in tabbar controller");
+//                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//                [_focusManager setHidden:NO];
+//                [_focusManager moveFocus:1];
+//                backFactFavorite = NO;
+//                
+//            } else {
+//                
+//                NSLog(@"in main view");
+//                [_focusManager setFocusRootView:self.tableView];
+//                [_focusManager moveFocus:1];
+//               
+//                backFactFavorite = YES;
+//            }
             
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
             return NO;

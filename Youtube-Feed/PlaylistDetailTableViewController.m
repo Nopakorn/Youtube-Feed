@@ -79,7 +79,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                  name:@"YoutubePlaying" object:nil];
     
     NSString *indexCheck = [NSString stringWithFormat:@"%@",self.playlistIndexCheck];
-    
     NSLog(@"indexCheck %@",indexCheck);
     if ([indexCheck isEqualToString:@"NO"]) {
         self.playlistDetailPlaying = NO;
@@ -525,27 +524,27 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"Press up in playlistDetail");
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
-        
-        if (backFactPlaylistDetail) {
-
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager setHidden:NO];
-            [_focusManager moveFocus:1];
-            backFactPlaylistDetail = NO;
-            
-        } else {
-
-            [_focusManager setFocusRootView:self.tableView];
-            //[_focusManager moveFocus:1];
-            if ([self.youtubeVideoList count] == 0) {
-                [_focusManager setHidden:YES];
-            }else{
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:1];
-            }
-            
-            backFactPlaylistDetail = YES;
-        }
+        [self.navigationController popViewControllerAnimated:YES];
+//        if (backFactPlaylistDetail) {
+//
+//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//            [_focusManager setHidden:NO];
+//            [_focusManager moveFocus:1];
+//            backFactPlaylistDetail = NO;
+//            
+//        } else {
+//
+//            [_focusManager setFocusRootView:self.tableView];
+//            //[_focusManager moveFocus:1];
+//            if ([self.youtubeVideoList count] == 0) {
+//                [_focusManager setHidden:YES];
+//            }else{
+//                [_focusManager setHidden:NO];
+//                [_focusManager moveFocus:1];
+//            }
+//            
+//            backFactPlaylistDetail = YES;
+//        }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
         return NO;

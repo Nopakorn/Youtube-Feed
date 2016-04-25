@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     ALERT_TYPE_FAIL_TO_CONNECT,
     ALERT_TYPE_DISCOVERY_TIMEOUT,
 };
-
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 static NSString *const kSettingsManualConnectionTitle = @"Manual Connection";
 static NSString *const kSettingsManualConnectionSubTitle =
 @"Be able to select a device which you want to connect.";
@@ -87,13 +87,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self fetchPlaylist];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
     self.playlistTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Playlists", nil)];
-    self.playlistsIconTitle.hidden = YES;
+    //self.playlistsIconTitle.hidden = YES;
     
     [self.editButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Edit Button", nil)] forState:UIControlStateNormal];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
+    //self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4E6366);
+    //[self.navigationItem.backBarButtonItem setTitle:@""];
 
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
@@ -598,7 +600,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             //
-            
             if (backFactPlaylist) {
                 NSLog(@"in tabbar controller");
                 [_focusManager setFocusRootView:self.tabBarController.tabBar];
@@ -609,7 +610,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 
                 NSLog(@"in main view");
                 [_focusManager setFocusRootView:self.tableView];
-                [_focusManager moveFocus:4];
+                [_focusManager moveFocus:1];
                 backFactPlaylist = YES;
             }
             

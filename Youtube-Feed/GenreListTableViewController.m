@@ -562,19 +562,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
         NSLog(@"Reccomened Current view in focus %@", [_focusManager focusedView]);
-        if (backFactGenreList) {
-            NSLog(@"in tabbar controller");
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            [_focusManager moveFocus:1];
-            backFactGenreList = NO;
-            
-        } else {
-            
-            NSLog(@"in main view");
-            [_focusManager setFocusRootView:self.tableView];
-            [_focusManager moveFocus:1];
-            backFactGenreList = YES;
-        }
+        [self.navigationController popViewControllerAnimated:YES];
+//        if (backFactGenreList) {
+//            NSLog(@"in tabbar controller");
+//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
+//            [_focusManager moveFocus:1];
+//            backFactGenreList = NO;
+//            
+//        } else {
+//            
+//            NSLog(@"in main view");
+//            [_focusManager setFocusRootView:self.tableView];
+//            [_focusManager moveFocus:1];
+//            backFactGenreList = YES;
+//        }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
         return NO;

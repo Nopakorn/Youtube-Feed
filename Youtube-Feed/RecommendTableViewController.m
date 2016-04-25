@@ -94,11 +94,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
     
     self.recommendedTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
-    self.recommendedIconTitle.hidden = YES;
+    self.recommendedIconTitle.hidden = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-    
+    [self.settingButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Setting", nil)] forState:UIControlStateNormal];
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
      _umaApp = [UMAApplication sharedApplication];

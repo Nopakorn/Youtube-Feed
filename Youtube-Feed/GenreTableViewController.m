@@ -77,7 +77,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self createGerne];
      NSLog(@"View did load");
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Genre", nil)];
-    self.genreIconTitle.hidden = YES;
+    //self.genreIconTitle.hidden = YES;
 //    UIImage *imageGenre = [UIImage imageNamed:@"genre1"];
 //    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:imageGenre];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -457,6 +457,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+         [_focusManager setHidden:YES];
         return NO;
         
     } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
