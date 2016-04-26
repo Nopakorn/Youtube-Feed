@@ -757,6 +757,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
             
             return YES;
+        } else if ([[self getButtonName:button] isEqualToString:@"Home"]) {
+            return NO;
+            
         }
 
     
