@@ -24,6 +24,7 @@
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     NSURL *baseURL = [NSURL fileURLWithPath:htmlFile];
     [self.tutorialWebView loadHTMLString:htmlString baseURL:baseURL];
+     [self.submitTutorialButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Start", nil)] forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {

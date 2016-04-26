@@ -276,6 +276,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             //break;
         }
     }
+    
     NSLog(@"check genre selected %@",self.genreSelected);
     
     if ([self.genreSelected count] == 0) {
@@ -292,9 +293,9 @@ typedef NS_ENUM(NSInteger, AlertType) {
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
         [alert addAction:ok];
-        //[alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
-
+        [self.genreIdSelected addObject:itemId];
+        [self.genreSelected addObject:item];
     }
     [tableView reloadData];
 

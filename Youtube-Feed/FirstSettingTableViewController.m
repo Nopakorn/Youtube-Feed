@@ -23,16 +23,63 @@
     
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.genreIdSelected = [[NSMutableArray alloc] initWithCapacity:10];
-    //self.genreIdList = [[NSMutableArray alloc] initWithCapacity:10];
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    //[self createGerne];
+
     [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
-    self.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
+    //self.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
     
     self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4F6366);
-    //self.submitButton.tintColor = UIColorFromRGB(0x4F6366);;
+    
+    [self.genreIdSelected addObject:[self.genreIdList objectAtIndex:0]];
+    [self.genreSelected addObject:[self.genreList objectAtIndex:0]];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
+}
+
+
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -158,7 +205,7 @@
     
     NSLog(@"check genre selected %@ id %@",self.genreSelected, self.genreIdSelected);
     
-    if ([self.genreSelected count] == 0) {
+    if ([self.genreIdSelected count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
                                                     message:description
@@ -175,6 +222,8 @@
         //[alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
         
+        [self.genreIdSelected addObject:itemId];
+        [self.genreSelected addObject:item];
     }
 
     [tableView reloadData];
