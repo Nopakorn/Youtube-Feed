@@ -94,9 +94,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x3B4C4E);
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4F6366);
     //[self.navigationItem.backBarButtonItem setTitle:@""];
-
+  
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -131,6 +131,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear PlaylistController");
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
     [_focusManager setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 
@@ -141,6 +146,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactPlaylist = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -211,7 +222,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     }
-    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+
 }
 
 

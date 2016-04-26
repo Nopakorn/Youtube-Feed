@@ -99,7 +99,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
     [self.settingButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Setting", nil)] forState:UIControlStateNormal];
-    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x3B4C4E);
+    
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4F6366);
+
+    
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
      _umaApp = [UMAApplication sharedApplication];
@@ -223,9 +226,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+        UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+        navBorder.tag = 99;
+        [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+        [navBorder setOpaque:YES];
+        [self.navigationController.navigationBar addSubview:navBorder];
         if (portraitFact) {
             if (backFactRecommended) {
                 [_focusManager setFocusRootView:self.tableView];
@@ -254,7 +266,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
         
     } else {
-        
+        UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+        navBorder.tag = 99;
+        [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+        [navBorder setOpaque:YES];
+        [self.navigationController.navigationBar addSubview:navBorder];
         if (landscapeFact) {
             if (backFactRecommended) {
                 
@@ -320,6 +336,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         didReceivedFromYoutubePlaying = NO;
         NSLog(@"not in recommend");
     }
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -335,7 +358,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear RecommendedController");
     [_focusManager setHidden:YES];
-    //didReceivedFromYoutubePlaying = NO;
+
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
@@ -375,21 +403,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-//    if (indexPath.row == self.selectedRow) {
-//        cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
-//    } else {
-//        cell.contentView.backgroundColor = [UIColor whiteColor];
-//    }
-    cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
-    cell.tag = indexPath.row;
-    NSString *duration = [self.recommendYoutube.durationList objectAtIndex:indexPath.row];
-    cell.durationLabel.text = [self durationText:duration];
-    
-    cell.thumnail.image = nil;
-//    
-    if([self.recommendYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.recommendYoutube.thumbnailList objectAtIndex:indexPath.row]]];
+    //check between durationlist and video idlist (they calling sperately in api methods)
+    if ([self.recommendYoutube.durationList count] == [self.recommendYoutube.videoIdList count]) {
+        cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
+        cell.tag = indexPath.row;
+        NSString *duration = [self.recommendYoutube.durationList objectAtIndex:indexPath.row];
+        cell.durationLabel.text = [self durationText:duration];
+        
+        cell.thumnail.image = nil;
+        //
+        if([self.recommendYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.recommendYoutube.thumbnailList objectAtIndex:indexPath.row]]];
                 
                 if(data){
                     [self.imageData addObject:data];
@@ -404,6 +429,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     }
                 }
             });
+        }
+ 
     }
     
     return cell;

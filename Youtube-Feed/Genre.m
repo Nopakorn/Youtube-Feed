@@ -74,8 +74,8 @@
         [self.genreIds addObject:q[@"id"]];
     }
 
-    NSLog(@"genre titles %@ %@ genre Language %@",self.genreTitles, self.genreIds, self.language);
-    NSLog(@"----------genre count %lu %lu",(unsigned long)[self.genreTitles  count], (unsigned long)[self.genreIds count]);
+//    NSLog(@"genre titles %@ %@ genre Language %@",self.genreTitles, self.genreIds, self.language);
+//    NSLog(@"----------genre count %lu %lu",(unsigned long)[self.genreTitles  count], (unsigned long)[self.genreIds count]);
     if ([checkResult isEqualToString:@"LoadGenreTitle"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreTitle" object:self];
     }

@@ -79,7 +79,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                  name:@"YoutubePlaying" object:nil];
     
     NSString *indexCheck = [NSString stringWithFormat:@"%@",self.playlistIndexCheck];
-    NSLog(@"indexCheck %@",indexCheck);
+
     if ([indexCheck isEqualToString:@"NO"]) {
         self.playlistDetailPlaying = NO;
         
@@ -91,8 +91,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             self.playlistDetailPlaying = NO;
         }
     }
-    NSLog(@"detail check %i",self.playlistDetailPlaying);
-    //[self.tableView reloadData];
+
    #pragma setup UMA in ViewDidload in PlaylistDetailTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -136,7 +135,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear PlaylistController");
     [_focusManager setHidden:YES];
-   
+    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     if (![[self.navigationController viewControllers] containsObject:self]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
@@ -150,7 +154,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactPlaylistDetail = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+
     NSLog(@"viewDidappear Playlistdetail");
     
     
@@ -167,7 +178,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     backFactPlaylistDetail = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     //[self.tableView reloadData];
 }
 
@@ -231,6 +241,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
 }
 
 

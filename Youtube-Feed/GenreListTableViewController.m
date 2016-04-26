@@ -133,6 +133,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear GenreListController");
     [_focusManager setHidden:YES];
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     if (![[self.navigationController viewControllers] containsObject:self]) {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
@@ -153,6 +158,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
      backFactGenreList = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
 #pragma setup UMA in ViewDidAppear in GenreListTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -223,7 +234,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     }
-    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
 }
 
 
@@ -249,11 +269,33 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     
-    cell.name.text = [self.genreYoutube.titleList objectAtIndex:indexPath.row];
-    cell.tag = indexPath.row;
-    NSString *duration = [self.genreYoutube.durationList objectAtIndex:indexPath.row];
-    cell.durationLabel.text = [self durationText:duration];
-    cell.thumnail.image = nil;
+    if ([self.genreYoutube.durationList count] == [self.genreYoutube.videoIdList count]) {
+        cell.name.text = [self.genreYoutube.titleList objectAtIndex:indexPath.row];
+        cell.tag = indexPath.row;
+        NSString *duration = [self.genreYoutube.durationList objectAtIndex:indexPath.row];
+        cell.durationLabel.text = [self durationText:duration];
+        cell.thumnail.image = nil;
+        //
+        if([self.genreYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.genreYoutube.thumbnailList objectAtIndex:indexPath.row]]];
+                
+                if(data){
+                    [self.imageData addObject:data];
+                    UIImage* image = [UIImage imageWithData:data];
+                    if (image) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if(cell.tag == indexPath.row){
+                                cell.thumnail.image = image;
+                                [cell setNeedsLayout];
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+    }
     
     if (self.genreListPlaying) {
         if (indexPath.row == self.selectedIndex) {
@@ -263,25 +305,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
     } else {
         cell.contentView.backgroundColor = [UIColor whiteColor];
-    }
-    //
-    if([self.genreYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.genreYoutube.thumbnailList objectAtIndex:indexPath.row]]];
-            
-            if(data){
-                [self.imageData addObject:data];
-                UIImage* image = [UIImage imageWithData:data];
-                if (image) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if(cell.tag == indexPath.row){
-                            cell.thumnail.image = image;
-                            [cell setNeedsLayout];
-                        }
-                    });
-                }
-            }
-        });
     }
     
     return cell;

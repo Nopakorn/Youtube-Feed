@@ -12,7 +12,28 @@
 #import "PlaylistEditDetailCustomCell.h"
 #import "AppDelegate.h"
 
-@interface PlaylistEditDetailTableViewController ()
+#import <UIEMultiAccess/UIEMultiAccess.h>
+#import <UIEMultiAccess/DNApplicationManager.h>
+#import <UIEMultiAccess/DNAppCatalog.h>
+#import <UIEMultiAccess/UMAApplicationInfo.h>
+
+typedef NS_ENUM(NSInteger, SectionType) {
+    SECTION_TYPE_SETTINGS,
+    SECTION_TYPE_LAST_CONNECTED_DEVICE,
+    SECTION_TYPE_CONNECTED_DEVICE,
+    SECTION_TYPE_DISCOVERED_DEVICES,
+};
+
+typedef NS_ENUM(NSInteger, AlertType) {
+    ALERT_TYPE_FAIL_TO_CONNECT,
+    ALERT_TYPE_DISCOVERY_TIMEOUT,
+};
+
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+@interface PlaylistEditDetailTableViewController ()<UMAFocusManagerDelegate>
+
+@property (nonatomic, strong) UMAFocusManager *focusManager;
+
 
 @end
 
@@ -27,6 +48,49 @@
     self.navigationItem.title = self.playlist.title;
     [self fetchYoutubeVideoList];
     //[self getYt];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+    [_focusManager setHidden:YES];
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [_focusManager setHidden:YES];
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
     
 }
 
@@ -102,11 +166,6 @@
     //[self fetchPlaylist];
     [self getYt];
     [self.tableView reloadData];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-     NSLog(@"view did Disappear playlisteditdetail");
 }
 
 - (void)didReceiveMemoryWarning {

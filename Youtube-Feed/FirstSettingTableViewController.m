@@ -9,7 +9,7 @@
 #import "FirstSettingTableViewController.h"
 #import "SettingCustomCell.h"
 
-
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 @interface FirstSettingTableViewController ()
 
 @end
@@ -30,7 +30,8 @@
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
     self.titleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Initial Setting", nil)];
     
-    
+    self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4F6366);
+    //self.submitButton.tintColor = UIColorFromRGB(0x4F6366);;
 }
 
 - (BOOL)prefersStatusBarHidden

@@ -106,6 +106,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
  
     didReceivedFromYoutubePlaying = false;
     [_focusManager setHidden:YES];
+    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     if (![[self.navigationController viewControllers] containsObject:self]) {
@@ -119,6 +125,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactFavorite = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
 
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
@@ -216,7 +228,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     }
-    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
 }
 
 

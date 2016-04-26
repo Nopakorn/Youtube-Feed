@@ -61,6 +61,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     BOOL nextPage;
     BOOL didReceivedFromYoutubePlaying;
+    BOOL spinerFact;
 }
 
 @synthesize delegate = _delegate;
@@ -69,7 +70,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidLoad];
     self.searchBar.delegate = self;
     self.searchBar.placeholder = @"Search from Youtube";
-    
+    spinerFact = NO;
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 //    [self.view addGestureRecognizer:tap];
     nextPage = true;
@@ -85,7 +86,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-
 
 }
 
@@ -118,8 +118,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    
     NSLog(@"viewDidDisappear SearchController");
     [_focusManager setHidden:YES];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -131,9 +140,37 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         didReceivedFromYoutubePlaying = NO;
         NSLog(@"not in search");
     }
-    [self.tableView reloadData];
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_focusManager setHidden:YES];
+    [self.tableView reloadData];
+
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    
+    if (spinerFact) {
+        spinner.center = CGPointMake(self.view.center.x, 85.5);
+    }
+    
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
     
 }
 
@@ -167,47 +204,49 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         cell = [nib objectAtIndex:0];
         
     }
-    
-    cell.name.text = [self.searchYoutube.titleList objectAtIndex:indexPath.row];
-    cell.tag = indexPath.row;
-    NSString *duration = [self.searchYoutube.durationList objectAtIndex:indexPath.row];
-    cell.durationLabel.text = [self durationText:duration];
-    cell.thumnail.image = nil;
-    
-    if (didReceivedFromYoutubePlaying) {
-        if (indexPath.row == self.selectedRow) {
-            cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+    if ([self.searchYoutube.durationList count] != [self.searchYoutube.videoIdList count]) {
+        
+        NSLog(@"No data");
+        
+    } else {
+        cell.name.text = [self.searchYoutube.titleList objectAtIndex:indexPath.row];
+        cell.tag = indexPath.row;
+        NSString *duration = [self.searchYoutube.durationList objectAtIndex:indexPath.row];
+        cell.durationLabel.text = [self durationText:duration];
+        cell.thumnail.image = nil;
+        
+        if (didReceivedFromYoutubePlaying) {
+            if (indexPath.row == self.selectedRow) {
+                cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
+            } else {
+                cell.contentView.backgroundColor = [UIColor whiteColor];
+            }
         } else {
             cell.contentView.backgroundColor = [UIColor whiteColor];
         }
-    } else {
-        cell.contentView.backgroundColor = [UIColor whiteColor];
-    }
-
-    //
-    if([self.searchYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.searchYoutube.thumbnailList objectAtIndex:indexPath.row]]];
-            
-            if(data){
-                [self.imageData addObject:data];
-                UIImage* image = [UIImage imageWithData:data];
-                if (image) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if(cell.tag == indexPath.row){
-                            cell.thumnail.image = image;
-                            [cell setNeedsLayout];
-                        }
-                    });
+        
+        //
+        if([self.searchYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.searchYoutube.thumbnailList objectAtIndex:indexPath.row]]];
+                
+                if(data){
+                    [self.imageData addObject:data];
+                    UIImage* image = [UIImage imageWithData:data];
+                    if (image) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if(cell.tag == indexPath.row){
+                                cell.thumnail.image = image;
+                                [cell setNeedsLayout];
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
     
-    
-//    if (indexPath.row == [self.searchYoutube.videoIdList count]-1) {
-//        [self launchReload];
-//    }
     return cell;
 }
 
@@ -299,7 +338,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.searchText = searchBar.text;
     NSLog(@"search text %@",searchBar.text);
-    
+    spinerFact = YES;
     self.searchYoutube = [[Youtube alloc] init];
     [self.searchYoutube callSearchByText:searchBar.text withNextPage:NO];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -319,6 +358,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.tableView reloadData];
         [self.searchBar resignFirstResponder];
         self.searchBar.showsCancelButton = NO;
+        spinerFact = NO;
     });
 
 }

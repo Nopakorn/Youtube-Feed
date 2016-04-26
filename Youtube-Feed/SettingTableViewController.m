@@ -9,13 +9,34 @@
 #import "SettingTableViewController.h"
 #import "MainTabBarViewController.h"
 #import "SettingCustomCell.h"
+#import "AppDelegate.h"
 
+#import <UIEMultiAccess/UIEMultiAccess.h>
+#import <UIEMultiAccess/DNApplicationManager.h>
+#import <UIEMultiAccess/DNAppCatalog.h>
+#import <UIEMultiAccess/UMAApplicationInfo.h>
 
-@interface SettingTableViewController ()
+typedef NS_ENUM(NSInteger, SectionType) {
+    SECTION_TYPE_SETTINGS,
+    SECTION_TYPE_LAST_CONNECTED_DEVICE,
+    SECTION_TYPE_CONNECTED_DEVICE,
+    SECTION_TYPE_DISCOVERED_DEVICES,
+};
 
+typedef NS_ENUM(NSInteger, AlertType) {
+    ALERT_TYPE_FAIL_TO_CONNECT,
+    ALERT_TYPE_DISCOVERY_TIMEOUT,
+};
+
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+@interface SettingTableViewController ()<UMAFocusManagerDelegate>
+
+@property (nonatomic, strong) UMAFocusManager *focusManager;
 @end
 
+
 @implementation SettingTableViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,22 +55,17 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Setting", nil)];
     [self.submitButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Save", nil)] forState:UIControlStateNormal];
+    
+    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+    [_focusManager setHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     NSLog(@"in viewDidAppaer setting");
-//    self.genre = [[Genre alloc] init];
-//    NSString *language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
-//    NSString *genreLanguage = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreLanguage"];
-//    if ([language isEqualToString:genreLanguage]) {
-//        
-//    }
-//    [self callGenre];
     [self.genreSelected removeAllObjects];
     NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
-    NSLog(@"saveGenreId = %@", saveGenreId);
     NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
     self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
     
@@ -63,16 +79,48 @@
         }
     }
     NSLog(@"reset genre = %@", self.genreSelected);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
+    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
+    [_focusManager setHidden:YES];
     [self.tableView reloadData];
-//    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
-//    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-//    spinner.center = CGPointMake(130.5, 65.5);
-//    spinner.color = [UIColor blackColor];
-//    [alert.view addSubview:spinner];
-//    [spinner startAnimating];
-//    [self presentViewController:alert animated:NO completion:nil];
+}
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    NSLog(@"View changing");
 
 }
+
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [_focusManager setHidden:YES];
+    for (UIView *subView in self.navigationController.navigationBar.subviews) {
+        if (subView.tag == 99) {
+            [subView removeFromSuperview];
+        }
+    }
+}
+
 
 - (void)callGenre
 {

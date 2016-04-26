@@ -27,7 +27,6 @@
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     [self.navigationController setNavigationBarHidden:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    
     self.loadingLabel.hidden = YES;
     self.spinner.hidden = YES;
     //[self.spinner startAnimating];
@@ -48,17 +47,9 @@
             self.spinner.hidden = NO;
             self.loadingLabel.hidden = NO;
             [self.spinner startAnimating];
-//            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-//            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
-//            self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
-//            
-//            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
-//            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
-//            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
-            //if (!receivedGenre) {
+
             [self callGenreSecondTime];
-            //}
-            
+
         } else {
             self.loadingLabel.hidden = NO;
             self.spinner.hidden = NO;
@@ -80,12 +71,11 @@
 
 - (void)callSearchSecondTime:(NSString *)saveGenre
 {
-    
+    NSLog(@"calling search second time ");
     [self.youtube getRecommendSearchYoutube:saveGenre withNextPage:NO];
     [self.spinner startAnimating];
     [self.view addSubview:self.spinner];
      self.loadingLabel.hidden = NO;
-    //[self presentViewController:alert animated:NO completion:nil];    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedLoadVideoId)
                                                  name:@"LoadVideoId" object:nil];
@@ -126,7 +116,6 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         NSLog(@"received genre");
         receivedGenre = YES;
-        //[self callPerformTabbar];
         [self.genreSelected removeAllObjects];
         
         NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
@@ -156,8 +145,9 @@
 - (void)receivedGenre
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        receivedGenre = YES;
+        //receivedGenre = YES;
         [self performSegueWithIdentifier:@"SettingView" sender:@0];
+         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreTitle" object:nil];
     });
 }
 
@@ -203,7 +193,11 @@
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
 
     } else if ([segue.identifier isEqualToString:@"SettingView"]) {
-        FirstSettingTableViewController *newVC = segue.destinationViewController;
+        NSLog(@"setting view segue");
+        UINavigationController *nav = segue.destinationViewController;
+
+        FirstSettingTableViewController *newVC = [nav.viewControllers objectAtIndex:0];
+
         newVC.delegate = self;
         newVC.genreList = self.genre.genreTitles;
         newVC.genreIdList = self.genre.genreIds;
@@ -238,7 +232,6 @@
         genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
     }
     genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    [self callSearchFirstTime:genreSelectedString];
 }
 
 
