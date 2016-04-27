@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSMutableArray  *imageData;
 @property (nonatomic, retain) IBOutlet UISearchBar  *searchBar;
 @property (nonatomic, copy) NSString *searchText;
+@property (nonatomic, copy) NSString *searchTerm;
 @property (nonatomic) BOOL searchPlaying;
 
 @property (nonatomic, assign) id<SearchTableViewControllerDelegate> delegate;

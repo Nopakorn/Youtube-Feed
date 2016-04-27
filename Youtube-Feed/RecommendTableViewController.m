@@ -351,7 +351,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     [_focusManager moveFocus:1];
     
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -404,7 +404,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
     //check between durationlist and video idlist (they calling sperately in api methods)
-    if ([self.recommendYoutube.durationList count] == [self.recommendYoutube.videoIdList count]) {
+    //if ([self.recommendYoutube.durationList count] == [self.recommendYoutube.videoIdList count]) {
         cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
         cell.tag = indexPath.row;
         NSString *duration = [self.recommendYoutube.durationList objectAtIndex:indexPath.row];
@@ -431,7 +431,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             });
         }
  
-    }
+   // }
     
     return cell;
 }

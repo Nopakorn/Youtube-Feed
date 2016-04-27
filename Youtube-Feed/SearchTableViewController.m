@@ -71,8 +71,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.searchBar.delegate = self;
     self.searchBar.placeholder = @"Search from Youtube";
     spinerFact = NO;
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-//    [self.view addGestureRecognizer:tap];
     nextPage = true;
     self.youtube = [[Youtube alloc] init];
     self.searchYoutube = [[Youtube alloc] init];
@@ -94,14 +92,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     Youtube *youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     NSInteger selectedIndex = [[notification.userInfo objectForKey:@"youtubeCurrentPlaying"] integerValue];
     self.searchPlaying = [[notification.userInfo objectForKey:@"searchFact"] boolValue];
+    self.searchTerm = [notification.userInfo objectForKey:@"searchTerm"];
+    
     if (self.searchPlaying) {
-        if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[self.searchYoutube.videoIdList objectAtIndex:selectedIndex]])
-        {
-            didReceivedFromYoutubePlaying = YES;
-            self.selectedRow = selectedIndex;
-            [self.tableView reloadData];
-            
-        } else {
+        if ([self.searchTerm isEqualToString:self.searchText]) {
+            if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[self.searchYoutube.videoIdList objectAtIndex:selectedIndex]])
+            {
+                didReceivedFromYoutubePlaying = YES;
+                self.selectedRow = selectedIndex;
+                [self.tableView reloadData];
+                
+            }
+        }else {
             
             didReceivedFromYoutubePlaying = NO;
         }
@@ -134,8 +136,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    NSLog(@"viewdidappear in search table");
     if (self.searchPlaying) {
-        didReceivedFromYoutubePlaying = YES;
+        if ([self.searchTerm isEqualToString:self.searchText]) {
+            didReceivedFromYoutubePlaying = YES;
+        } else {
+            didReceivedFromYoutubePlaying = NO;
+        }
+        
     } else {
         didReceivedFromYoutubePlaying = NO;
         NSLog(@"not in search");
@@ -150,7 +158,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_focusManager setHidden:YES];
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 
 }
 
@@ -259,7 +267,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"didselect row");
     self.selectedRow = indexPath.row;
-    [self.delegate searchTableViewControllerDidSelected:self];
+    //[self.delegate searchTableViewControllerDidSelected:self];
+    
+    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSDictionary *userInfo = @{ @"youtubeObj": self.searchYoutube,
+                                @"selectedIndex": selected,
+                                @"searchTerm":self.searchText };
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"PlaySearchDidSelected" object:self userInfo:userInfo];
+
+    
+    
     [self.tabBarController setSelectedIndex:0];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -335,7 +353,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.searchYoutube.thumbnailList removeAllObjects];
     [self.searchYoutube.durationList removeAllObjects];
     [self.tableView reloadData];
-    
+    //didReceivedFromYoutubePlaying = false;
     self.searchText = searchBar.text;
     NSLog(@"search text %@",searchBar.text);
     spinerFact = YES;
@@ -359,6 +377,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.searchBar resignFirstResponder];
         self.searchBar.showsCancelButton = NO;
         spinerFact = NO;
+        if ([self.searchText isEqualToString:self.searchTerm]) {
+            if (self.searchPlaying) {
+                didReceivedFromYoutubePlaying = YES;
+            } else {
+                didReceivedFromYoutubePlaying = NO;
+    
+            }
+
+        } else {
+            didReceivedFromYoutubePlaying = NO;
+        }
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearch" object:nil];
+
     });
 
 }

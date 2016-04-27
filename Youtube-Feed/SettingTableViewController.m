@@ -78,6 +78,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             }
         }
     }
+    NSLog(@"save genre = %@", saveGenreId);
     NSLog(@"reset genre = %@", self.genreSelected);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -277,7 +278,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         }
     }
     
-    NSLog(@"check genre selected %@",self.genreSelected);
+    NSLog(@"check genre selected %@, %@",self.genreSelected, self.genreIdSelected);
     
     if ([self.genreSelected count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];

@@ -82,6 +82,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL searchFact;
     NSString *playlistIndexCheck;
     NSString *genreType;
+    NSString *searchTerm;
 }
 - (id)init
 {
@@ -132,6 +133,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     recommendFact = YES;
     playlistIndexCheck = @"";
     genreType = @"";
+    searchTerm = @"";
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     self.managedObjectContext = appDelegate.managedObjectContext;
     
@@ -155,7 +157,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                           @"controls" : @0,
                           @"showinfo" : @1,
                           @"modestbranding" : @1,
-                              };
+                          @"origin" :@"http://www.youtube.com"   };
     
     [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
     
@@ -179,7 +181,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                              selector:@selector(receivedFavoriteDidSelectedNotification:)
                                                  name:@"FavoriteDidSelected" object:nil];
     
-   
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedSearchDidSelectedNotification:)
+                                                 name:@"PlaySearchDidSelected" object:nil];
     
     UITapGestureRecognizer *tgpr = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(handleTapPressed:)];
@@ -737,7 +741,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                 @"searchFact":@(searchFact),
                                 @"genreListFact":@(genreListFact),
                                 @"playlistIndexCheck":playlistIndexCheck,
-                                @"genreType":genreType };
+                                @"genreType":genreType,
+                                @"searchTerm":searchTerm };
     
     
     if (state == kYTPlayerStatePlaying) {
@@ -757,10 +762,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else if (state == kYTPlayerStatePaused) {
         NSLog(@"video paused");
         [self.timerProgress invalidate];
-         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
-         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
-//        [self hideNavWithFact:NO];
-//        [hideNavigation invalidate];
+        UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+        [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
     }
 
     if (state == kYTPlayerStateEnded) {
@@ -782,8 +785,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     }else if (state == kYTPlayerErrorVideoNotFound) {
-//        [self hideNavWithFact:NO];
-//        [hideNavigation invalidate];
+
         NSLog(@"Video not found : %@", [self.youtube.videoIdList objectAtIndex:item]);
         
     }else if (state == kYTPlayerStateUnstarted) {
@@ -820,7 +822,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [[NSNotificationCenter defaultCenter] postNotificationName:@"Playback Started" object:self];
             [self.playerView playVideo];
             [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
-            //self.playButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+
         } else {
             [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
             [self.playerView pauseVideo];
@@ -829,14 +831,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         
     } else if (sender == self.nextButton) {
-        
         item+=1;
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if (outOfLengthAlert) {
             
-            if (item == [self.youtube.videoIdList count]) {
+            if (item >= [self.youtube.videoIdList count]) {
                 NSLog(@"Out of length");
                 outOfLengthAlert = false;
                 outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
@@ -882,25 +883,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
     NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
     NSString *videoDuration = [self.youtube.durationList objectAtIndex:item];
-    //self.favorite = [[Favorite alloc] init];
+
     [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId andDuration:videoDuration];
     NSLog(@"favorite check favorite %@", self.favorite.videoTitle);
     UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
 
     if ([[self.favoriteButton imageForState:UIControlStateNormal] isEqual:btnImageStar]) {
-        
-//        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Adding to Favorite" preferredStyle:UIAlertControllerStyleAlert];
-//        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-//        [self presentViewController:favoriteAlert animated:YES completion:nil];
-//        [self.favoriteList addObject:self.favorite];
+
         [self insertFavorite:self.favorite];
         [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
+        
     } else {
         
-//        favoriteAlert = [UIAlertController alertControllerWithTitle:nil message:@"Delete From Favorite" preferredStyle:UIAlertControllerStyleAlert];
-//        favoriteAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissFavoriteAlert) userInfo:nil repeats:NO];
-//        [self presentViewController:favoriteAlert animated:YES completion:nil];
         [self deleteFavorite:self.favorite];
         [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
     }
@@ -1028,29 +1023,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    UIViewController *newVC = segue.destinationViewController;
-//    
-//    [ViewController setPresentationStyleForSelfController:self presentingController:newVC];
-//}
-//
-//+ (void)setPresentationStyleForSelfController:(UIViewController *)selfController presentingController:(UIViewController *)presentingController
-//{
-//    if ([NSProcessInfo instancesRespondToSelector:@selector(isOperatingSystemAtLeastVersion:)])
-//    {
-//        //iOS 8.0 and above
-//        presentingController.providesPresentationContextTransitionStyle = YES;
-//        presentingController.definesPresentationContext = YES;
-//        
-//        [presentingController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
-//    }
-//    else
-//    {
-//        [selfController setModalPresentationStyle:UIModalPresentationCurrentContext];
-//        [selfController.navigationController setModalPresentationStyle:UIModalPresentationCurrentContext];
-//    }
-//}
+- (void)receivedSearchDidSelectedNotification:(NSNotification *)notification
+{
+    searchTableViewFlag = true;
+    
+    favoriteFact = NO;
+    playlistDetailFact = NO;
+    recommendFact = NO;
+    searchFact = YES;
+    genreListFact = NO;
+    recommendFact = NO;
+    
+    self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    searchTerm = [notification.userInfo objectForKey:@"searchTerm"];
+
+    NSLog(@"Received search %lu item: %lu",(unsigned long)[self.youtube.titleList count], item);
+}
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
