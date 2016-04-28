@@ -22,6 +22,7 @@
 @property (nonatomic, copy) NSString *nextPageToken;
 @property (nonatomic, copy) NSString *prevPageToken;
 @property (nonatomic, copy) NSString *regionCode;
+@property (nonatomic, copy) NSString *hl;
 @property (nonatomic, copy) NSString *videoIdListForGetDuration;
 
 @property (nonatomic, retain) NSMutableArray *videoIdList;
@@ -38,5 +39,5 @@
 - (void)callSearchByText:(NSString *)text withNextPage:(BOOL)nextPage;
 - (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
 - (void)getRecommendSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
-
+- (void)changeIndexNextPage:(int )newIndexNextPage;
 @end

@@ -132,10 +132,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
             NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
             NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-            [self.tableView beginUpdates];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView endUpdates];
-            //[self.tableView reloadData];
+//            [self.tableView beginUpdates];
+//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+//            [self.tableView endUpdates];
+            [self.tableView reloadData];
             
         } else {
             didReceivedFromYoutubePlaying = NO;
@@ -232,12 +232,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
     }
     NSLog(@"View changing");
+    UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
+    navBorder.tag = 99;
+    [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
+    [navBorder setOpaque:YES];
+    [self.navigationController.navigationBar addSubview:navBorder];
+    
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
-        navBorder.tag = 99;
-        [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
-        [navBorder setOpaque:YES];
-        [self.navigationController.navigationBar addSubview:navBorder];
+     
         if (portraitFact) {
             if (backFactRecommended) {
                 [_focusManager setFocusRootView:self.tableView];
@@ -266,11 +268,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
         
     } else {
-        UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
-        navBorder.tag = 99;
-        [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
-        [navBorder setOpaque:YES];
-        [self.navigationController.navigationBar addSubview:navBorder];
+
         if (landscapeFact) {
             if (backFactRecommended) {
                 
@@ -322,9 +320,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //global objects
     backFactRecommended = YES;
     NSLog(@"view did appear recommend with selected row %ld",(long)self.selectedRow);
+//    [self.recommendYoutube.titleList removeAllObjects];
+//    [self.recommendYoutube.videoIdList removeAllObjects];
+//    [self.recommendYoutube.thumbnailList removeAllObjects];
+//    [self.recommendYoutube.durationList removeAllObjects];
+//    
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
+     NSLog(@"recommend obj: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
+     NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
     indexFocusTabbar = 1;
     portraitFact = YES;
     landscapeFact = YES;
@@ -404,7 +409,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
     //check between durationlist and video idlist (they calling sperately in api methods)
-    //if ([self.recommendYoutube.durationList count] == [self.recommendYoutube.videoIdList count]) {
+    if ([self.recommendYoutube.durationList count] == [self.recommendYoutube.videoIdList count]) {
         cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
         cell.tag = indexPath.row;
         NSString *duration = [self.recommendYoutube.durationList objectAtIndex:indexPath.row];
@@ -431,7 +436,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             });
         }
  
-   // }
+    } else {
+       // NSLog(@"duration %lu and title list %lu",(unsigned long)[self.recommendYoutube.durationList count], (unsigned long)[self.recommendYoutube.videoIdList count]);
+    }
     
     return cell;
 }
@@ -553,11 +560,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
+         NSLog(@"finished load duration %lu and title list %lu",(unsigned long)[self.recommendYoutube.durationList count], (unsigned long)[self.recommendYoutube.videoIdList count]);
         [self.tableView reloadData];
         nextPage = true;
-        [_focusManager moveFocus:indexFocus];
-        //tell viewcontroller to update youtube obj
-        //self.delegate recommendTableViewControllerNextPage:self];
+        //[_focusManager moveFocus:indexFocus];
+         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
     });
     
 }
@@ -569,10 +576,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     //NSLog(@"in tabbar %id",backFactRecommended);
     if (nextPage == 0) {
+        NSLog(@"next page 0");
         return YES;
         
     } else {
-        
+        NSLog(@"next page not  0");
         if (backFactRecommended == 0) {
             //update focus on tabbar
             if (direction == 1) {
@@ -641,9 +649,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
         }
         
-        
+         //NSLog(@"in tabbar %ld direction %ld",(long)indexFocusTabbar, (long)direction);
         return NO;
-
+        
     }
     
 

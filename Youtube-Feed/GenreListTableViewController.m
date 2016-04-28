@@ -75,6 +75,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.searchTerm;
    
+    
+    
     if ([self.genreType isEqualToString:self.searchTerm]) {
         self.genreListPlaying = YES;
         
@@ -370,7 +372,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.tableView reloadData];
         nextPage = true;
         [_focusManager moveFocus:indexFocus];
-
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoIdNextPage" object:nil];
     });
     
 }

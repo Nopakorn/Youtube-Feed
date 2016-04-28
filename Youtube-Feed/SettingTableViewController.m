@@ -74,11 +74,13 @@ typedef NS_ENUM(NSInteger, AlertType) {
            
             if ([[self.genreIdSelected objectAtIndex:i] isEqualToString:[self.genreIdList objectAtIndex:j]]) {
                 [self.genreSelected addObject:[self.genreList objectAtIndex:j]];
-                 NSLog(@"adding genreSelected");
+                 NSLog(@"adding genreSelected i:%d, j:%d",i,j);
+                break;
             }
         }
     }
     NSLog(@"save genre = %@", saveGenreId);
+    NSLog(@"genre id selected = %@", saveGenreId);
     NSLog(@"reset genre = %@", self.genreSelected);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -280,7 +282,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     NSLog(@"check genre selected %@, %@",self.genreSelected, self.genreIdSelected);
     
-    if ([self.genreSelected count] == 0) {
+    if ([self.genreIdSelected count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
                                                     message:description
@@ -371,16 +373,23 @@ typedef NS_ENUM(NSInteger, AlertType) {
 - (void)receivedLoadVideoId
 {
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
+    //tabbar.recommendYoutube = [[Youtube alloc] init];
+    
     [tabbar.recommendYoutube.titleList removeAllObjects];
     [tabbar.recommendYoutube.videoIdList removeAllObjects];
     [tabbar.recommendYoutube.thumbnailList removeAllObjects];
+    [tabbar.recommendYoutube.durationList removeAllObjects];
+    [tabbar.recommendYoutube changeIndexNextPage:0];
     
     for (int i = 0 ; i < [self.youtube.videoIdList count] ; i++) {
         [tabbar.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
         [tabbar.recommendYoutube.titleList addObject:[self.youtube.titleList objectAtIndex:i]];
         [tabbar.recommendYoutube.thumbnailList addObject:[self.youtube.thumbnailList objectAtIndex:i]];
+        [tabbar.recommendYoutube.durationList addObject:[self.youtube.durationList objectAtIndex:i]];
+
+
     }
-    
+     NSLog(@"finished load youtube in setting duration %lu and title list %lu",(unsigned long)[self.youtube.durationList count], (unsigned long)[self.youtube.videoIdList count]);
     tabbar.genreSelected = self.genreSelected;
     tabbar.genreIdSelected = self.genreIdSelected;
     
@@ -392,6 +401,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
                                    };
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SettingDidSelected" object:self userInfo:userInfo];
         [self.tabBarController setSelectedIndex:0];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoId" object:nil];
     });
     
     

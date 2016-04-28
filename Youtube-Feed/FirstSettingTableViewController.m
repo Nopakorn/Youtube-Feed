@@ -133,7 +133,7 @@
 
 - (BOOL)checkmark:(NSInteger )row
 {
-    NSString *item = [self.genreList objectAtIndex:row];
+   
     NSString *itemId = [self.genreIdList objectAtIndex:row];
     
     if(self.genreIdSelected != 0){

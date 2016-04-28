@@ -228,6 +228,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.genreList = tabbar.genreTitles;
+    self.genreIdList = tabbar.genreIds;
     
     NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
 }
@@ -276,7 +277,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.searchTerm = [self.genreList objectAtIndex:indexPath.row];
+    //self.searchTerm = [self.genreList objectAtIndex:indexPath.row];
+    self.searchTerm = [self.genreIdList objectAtIndex:indexPath.row];
     [self callYoutube:self.searchTerm];
 }
 
@@ -284,6 +286,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)callYoutube:(NSString *)searchTerm
 {
     self.genreYoutube = [[Youtube alloc] init];
+   
     [self.genreYoutube getGenreSearchYoutube:searchTerm withNextPage:NO];
     
     alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];

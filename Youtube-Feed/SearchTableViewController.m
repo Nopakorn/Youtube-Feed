@@ -403,6 +403,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.tableView reloadData];
 //        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.searchYoutube.videoIdList count]-26 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         nextPage = true;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearchNextPage" object:nil];
     });
 
 }

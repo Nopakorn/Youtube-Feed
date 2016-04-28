@@ -47,7 +47,14 @@
             self.spinner.hidden = NO;
             self.loadingLabel.hidden = NO;
             [self.spinner startAnimating];
-
+            
+//            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
+//            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
+//            self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
+//            
+//            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
+//            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+//            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
             [self callGenreSecondTime];
 
         } else {
@@ -138,6 +145,7 @@
         }
         
         genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        NSLog(@"with genre string %@", genreSelectedString);
         [self callSearchSecondTime:genreSelectedString];
     });
 }

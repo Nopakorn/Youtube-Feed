@@ -185,6 +185,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                              selector:@selector(receivedSearchDidSelectedNotification:)
                                                  name:@"PlaySearchDidSelected" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedSettingDidSelectedNotification:)
+                                                 name:@"SettingDidSelected" object:nil];
+    
+    
     UITapGestureRecognizer *tgpr = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                  action:@selector(handleTapPressed:)];
     [self.view addGestureRecognizer:tgpr];
@@ -732,7 +737,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
     NSLog(@"playerView state changing");
-    NSString *selected = [NSString stringWithFormat:@"%lu",item];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)item];
     NSDictionary *userInfo = @{ @"youtubeCurrentPlaying": selected,
                                 @"youtubeObj":self.youtube,
                                 @"favoriteFact":@(favoriteFact),
@@ -1004,7 +1009,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     genreType = [notification.userInfo objectForKey:@"genreType"];
     //NSLog(@"Received playGenreList");
-     NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], item);
+     NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
 }
 
 - (void)receivedFavoriteDidSelectedNotification:(NSNotification *)notification
@@ -1038,13 +1043,24 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     searchTerm = [notification.userInfo objectForKey:@"searchTerm"];
 
-    NSLog(@"Received search %lu item: %lu",(unsigned long)[self.youtube.titleList count], item);
+    NSLog(@"Received search %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
 }
+
+- (void)receivedSettingDidSelectedNotification:(NSNotification *)notification
+{
+    
+    self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    item = 0;
+        
+    NSLog(@"Received setting did selected %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
+}
+
+
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     [hideNavigation invalidate];
-    [_focusManager setHidden:NO];
+    //[_focusManager setHidden:YES];
     backFact = YES;
     if (tabBarController.selectedIndex == 2) {
     
@@ -1053,6 +1069,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         playlistView.favorite = self.favorite;
         playlistView.youtube = self.youtube;
         NSLog(@"select playlist");
+        [_focusManager setHidden:NO];
     }
     
     if (tabBarController.selectedIndex == 1) {
@@ -1073,6 +1090,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         SearchTableViewController *seachView = [nav.viewControllers objectAtIndex:0];
         seachView.delegate = self;
         NSLog(@"select search");
+         [_focusManager setHidden:YES];
     }
 }
 
@@ -1344,8 +1362,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             backFact = NO;
             
         } else {
-           
-            //NSLog(@"in tabbar controller");
+
             [_focusManager setFocusRootView:_containerView];
             [_focusManager setHidden:YES];
             [_focusManager moveFocus:4];

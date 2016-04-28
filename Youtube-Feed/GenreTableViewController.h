@@ -25,6 +25,6 @@
 @property (nonatomic, copy) NSString *genreType;
 
 @property (nonatomic, retain) NSMutableArray *genreList;
-
+@property (nonatomic, retain) NSMutableArray *genreIdList;
 
 @end
