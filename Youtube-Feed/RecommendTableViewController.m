@@ -65,10 +65,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL inTabbar;
     BOOL portraitFact;
     BOOL landscapeFact;
-    
+    BOOL scrollKKPTriggered;
     BOOL didReceivedFromYoutubePlaying;
     BOOL currentPlayingFact;
     NSInteger indexFocus;
+    NSInteger directionFocus;
+    NSInteger indexFocusCatch;
     NSInteger indexFocusTabbar;
     NSInteger markHighlightIndex;
 }
@@ -79,7 +81,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     nextPage = true;
     didReceivedFromYoutubePlaying = NO;
     currentPlayingFact = NO;
+    scrollKKPTriggered = NO;
     markHighlightIndex = 0;
+    indexFocusCatch = 0;
+    directionFocus = 0;
     inTabbar = false;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
@@ -132,10 +137,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
             NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
             NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-//            [self.tableView beginUpdates];
-//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-//            [self.tableView endUpdates];
-            [self.tableView reloadData];
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView endUpdates];
+            //[self.tableView reloadData];
             
         } else {
             didReceivedFromYoutubePlaying = NO;
@@ -238,63 +243,100 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [navBorder setOpaque:YES];
     [self.navigationController.navigationBar addSubview:navBorder];
     
+    NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+    
+    NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
+    NSInteger row = [(NSIndexPath *)[sortedIndexPaths objectAtIndex:0] row];
+    NSLog(@"current top row %ld",(long)row);
+    NSLog(@"current indexFocus %ld",indexFocus);
+    NSLog(@"current GET indexFocus %ld and direction %ld",[_focusManager focusIndex], (long)directionFocus);
+    NSLog(@"scroll triggered fact %d",scrollKKPTriggered);
+//    if (nextPage == 0) {
+//        indexFocus -= 25;
+//    }
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-     
-        if (portraitFact) {
-            if (backFactRecommended) {
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
-                    [_focusManager moveFocus:indexFocus];
-                } else {
-                    
-                    if (indexFocus == 0) {
-                        [_focusManager moveFocus:1];
-                    } else {
+        if (scrollKKPTriggered) {
+            if (portraitFact) {
+                if (backFactRecommended) {
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
                         [_focusManager moveFocus:indexFocus];
+                    } else {
+                        
+                        if (indexFocus == 0) {
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+                        } else {
+                            NSLog(@"this case ? portrait %ld",(long)indexFocus);
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
                     }
                     
+                } else {
+                    
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
+                    
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = NO;
+                landscapeFact = YES;
             }
-            portraitFact = NO;
-            landscapeFact = YES;
-        }
 
+        } else {
+            [_focusManager setHidden:YES];
+             //[_focusManager lock];
+        }
         
     } else {
-
-        if (landscapeFact) {
-            if (backFactRecommended) {
-                
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
-                    [_focusManager moveFocus:indexFocus];
-                } else {
-                    
-                    if (indexFocus == 0) {
-                        [_focusManager moveFocus:1];
-                    } else {
+        if (scrollKKPTriggered) {
+            if (landscapeFact) {
+                if (backFactRecommended) {
+                    [_focusManager unlock];
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == [self.recommendYoutube.videoIdList count]-1) {
                         [_focusManager moveFocus:indexFocus];
+                    } else {
+                        
+                        
+                        if (indexFocus == 0) {
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+                            
+                        } else {
+                            NSLog(@"this case ? landscape %ld",(long)indexFocus);
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
                     }
                     
+                } else {
+                    
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
+                    
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = YES;
+                landscapeFact = NO;
             }
-            portraitFact = YES;
-            landscapeFact = NO;
+
+        } else {
+            //[_focusManager setFocusRootView:self.tableView];
+            //[_focusManager moveFocus:0];
+            //[_focusManager lock];
+             [_focusManager setHidden:YES];
         }
+
     }
 
 }
@@ -320,10 +362,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //global objects
     backFactRecommended = YES;
     NSLog(@"view did appear recommend with selected row %ld",(long)self.selectedRow);
-//    [self.recommendYoutube.titleList removeAllObjects];
-//    [self.recommendYoutube.videoIdList removeAllObjects];
-//    [self.recommendYoutube.thumbnailList removeAllObjects];
-//    [self.recommendYoutube.durationList removeAllObjects];
 //    
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
@@ -356,7 +394,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     [_focusManager moveFocus:1];
     
-    //[self.tableView reloadData];
+    [self.tableView reloadData];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -467,6 +505,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
                   willDecelerate:(BOOL)decelerate
 {
+    NSLog(@"scroll view dragging");
+    scrollKKPTriggered = NO;
+    [_focusManager setHidden:YES];
+    
     CGPoint offset = aScrollView.contentOffset;
     CGRect bounds = aScrollView.bounds;
     CGSize size = aScrollView.contentSize;
@@ -561,26 +603,40 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
          NSLog(@"finished load duration %lu and title list %lu",(unsigned long)[self.recommendYoutube.durationList count], (unsigned long)[self.recommendYoutube.videoIdList count]);
+       
         [self.tableView reloadData];
         nextPage = true;
-        //[_focusManager moveFocus:indexFocus];
+        NSLog(@"update indexfocus %ld or get it %ld direction %ld",(long)indexFocus, [_focusManager focusIndex], (long)directionFocus);
+        if (scrollKKPTriggered) {
+            if (directionFocus == 0) {
+                [_focusManager moveFocus:indexFocus+=25];
+                indexFocus-=25;
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+
+            
+        }          //[_focusManager moveFocus:indexFocus];
+        // [_focusManager unlock];
          [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
     });
-    
+   
 }
 
 
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    //NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
-    //NSLog(@"in tabbar %id",backFactRecommended);
+    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
+    //NSLog(@"scrolling triggered");
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
     if (nextPage == 0) {
-        NSLog(@"next page 0");
+       // NSLog(@"next page 0");
         return YES;
         
     } else {
-        NSLog(@"next page not  0");
+        //NSLog(@"next page not  0");
         if (backFactRecommended == 0) {
             //update focus on tabbar
             if (direction == 1) {
@@ -622,24 +678,32 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
         indexFocus = [_focusManager focusIndex];
+        
         if (direction == 0) {
             indexFocus+=2;
+            directionFocus = 0;
             if (indexFocus == [self.recommendYoutube.videoIdList count]) {
                 //reload data nextPage
                 if (nextPage) {
-                    indexFocus = 0;
+                    //indexFocus +=25;
+                    //[_focusManager moveFocus:1];
+                     NSLog(@"index focus before reload 0 %ld",(long)indexFocus);
+                    //[_focusManager lock];
                     [self launchReload];
                     
                 } else {
                     NSLog(@"Its still loading api");
                 }
             }
-
         } else {
+            directionFocus = 1;
             if (indexFocus == 0) {
                 //reload data nextPage
                 if (nextPage) {
-                    indexFocus = 0;
+                    //indexFocus = 0;
+                     NSLog(@"index focus before reload 1 %ld",(long)indexFocus);
+                    //[_focusManager moveFocus:indexFocus];
+                    //[_focusManager lock];
                     [self launchReload];
                     
                 } else {
@@ -647,8 +711,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 }
             }
 
+
         }
-        
+//
          //NSLog(@"in tabbar %ld direction %ld",(long)indexFocusTabbar, (long)direction);
         return NO;
         
