@@ -190,8 +190,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
-    return 1;
+    if ([self.searchYoutube.videoIdList count] == 0) {
+        
+        return 0;
+    } else {
+        return 1;
+    }
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -337,6 +342,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.searchBar resignFirstResponder];
     self.searchBar.text = @"";
     self.searchBar.showsCancelButton = NO;
+//    UILabel *messageLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+//    messageLb.text = @"";
+//    messageLb.textAlignment = NSTextAlignmentCenter;
+//    self.tableView.backgroundView = messageLb;
+//    self.tableView.backgroundView = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         [self.tableView reloadData];
@@ -388,6 +398,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         } else {
             didReceivedFromYoutubePlaying = NO;
         }
+//        if ([self.searchYoutube.videoIdList count] == 0) {
+//            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Video not found", nil)];
+//            UILabel *messageLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+//            messageLb.text = description;
+//            messageLb.textAlignment = NSTextAlignmentCenter;
+//            self.tableView.backgroundView = messageLb;
+//
+//        }
         
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearch" object:nil];
 

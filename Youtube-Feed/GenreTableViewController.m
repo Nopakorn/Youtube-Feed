@@ -277,7 +277,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //self.searchTerm = [self.genreList objectAtIndex:indexPath.row];
+    self.genreTitle = [self.genreList objectAtIndex:indexPath.row];
     self.searchTerm = [self.genreIdList objectAtIndex:indexPath.row];
     [self callYoutube:self.searchTerm];
 }
@@ -323,6 +323,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         dest.searchTerm = self.searchTerm;
         dest.genreType = self.genreType;
         dest.selectedIndex = self.selectedIndex;
+        dest.genreTitle = self.genreTitle;
     }
 }
 

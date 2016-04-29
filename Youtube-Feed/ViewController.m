@@ -332,6 +332,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.totalTime.hidden = NO;
         self.currentTimePlay.hidden = NO;
         [_focusManager setHidden:YES];
+        NSLog(@"in hideNavigation with show");
     } else {
         shouldHideStatusBar = YES;
         [self setNeedsStatusBarAppearanceUpdate];
@@ -347,6 +348,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.totalTime.hidden = YES;
         self.currentTimePlay.hidden = YES;
         [_focusManager setHidden:YES];
+         NSLog(@"in hideNavigation with not");
     }
 
 }
@@ -484,6 +486,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidAppear:animated];
     NSLog(@"View did appear in youtube");
+    [hideNavigation invalidate];
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     
     
@@ -1181,128 +1184,150 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
     NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
-    if (backFact) {
-        //limitation of volume level
-        if (level < 0) {
-            level = 0.0;
-        } else if (level > 1) {
-            level = 1.0;
-        }
-        
-        NSLog(@"in main view %lu    %ld",(unsigned long)distance, (long)direction);
-        if ((long)direction == 1) {
-            NSLog(@"goes up");
-            level += 0.05;
-            NSLog(@"level %f",level);
-            [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
-        } else {
-            NSLog(@"goes down");
-            level -= 0.05;
-             NSLog(@"level %f",level);
-            [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
-        }
-        return YES;
+    if (self.tabBarController.tabBar.hidden == YES) {
+        [self hideNavWithFact:NO];
+        [hideNavigation invalidate];
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         
     } else {
-        
-        
-        if (direction == 1) {
-            if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 4;
-            }else if ([_focusManager focusIndex] == 3) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 2;
+        if (backFact) {
+            //limitation of volume level
+            if (level < 0) {
+                level = 0.0;
+            } else if (level > 1) {
+                level = 1.0;
             }
-        } else {
-            if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 3) {
-                indexFocusTabbar = 2;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 4;
-            }
-
-        
-        }
-        
-        if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            NSLog(@"search");
-            [_focusManager moveFocus:2];
-
-        } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 1) {
-            NSLog(@"search");
-            [_focusManager moveFocus:3];
             
+            NSLog(@"in main view %lu    %ld",(unsigned long)distance, (long)direction);
+            if ((long)direction == 1) {
+                NSLog(@"goes up");
+                level += 0.05;
+                NSLog(@"level %f",level);
+                [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
+            } else {
+                NSLog(@"goes down");
+                level -= 0.05;
+                NSLog(@"level %f",level);
+                [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
+            }
+            [hideNavigation invalidate];
+            hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+
+            return YES;
+            
+        } else {
+            
+            
+            if (direction == 1) {
+                if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 4;
+                }else if ([_focusManager focusIndex] == 3) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 2;
+                }
+            } else {
+                if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 3) {
+                    indexFocusTabbar = 2;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 4;
+                }
+                
+                
+            }
+            
+            if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
+                NSLog(@"search");
+                [_focusManager moveFocus:2];
+                
+            } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 1) {
+                NSLog(@"search");
+                [_focusManager moveFocus:3];
+                
+            }
+            
+            return NO;
         }
 
-        return NO;
     }
-    
+    return NO;
 }
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    [self hideNavWithFact:NO];
-    [hideNavigation invalidate];
-    if (backFact) {
-        if (distanceX == 1 && distanceY == 0) {
-            NSLog(@"RIGTH");
-            
-            [self buttonPressed:self.nextButton];
-        }else if (distanceX == -1 && distanceY == 0) {
-            NSLog(@"LEFT");
-            [self buttonPressed:self.prevButton];
-        }else if (distanceX == 0 && distanceY == 1) {
-            NSLog(@"BOTTOM");
-            [self buttonPressed:self.prevButton];
-        }else if (distanceX == 0 && distanceY == -1) {
-            NSLog(@"TOP");
-            [self buttonPressed:self.nextButton];
-        }
-        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-        return YES;
-        
-    } else {
-        
-        if (distanceX == 1 && distanceY == 0) {
-            NSLog(@"RIGTH");
-            if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 3) {
-                indexFocusTabbar = 2;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 4;
-            }
-            
-            if ([_focusManager focusIndex] == 3) {
-                [_focusManager moveFocus:2];
-               
-            }
-            
-        }else if (distanceX == -1 && distanceY == 0) {
-            NSLog(@"LEFT");
-           
-            if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 4;
-            }else if ([_focusManager focusIndex] == 3) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 2;
-            }
-
-
-            if ([_focusManager focusIndex] == 1) {
-                [_focusManager moveFocus:3];
-            }
-        }else if (distanceX == 0 && distanceY == 1) {
-           
-            
-        }else if (distanceX == 0 && distanceY == -1) {
-        }
-        return NO;
     
+    
+    if (self.tabBarController.tabBar.hidden == YES) {
+        NSLog(@"change backFact fact");
+        //backFact = NO;
+        [self hideNavWithFact:NO];
+        [hideNavigation invalidate];
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+
+    } else {
+        if (backFact) {
+            if (distanceX == 1 && distanceY == 0) {
+                NSLog(@"RIGTH press");
+                [self buttonPressed:self.nextButton];
+            }else if (distanceX == -1 && distanceY == 0) {
+                NSLog(@"LEFT press");
+                [self buttonPressed:self.prevButton];
+            }else if (distanceX == 0 && distanceY == 1) {
+                NSLog(@"BOTTOM press");
+                [self buttonPressed:self.prevButton];
+            }else if (distanceX == 0 && distanceY == -1) {
+                NSLog(@"TOP press");
+                [self buttonPressed:self.nextButton];
+            }
+            [hideNavigation invalidate];
+            hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+            return YES;
+            
+        } else {
+            
+            if (distanceX == 1 && distanceY == 0) {
+                NSLog(@"RIGTH");
+                if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 3) {
+                    indexFocusTabbar = 2;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 4;
+                }
+                
+                if ([_focusManager focusIndex] == 3) {
+                    [_focusManager moveFocus:2];
+                    
+                }
+                
+            }else if (distanceX == -1 && distanceY == 0) {
+                NSLog(@"LEFT");
+                
+                if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 4;
+                }else if ([_focusManager focusIndex] == 3) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 2;
+                }
+                
+                
+                if ([_focusManager focusIndex] == 1) {
+                    [_focusManager moveFocus:3];
+                }
+            }else if (distanceX == 0 && distanceY == 1) {
+                
+                
+            }else if (distanceX == 0 && distanceY == -1) {
+            }
+             return NO;
+        }
+
     }
+    return NO;
+
     
 }
 
@@ -1343,56 +1368,56 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up %@", [self getButtonName:button]);
-    if (self.tabBarController.tabBar.hidden == YES && [[self getButtonName:button] isEqualToString:@"Back"]) {
-        backFact = NO;
+    if ([[self getButtonName:button] isEqualToString:@"Home"]){
+        return NO;
         
     }
-    [self hideNavWithFact:NO];
-    [hideNavigation invalidate];
-    if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+    if (self.tabBarController.tabBar.hidden == YES) {
+        [self hideNavWithFact:NO];
+        [hideNavigation invalidate];
+         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         
+    } else {
         
-        if (backFact) {
-            NSLog(@"backFact %id",backFact);
-            [_focusManager setHidden:NO];
-            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-            //[_focusManager setFocusable:[self.tabBarController.viewControllers objectAtIndex:4].view value:NO];
-            [_focusManager moveFocus:2];
-          
-            backFact = NO;
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            if (backFact) {
+                [_focusManager setHidden:NO];
+                [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                [_focusManager moveFocus:2];
+                backFact = NO;
+                [self hideNavWithFact:NO];
+                [hideNavigation invalidate];
+            } else {
+                [_focusManager setFocusRootView:_containerView];
+                [_focusManager setHidden:YES];
+                [_focusManager moveFocus:4];
+                backFact = YES;
+                [hideNavigation invalidate];
+                hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+            }
             
-        } else {
-
-            [_focusManager setFocusRootView:_containerView];
-            [_focusManager setHidden:YES];
-            [_focusManager moveFocus:4];
-            backFact = YES;
+        } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+            NSLog(@"Main---");
+            [hideNavigation invalidate];
             hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+            return NO;
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
+            
+            [self favoritePressed:self.favoriteButton];
+            [hideNavigation invalidate];
+            hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+            return YES;
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"Right"]){
+            NSLog(@"Right button");
+            return NO;
+            
+        }  else if ([[self getButtonName:button] isEqualToString:@"Left"]){
+            NSLog(@"Right button");
+            return NO;
         }
-        
-    } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
-        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-        return NO;
-        
-    } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
-        
-        //[self hideNavigation];
-        [self favoritePressed:self.favoriteButton];
-        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-        return YES;
-        
-    } else if ([[self getButtonName:button] isEqualToString:@"Right"]){
-        NSLog(@"Right button");
-        return NO;
-        
-    }  else if ([[self getButtonName:button] isEqualToString:@"Left"]){
-        NSLog(@"Right button");
-        return NO;
-    } else if ([[self getButtonName:button] isEqualToString:@"Home"]){
-        NSLog(@"Home button");
-        return NO;
     }
-
     return YES;
 }
 
@@ -1405,22 +1430,30 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button state:(UMAInputGestureRecognizerState)state
 {
     NSLog(@"long press begin");
-    [self hideNavWithFact:NO];
-    [hideNavigation invalidate];
-    if ([[self getButtonName:button] isEqualToString:@"Right"]) {
-        if (state == 0) {
-            isSeekForward = true;
-        } else {
-            isSeekForward = false;
+    
+    if (self.tabBarController.tabBar.hidden == YES ) {
+        [self hideNavWithFact:NO];
+        [hideNavigation invalidate];
+         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+    } else {
+        if ([[self getButtonName:button] isEqualToString:@"Right"]) {
+            if (state == 0) {
+                isSeekForward = true;
+            } else {
+                isSeekForward = false;
+            }
+        } else if ([[self getButtonName:button] isEqualToString:@"Left"]){
+            if (state == 0) {
+                isSeekBackward = true;
+            } else {
+                isSeekBackward = false;
+            }
         }
-    } else if ([[self getButtonName:button] isEqualToString:@"Left"]){
-        if (state == 0) {
-            isSeekBackward = true;
-        } else {
-            isSeekBackward = false;
-        }
+        [hideNavigation invalidate];
+        hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+
     }
-    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+    
     return YES;
 }
 

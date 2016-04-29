@@ -65,17 +65,29 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger indexFocus;
     NSInteger indexFocusTabbar;
     BOOL backFactGenreList;
+    BOOL scrollKKPTriggered;
+    NSInteger directionFocus;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     nextPage = true;
+    scrollKKPTriggered = NO;
     indexFocusTabbar = 1;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.navigationItem.title = self.searchTerm;
+    self.navigationItem.title = self.genreTitle;
    
-    
+    NSArray *items = self.genreYoutube.searchResults[@"items"];
+    if ([items count] == 0) {
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Video not found", nil)];
+        UILabel *messageLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+        messageLb.text = description;
+        messageLb.textAlignment = NSTextAlignmentCenter;
+        self.tableView.backgroundView = messageLb;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+
     
     if ([self.genreType isEqualToString:self.searchTerm]) {
         self.genreListPlaying = YES;
@@ -156,7 +168,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
      backFactGenreList = YES;
     portraitFact = YES;
     landscapeFact = YES;
-    
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -166,72 +177,88 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
-    [_focusManager setHidden:NO];
     [_focusManager moveFocus:1];    // Give focus to the first icon.
     
+    if ([self.genreYoutube.videoIdList count] == 0) {
+        NSLog(@"did appear genreYoutube item is 0");
+        [_focusManager setHidden:YES];
+    } else {
+        [_focusManager setHidden:NO];
+    }
+
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)orientationChanged:(NSNotification *)notification
 {
     NSLog(@"View changing");
-    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (portraitFact) {
-            if (backFactGenreList) {
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
-                    [_focusManager moveFocus:1];
-                } else {
-                    
-                    if (indexFocus == 0) {
+    if (scrollKKPTriggered) {
+        if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+            if (portraitFact) {
+                if (backFactGenreList) {
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
                         [_focusManager moveFocus:1];
                     } else {
-                        [_focusManager moveFocus:indexFocus];
+                        
+                        if (indexFocus == 0) {
+                            [_focusManager moveFocus:1];
+                        } else {
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
                     }
+                } else {
+                    
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
                     
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = NO;
+                landscapeFact = YES;
             }
-            portraitFact = NO;
-            landscapeFact = YES;
-        }
-        
-    } else {
-        if (landscapeFact) {
-            if (backFactGenreList) {
-                
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
-                    [_focusManager moveFocus:1];
-                } else {
+            
+        } else {
+            if (landscapeFact) {
+                if (backFactGenreList) {
                     
-                    if (indexFocus == 0) {
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
                         [_focusManager moveFocus:1];
                     } else {
-                        [_focusManager moveFocus:indexFocus];
+                        
+                        if (indexFocus == 0) {
+                            [_focusManager moveFocus:1];
+                        } else {
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
                     }
+                } else {
+                    
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
+                    
                     
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = YES;
+                landscapeFact = NO;
+            }
+            
+        }
 
-            }
-            portraitFact = YES;
-            landscapeFact = NO;
-        }
-        
+    } else {
+//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+//        NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
+//        NSInteger row = [(NSIndexPath *)[sortedIndexPaths objectAtIndex:0] row];
+//        NSLog(@"row = %ld",(long)row);
+
     }
+    
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
             [subView removeFromSuperview];
@@ -248,8 +275,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
-    return 1;
+    if([self.genreYoutube.videoIdList count] == 0){
+        return 0;
+    } else {
+        return 1;
+    }
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -338,6 +369,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
     
+    scrollKKPTriggered = NO;   
+    [_focusManager setHidden:YES];
+    
     float reload_distance = 50;
     if(y > h + reload_distance) {
         if (nextPage) {
@@ -371,7 +405,37 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.tableView.tableFooterView = nil;
         [self.tableView reloadData];
         nextPage = true;
-        [_focusManager moveFocus:indexFocus];
+        
+//      NSArray *items = self.genreYoutube.searchResults[@"items"];
+//        if ([items count] == 0) {
+//            NSLog(@"items is 0");
+//            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Video not found", nil)];
+//            alert = [UIAlertController alertControllerWithTitle:@""
+//                                                        message:description
+//                                                 preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+//                                                         style:UIAlertActionStyleDefault
+//                                                       handler:^(UIAlertAction *action){
+//                                                           
+//                                                           
+//                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+//                                                       }];
+//            
+//            [alert addAction:ok];
+//            [self presentViewController:alert animated:NO completion:nil];
+//        }
+        if (scrollKKPTriggered) {
+            if (directionFocus == 0) {
+                [_focusManager moveFocus:indexFocus+=25];
+                indexFocus-=25;
+            } else {
+                [_focusManager moveFocus:indexFocus];
+            }
+            
+            
+        }
+        //[self.tableView reloadData];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoIdNextPage" object:nil];
     });
     
@@ -418,12 +482,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
+    directionFocus = direction;
+    
     if (nextPage == 0) {
         return YES;
     } else {
-        
+        //NSLog(@"normal rotate");
         if (backFactGenreList == 0) {
-            
+             //NSLog(@"tabbar rotate");
             if (direction == 1) {
                 if ([_focusManager focusIndex] == 0) {
                     indexFocusTabbar = 3;
@@ -460,10 +528,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         indexFocus = [_focusManager focusIndex];
         if (direction == 0) {
             indexFocus+=2;
+
             if (indexFocus == [self.genreYoutube.videoIdList count]) {
                 //reload data nextPage
                 if (nextPage) {
-                    indexFocus = 0;
+
                     [self launchReload];
                     
                 } else {
@@ -474,11 +543,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         } else {
 
             if (indexFocus == 0) {
-                //reload data nextPage
+
                 if (nextPage) {
-                    indexFocus = 0;
                     [self launchReload];
-                    
                 } else {
                     NSLog(@"Its still loading api");
                 }
@@ -486,6 +553,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
         
         }
+        //just test focus move
         
         return NO;
     

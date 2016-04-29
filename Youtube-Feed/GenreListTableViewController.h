@@ -13,10 +13,13 @@
 @interface GenreListTableViewController : UITableViewController
 {
      UIActivityIndicatorView *spinner;
+     UIAlertController *alert;
 }
 
 @property (strong, nonatomic) Youtube *genreYoutube;
 @property (nonatomic, copy) NSString *searchTerm;
+@property (nonatomic, copy) NSString *genreTitle;
+
 @property (nonatomic, retain) NSMutableArray *imageData;
 
 @property (nonatomic) NSInteger selectedIndex;

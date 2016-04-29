@@ -48,8 +48,9 @@
     self.searchTerm = @"";
     for(int i = 0 ; i < [genreSelected count] ; i++){
         self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
+       // self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     }
-    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"|"];
      NSLog(@"genreSelected: %@",genreSelected);
     NSLog(@"calling youtube services with searchTerm:%@",self.searchTerm);
     [self getRecommendSearchYoutube:self.searchTerm withNextPage:nextPage];
@@ -302,7 +303,7 @@
         [self.titleList addObject:q[@"snippet"][@"title"]];
         [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
     }
-    NSLog(@"indexNextPage = %d videoIdlist = %lu",indexNexPage,(unsigned long)[self.videoIdList count]);
+    //NSLog(@"indexNextPage = %d videoIdlist = %lu",indexNexPage,(unsigned long)[self.videoIdList count]);
     if (nextPage) {
         indexNexPage += 25;
         self.videoIdListForGetDuration = @"";
@@ -333,6 +334,16 @@
         [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
         //[self getVideoDurations:q[@"id"][@"videoId"]];
     }
+    
+//    if ([items count] == 0) {
+//         NSLog(@"items index is 0");
+//    } else {
+//         NSLog(@"items index is %lu",(unsigned long)[items count]);
+//    }
+//    
+//    NSLog(@"totalResults : %@",self.searchResults[@"pageInfo"][@"totalResults"]);
+//    NSLog(@"resultsPerPage : %@",self.searchResults[@"pageInfo"][@"resultsPerPage"]);
+//    NSLog(@"indexNextPage = %d videoIdlist = %lu",indexNexPage,(unsigned long)[self.videoIdList count]);
     
     if (nextPage) {
         indexNexPage += 25;

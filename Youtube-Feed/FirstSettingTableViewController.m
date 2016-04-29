@@ -267,8 +267,8 @@
             genreIdSelectedString = [NSString stringWithFormat:@"%@ %@", genreIdSelectedString, [self.genreIdSelected objectAtIndex:i]];
 
         }
-        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        genreIdSelectedString = [genreIdSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
+        genreIdSelectedString = [genreIdSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
         
         [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
         [[NSUserDefaults standardUserDefaults] setObject:genreIdSelectedString forKey:@"genreIdSelectedString"];

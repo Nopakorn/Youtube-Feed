@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     NSLog(@"in viewDidAppaer setting");
     [self.genreSelected removeAllObjects];
     NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
-    NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+    NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"|"];
     self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
     
     for (int i = 0; i < [self.genreIdSelected count]; i++) {
@@ -141,7 +141,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         
         NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
         NSLog(@"saveGenreId = %@", saveGenreId);
-        NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+        NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"|"];
         self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
         
         for (int i = 0; i < [self.genreIdSelected count]; i++) {
@@ -341,8 +341,8 @@ typedef NS_ENUM(NSInteger, AlertType) {
             genreIdSelectedString = [NSString stringWithFormat:@"%@ %@", genreIdSelectedString, [self.genreIdSelected objectAtIndex:i]];
 
         }
-        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-        genreIdSelectedString = [genreIdSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
+        genreIdSelectedString = [genreIdSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
 
         [[NSUserDefaults standardUserDefaults] setObject:genreSelectedString forKey:@"genreSelectedString"];
         [[NSUserDefaults standardUserDefaults] setObject:genreIdSelectedString forKey:@"genreIdSelectedString"];
@@ -373,8 +373,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
 - (void)receivedLoadVideoId
 {
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
-    //tabbar.recommendYoutube = [[Youtube alloc] init];
-    
     [tabbar.recommendYoutube.titleList removeAllObjects];
     [tabbar.recommendYoutube.videoIdList removeAllObjects];
     [tabbar.recommendYoutube.thumbnailList removeAllObjects];
@@ -389,7 +387,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 
     }
-     NSLog(@"finished load youtube in setting duration %lu and title list %lu",(unsigned long)[self.youtube.durationList count], (unsigned long)[self.youtube.videoIdList count]);
     tabbar.genreSelected = self.genreSelected;
     tabbar.genreIdSelected = self.genreIdSelected;
     

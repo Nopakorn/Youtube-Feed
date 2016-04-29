@@ -55,6 +55,7 @@
 //            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
 //            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
 //            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
+             self.youtube = [[Youtube alloc] init];
             [self callGenreSecondTime];
 
         } else {
@@ -79,6 +80,7 @@
 - (void)callSearchSecondTime:(NSString *)saveGenre
 {
     NSLog(@"calling search second time ");
+    [self.youtube changeIndexNextPage:0];
     [self.youtube getRecommendSearchYoutube:saveGenre withNextPage:NO];
     [self.spinner startAnimating];
     [self.view addSubview:self.spinner];
@@ -126,7 +128,7 @@
         [self.genreSelected removeAllObjects];
         
         NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
-        NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
+        NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"|"];
         
         self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
         for (int i = 0; i < [self.genreIdSelected count]; i++) {
@@ -144,9 +146,10 @@
             
         }
         
-        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
         NSLog(@"with genre string %@", genreSelectedString);
         [self callSearchSecondTime:genreSelectedString];
+         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreTitle" object:nil];
     });
 }
 //
@@ -166,7 +169,7 @@
         NSLog(@"received youtube");
         receivedYoutube = YES;
         [self callPerformTabbar];
-        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoId" object:nil];
     });
     
 }
@@ -174,6 +177,8 @@
 {
     if (receivedGenre && receivedYoutube) {
         [self performSegueWithIdentifier:@"SubmitToTabbarController" sender:@0];
+        receivedYoutube = NO;
+        receivedGenre = NO;
     } else {
         NSLog(@"not YET");
     }
@@ -239,7 +244,7 @@
     for(int i = 0 ; i < [self.genreSelected count] ; i++){
         genreSelectedString = [NSString stringWithFormat:@"%@ %@", genreSelectedString, [self.genreSelected objectAtIndex:i]];
     }
-    genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+    genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
 }
 
 

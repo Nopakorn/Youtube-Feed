@@ -615,9 +615,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [_focusManager moveFocus:indexFocus];
             }
 
-            
-        }          //[_focusManager moveFocus:indexFocus];
-        // [_focusManager unlock];
+        }
          [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
     });
    
@@ -628,17 +626,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
     NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
-    //NSLog(@"scrolling triggered");
     scrollKKPTriggered = YES;
     [_focusManager setHidden:NO];
+    
     if (nextPage == 0) {
-       // NSLog(@"next page 0");
         return YES;
         
     } else {
-        //NSLog(@"next page not  0");
+        NSLog(@"next page not  0");
         if (backFactRecommended == 0) {
             //update focus on tabbar
+            NSLog(@"on tabbar");
             if (direction == 1) {
                 
                 if ([_focusManager focusIndex] == 0 && distance == 1) {

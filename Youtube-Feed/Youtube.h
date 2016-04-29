@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSString *hl;
 @property (nonatomic, copy) NSString *videoIdListForGetDuration;
 
+
 @property (nonatomic, retain) NSMutableArray *videoIdList;
 @property (nonatomic, retain) NSMutableArray *titleList;
 @property (nonatomic, retain) NSMutableArray *thumbnailList;
@@ -33,6 +34,9 @@
 @property (nonatomic, retain) NSMutableArray *selectedType;
 
 @property (nonatomic, retain) NSDictionary *searchResults;
+
+
+
 
 - (id)init;
 - (void)callRecommendSearch:(NSMutableArray *)genreSelected withNextPage:(BOOL)nextPage;

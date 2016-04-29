@@ -23,7 +23,7 @@
 "Delete this item from playlists" = "プレイリストから動画を解除します";
 "Delete this playlist" = "プレイリストを解除します";
 "Save" = "完了";
-
+"Video not found" = "動画が見つかりませんでした.";
 "Initial Setting" = "初期設定";
 
 "This video is already in the Playlist" = "すでに登録済です";

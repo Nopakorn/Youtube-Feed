@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *genreIconTitle;
 @property (strong, nonatomic) Youtube *genreYoutube;
 @property (nonatomic, copy) NSString *searchTerm;
+@property (nonatomic, copy) NSString *genreTitle;
 
 @property (nonatomic) NSInteger selectedIndex;
 @property (nonatomic) BOOL genreListPlaying;
