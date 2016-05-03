@@ -544,6 +544,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up in playlistDetail");
+   
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
         [self.navigationController popViewControllerAnimated:YES];
@@ -569,6 +570,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //        }
         
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+        if ([self.youtubeVideoList count] == 0) {
+            return YES;
+        }
         return NO;
         
     } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {

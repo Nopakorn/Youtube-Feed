@@ -68,7 +68,14 @@ typedef NS_ENUM(NSInteger, AlertType) {
     NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
     NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"|"];
     self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
-    
+    for (int i=0; i < [self.genreIdSelected count]; i++) {
+        
+        if ([[self.genreIdSelected objectAtIndex:i] isEqualToString:@""]) {
+            [self.genreIdSelected removeObjectAtIndex:i];
+            //break;
+        }
+    }
+
     for (int i = 0; i < [self.genreIdSelected count]; i++) {
         for (int j = 0; j < [self.genreIdList count]; j++) {
            
@@ -82,7 +89,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     NSLog(@"save genre = %@", saveGenreId);
     NSLog(@"genre id selected = %@", saveGenreId);
     NSLog(@"reset genre = %@", self.genreSelected);
-    
+    NSLog(@"reset genre id = %@", self.genreIdSelected);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
@@ -93,7 +100,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setHidden:YES];
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 
 - (void)orientationChanged:(NSNotification *)notification
@@ -143,7 +150,14 @@ typedef NS_ENUM(NSInteger, AlertType) {
         NSLog(@"saveGenreId = %@", saveGenreId);
         NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"|"];
         self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
-        
+        for (int i=0; i < [self.genreIdSelected count]; i++) {
+            
+            if ([[self.genreIdSelected objectAtIndex:i] isEqualToString:@""]) {
+                [self.genreIdSelected removeObjectAtIndex:i];
+                //break;
+            }
+        }
+
         for (int i = 0; i < [self.genreIdSelected count]; i++) {
             for (int j = 0; j < [self.genreIdList count]; j++) {
                 
@@ -380,7 +394,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [tabbar.recommendYoutube.thumbnailList removeAllObjects];
     [tabbar.recommendYoutube.durationList removeAllObjects];
     [tabbar.recommendYoutube changeIndexNextPage:0];
-    NSLog(@"before adding to recommennd %lu",(unsigned long)[self.youtube.titleList count]);
+   // NSLog(@"before adding to recommennd %lu",(unsigned long)[self.youtube.titleList count]);
 
     for (int i = 0 ; i < [self.youtube.videoIdList count] ; i++) {
         [tabbar.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
@@ -391,7 +405,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     }
     tabbar.genreSelected = self.genreSelected;
     tabbar.genreIdSelected = self.genreIdSelected;
-    NSLog(@"before sending %lu",(unsigned long)[self.youtube.titleList count]);
+    //NSLog(@"before sending %lu",(unsigned long)[self.youtube.titleList count]);
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [alert dismissViewControllerAnimated:YES completion:nil];

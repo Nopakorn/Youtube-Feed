@@ -726,6 +726,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up in playlist");
+
     if (isAlertShowUp) {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             [alert dismissViewControllerAnimated:YES completion:nil];
@@ -756,6 +757,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //            }
             
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
+            if (numberOfFavorites == 0) {
+                return YES;
+            }
             return NO;
             
         } else if ([[self getButtonName:button] isEqualToString:@"VR"]) {
