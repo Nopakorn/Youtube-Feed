@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [super viewDidLoad];
     self.tabBarItem.image = [[UIImage imageNamed:@"settingIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
-    self.youtube = [[Youtube alloc] init];
+    
     
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.genreIdSelected = [[NSMutableArray alloc] initWithCapacity:10];
@@ -334,6 +334,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         
     } else {
         NSLog(@"not zero");
+        self.youtube = [[Youtube alloc] init];
         NSString *genreSelectedString = @"";
          NSString *genreIdSelectedString = @"";
         for(int i = 0 ; i < [self.genreSelected count] ; i++){
@@ -372,24 +373,25 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)receivedLoadVideoId
 {
+    NSLog(@"receive load video");
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     [tabbar.recommendYoutube.titleList removeAllObjects];
     [tabbar.recommendYoutube.videoIdList removeAllObjects];
     [tabbar.recommendYoutube.thumbnailList removeAllObjects];
     [tabbar.recommendYoutube.durationList removeAllObjects];
     [tabbar.recommendYoutube changeIndexNextPage:0];
-    
+    NSLog(@"before adding to recommennd %@",self.youtube.titleList);
+
     for (int i = 0 ; i < [self.youtube.videoIdList count] ; i++) {
         [tabbar.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
         [tabbar.recommendYoutube.titleList addObject:[self.youtube.titleList objectAtIndex:i]];
         [tabbar.recommendYoutube.thumbnailList addObject:[self.youtube.thumbnailList objectAtIndex:i]];
         [tabbar.recommendYoutube.durationList addObject:[self.youtube.durationList objectAtIndex:i]];
 
-
     }
     tabbar.genreSelected = self.genreSelected;
     tabbar.genreIdSelected = self.genreIdSelected;
-    
+    NSLog(@"before sending %@",self.youtube.titleList);
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [alert dismissViewControllerAnimated:YES completion:nil];

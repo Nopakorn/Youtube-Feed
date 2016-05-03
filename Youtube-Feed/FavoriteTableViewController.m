@@ -392,14 +392,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self presentViewController:alert animated:YES completion:nil];
 
     } else {
-        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
+        NSLog(@"gestureRecognizer state = %ld", (long)gestureRecognizer.state);
     }
 
 }
 
 - (void)deleteRowAtIndex:(NSInteger )index
 {
-    NSLog(@"delete at %ld", index);
+    NSLog(@"delete at %ld", (long)index);
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     [context deleteObject:[[self.fetchedResultsController fetchedObjects] objectAtIndex:index]];
     

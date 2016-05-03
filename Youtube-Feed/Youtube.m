@@ -312,7 +312,7 @@
         }
         
     } else {
-        NSLog(@"First Page ");
+        NSLog(@"First Page  nextPage-youtube api");
         //indexNexPage = 0;
         for (int i = 0; i < [self.videoIdList count]; i++) {
             self.videoIdListForGetDuration = [NSString stringWithFormat:@"%@,%@", self.videoIdListForGetDuration, [self.videoIdList objectAtIndex:i]];

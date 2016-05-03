@@ -1051,7 +1051,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)receivedSettingDidSelectedNotification:(NSNotification *)notification
 {
+    recommendTableViewFlag = true;
     
+    favoriteFact = NO;
+    playlistDetailFact = NO;
+    recommendFact = NO;
+    searchFact = NO;
+    genreListFact = NO;
+    recommendFact = YES;
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = 0;
         
