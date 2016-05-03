@@ -465,7 +465,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    
+    if ([self.youtubeVideoList count] == 0) {
+        return YES;
+    }
     if (backFactPlaylistDetail) {
         return YES;
     } else {

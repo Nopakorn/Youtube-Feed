@@ -644,7 +644,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-   
+    //if favorites is 0 index
+    if (numberOfFavorites == 0) {
+        return YES;
+    }
+    
     if (backFactFavorite) {
         return YES;
     } else {
