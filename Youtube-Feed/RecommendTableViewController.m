@@ -137,9 +137,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
             NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
             NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-            [self.tableView beginUpdates];
+
+            //[self.tableView beginUpdates];
             [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView endUpdates];
+            //[self.tableView endUpdates];
+
             //[self.tableView reloadData];
             
         } else {
@@ -351,10 +353,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)receivedSettingNotification:(NSNotification *)notification
 {
-
+    NSLog(@"reseive setting ");
     [self.tableView reloadData];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"SettingDidSelected" object:nil];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SettingDidSelected" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -366,7 +368,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
-     NSLog(@"recommend obj: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
+     NSLog(@"recommend obj: %@", self.recommendYoutube.titleList);
+     NSLog(@"recommend obj count: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
      NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
     indexFocusTabbar = 1;
     portraitFact = YES;
@@ -394,7 +397,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     [_focusManager moveFocus:1];
     
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
 }
 - (void)viewDidDisappear:(BOOL)animated
 {

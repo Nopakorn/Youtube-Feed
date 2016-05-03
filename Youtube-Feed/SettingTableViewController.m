@@ -380,7 +380,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [tabbar.recommendYoutube.thumbnailList removeAllObjects];
     [tabbar.recommendYoutube.durationList removeAllObjects];
     [tabbar.recommendYoutube changeIndexNextPage:0];
-    NSLog(@"before adding to recommennd %@",self.youtube.titleList);
+    NSLog(@"before adding to recommennd %lu",(unsigned long)[self.youtube.titleList count]);
 
     for (int i = 0 ; i < [self.youtube.videoIdList count] ; i++) {
         [tabbar.recommendYoutube.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
@@ -391,7 +391,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     }
     tabbar.genreSelected = self.genreSelected;
     tabbar.genreIdSelected = self.genreIdSelected;
-    NSLog(@"before sending %@",self.youtube.titleList);
+    NSLog(@"before sending %lu",(unsigned long)[self.youtube.titleList count]);
     dispatch_async(dispatch_get_main_queue(), ^{
         
         [alert dismissViewControllerAnimated:YES completion:nil];
