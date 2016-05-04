@@ -286,14 +286,14 @@ typedef NS_ENUM(NSInteger, AlertType) {
         [self presentViewController:alert animated:YES completion:nil];
         
     } else {
-        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
+        NSLog(@"gestureRecognizer state = %ld", (long)gestureRecognizer.state);
     }
     
 }
 
 - (void)deleteRowAtIndex:(NSInteger )index
 {
-    NSLog(@"delete at %ld", index);
+    NSLog(@"delete at %ld", (long)index);
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     [context deleteObject:[[self.fetchedResultsController fetchedObjects] objectAtIndex:index]];
     
@@ -302,7 +302,23 @@ typedef NS_ENUM(NSInteger, AlertType) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
-    //    [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteFavorite" object:self userInfo:nil];
+
+    Youtube *youtube = [[Youtube alloc] init];
+    NSMutableArray *youtubeVideoList = [NSMutableArray arrayWithArray:self.playlist.youtubeVideos.allObjects];
+    for (int i = 0; i < [youtubeVideoList count]; i++) {
+        YoutubeVideo *youtubeVideo = [youtubeVideoList objectAtIndex:i];
+        [youtube.videoIdList addObject:youtubeVideo.videoId];
+        [youtube.titleList addObject:youtubeVideo.videoTitle];
+        [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+        [youtube.durationList addObject:youtubeVideo.videoDuration];
+    }
+    
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)index];
+    NSDictionary *userInfo = @{@"youtubeObj": youtube,
+                               @"selectedIndex": selected};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePlaylist" object:self userInfo:userInfo];
+
 }
 
 

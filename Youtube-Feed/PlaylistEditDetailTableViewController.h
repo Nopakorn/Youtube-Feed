@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Playlist.h"
 #import "Favorite.h"
+#import "Youtube.h"
 #import "YoutubeVideo.h"
 #import "PlaylistEditDetailFavoriteTableViewController.h"
 

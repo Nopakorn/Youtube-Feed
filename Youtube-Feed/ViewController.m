@@ -178,6 +178,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                  name:@"DeleteFavorite" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedUpdatePlaylistNotification:)
+                                                 name:@"UpdatePlaylist" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedFavoriteDidSelectedNotification:)
                                                  name:@"FavoriteDidSelected" object:nil];
     
@@ -635,17 +639,33 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     //self.navigationItem.title = [self.youtube.titleList objectAtIndex:item];
     
-    self.resultFovorite = [self.fetchedResultsController fetchedObjects];
-    for (int i = 0; i < [self.resultFovorite count]; i++) {
-        
-        NSManagedObject *object = [self.resultFovorite objectAtIndex:i];
-        if ([[object valueForKey:@"videoId"]isEqualToString:[self.youtube.videoIdList objectAtIndex:item]]) {
+    //self.resultFovorite = [self.fetchedResultsController fetchedObjects];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Favorite" inManagedObjectContext:context]];
+    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
+    for (NSManagedObject *manageObject in result) {
+
+        if ([[manageObject valueForKey:@"videoId"]isEqualToString:[self.youtube.videoIdList objectAtIndex:item]]) {
             checkFav = true;
             break;
         } else {
             checkFav = false;
         }
     }
+
+//    for (int i = 0; i < [self.resultFovorite count]; i++) {
+//        
+//        NSManagedObject *object = [self.resultFovorite objectAtIndex:i];
+//
+//        if ([[object valueForKey:@"videoId"]isEqualToString:[self.youtube.videoIdList objectAtIndex:item]]) {
+//            checkFav = true;
+//            break;
+//        } else {
+//            checkFav = false;
+//        }
+//    }
     
     if (checkFav) {
         [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
@@ -887,27 +907,34 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)favoritePressed:(id)sender
 {
     NSLog(@"favorite check youtube %@", self.youtube.titleList);
-    NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
-    NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
-    NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
-    NSString *videoDuration = [self.youtube.durationList objectAtIndex:item];
-
-    [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId andDuration:videoDuration];
-    NSLog(@"favorite check favorite %@", self.favorite.videoTitle);
-    UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
-    UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
-
-    if ([[self.favoriteButton imageForState:UIControlStateNormal] isEqual:btnImageStar]) {
-
-        [self insertFavorite:self.favorite];
-        [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
+    if ([self.youtube.videoIdList count] == 0) {
+        NSLog(@"there is no video");
         
     } else {
         
-        [self deleteFavorite:self.favorite];
-        [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
-    }
+        NSString *videoId = [self.youtube.videoIdList objectAtIndex:item];
+        NSString *videoTitle = [self.youtube.titleList objectAtIndex:item];
+        NSString *videoThumbnail = [self.youtube.thumbnailList objectAtIndex:item];
+        NSString *videoDuration = [self.youtube.durationList objectAtIndex:item];
+        
+        [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId andDuration:videoDuration];
+        NSLog(@"favorite check favorite %@", self.favorite.videoTitle);
+        UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
+        UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
+        
+        if ([[self.favoriteButton imageForState:UIControlStateNormal] isEqual:btnImageStar]) {
+            
+            [self insertFavorite:self.favorite];
+            [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
+            
+        } else {
+            
+            [self deleteFavorite:self.favorite];
+            [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
+        }
 
+    }
+   
 }
 
 - (void)deleteFavorite:(Favorite *)favorite
@@ -943,6 +970,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (![context save:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
+    } else {
+        NSLog(@"save success in favorite");
     }
 }
 
@@ -969,9 +998,44 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         favoriteDidPlayed = false;
         favoriteTableViewFlag = true;
         self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+        NSInteger selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
         
+        if (selectedIndex >= [self.youtube.videoIdList count]) {
+            item = 0;
+        }
+        
+        if ([self.youtube.videoIdList count] == 0) {
+
+            favoriteTableViewFlag = false;
+            [self.playerView stopVideo];
+            UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+            [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+        }
     }
 }
+
+- (void)receivedUpdatePlaylistNotification:(NSNotification *)notification
+{
+    if (playlistDidPlayed) {
+        playlistDidPlayed = false;
+        playlistDetailTableViewFlag = true;
+        self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+        NSInteger selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+        
+        if (selectedIndex >= [self.youtube.videoIdList count]) {
+            item = 0;
+        }
+        
+        if ([self.youtube.videoIdList count] == 0) {
+            
+           playlistDetailTableViewFlag = false;
+            [self.playerView stopVideo];
+            UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
+            [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+        }
+    }
+}
+
 
 - (void)receivedPlayBackStartedNotification:(NSNotification *) notification
 {

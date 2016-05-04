@@ -418,7 +418,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [youtube.durationList addObject:[manageObject valueForKey:@"videoDuration"]];
     }
     
-    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{@"youtubeObj": youtube,
                                @"selectedIndex": selected};
 
@@ -439,7 +439,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [youtube.durationList addObject:[manageObject valueForKey:@"videoDuration"]];
     }
     
-    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{@"youtubeObj": youtube,
                                @"selectedIndex": selected};
 

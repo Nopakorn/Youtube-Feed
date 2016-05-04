@@ -303,7 +303,36 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [self.youtubeVideoList removeObjectAtIndex:index];
     [self.tableView reloadData];
     [self removeYoutubeVideoFromList];
+    
+    Youtube *youtube = [[Youtube alloc] init];
+    
+    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
+        YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
+        [youtube.videoIdList addObject:youtubeVideo.videoId];
+        [youtube.titleList addObject:youtubeVideo.videoTitle];
+        [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+        [youtube.durationList addObject:youtubeVideo.videoDuration];
+    }
+
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)index];
+    NSDictionary *userInfo = @{@"youtubeObj": youtube,
+                               @"selectedIndex": selected};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePlaylist" object:self userInfo:userInfo];
 }
+
+//- (void)addingDataToYoutubeObject
+//{
+//    Youtube *youtube = [[Youtube alloc] init];
+//    
+//    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
+//        YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
+//        [youtube.videoIdList addObject:youtubeVideo.videoId];
+//        [youtube.titleList addObject:youtubeVideo.videoTitle];
+//        [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+//        [youtube.durationList addObject:youtubeVideo.videoDuration];
+//    }
+//}
 
 - (void)renamePlaylistTitle
 {
