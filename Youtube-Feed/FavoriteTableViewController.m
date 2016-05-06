@@ -179,7 +179,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [_focusManager setFocusRootView:self.tableView];
                 [_focusManager setHidden:NO];
                 if (indexFocus == numberOfFavorites-1) {
-                    [_focusManager moveFocus:1];
+                    [_focusManager moveFocus:indexFocus];
                 } else {
                     
                     if (indexFocus == 0) {
@@ -207,7 +207,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [_focusManager setFocusRootView:self.tableView];
                 [_focusManager setHidden:NO];
                 if (indexFocus == numberOfFavorites-1) {
-                    [_focusManager moveFocus:1];
+                    [_focusManager moveFocus:indexFocus];
                 } else {
                     
                     if (indexFocus == 0) {
@@ -656,9 +656,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (numberOfFavorites == 0) {
         return YES;
     }
-    
+    indexFocus = [_focusManager focusIndex];
     if (backFactFavorite) {
-        return YES;
+       
+        //indexFocus = [_focusManager focusIndex];
+        
+        if (distanceX == 0 && distanceY == 1) {
+            indexFocus+=2;
+            [_focusManager moveFocus:1 direction:kUMAFocusForward];
+        } else if (distanceX == 0 && distanceY == -1) {
+            
+            [_focusManager moveFocus:1 direction:kUMAFocusBackward];
+        }
+         return YES;
     } else {
         
         if (distanceX == 1 && distanceY == 0) {

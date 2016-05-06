@@ -688,15 +688,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         indexFocus = [_focusManager focusIndex];
         
         if (direction == 0) {
+            //[_focusManager moveFocus:1 direction:kUMAFocusForward];
             indexFocus+=2;
             directionFocus = 0;
             if (indexFocus == [self.recommendYoutube.videoIdList count]) {
-                //reload data nextPage
                 if (nextPage) {
-                    //indexFocus +=25;
-                    //[_focusManager moveFocus:1];
-                     NSLog(@"index focus before reload 0 %ld",(long)indexFocus);
-                    //[_focusManager lock];
                     [self launchReload];
                     
                 } else {
@@ -704,14 +700,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 }
             }
         } else {
+            //[_focusManager moveFocus:1 direction:kUMAFocusBackward];
             directionFocus = 1;
             if (indexFocus == 0) {
-                //reload data nextPage
                 if (nextPage) {
-                    //indexFocus = 0;
                      NSLog(@"index focus before reload 1 %ld",(long)indexFocus);
-                    //[_focusManager moveFocus:indexFocus];
-                    //[_focusManager lock];
                     [self launchReload];
                     
                 } else {
@@ -721,8 +714,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 
         }
-//
-         //NSLog(@"in tabbar %ld direction %ld",(long)indexFocusTabbar, (long)direction);
         return NO;
         
     }
@@ -735,58 +726,99 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return  YES;
     }
-    if (backFactRecommended) {
-        return YES;
+    
+    if (nextPage == 0) {
+        [_focusManager lock];
+        return  YES;
     } else {
         
-        if (distanceX == 1 && distanceY == 0) {
-            NSLog(@"RIGTH");
+        if (backFactRecommended) {
+            [_focusManager unlock];
+            scrollKKPTriggered = YES;
+            [_focusManager setHidden:NO];
+            indexFocus = [_focusManager focusIndex];
             
-            if ([_focusManager focusIndex] == 0 ) {
-                indexFocusTabbar = 3;
-            } else if ([_focusManager focusIndex] == 2 ) {
-                indexFocusTabbar = 4;
-            } else if ([_focusManager focusIndex] == 3 ) {
-                indexFocusTabbar = 1;
+            if (distanceX == 0 && distanceY == 1) {
+                NSLog(@"BOTTOM main index focus %ld",(long)indexFocus);
+                [_focusManager moveFocus:1 direction:kUMAFocusForward];
+                indexFocus+=2;
+                directionFocus = 0;
+                if (indexFocus == [self.recommendYoutube.videoIdList count]) {
+                    //reload data nextPage
+                    if (nextPage) {
+                        NSLog(@"index focus before reload 0 %ld",(long)indexFocus);
+                        [self launchReload];
+                    } else {
+                        NSLog(@"Its still loading api");
+                    }
+                }
+            } else if (distanceX == 0 && distanceY == -1) {
+                NSLog(@"TOP main index focus %ld",(long)indexFocus);
+                [_focusManager moveFocus:1 direction:kUMAFocusBackward];
+                directionFocus = 1;
+                if (indexFocus == 0) {
+                    if (nextPage) {
+                        NSLog(@"index focus before reload 1 %ld",(long)indexFocus);
+                        [self launchReload];
+                    } else {
+                        NSLog(@"Its still loading api");
+                    }
+                }
             }
-
-            if ([_focusManager focusIndex] == 0) {
-                [_focusManager moveFocus:1];
-             
-        
-            } else if ([_focusManager focusIndex] == 3) {
-                [_focusManager moveFocus:1];
-               
-            }
-        }else if (distanceX == -1 && distanceY == 0) {
-            NSLog(@"LEFT");
-            if ([_focusManager focusIndex] == 0 ) {
-                indexFocusTabbar = 4;
-                
-            } else if ([_focusManager focusIndex] == 3 ) {
-                indexFocusTabbar = 3;
-                
-            } else if ([_focusManager focusIndex] == 2 ) {
-                indexFocusTabbar = 1;
-            }
-
-            if ([_focusManager focusIndex] == 0) {
-                [_focusManager moveFocus:4];
-                
-            } else if ([_focusManager focusIndex] == 2) {
-                [_focusManager moveFocus:4];
-                
-            }
-        }else if (distanceX == 0 && distanceY == 1) {
-            NSLog(@"BOTTOM");
             
-        }else if (distanceX == 0 && distanceY == -1) {
-            NSLog(@"TOP");
+            return YES;
+        } else {
+            
+            if (distanceX == 1 && distanceY == 0) {
+                NSLog(@"RIGTH");
+                
+                if ([_focusManager focusIndex] == 0 ) {
+                    indexFocusTabbar = 3;
+                } else if ([_focusManager focusIndex] == 2 ) {
+                    indexFocusTabbar = 4;
+                } else if ([_focusManager focusIndex] == 3 ) {
+                    indexFocusTabbar = 1;
+                }
+                
+                if ([_focusManager focusIndex] == 0) {
+                    [_focusManager moveFocus:1];
+                    
+                    
+                } else if ([_focusManager focusIndex] == 3) {
+                    [_focusManager moveFocus:1];
+                    
+                }
+            }else if (distanceX == -1 && distanceY == 0) {
+                NSLog(@"LEFT");
+                if ([_focusManager focusIndex] == 0 ) {
+                    indexFocusTabbar = 4;
+                    
+                } else if ([_focusManager focusIndex] == 3 ) {
+                    indexFocusTabbar = 3;
+                    
+                } else if ([_focusManager focusIndex] == 2 ) {
+                    indexFocusTabbar = 1;
+                }
+                
+                if ([_focusManager focusIndex] == 0) {
+                    [_focusManager moveFocus:4];
+                    
+                } else if ([_focusManager focusIndex] == 2) {
+                    [_focusManager moveFocus:4];
+                    
+                }
+            }else if (distanceX == 0 && distanceY == 1) {
+                NSLog(@"BOTTOM");
+                
+            }else if (distanceX == 0 && distanceY == -1) {
+                NSLog(@"TOP");
+                
+            }
+            return NO;
+            
             
         }
-        return NO;
-        
-        
+
     }
     
     
@@ -829,6 +861,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
+    if (nextPage == 0) {
+         return  YES;
+    }
+    
     if (viewFact == NO) {
         return  YES;
     }

@@ -245,7 +245,7 @@
 - (void)getVideoDurations:(NSString *)videoId
 {
         NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=%@&key=%@", videoId, self.youtube_api_key];
-        NSLog(@"url get duration %@",urlString);
+        //NSLog(@"url get duration %@",urlString);
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         
@@ -311,7 +311,7 @@
             [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
         }
     }
-    NSLog(@"video id %@",self.videoIdList);
+    //NSLog(@"video id %@",self.videoIdList);
    
     if (nextPage) {
         indexNexPage = (int)[self.durationList count];

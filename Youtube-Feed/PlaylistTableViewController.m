@@ -72,6 +72,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger selectedFavorite;
     NSInteger selectedPlaylistDetail;
     BOOL viewFact;
+    NSInteger directionFocus;
 }
 
 
@@ -82,6 +83,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     isAlertShowUp = NO;
     indexFocusTabbar = 1;
     numberOfPlaylists = 0;
+    directionFocus = 0;
      self.playlistIndexCheck = @"NO";
     self.playlist_List = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -168,16 +170,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)orientationChanged:(NSNotification *)notification
 {
     NSLog(@"View changing");
+    NSLog(@"wat index : %ld",(long)[_focusManager focusIndex]);
+
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
         if (portraitFact) {
             if (backFactPlaylist) {
                 [_focusManager setFocusRootView:self.tableView];
                 [_focusManager setHidden:NO];
                 if (indexFocus == numberOfPlaylists-1) {
-                    [_focusManager moveFocus:1];
+                    NSLog(@"--at index : %ld",(long)[_focusManager focusIndex]);
+                    [_focusManager moveFocus:indexFocus];
                 } else {
                     
                     if (indexFocus == 0) {
+                        if (directionFocus == 1) {
+                            [_focusManager moveFocus:indexFocus];
+                        } else {
+                            [_focusManager moveFocus:[_focusManager focusIndex]];
+                        }
+
                         [_focusManager moveFocus:1];
                     } else {
                         [_focusManager moveFocus:indexFocus];
@@ -202,11 +213,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [_focusManager setFocusRootView:self.tableView];
                 [_focusManager setHidden:NO];
                 if (indexFocus == numberOfPlaylists-1) {
-                    [_focusManager moveFocus:1];
+                     NSLog(@"--at index : %ld",(long)[_focusManager focusIndex]);
+                    [_focusManager moveFocus:indexFocus];
                 } else {
                     
                     if (indexFocus == 0) {
-                        [_focusManager moveFocus:1];
+                        if (directionFocus == 1) {
+                            [_focusManager moveFocus:indexFocus];
+                        } else {
+                            [_focusManager moveFocus:[_focusManager focusIndex]];
+                        }
                     } else {
                         [_focusManager moveFocus:indexFocus];
                     }
@@ -521,7 +537,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     indexFocus = [_focusManager focusIndex];
     if (direction == 0) {
+        directionFocus = 0;
         indexFocus+=2;
+    } else {
+        directionFocus = 1;
     }
     
     return NO;
@@ -534,7 +553,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         return YES;
     }
     NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+    indexFocus = [_focusManager focusIndex];
     if (backFactPlaylist) {
+        
+        //indexFocus = [_focusManager focusIndex];
+        
+        if (distanceX == 0 && distanceY == 1) {
+            directionFocus = 0;
+            indexFocus+=2;
+            [_focusManager moveFocus:1 direction:kUMAFocusForward];
+        } else if (distanceX == 0 && distanceY == -1) {
+            directionFocus = 1;
+            [_focusManager moveFocus:1 direction:kUMAFocusBackward];
+        }
         return YES;
     } else {
         
