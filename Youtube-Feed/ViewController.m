@@ -802,6 +802,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if(item == [self.youtube.videoIdList count]){
             NSLog(@"Out of length");
+            [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+            [outOflengthAlertTimer invalidate];
             outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
             outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
             [self presentViewController:outOflengthAlert animated:YES completion:nil];
@@ -826,6 +828,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if(item == [self.youtube.videoIdList count]) {
             
              NSLog(@"Out of length");
+            [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+            [outOflengthAlertTimer invalidate];
             outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
             outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
             [self presentViewController:outOflengthAlert animated:YES completion:nil];
@@ -868,7 +872,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             if (item >= [self.youtube.videoIdList count]) {
                 NSLog(@"Out of length");
                 outOfLengthAlert = false;
+                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+                [outOflengthAlertTimer invalidate];
                 outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+                
+                
+                
                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
                 item-=1;
@@ -889,6 +898,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (outOfLengthAlert) {
             if (item < 0) {
                 NSLog(@"Out of length");
+                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+                [outOflengthAlertTimer invalidate];
                 outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
                 [self presentViewController:outOflengthAlert animated:YES completion:nil];

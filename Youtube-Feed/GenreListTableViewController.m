@@ -305,7 +305,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         cell.durationLabel.text = [self durationText:duration];
         cell.thumnail.image = nil;
         //
-        if([self.genreYoutube.thumbnailList objectAtIndex:indexPath.row] != [NSNull null]){
+        if(![[self.genreYoutube.thumbnailList objectAtIndex:indexPath.row] isEqualToString:@"nil"]){
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[self.genreYoutube.thumbnailList objectAtIndex:indexPath.row]]];
                 
@@ -322,6 +322,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     }
                 }
             });
+        } else {
+            NSLog(@"thumnails was nil at row %d",indexPath.row);
         }
 
     }
@@ -347,7 +349,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedRow = indexPath.row;
-    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{ @"youtubeObj": self.genreYoutube,
                                @"selectedIndex": selected,
                                @"genreType":self.searchTerm };
@@ -403,28 +405,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
+        NSLog(@"duration list count %lu and title count %lu",(unsigned long)[self.genreYoutube.durationList count], (unsigned long)[self.genreYoutube.titleList count]);
         [self.tableView reloadData];
         nextPage = true;
         
-//      NSArray *items = self.genreYoutube.searchResults[@"items"];
-//        if ([items count] == 0) {
-//            NSLog(@"items is 0");
-//            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Video not found", nil)];
-//            alert = [UIAlertController alertControllerWithTitle:@""
-//                                                        message:description
-//                                                 preferredStyle:UIAlertControllerStyleAlert];
-//            
-//            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-//                                                         style:UIAlertActionStyleDefault
-//                                                       handler:^(UIAlertAction *action){
-//                                                           
-//                                                           
-//                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-//                                                       }];
-//            
-//            [alert addAction:ok];
-//            [self presentViewController:alert animated:NO completion:nil];
-//        }
+        
         if (scrollKKPTriggered) {
             if (directionFocus == 0) {
                 [_focusManager moveFocus:indexFocus+=25];
