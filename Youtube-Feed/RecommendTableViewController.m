@@ -73,11 +73,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger indexFocusCatch;
     NSInteger indexFocusTabbar;
     NSInteger markHighlightIndex;
+    
+    BOOL viewFact;
 }
 @synthesize delegate = _delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    viewFact = NO;
     nextPage = true;
     didReceivedFromYoutubePlaying = NO;
     currentPlayingFact = NO;
@@ -363,6 +366,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     //global objects
     backFactRecommended = YES;
+    viewFact = YES;
     NSLog(@"view did appear recommend with selected row %ld",(long)self.selectedRow);
 //    
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
@@ -404,7 +408,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear RecommendedController");
     [_focusManager setHidden:YES];
-
+    viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
             [subView removeFromSuperview];
@@ -628,10 +632,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    if (viewFact == NO) {
+        return  YES;
+    }
     NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     scrollKKPTriggered = YES;
     [_focusManager setHidden:NO];
-    
+
     if (nextPage == 0) {
         return YES;
         
@@ -725,6 +732,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
     NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+    if (viewFact == NO) {
+        return  YES;
+    }
     if (backFactRecommended) {
         return YES;
     } else {
@@ -819,6 +829,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
+    if (viewFact == NO) {
+        return  YES;
+    }
     NSLog(@"Press up in Recommended %id", backFactRecommended);
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
 //

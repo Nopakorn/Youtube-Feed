@@ -157,6 +157,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
 #pragma setup UMA in ViewDidAppear in RecommendTableView
+    _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setHidden:YES];
     //[self.tableView reloadData];
 
@@ -498,9 +499,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
-    if ([[self getButtonName:button]isEqualToString:@"Main"]) {
-        return NO;
-    }
+//    if ([[self getButtonName:button]isEqualToString:@"Main"]) {
+//        return NO;
+//    }
     return YES;
 }
 

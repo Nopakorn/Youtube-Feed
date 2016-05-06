@@ -66,7 +66,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL landscapeFact;
     BOOL portraitFact;
     BOOL didReceivedFromYoutubePlaying;
-
+    BOOL viewFact;
 }
 
 - (void)viewDidLoad {
@@ -135,7 +135,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear PlaylistController");
     [_focusManager setHidden:YES];
-    
+    viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
             [subView removeFromSuperview];
@@ -154,6 +154,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactPlaylistDetail = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    viewFact = YES;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -360,7 +361,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //self.selectedRow = indexPath.row;
-    NSString *selected = [NSString stringWithFormat:@"%lu",indexPath.row];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)indexPath.row];
     [self addingDataToYoutubeObject];
     NSLog(@"duration? = %@",[self.youtube.durationList objectAtIndex:indexPath.row]);
     NSDictionary *userInfo = @{@"youtubeObj": self.youtube,
@@ -413,6 +414,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    if (viewFact == NO) {
+        return YES;
+    }
     if (backFactPlaylistDetail == 0) {
         if (direction == 1) {
             if ([_focusManager focusIndex] == 0) {
@@ -465,6 +469,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
+    if (viewFact == NO) {
+        return YES;
+    }
     if ([self.youtubeVideoList count] == 0) {
         return YES;
     }
@@ -544,7 +551,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     NSLog(@"Press up in playlistDetail");
-   
+    if (viewFact == NO) {
+        return YES;
+    }
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
         [self.navigationController popViewControllerAnimated:YES];
@@ -589,7 +598,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"Long press %@", [self getButtonName:button]);
 
-    
+    if (viewFact == NO) {
+        return YES;
+    }
     return NO;
 }
 

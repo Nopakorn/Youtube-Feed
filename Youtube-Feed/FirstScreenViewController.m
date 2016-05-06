@@ -20,10 +20,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.youtube = [[Youtube alloc] init];
-    self.genre = [[Genre alloc] init];
     receivedGenre = NO;
     receivedYoutube = NO;
+
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     [self.navigationController setNavigationBarHidden:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
@@ -41,7 +40,9 @@
 {
     [super viewDidAppear:animated];
     
-    
+    self.youtube = [[Youtube alloc] init];
+    self.genre = [[Genre alloc] init];
+
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
             self.spinner.hidden = NO;

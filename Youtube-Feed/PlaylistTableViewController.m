@@ -71,6 +71,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger numberOfPlaylists;
     NSInteger selectedFavorite;
     NSInteger selectedPlaylistDetail;
+    BOOL viewFact;
 }
 
 
@@ -130,6 +131,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    viewFact = NO;
     NSLog(@"viewDidDisappear PlaylistController");
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
@@ -146,6 +148,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactPlaylist = YES;
     portraitFact = YES;
     landscapeFact = YES;
+    viewFact = YES;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -470,6 +473,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    if (viewFact == NO) {
+        return YES;
+    }
     NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     //NSLog(@"in tabbar %id",backFactPlaylist);
     if (backFactPlaylist == 0) {
@@ -524,6 +530,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
+    if (viewFact == NO) {
+        return YES;
+    }
     NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
     if (backFactPlaylist) {
         return YES;
@@ -607,6 +616,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
+    if (viewFact == NO) {
+        return YES;
+    }
     NSLog(@"Press up in playlist");
     if (isAlertShowUp) {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {

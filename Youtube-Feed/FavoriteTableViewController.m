@@ -72,6 +72,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL didReceivedFromYoutubePlaying;
     BOOL currentPlayingFact;
     NSArray *youtubeFavorite;
+    BOOL viewFact;
 }
 
 - (void)viewDidLoad {
@@ -106,7 +107,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
  
     didReceivedFromYoutubePlaying = false;
     [_focusManager setHidden:YES];
-    
+    viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
             [subView removeFromSuperview];
@@ -125,7 +126,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactFavorite = YES;
     portraitFact = YES;
     landscapeFact = YES;
-    
+    viewFact = YES;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -366,7 +367,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (indexPath == nil) {
         NSLog(@"long press table view but not in row");
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"long press began at row %ld", indexPath.row);
+        NSLog(@"long press began at row %ld", (long)indexPath.row);
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
 
         alert = [UIAlertController alertControllerWithTitle:@""
@@ -591,7 +592,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-
+    
+    if (viewFact == NO) {
+        return YES;
+    }
     if (backFactFavorite == 0) {
         
         if (direction == 1) {
@@ -645,6 +649,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
     //if favorites is 0 index
+    if (viewFact == NO) {
+        return YES;
+    }
+    
     if (numberOfFavorites == 0) {
         return YES;
     }
@@ -725,8 +733,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press up in playlist");
-
+    NSLog(@"Press up in favorite");
+    if (viewFact == NO) {
+        return YES;
+    }
     if (isAlertShowUp) {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             [alert dismissViewControllerAnimated:YES completion:nil];
@@ -777,6 +787,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
+    if (viewFact == NO) {
+        return YES;
+    }
     NSLog(@"Long press %@ at %ld", [self getButtonName:button], (long)[_focusManager focusIndex]);
     NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
 

@@ -80,6 +80,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL playlistDetailFact;
     BOOL genreListFact;
     BOOL searchFact;
+    BOOL viewFact;
     NSString *playlistIndexCheck;
     NSString *genreType;
     NSString *searchTerm;
@@ -107,7 +108,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    
+    viewFact = YES;
     self.tabBarController.delegate = self;
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
@@ -493,7 +494,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [hideNavigation invalidate];
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     
-    
+    viewFact = YES;
     indexFocusTabbar = 2;
    
     if (recommendTableViewFlag) {
@@ -627,6 +628,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"viewDidDisappear Viewcontroller");
     [hideNavigation invalidate];
     [_focusManager setHidden:YES];
+    viewFact = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
    
 }
@@ -1175,7 +1177,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         SearchTableViewController *seachView = [nav.viewControllers objectAtIndex:0];
         seachView.delegate = self;
         NSLog(@"select search");
-         [_focusManager setHidden:YES];
+        [_focusManager setHidden:YES];
+        [_focusManager setDelegate:nil];
     }
 }
 
@@ -1265,6 +1268,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
  float level = 0.0;
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    if (viewFact == NO) {
+        NSLog(@"not in view");
+        return YES;
+    }
     NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
     if (self.tabBarController.tabBar.hidden == YES) {
         [self hideNavWithFact:NO];
@@ -1340,7 +1347,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
     
-    
+    if (viewFact == NO) {
+        NSLog(@"not in view");
+        return YES;
+    }
     if (self.tabBarController.tabBar.hidden == YES) {
         NSLog(@"change backFact fact");
         //backFact = NO;
@@ -1449,6 +1459,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
+    if (viewFact == NO) {
+        NSLog(@"not in view");
+        return YES;
+    }
     NSLog(@"Press up %@", [self getButtonName:button]);
     if ([[self getButtonName:button] isEqualToString:@"Home"]){
         return NO;
@@ -1512,6 +1526,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button state:(UMAInputGestureRecognizerState)state
 {
     NSLog(@"long press begin");
+    if (viewFact == NO) {
+        NSLog(@"not in view");
+        return YES;
+    }
     
     if (self.tabBarController.tabBar.hidden == YES ) {
         [self hideNavWithFact:NO];
