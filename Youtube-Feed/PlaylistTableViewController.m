@@ -595,6 +595,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             directionFocus = 1;
             [_focusManager moveFocus:1 direction:kUMAFocusBackward];
         }
+        
         return YES;
     } else {
         

@@ -69,6 +69,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL viewFact;
     NSInteger directionFocus;
     BOOL scrollKKPTriggered;
+    NSInteger markHighlightIndex;
 }
 
 - (void)viewDidLoad {
@@ -76,6 +77,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     indexFocusTabbar = 1;
     directionFocus = 0;
     scrollKKPTriggered = YES;
+    markHighlightIndex = 0;
     [self addingDataToYoutubeObject];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -120,14 +122,28 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
                     self.playlistDetailPlaying = YES;
                     self.selectedRow = selectedIndex;
-                    [self.tableView reloadData];
+                    //[self.tableView reloadData];
+                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
                     
                 }
             }
+        } else {
+            self.playlistDetailPlaying = NO;
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
         }
     } else {
         self.playlistDetailPlaying = NO;
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
+        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
     }
     
     
@@ -340,6 +356,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (self.playlistDetailPlaying) {
         if (indexPath.row == self.selectedRow) {
+            markHighlightIndex = indexPath.row;
             cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
         } else {
             cell.contentView.backgroundColor = [UIColor whiteColor];

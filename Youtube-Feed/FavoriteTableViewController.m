@@ -75,6 +75,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL viewFact;
     NSInteger directionFocus;
     BOOL scrollKKPTriggered;
+    NSInteger markHighlightIndex;
 }
 
 - (void)viewDidLoad {
@@ -83,6 +84,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     indexFocusTabbar = 1;
     numberOfFavorites = 0;
     directionFocus = 0;
+    markHighlightIndex = 0;
     scrollKKPTriggered = YES;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -145,8 +147,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (numberOfFavorites == 0) {
         [_focusManager setHidden:YES];
     } else {
-        [_focusManager setHidden:NO];
+        
         [_focusManager moveFocus:1];
+        [_focusManager setHidden:NO];
     }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -165,12 +168,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (self.favoritePlaying) {
         if ([youtube.videoIdList count] == [result count]) {
             self.selectedRow = selectedIndex;
-            [self.tableView reloadData];
+            //[self.tableView reloadData];
+            NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
 
         }
         
     } else {
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
+        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
     }
     NSLog(@"Recevied in favorite %i",self.favoritePlaying);
 }
@@ -338,6 +348,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (self.favoritePlaying) {
         if (indexPath.row == self.selectedRow) {
+            markHighlightIndex = indexPath.row;
             cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
         } else {
             cell.contentView.backgroundColor = [UIColor whiteColor];

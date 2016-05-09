@@ -108,6 +108,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubeReloadNotification:)
+                                                 name:@"YoutubeReloadGenreList" object:nil];
+    
 #pragma setup UMA in ViewDidload in GenreListTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -116,6 +120,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
+}
+- (void)receivedYoutubeReloadNotification:(NSNotification *)notification
+{
+    self.genreYoutube = [notification.userInfo objectForKey:@"youtubeObj"];
+    self.selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    self.genreType = [notification.userInfo objectForKey:@"genreType"];
+    [self.tableView reloadData];
+    NSLog(@"received youtube relaod");
 }
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
@@ -134,14 +146,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
                 NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
                 NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-                
-                //[self.tableView beginUpdates];
                 [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
             }
             
         }
     } else {
-        //[self.tableView reloadData];
+        self.genreListPlaying = NO;
+        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
     }
     
     

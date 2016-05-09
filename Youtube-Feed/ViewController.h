@@ -27,6 +27,7 @@
     NSTimer *outOflengthAlertTimer;
     NSTimer *hideNavigation;
     BOOL shouldHideStatusBar;
+    UIAlertController *alert;
 }
 @property (nonatomic) UMAApplication *umaApp;
 @property (nonatomic, strong) UMAFocusManager *focusManager;
@@ -34,6 +35,8 @@
 @property (strong, nonatomic) Youtube *youtube;
 @property (strong, nonatomic) Favorite *favorite;
 @property (strong, nonatomic) Playlist *playlist;
+
+@property (nonatomic, retain) NSMutableArray *genreSelected;
 
 @property (strong, nonatomic) IBOutlet YTPlayerView *playerView;
 @property (weak, nonatomic) IBOutlet UIButton  *playButton;

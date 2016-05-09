@@ -62,6 +62,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL nextPage;
     BOOL didReceivedFromYoutubePlaying;
     BOOL spinerFact;
+    NSInteger markHighlightIndex;
 }
 
 @synthesize delegate = _delegate;
@@ -74,7 +75,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     nextPage = true;
     self.youtube = [[Youtube alloc] init];
     self.searchYoutube = [[Youtube alloc] init];
-    
+    markHighlightIndex = 0;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -84,7 +85,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubeReloadNotification:)
+                                                 name:@"YoutubeReloadSearch" object:nil];
 
+}
+
+- (void)receivedYoutubeReloadNotification:(NSNotification *)notification
+{
+    self.searchYoutube = [notification.userInfo objectForKey:@"youtubeObj"];
+     self.selectedRow = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    self.searchTerm = [notification.userInfo objectForKey:@"searchTerm"];
+    [self.tableView reloadData];
+    NSLog(@"received youtube relaod");
 }
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
@@ -100,18 +113,30 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             {
                 didReceivedFromYoutubePlaying = YES;
                 self.selectedRow = selectedIndex;
-                [self.tableView reloadData];
+                //[self.tableView reloadData];
+                NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+                
+                //[self.tableView beginUpdates];
+                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
                 
             }
-        }else {
+        } else {
             
             didReceivedFromYoutubePlaying = NO;
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
         }
         
     } else {
         
         didReceivedFromYoutubePlaying = NO;
         [self.tableView reloadData];
+//        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
     }
     NSLog(@"recevied search %i",self.searchPlaying);
 
@@ -231,6 +256,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         if (didReceivedFromYoutubePlaying) {
             if (indexPath.row == self.selectedRow) {
+                markHighlightIndex = indexPath.row;
                 cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
             } else {
                 cell.contentView.backgroundColor = [UIColor whiteColor];

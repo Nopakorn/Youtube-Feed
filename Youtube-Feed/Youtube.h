@@ -44,4 +44,5 @@
 - (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
 - (void)getRecommendSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage;
 - (void)changeIndexNextPage:(int )newIndexNextPage;
+
 @end

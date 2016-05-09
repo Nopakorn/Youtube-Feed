@@ -106,6 +106,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedYoutubeReloadNotification:)
+                                                 name:@"YoutubeReload" object:nil];
+
     [self.settingButton setTitle:[NSString stringWithFormat:NSLocalizedString(@"Setting", nil)] forState:UIControlStateNormal];
     
     self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4F6366);
@@ -148,13 +152,38 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             //[self.tableView reloadData];
             
         } else {
+            
             didReceivedFromYoutubePlaying = NO;
+            
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
         }
+        
+    } else {
+        didReceivedFromYoutubePlaying = NO;
+        
+        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
     }
+    
     NSLog(@"recevied recommend %i",self.recommendPlaying);
 
 }
 
+- (void)receivedYoutubeReloadNotification:(NSNotification *)notification
+{
+    MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
+    self.recommendYoutube = mainTabbar.recommendYoutube;
+    self.genreSelected = mainTabbar.genreSelected;
+    [self.tableView reloadData];
+    NSLog(@"received notification reload");
+    NSLog(@"recommend obj count: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
+    NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
+}
 
 - (void)prepareBlocks
 {
@@ -373,7 +402,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
-     NSLog(@"recommend obj: %@", self.recommendYoutube.titleList);
+//     NSLog(@"recommend obj: %@", self.recommendYoutube.titleList);
      NSLog(@"recommend obj count: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
      NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
     indexFocusTabbar = 1;
@@ -384,6 +413,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     if (self.recommendPlaying) {
         didReceivedFromYoutubePlaying = YES;
+        [self.tableView reloadData];
     } else {
         didReceivedFromYoutubePlaying = NO;
         NSLog(@"not in recommend");
@@ -399,10 +429,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
-    [_focusManager setHidden:NO];
-
     [_focusManager moveFocus:1];
-    
+    [_focusManager setHidden:NO];
     //[self.tableView reloadData];
 }
 - (void)viewDidDisappear:(BOOL)animated

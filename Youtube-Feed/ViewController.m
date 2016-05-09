@@ -84,6 +84,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSString *playlistIndexCheck;
     NSString *genreType;
     NSString *searchTerm;
+    
+
 }
 - (id)init
 {
@@ -132,6 +134,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     searchFact = NO;
     genreListFact = NO;
     recommendFact = YES;
+    
     playlistIndexCheck = @"";
     genreType = @"";
     searchTerm = @"";
@@ -146,6 +149,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //play recommend video first time
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
+    self.genreSelected = tabbar.genreSelected;
     
     if([tabbar.youtube.videoIdList count] == 0){
         NSLog(@"object is nil");
@@ -804,13 +808,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if(item == [self.youtube.videoIdList count]){
             NSLog(@"Out of length");
-            [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-            [outOflengthAlertTimer invalidate];
-            outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-            outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-            [self presentViewController:outOflengthAlert animated:YES completion:nil];
+//            [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//            [outOflengthAlertTimer invalidate];
+//            outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//            outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//            [self presentViewController:outOflengthAlert animated:YES completion:nil];
+            if (recommendFact) {
+                [self launchReloadReccommend];
+            } else if (genreListFact) {
+                [self launchReloadGenreList];
+            } else if (searchFact) {
+                [self launchReloadSearch];
+            }
+            item-=1;
             
-        }else {
+        } else {
 
             [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             
@@ -830,11 +842,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if(item == [self.youtube.videoIdList count]) {
             
              NSLog(@"Out of length");
-            [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-            [outOflengthAlertTimer invalidate];
-            outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-            outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-            [self presentViewController:outOflengthAlert animated:YES completion:nil];
+//            [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//            [outOflengthAlertTimer invalidate];
+//            outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//            outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//            [self presentViewController:outOflengthAlert animated:YES completion:nil];
+            if (recommendFact) {
+                [self launchReloadReccommend];
+            } else if (genreListFact) {
+                [self launchReloadGenreList];
+            } else if (searchFact) {
+                [self launchReloadSearch];
+            }
+
              item-=1;
         } else {
 
@@ -872,18 +892,26 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (outOfLengthAlert) {
             
             if (item >= [self.youtube.videoIdList count]) {
-                NSLog(@"Out of length");
-                outOfLengthAlert = false;
-                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-                [outOflengthAlertTimer invalidate];
-                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-                
-                
-                
-                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                NSLog(@"Out of length  - next button");
+//                outOfLengthAlert = false;
+//                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//                [outOflengthAlertTimer invalidate];
+//                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//                
+//                
+//                
+//                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                if (recommendFact) {
+                    [self launchReloadReccommend];
+                } else if(genreListFact) {
+                    [self launchReloadGenreList];
+                } else if(searchFact) {
+                    [self launchReloadSearch];
+                }
+
                 item-=1;
-            }else {
+            } else {
 
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                 
@@ -1089,7 +1117,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     genreType = [notification.userInfo objectForKey:@"genreType"];
     //NSLog(@"Received playGenreList");
-     NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
+    NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
 }
 
 - (void)receivedFavoriteDidSelectedNotification:(NSNotification *)notification
@@ -1182,6 +1210,97 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
 }
 
+
+- (void)launchReloadReccommend
+{
+
+    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(130.5, 65.5);
+    spinner.color = [UIColor blackColor];
+    [alert.view addSubview:spinner];
+    [spinner startAnimating];
+    [self presentViewController:alert animated:NO completion:nil];
+    
+    [self.youtube callRecommendSearch:self.genreSelected withNextPage:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoIdNextPage)
+                                                 name:@"LoadVideoIdNextPage" object:nil];
+    
+}
+
+- (void)launchReloadGenreList
+{
+    
+    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(130.5, 65.5);
+    spinner.color = [UIColor blackColor];
+    [alert.view addSubview:spinner];
+    [spinner startAnimating];
+    [self presentViewController:alert animated:NO completion:nil];
+    
+    [self.youtube getGenreSearchYoutube:genreType withNextPage:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoIdNextPage)
+                                                 name:@"LoadGenreVideoIdNextPage" object:nil];
+    
+}
+
+- (void)launchReloadSearch
+{
+    
+    alert = [UIAlertController alertControllerWithTitle:nil message:@"Loading\n\n\n" preferredStyle:UIAlertControllerStyleAlert];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    spinner.center = CGPointMake(130.5, 65.5);
+    spinner.color = [UIColor blackColor];
+    [alert.view addSubview:spinner];
+    [spinner startAnimating];
+    [self presentViewController:alert animated:NO completion:nil];
+    
+    [self.youtube callSearchByText:searchTerm withNextPage:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedLoadVideoIdNextPage)
+                                                 name:@"LoadVideoIdFromSearchNextPage" object:nil];
+    
+}
+
+- (void)receivedLoadVideoIdNextPage
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert dismissViewControllerAnimated:YES completion:nil];
+       
+        item+=1;
+        if (recommendFact) {
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubeReload" object:self userInfo:nil];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
+            
+        } else if (genreListFact) {
+            
+            NSString *selected = [NSString stringWithFormat:@"%lu",item];
+            NSDictionary *userInfo = @{ @"youtubeObj": self.youtube,
+                                        @"selectedIndex": selected,
+                                        @"genreType":genreType };
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubeReloadGenreList" object:self userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoIdNextPage" object:nil];
+            
+        } else if (searchFact) {
+            
+            NSString *selected = [NSString stringWithFormat:@"%lu",item];
+            NSDictionary *userInfo = @{ @"youtubeObj": self.youtube,
+                                        @"selectedIndex": selected,
+                                        @"searchTerm": searchTerm };
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubeReloadSearch" object:self userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearchNextPage" object:nil];
+
+        }
+        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+        
+    });
+    
+}
+
 #pragma mark - delegate RecommendTableViewController
 
 - (void)recommendTableViewControllerDidSelected:(RecommendTableViewController *)recommendViewController
@@ -1190,7 +1309,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     favoriteFact = NO;
     playlistDetailFact = NO;
-    recommendFact = NO;
     searchFact = NO;
     genreListFact = NO;
     recommendFact = YES;
