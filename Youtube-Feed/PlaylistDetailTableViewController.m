@@ -67,11 +67,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL portraitFact;
     BOOL didReceivedFromYoutubePlaying;
     BOOL viewFact;
+    NSInteger directionFocus;
+    BOOL scrollKKPTriggered;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     indexFocusTabbar = 1;
+    directionFocus = 0;
+    scrollKKPTriggered = YES;
     [self addingDataToYoutubeObject];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -155,6 +159,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     portraitFact = YES;
     landscapeFact = YES;
     viewFact = YES;
+    indexFocus = 1;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -186,58 +191,78 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (portraitFact) {
-            if (backFactPlaylistDetail) {
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == 24) {
-                    [_focusManager moveFocus:1];
-                } else {
-                    
-                    if (indexFocus == 0) {
+        if (scrollKKPTriggered) {
+            if (portraitFact) {
+                if (backFactPlaylistDetail) {
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == 24) {
                         [_focusManager moveFocus:1];
                     } else {
-                        [_focusManager moveFocus:indexFocus];
+                        
+                        if (indexFocus == 0) {
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+                            
+                        } else {
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
                     }
+                } else {
+                    
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
                     
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = NO;
+                landscapeFact = YES;
             }
-            portraitFact = NO;
-            landscapeFact = YES;
+
+        } else {
+            [_focusManager setHidden:YES];
         }
         
     } else {
-        if (landscapeFact) {
-            if (backFactPlaylistDetail) {
-                
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == 24) {
-                    [_focusManager moveFocus:1];
-                } else {
+        if (scrollKKPTriggered) {
+            if (landscapeFact) {
+                if (backFactPlaylistDetail) {
                     
-                    if (indexFocus == 0) {
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == 24) {
                         [_focusManager moveFocus:1];
                     } else {
-                        [_focusManager moveFocus:indexFocus];
+                        
+                        if (indexFocus == 0) {
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+                            
+                        } else {
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
                     }
+                } else {
+                    
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
                     
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = YES;
+                landscapeFact = NO;
             }
-            portraitFact = YES;
-            landscapeFact = NO;
+
+        } else {
+            [_focusManager setHidden:YES];
         }
         
     }
@@ -412,8 +437,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
+                  willDecelerate:(BOOL)decelerate
+{
+    NSLog(@"scroll view dragging");
+    scrollKKPTriggered = NO;
+    [_focusManager setHidden:YES];
+    
+}
+
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
     if (viewFact == NO) {
         return YES;
     }
@@ -461,7 +497,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     indexFocus = [_focusManager focusIndex];
     if (direction == 0) {
+        directionFocus = 0;
         indexFocus+=2;
+    } else {
+        directionFocus = 1;
     }
     
     return NO;
@@ -469,13 +508,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
     if (viewFact == NO) {
         return YES;
     }
     if ([self.youtubeVideoList count] == 0) {
         return YES;
     }
+    indexFocus = [_focusManager focusIndex];
     if (backFactPlaylistDetail) {
+        if (distanceX == 0 && distanceY == 1) {
+            directionFocus = 0;
+            indexFocus+=2;
+            [_focusManager moveFocus:1 direction:kUMAFocusForward];
+        } else if (distanceX == 0 && distanceY == -1) {
+            directionFocus = 1;
+            [_focusManager moveFocus:1 direction:kUMAFocusBackward];
+        }
+
         return YES;
     } else {
         

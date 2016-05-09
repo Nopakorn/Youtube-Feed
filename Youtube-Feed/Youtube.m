@@ -332,6 +332,7 @@
     [self getVideoDurations:self.videoIdListForGetDuration];
 }
 
+
 -(void)fetchVideosGenre:(BOOL)nextPage
 {
     NSArray* items = self.searchResults[@"items"];
@@ -364,6 +365,5 @@
     
     [self getVideoDurations:self.videoIdListForGetDuration];
 }
-
 
 @end

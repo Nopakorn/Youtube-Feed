@@ -73,6 +73,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL currentPlayingFact;
     NSArray *youtubeFavorite;
     BOOL viewFact;
+    NSInteger directionFocus;
+    BOOL scrollKKPTriggered;
 }
 
 - (void)viewDidLoad {
@@ -80,6 +82,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     isAlertShowUp = NO;
     indexFocusTabbar = 1;
     numberOfFavorites = 0;
+    directionFocus = 0;
+    scrollKKPTriggered = YES;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -127,6 +131,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     portraitFact = YES;
     landscapeFact = YES;
     viewFact = YES;
+    indexFocus = 1;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -174,60 +179,78 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"View changing");
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (portraitFact) {
-            if (backFactFavorite) {
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == numberOfFavorites-1) {
-                    [_focusManager moveFocus:indexFocus];
+        if (scrollKKPTriggered) {
+            if (portraitFact) {
+                if (backFactFavorite) {
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == numberOfFavorites-1) {
+                        [_focusManager moveFocus:indexFocus];
+                    } else {
+                        
+                        if (indexFocus == 0) {
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+                        } else {
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
+                    }
                 } else {
                     
-                    if (indexFocus == 0) {
-                        [_focusManager moveFocus:1];
-                    } else {
-                        [_focusManager moveFocus:indexFocus];
-                    }
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
                     
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = NO;
+                landscapeFact = YES;
             }
-            portraitFact = NO;
-            landscapeFact = YES;
+
+        } else {
+            [_focusManager setHidden:YES];
         }
         
     } else {
-        if (landscapeFact) {
-            if (backFactFavorite) {
-                
-                [_focusManager setFocusRootView:self.tableView];
-                [_focusManager setHidden:NO];
-                if (indexFocus == numberOfFavorites-1) {
-                    [_focusManager moveFocus:indexFocus];
+        if (scrollKKPTriggered) {
+            if (landscapeFact) {
+                if (backFactFavorite) {
+                    
+                    [_focusManager setFocusRootView:self.tableView];
+                    [_focusManager setHidden:NO];
+                    if (indexFocus == numberOfFavorites-1) {
+                        [_focusManager moveFocus:indexFocus];
+                    } else {
+                        
+                        if (indexFocus == 0) {
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+                        } else {
+                            [_focusManager moveFocus:indexFocus];
+                        }
+                        
+                    }
                 } else {
                     
-                    if (indexFocus == 0) {
-                        [_focusManager moveFocus:1];
-                    } else {
-                        [_focusManager moveFocus:indexFocus];
-                    }
+                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                    [_focusManager setHidden:NO];
+                    [_focusManager moveFocus:indexFocusTabbar];
                     
                 }
-            } else {
-                
-                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                [_focusManager setHidden:NO];
-                [_focusManager moveFocus:indexFocusTabbar];
-                
+                portraitFact = YES;
+                landscapeFact = NO;
             }
-            portraitFact = YES;
-            landscapeFact = NO;
+            
+
+        } else {
+            [_focusManager setHidden:YES];
         }
-        
     }
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
@@ -396,6 +419,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSLog(@"gestureRecognizer state = %ld", (long)gestureRecognizer.state);
     }
 
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
+                  willDecelerate:(BOOL)decelerate
+{
+    NSLog(@"scroll view dragging");
+    scrollKKPTriggered = NO;
+    [_focusManager setHidden:YES];
+    
 }
 
 - (void)deleteRowAtIndex:(NSInteger )index
@@ -592,7 +624,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
     if (viewFact == NO) {
         return YES;
     }
@@ -640,7 +673,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     indexFocus = [_focusManager focusIndex];
     if (direction == 0) {
+        directionFocus = 0;
         indexFocus+=2;
+    } else {
+        directionFocus = 1;
     }
     
     return NO;
@@ -649,6 +685,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
     //if favorites is 0 index
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
     if (viewFact == NO) {
         return YES;
     }
@@ -660,15 +698,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (backFactFavorite) {
        
         //indexFocus = [_focusManager focusIndex];
-        
         if (distanceX == 0 && distanceY == 1) {
+            directionFocus = 0;
             indexFocus+=2;
             [_focusManager moveFocus:1 direction:kUMAFocusForward];
         } else if (distanceX == 0 && distanceY == -1) {
-            
+            directionFocus = 1;
             [_focusManager moveFocus:1 direction:kUMAFocusBackward];
         }
-         return YES;
+
+        return YES;
     } else {
         
         if (distanceX == 1 && distanceY == 0) {

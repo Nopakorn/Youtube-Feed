@@ -75,6 +75,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     nextPage = true;
     scrollKKPTriggered = NO;
     indexFocusTabbar = 1;
+    directionFocus = 0;\
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.genreTitle;
@@ -167,10 +168,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     NSLog(@"View did didappear");
-     backFactGenreList = YES;
+    backFactGenreList = YES;
     portraitFact = YES;
     landscapeFact = YES;
     viewFact = YES;
+    indexFocus = 1;
+    scrollKKPTriggered = YES;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -206,7 +209,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     } else {
                         
                         if (indexFocus == 0) {
-                            [_focusManager moveFocus:1];
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+
                         } else {
                             [_focusManager moveFocus:indexFocus];
                         }
@@ -234,7 +242,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     } else {
                         
                         if (indexFocus == 0) {
-                            [_focusManager moveFocus:1];
+                            if (directionFocus == 1) {
+                                [_focusManager moveFocus:indexFocus];
+                            } else {
+                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                            }
+
                         } else {
                             [_focusManager moveFocus:indexFocus];
                         }
@@ -326,7 +339,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 }
             });
         } else {
-            NSLog(@"thumnails was nil at row %d",indexPath.row);
+            NSLog(@"thumnails was nil at row %ld",(long)indexPath.row);
         }
 
     }
@@ -521,7 +534,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         indexFocus = [_focusManager focusIndex];
         if (direction == 0) {
             indexFocus+=2;
-
+            directionFocus = 0;
             if (indexFocus == [self.genreYoutube.videoIdList count]) {
                 //reload data nextPage
                 if (nextPage) {
@@ -534,7 +547,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
             
         } else {
-
+            directionFocus = 1;
             if (indexFocus == 0) {
 
                 if (nextPage) {
@@ -556,11 +569,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
+    scrollKKPTriggered = YES;
+    [_focusManager setHidden:NO];
     if (viewFact == NO) {
         return YES;
     }
     NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+    indexFocus = [_focusManager focusIndex];
     if (backFactGenreList) {
+        if (distanceX == 0 && distanceY == 1) {
+            directionFocus = 0;
+            indexFocus+=2;
+            [_focusManager moveFocus:1 direction:kUMAFocusForward];
+        } else if (distanceX == 0 && distanceY == -1) {
+            directionFocus = 1;
+            [_focusManager moveFocus:1 direction:kUMAFocusBackward];
+        }
         return YES;
     } else {
         

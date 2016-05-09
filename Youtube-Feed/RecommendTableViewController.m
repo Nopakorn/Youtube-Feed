@@ -366,6 +366,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     //global objects
     backFactRecommended = YES;
+    scrollKKPTriggered = YES;
     viewFact = YES;
     NSLog(@"view did appear recommend with selected row %ld",(long)self.selectedRow);
 //    
@@ -376,6 +377,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
      NSLog(@"recommend obj count: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
      NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
     indexFocusTabbar = 1;
+    indexFocus = 1;
     portraitFact = YES;
     landscapeFact = YES;
     //[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
