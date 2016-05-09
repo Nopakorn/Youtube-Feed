@@ -67,6 +67,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL backFactGenreList;
     BOOL scrollKKPTriggered;
     NSInteger directionFocus;
+    NSInteger markHighlightIndex;
     BOOL viewFact;
 }
 
@@ -75,7 +76,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     nextPage = true;
     scrollKKPTriggered = NO;
     indexFocusTabbar = 1;
-    directionFocus = 0;\
+    directionFocus = 0;
+    markHighlightIndex = 0;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = self.genreTitle;
@@ -128,12 +130,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             if ([youtube.videoIdList count] == [self.genreYoutube.videoIdList count]) {
                 self.genreType = genreTypeString;
                 self.selectedIndex = selectedIndex;
-                [self.tableView reloadData];
+                //[self.tableView reloadData];
+                NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+                
+                //[self.tableView beginUpdates];
+                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
             }
             
         }
     } else {
-        [self.tableView reloadData];
+        //[self.tableView reloadData];
     }
     
     
@@ -346,6 +354,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (self.genreListPlaying) {
         if (indexPath.row == self.selectedIndex) {
+            markHighlightIndex = indexPath.row;
             cell.contentView.backgroundColor = UIColorFromRGB(0xFFCCCC);
         } else {
             cell.contentView.backgroundColor = [UIColor whiteColor];
