@@ -522,7 +522,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    
+    if ([self.genreYoutube.videoIdList count] == 0) {
+        [_focusManager setHidden:YES];
+        return YES;
+    }
     if (viewFact == NO) {
         return YES;
     }
@@ -608,63 +611,98 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    scrollKKPTriggered = YES;
-    [_focusManager setHidden:NO];
+    if ([self.genreYoutube.videoIdList count] == 0) {
+        [_focusManager setHidden:YES];
+        return YES;
+    }
+    
     if (viewFact == NO) {
         return YES;
     }
     NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
-    indexFocus = [_focusManager focusIndex];
-    if (backFactGenreList) {
-        if (distanceX == 0 && distanceY == 1) {
-            directionFocus = 0;
-            indexFocus+=2;
-            [_focusManager moveFocus:1 direction:kUMAFocusForward];
-        } else if (distanceX == 0 && distanceY == -1) {
-            directionFocus = 1;
-            [_focusManager moveFocus:1 direction:kUMAFocusBackward];
-        }
-        return YES;
+    //indexFocus = [_focusManager focusIndex];
+    
+    if (nextPage == 0) {
+        [_focusManager lock];
+        return  YES;
+        
     } else {
         
-        if (distanceX == 1 && distanceY == 0) {
-            if ([_focusManager focusIndex] == 0) {
-                indexFocusTabbar = 2;
-            }else if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 1;
-            }
+        if (backFactGenreList) {
             
-            if ([_focusManager focusIndex] == 2) {
-                [_focusManager moveFocus:2];
-                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
-            } else if ([_focusManager focusIndex] == 3) {
-                [_focusManager moveFocus:1];
-            }
-        }else if (distanceX == -1 && distanceY == 0) {
-            NSLog(@"LEFT");
-            if ([_focusManager focusIndex] == 0) {
-                indexFocusTabbar = 3;
-            }else if ([_focusManager focusIndex] == 1) {
-                indexFocusTabbar = 1;
-            }else if ([_focusManager focusIndex] == 2) {
-                indexFocusTabbar = 2;
-            }
+            [_focusManager unlock];
+            scrollKKPTriggered = YES;
+            [_focusManager setHidden:NO];
+            indexFocus = [_focusManager focusIndex];
             
-            if ([_focusManager focusIndex] == 0) {
-                [_focusManager moveFocus:3];
+            if (distanceX == 0 && distanceY == 1) {
+               
+                [_focusManager moveFocus:1 direction:kUMAFocusForward];
+                indexFocus+=2;
+                directionFocus = 0;
+                if (indexFocus == [self.genreYoutube.videoIdList count]) {
+                    //reload data nextPage
+                    if (nextPage) {
+                        [self launchReload];
+                    } else {
+                        NSLog(@"Its still loading api");
+                    }
+                }
+            } else if (distanceX == 0 && distanceY == -1) {
+
+                [_focusManager moveFocus:1 direction:kUMAFocusBackward];
+                directionFocus = 1;
+                if (indexFocus == 0) {
+                    if (nextPage) {
+                        [self launchReload];
+                    } else {
+                        NSLog(@"Its still loading api");
+                    }
+                }
             }
-        }else if (distanceX == 0 && distanceY == 1) {
-            NSLog(@"BOTTOM");
+            return YES;
+        } else {
             
-        }else if (distanceX == 0 && distanceY == -1) {
-            NSLog(@"TOP");
+            if (distanceX == 1 && distanceY == 0) {
+                if ([_focusManager focusIndex] == 0) {
+                    indexFocusTabbar = 2;
+                }else if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 1;
+                }
+                
+                if ([_focusManager focusIndex] == 2) {
+                    [_focusManager moveFocus:2];
+                    NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+                } else if ([_focusManager focusIndex] == 3) {
+                    [_focusManager moveFocus:1];
+                }
+            }else if (distanceX == -1 && distanceY == 0) {
+                NSLog(@"LEFT");
+                if ([_focusManager focusIndex] == 0) {
+                    indexFocusTabbar = 3;
+                }else if ([_focusManager focusIndex] == 1) {
+                    indexFocusTabbar = 1;
+                }else if ([_focusManager focusIndex] == 2) {
+                    indexFocusTabbar = 2;
+                }
+                
+                if ([_focusManager focusIndex] == 0) {
+                    [_focusManager moveFocus:3];
+                }
+            }else if (distanceX == 0 && distanceY == 1) {
+                NSLog(@"BOTTOM");
+                
+            }else if (distanceX == 0 && distanceY == -1) {
+                NSLog(@"TOP");
+                
+            }
+            return NO;
+            
             
         }
-        return NO;
-        
-        
+
     }
     
     
@@ -709,6 +747,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
+    if ([self.genreYoutube.videoIdList count] == 0) {
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"Home"]) {
+            return NO;
+            
+        } else {
+            [_focusManager setHidden:YES];
+            return YES;
+
+        }
+    }
+    
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
         NSLog(@"Reccomened Current view in focus %@", [_focusManager focusedView]);

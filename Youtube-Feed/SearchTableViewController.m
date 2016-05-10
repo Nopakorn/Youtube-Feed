@@ -315,7 +315,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.selectedRow = indexPath.row;
     //[self.delegate searchTableViewControllerDidSelected:self];
     
-    NSString *selected = [NSString stringWithFormat:@"%lu",self.selectedRow];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{ @"youtubeObj": self.searchYoutube,
                                 @"selectedIndex": selected,
                                 @"searchTerm":self.searchText };
@@ -464,9 +464,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
         reloadFact = NO;
-        [self.tableView reloadData];
-//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.searchYoutube.videoIdList count]-26 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         nextPage = true;
+        [self.tableView reloadData];
+        
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearchNextPage" object:nil];
     });
 

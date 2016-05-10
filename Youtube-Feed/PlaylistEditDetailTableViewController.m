@@ -455,6 +455,32 @@ typedef NS_ENUM(NSInteger, AlertType) {
             abort();
         }
     }
+    
+    
+    //update screen 1
+    //[self getYt];
+    Youtube *youtube = [[Youtube alloc] init];
+    
+    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
+        YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
+        [youtube.videoIdList addObject:youtubeVideo.videoId];
+        [youtube.titleList addObject:youtubeVideo.videoTitle];
+        [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+        [youtube.durationList addObject:youtubeVideo.videoDuration];
+    }
+    NSLog(@"selectedIndex : %lu",(long)sourceIndexPath.row-1);
+    NSLog(@"new youtube list %@",youtube.titleList);
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)sourceIndexPath.row-1];
+    NSDictionary *userInfo = @{@"youtubeObj": youtube,
+                               @"selectedIndex": selected};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePlaylist" object:self userInfo:userInfo];
+}
+
+- (void)updateNewListYoutube
+{
+    
+
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
