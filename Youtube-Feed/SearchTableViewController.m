@@ -63,6 +63,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL didReceivedFromYoutubePlaying;
     BOOL spinerFact;
     NSInteger markHighlightIndex;
+    BOOL reloadFact;
 }
 
 @synthesize delegate = _delegate;
@@ -72,6 +73,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.searchBar.delegate = self;
     self.searchBar.placeholder = @"Search from Youtube";
     spinerFact = NO;
+    reloadFact = NO;
     nextPage = true;
     self.youtube = [[Youtube alloc] init];
     self.searchYoutube = [[Youtube alloc] init];
@@ -114,29 +116,41 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 didReceivedFromYoutubePlaying = YES;
                 self.selectedRow = selectedIndex;
                 //[self.tableView reloadData];
-                NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-                
-                //[self.tableView beginUpdates];
-                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-                
+                if (reloadFact) {
+                    [self.tableView reloadData];
+                } else {
+                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+                }
+            
             }
+            
         } else {
             
             didReceivedFromYoutubePlaying = NO;
-            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+            if (reloadFact) {
+                [self.tableView reloadData];
+            } else {
+                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+            }
+
         }
         
     } else {
         
         didReceivedFromYoutubePlaying = NO;
-        [self.tableView reloadData];
-//        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+        if (reloadFact) {
+            [self.tableView reloadData];
+        } else {
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+        }
+
     }
     NSLog(@"recevied search %i",self.searchPlaying);
 
@@ -336,6 +350,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)launchReload
 {
+    reloadFact = YES;
     nextPage = false;
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.frame = CGRectMake(0, 0, 320, 44);
@@ -369,6 +384,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.searchBar resignFirstResponder];
     self.searchBar.text = @"";
     self.searchBar.showsCancelButton = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearch" object:nil];
 //    UILabel *messageLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
 //    messageLb.text = @"";
 //    messageLb.textAlignment = NSTextAlignmentCenter;
@@ -393,6 +409,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     //didReceivedFromYoutubePlaying = false;
     self.searchText = searchBar.text;
     NSLog(@"search text %@",searchBar.text);
+    reloadFact = YES;
     spinerFact = YES;
     self.searchYoutube = [[Youtube alloc] init];
     [self.searchYoutube callSearchByText:searchBar.text withNextPage:NO];
@@ -414,6 +431,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.searchBar resignFirstResponder];
         self.searchBar.showsCancelButton = NO;
         spinerFact = NO;
+        reloadFact = NO;
         if ([self.searchText isEqualToString:self.searchTerm]) {
             if (self.searchPlaying) {
                 didReceivedFromYoutubePlaying = YES;
@@ -445,6 +463,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
+        reloadFact = NO;
         [self.tableView reloadData];
 //        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.searchYoutube.videoIdList count]-26 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         nextPage = true;

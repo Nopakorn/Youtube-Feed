@@ -69,12 +69,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger directionFocus;
     NSInteger markHighlightIndex;
     BOOL viewFact;
+    BOOL reloadFact;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     nextPage = true;
     scrollKKPTriggered = NO;
+    reloadFact = NO;
     indexFocusTabbar = 1;
     directionFocus = 0;
     markHighlightIndex = 0;
@@ -142,19 +144,31 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             if ([youtube.videoIdList count] == [self.genreYoutube.videoIdList count]) {
                 self.genreType = genreTypeString;
                 self.selectedIndex = selectedIndex;
-                //[self.tableView reloadData];
-                NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
+                if (reloadFact) {
+                    [self.tableView reloadData];
+                } else {
+                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+                }
+               
             }
             
         }
     } else {
+        
         self.genreListPlaying = NO;
-        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+        
+        if (reloadFact) {
+            [self.tableView reloadData];
+        } else {
+            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
     }
     
     
@@ -200,6 +214,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
     [navBorder setOpaque:YES];
     [self.navigationController.navigationBar addSubview:navBorder];
+    
 #pragma setup UMA in ViewDidAppear in GenreListTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -424,6 +439,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)launchReload
 {
+    reloadFact = YES;
     nextPage = false;
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.frame = CGRectMake(0, 0, 320, 44);
@@ -444,6 +460,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
         NSLog(@"duration list count %lu and title count %lu",(unsigned long)[self.genreYoutube.durationList count], (unsigned long)[self.genreYoutube.titleList count]);
+        reloadFact = NO;
         [self.tableView reloadData];
         nextPage = true;
         
