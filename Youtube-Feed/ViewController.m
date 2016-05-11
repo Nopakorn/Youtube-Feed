@@ -816,14 +816,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else if (searchFact) {
                 [self launchReloadSearch];
             } else {
-                 [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-                 [outOflengthAlertTimer invalidate];
-                 outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
-            
+//                 [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//                 [outOflengthAlertTimer invalidate];
+//                 outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                NSLog(@"next video");
+                item = 0;
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             }
-            item-=1;
+            //item-=1;
             
         } else {
 
@@ -852,16 +854,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else if (searchFact) {
                 [self launchReloadSearch];
             } else {
-                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-                [outOflengthAlertTimer invalidate];
-                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-                [self presentViewController:outOflengthAlert animated:YES completion:nil];
-                
+//                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//                [outOflengthAlertTimer invalidate];
+//                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                item = 0;
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             }
 
 
-             item-=1;
+             //item-=1;
         } else {
 
             [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -899,7 +902,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             if (item >= [self.youtube.videoIdList count]) {
                 NSLog(@"Out of length  - next button");
-
+                item-=1;
                 if (recommendFact) {
                     [self launchReloadReccommend];
                 } else if(genreListFact) {
@@ -907,15 +910,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 } else if(searchFact) {
                     [self launchReloadSearch];
                 } else {
-                    [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-                    [outOflengthAlertTimer invalidate];
-                    outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-                    outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-                    [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                    item = 0;
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+//                    [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//                    [outOflengthAlertTimer invalidate];
+//                    outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//                    outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//                    [self presentViewController:outOflengthAlert animated:YES completion:nil];
                     
                 }
 
-                item-=1;
+               
             } else {
 
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -933,12 +938,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (outOfLengthAlert) {
             if (item < 0) {
                 NSLog(@"Out of length");
-                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-                [outOflengthAlertTimer invalidate];
-                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-                [self presentViewController:outOflengthAlert animated:YES completion:nil];
-                item+=1;
+//                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+//                [outOflengthAlertTimer invalidate];
+//                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
+//                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+//                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                //item+=1;
+                item = [self.youtube.videoIdList count]-1;
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             } else {
 
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -995,6 +1002,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     for (NSManagedObject *manageObject in result) {
         [context deleteObject:manageObject];
     }
+    
+    //if favorite is playing we can check it out by favorite.videoId == self.youtube.videoIdList at index i.
+    
     
 }
 
