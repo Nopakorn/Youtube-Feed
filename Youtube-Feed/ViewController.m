@@ -84,6 +84,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL updateFavoriteFact;
     BOOL updatePlaylistFact;
     BOOL insertFavoriteFact;
+    BOOL youtubeUpdateZeroFact;
     NSString *playlistIndexCheck;
     NSString *genreType;
     NSString *searchTerm;
@@ -137,7 +138,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     searchFact = NO;
     genreListFact = NO;
     recommendFact = YES;
-    
+    youtubeUpdateZeroFact = NO;
     updateFavoriteFact = NO;
     updatePlaylistFact = NO;
     insertFavoriteFact = NO;
@@ -714,12 +715,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (isSeekForward) {
         if (total < 1) {
+            NSLog(@"-- in forward seek");
             float playerCurrentTime = [self.playerView currentTime];
             playerCurrentTime+=5;
             self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
             [self.playerView seekToSeconds:playerCurrentTime allowSeekAhead:YES];
             
         } else {
+            NSLog(@"-- in forward seek kill time");
             [self.timerProgress invalidate];
         }
 
@@ -777,10 +780,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                 @"genreType":genreType,
                                 @"searchTerm":searchTerm };
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubePlaying" object:self userInfo:userInfo];
     if (state == kYTPlayerStatePlaying) {
         NSLog(@"video play");
+//        self.ProgressSlider.value = 0;
+//        self.currentTimePlay.text = @"00:00";
+//        self.totalTime.text = @"00:00";
+        //[self.ProgressSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
         
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubePlaying" object:self userInfo:userInfo];
         UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
         [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
         self.playerTotalTime = [self.playerView duration];
@@ -803,9 +810,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSLog(@"Ended video");
         item+=1;
         [self.playerView pauseVideo];
+        [self.timerProgress invalidate];
+        self.ProgressSlider.value = 0;
+        self.currentTimePlay.text = @"00:00";
+        self.totalTime.text = @"00:00";
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
-        [self updateYoutubeListOnNowPlaying:@"Forward"];
+        if (favoriteFact) {
+            updateFavoriteFact = YES;
+            [self updateYoutubeListOnNowPlaying:@"Forward"];
+        } else {
+            updateFavoriteFact = NO;
+            youtubeUpdateZeroFact = NO;
+        }
         if(item == [self.youtube.videoIdList count]){
             NSLog(@"Out of length");
 
@@ -818,14 +835,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else {
 
                 NSLog(@"next video");
-                item = 0;
-                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                if (youtubeUpdateZeroFact) {
+                    [self.playerView pauseVideo];
+                } else {
+                    item = 0;
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                }
             }
-            //item-=1;
-            
+
         } else {
 
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+            if (youtubeUpdateZeroFact) {
+                [self.playerView pauseVideo];
+            } else {
+
+                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+            }
+
             
         }
         
@@ -840,7 +866,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
-        [self updateYoutubeListOnNowPlaying:@"Forward"];
+        if (favoriteFact) {
+            updateFavoriteFact = YES;
+            [self updateYoutubeListOnNowPlaying:@"Forward"];
+        } else {
+            updateFavoriteFact = NO;
+            youtubeUpdateZeroFact = NO;
+        }
         if(item == [self.youtube.videoIdList count]) {
             
             NSLog(@"Out of length");
@@ -852,15 +884,24 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [self launchReloadSearch];
             } else {
 
-                item = 0;
+                if (youtubeUpdateZeroFact) {
+                    [self.playerView pauseVideo];
+                } else {
+                    item = 0;
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                }
+
+            }
+
+        } else {
+
+            if (youtubeUpdateZeroFact) {
+                [self.playerView pauseVideo];
+            } else {
+
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             }
 
-
-             //item-=1;
-        } else {
-
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             
         }
         
@@ -887,7 +928,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         
     } else if (sender == self.nextButton) {
-         NSLog(@"- next button  was pressed %@",self.youtube.titleList);
+       
         item+=1;
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
@@ -896,13 +937,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         if (outOfLengthAlert) {
             if (favoriteFact) {
-                NSLog(@"favFact next button %@",self.youtubeUpdate.titleList);
+                updateFavoriteFact = YES;
                 [self updateYoutubeListOnNowPlaying:@"Forward"];
+            } else {
+                updateFavoriteFact = NO;
+                youtubeUpdateZeroFact = NO;
             }
             // check length
 
             if (item >= [self.youtube.videoIdList count]) {
-                NSLog(@"Out of length  - next button");
+               
                 item-=1;
                 if (recommendFact) {
                     [self launchReloadReccommend];
@@ -911,21 +955,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 } else if(searchFact) {
                     [self launchReloadSearch];
                 } else {
-                    if (self.youtubeUpdate.videoIdList == 0) {
+                    if (youtubeUpdateZeroFact) {
                         [self.playerView pauseVideo];
                     } else {
                         item = 0;
                         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                     }
-//                    item = 0;
-//                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
-      
+    
                 }
 
                
             } else {
-
-                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                if (youtubeUpdateZeroFact) {
+                    [self.playerView pauseVideo];
+                } else {
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                }
+                
                 
             }
 
@@ -939,17 +985,27 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if (outOfLengthAlert) {
             if (favoriteFact) {
+                updateFavoriteFact = YES;
                 [self updateYoutubeListOnNowPlaying:@"Backward"];
+            } else {
+                updateFavoriteFact = NO;
+                youtubeUpdateZeroFact = NO;
             }
-            
-            NSLog(@"update item idex %ld",(long)item);
             if (item < 0) {
                 NSLog(@"Out of length");
-                item = [self.youtube.videoIdList count]-1;
-                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                if (youtubeUpdateZeroFact) {
+                    [self.playerView pauseVideo];
+                } else {
+                    item = [self.youtube.videoIdList count]-1;
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                }
+                
             } else {
-
-                [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                if (youtubeUpdateZeroFact) {
+                    [self.playerView pauseVideo];
+                } else {
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                }
                 
             }
 
@@ -971,10 +1027,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
                 [self.playerView pauseVideo];
+                youtubeUpdateZeroFact = YES;
                 updateFavoriteFact = NO;
                 //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deleteFavoriteFact"];
             } else {
-                
+                youtubeUpdateZeroFact = NO;
+
                 BOOL lastVideoFact = NO;
                 NSInteger  newIndex = 0;
                 if (insertFavoriteFact) {
@@ -1030,9 +1088,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
                 [self.playerView pauseVideo];
+                youtubeUpdateZeroFact = YES;
                 updateFavoriteFact = NO;
             } else {
-                
+                youtubeUpdateZeroFact = NO;
                 BOOL lastVideoFact = NO;
                 NSInteger  newIndex = 0;
                 if (insertFavoriteFact) {
@@ -1332,6 +1391,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     playlistDetailFact = NO;
     
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     NSLog(@"Received favorite");
 
