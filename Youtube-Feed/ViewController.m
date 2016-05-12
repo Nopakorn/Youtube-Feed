@@ -81,10 +81,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL genreListFact;
     BOOL searchFact;
     BOOL viewFact;
+    BOOL updateFavoriteFact;
+    BOOL updatePlaylistFact;
+    BOOL insertFavoriteFact;
     NSString *playlistIndexCheck;
     NSString *genreType;
     NSString *searchTerm;
-    
+    NSInteger selectedIndex;
 
 }
 - (id)init
@@ -135,6 +138,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     genreListFact = NO;
     recommendFact = YES;
     
+    updateFavoriteFact = NO;
+    updatePlaylistFact = NO;
+    insertFavoriteFact = NO;
     playlistIndexCheck = @"";
     genreType = @"";
     searchTerm = @"";
@@ -142,6 +148,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.managedObjectContext = appDelegate.managedObjectContext;
     
     self.youtube = [[Youtube alloc] init];
+    self.youtubeUpdate = [[Youtube alloc] init];
     self.favorite = [[Favorite alloc] init];
     self.favoriteList = [[NSMutableArray alloc] initWithCapacity:10];
     
@@ -521,7 +528,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
 
     if (genreListTableViewFlag) {
-        NSLog(@"in genreList");
+       
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
         genreListTableViewFlag = false;
         
@@ -529,8 +536,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     if (favoriteTableViewFlag) {
-
-        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+         NSLog(@"in Fave %id",updateFavoriteFact);
+        if (!updateFavoriteFact) {
+             NSLog(@"in Favorite not update ");
+            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+        }
         favoriteTableViewFlag = false;
         favoriteDidPlayed = true;
         
@@ -661,17 +671,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
     }
 
-//    for (int i = 0; i < [self.resultFovorite count]; i++) {
-//        
-//        NSManagedObject *object = [self.resultFovorite objectAtIndex:i];
-//
-//        if ([[object valueForKey:@"videoId"]isEqualToString:[self.youtube.videoIdList objectAtIndex:item]]) {
-//            checkFav = true;
-//            break;
-//        } else {
-//            checkFav = false;
-//        }
-//    }
     
     if (checkFav) {
         [self.favoriteButton setImage:btnImageStarCheck forState:UIControlStateNormal];
@@ -778,10 +777,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                 @"genreType":genreType,
                                 @"searchTerm":searchTerm };
     
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubePlaying" object:self userInfo:userInfo];
     if (state == kYTPlayerStatePlaying) {
         NSLog(@"video play");
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubePlaying" object:self userInfo:userInfo];
+        
         UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
         [self.playButton setImage:btnImagePause forState:UIControlStateNormal];
         self.playerTotalTime = [self.playerView duration];
@@ -806,6 +805,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+        [self updateYoutubeListOnNowPlaying:@"Forward"];
         if(item == [self.youtube.videoIdList count]){
             NSLog(@"Out of length");
 
@@ -816,11 +816,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else if (searchFact) {
                 [self launchReloadSearch];
             } else {
-//                 [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-//                 [outOflengthAlertTimer invalidate];
-//                 outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-//                 outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-//                 [self presentViewController:outOflengthAlert animated:YES completion:nil];
+
                 NSLog(@"next video");
                 item = 0;
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -844,6 +840,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+        [self updateYoutubeListOnNowPlaying:@"Forward"];
         if(item == [self.youtube.videoIdList count]) {
             
             NSLog(@"Out of length");
@@ -854,11 +851,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else if (searchFact) {
                 [self launchReloadSearch];
             } else {
-//                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-//                [outOflengthAlertTimer invalidate];
-//                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-//                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-//                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+
                 item = 0;
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             }
@@ -894,12 +887,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         
     } else if (sender == self.nextButton) {
+         NSLog(@"- next button  was pressed %@",self.youtube.titleList);
         item+=1;
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+        
+        
         if (outOfLengthAlert) {
-            
+            if (favoriteFact) {
+                NSLog(@"favFact next button %@",self.youtubeUpdate.titleList);
+                [self updateYoutubeListOnNowPlaying:@"Forward"];
+            }
+            // check length
+
             if (item >= [self.youtube.videoIdList count]) {
                 NSLog(@"Out of length  - next button");
                 item-=1;
@@ -910,14 +911,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 } else if(searchFact) {
                     [self launchReloadSearch];
                 } else {
-                    item = 0;
-                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
-//                    [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-//                    [outOflengthAlertTimer invalidate];
-//                    outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-//                    outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-//                    [self presentViewController:outOflengthAlert animated:YES completion:nil];
-                    
+                    if (self.youtubeUpdate.videoIdList == 0) {
+                        [self.playerView pauseVideo];
+                    } else {
+                        item = 0;
+                        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                    }
+//                    item = 0;
+//                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+      
                 }
 
                
@@ -936,14 +938,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         if (outOfLengthAlert) {
+            if (favoriteFact) {
+                [self updateYoutubeListOnNowPlaying:@"Backward"];
+            }
+            
+            NSLog(@"update item idex %ld",(long)item);
             if (item < 0) {
                 NSLog(@"Out of length");
-//                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
-//                [outOflengthAlertTimer invalidate];
-//                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"Out Of Length" preferredStyle:UIAlertControllerStyleAlert];
-//                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
-//                [self presentViewController:outOflengthAlert animated:YES completion:nil];
-                //item+=1;
                 item = [self.youtube.videoIdList count]-1;
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             } else {
@@ -957,9 +958,131 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
+- (void)updateYoutubeListOnNowPlaying:(NSString *)position
+{
+    if ([position isEqualToString:@"Forward"]) {
+        if (updateFavoriteFact) {
+             NSLog(@" next --- youtube update count = %lu",(unsigned long)[self.youtubeUpdate.videoIdList count]);
+            item-=1;
+            if ([self.youtubeUpdate.videoIdList count] == 0) {
+                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+                [outOflengthAlertTimer invalidate];
+                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"No Data" preferredStyle:UIAlertControllerStyleAlert];
+                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                [self.playerView pauseVideo];
+                updateFavoriteFact = NO;
+                //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deleteFavoriteFact"];
+            } else {
+                
+                BOOL lastVideoFact = NO;
+                NSInteger  newIndex = 0;
+                if (insertFavoriteFact) {
+                    newIndex = item;
+                    insertFavoriteFact = NO;
+                } else {
+                    for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+                        if ([[self.youtube.videoIdList objectAtIndex:item] isEqualToString:[self.youtubeUpdate.videoIdList objectAtIndex:i]]) {
+                            lastVideoFact = YES;
+                            newIndex = i;
+                            break;
+                        }
+                    }
+                }
+                
+                if (lastVideoFact) {
+                    item = newIndex +=1;
+                    //self.youtube = self.youtubeUpdate;
+                    self.youtube = [[Youtube alloc] init];
+                    for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+                        [self.youtube.videoIdList addObject:[self.youtubeUpdate.videoIdList objectAtIndex:i]];
+                        [self.youtube.titleList addObject:[self.youtubeUpdate.titleList objectAtIndex:i]];
+                        [self.youtube.thumbnailList addObject:[self.youtubeUpdate.thumbnailList objectAtIndex:i]];
+                        [self.youtube.durationList addObject:[self.youtubeUpdate.durationList objectAtIndex:i]];
+                    }
+                    
+                } else {
+                    //self.youtube = self.youtubeUpdate;
+                    self.youtube = [[Youtube alloc] init];
+                    for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+                        [self.youtube.videoIdList addObject:[self.youtubeUpdate.videoIdList objectAtIndex:i]];
+                        [self.youtube.titleList addObject:[self.youtubeUpdate.titleList objectAtIndex:i]];
+                        [self.youtube.thumbnailList addObject:[self.youtubeUpdate.thumbnailList objectAtIndex:i]];
+                        [self.youtube.durationList addObject:[self.youtubeUpdate.durationList objectAtIndex:i]];
+                    }
+                }
+                updateFavoriteFact = NO;
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deleteFavoriteFact"];
+            }
+        }
+       
+        NSLog(@"in forward %ld",(long)item);
+    }
+    if ([position isEqualToString:@"Backward"]) {
+       
+        if (updateFavoriteFact) {
+            item+=1;
+
+            if ([self.youtubeUpdate.videoIdList count] == 0) {
+                [outOflengthAlert dismissViewControllerAnimated:YES completion:nil];
+                [outOflengthAlertTimer invalidate];
+                outOflengthAlert = [UIAlertController alertControllerWithTitle:nil message:@"No Data" preferredStyle:UIAlertControllerStyleAlert];
+                outOflengthAlertTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(dismissOutOflengthAlert) userInfo:nil repeats:NO];
+                [self presentViewController:outOflengthAlert animated:YES completion:nil];
+                [self.playerView pauseVideo];
+                updateFavoriteFact = NO;
+            } else {
+                
+                BOOL lastVideoFact = NO;
+                NSInteger  newIndex = 0;
+                if (insertFavoriteFact) {
+                    newIndex = item;
+                    insertFavoriteFact = NO;
+                } else {
+                    for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+                        if ([[self.youtube.videoIdList objectAtIndex:item] isEqualToString:[self.youtubeUpdate.videoIdList objectAtIndex:i]]) {
+                            lastVideoFact = YES;
+                            newIndex = i;
+                            break;
+                        }
+                    }
+                }
+                if (lastVideoFact) {
+                    item = newIndex -=1;
+                    //self.youtube = self.youtubeUpdate;
+                    self.youtube = [[Youtube alloc] init];
+                    for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+                        [self.youtube.videoIdList addObject:[self.youtubeUpdate.videoIdList objectAtIndex:i]];
+                        [self.youtube.titleList addObject:[self.youtubeUpdate.titleList objectAtIndex:i]];
+                        [self.youtube.thumbnailList addObject:[self.youtubeUpdate.thumbnailList objectAtIndex:i]];
+                        [self.youtube.durationList addObject:[self.youtubeUpdate.durationList objectAtIndex:i]];
+                    }
+
+                } else {
+                    item -=1;
+                    //self.youtube = self.youtubeUpdate;
+                    self.youtube = [[Youtube alloc] init];
+                    for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+                        [self.youtube.videoIdList addObject:[self.youtubeUpdate.videoIdList objectAtIndex:i]];
+                        [self.youtube.titleList addObject:[self.youtubeUpdate.titleList objectAtIndex:i]];
+                        [self.youtube.thumbnailList addObject:[self.youtubeUpdate.thumbnailList objectAtIndex:i]];
+                        [self.youtube.durationList addObject:[self.youtubeUpdate.durationList objectAtIndex:i]];
+                    }
+
+                }
+                updateFavoriteFact = NO;
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deleteFavoriteFact"];
+            }
+        }
+         NSLog(@"in backward %ld",(long)item);
+    }
+     NSLog(@"youtube new %@",self.youtube.titleList);
+    
+}
+
 - (void)favoritePressed:(id)sender
 {
-    NSLog(@"favorite check youtube %@", self.youtube.titleList);
+    //NSLog(@"favorite check youtube %@", self.youtube.titleList);
     if ([self.youtube.videoIdList count] == 0) {
         NSLog(@"there is no video");
         
@@ -971,7 +1094,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSString *videoDuration = [self.youtube.durationList objectAtIndex:item];
         
         [self.favorite setFavoriteWithTitle:videoTitle thumbnail:videoThumbnail andVideoId:videoId andDuration:videoDuration];
-        NSLog(@"favorite check favorite %@", self.favorite.videoTitle);
+        NSLog(@"-----------------------favorite check favorite %@", self.favorite.videoTitle);
         UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
         UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
         
@@ -997,20 +1120,53 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Favorite" inManagedObjectContext:context]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"videoId == %@",favorite.videoId]];
+    NSError *error = nil;
+    NSArray *result = [context executeFetchRequest:fetchRequest error:&error];
+    NSLog(@"delete fav result %lu",(unsigned long)[result count]);
     
-    NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
     for (NSManagedObject *manageObject in result) {
         [context deleteObject:manageObject];
+        if (![context save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        } else {
+            NSLog(@"delete was saved");
+        }
     }
-    
-    //if favorite is playing we can check it out by favorite.videoId == self.youtube.videoIdList at index i.
-    
-    
+  
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFavoriteFact"];
+    if (favoriteFact) {
+        updateFavoriteFact = YES;
+        self.youtubeUpdate = [[Youtube alloc] init];
+        for (int i = 0; i < [self.youtube.videoIdList count]; i++) {
+            [self.youtubeUpdate.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
+            [self.youtubeUpdate.titleList addObject:[self.youtube.titleList objectAtIndex:i]];
+            [self.youtubeUpdate.thumbnailList addObject:[self.youtube.thumbnailList objectAtIndex:i]];
+            [self.youtubeUpdate.durationList addObject:[self.youtube.durationList objectAtIndex:i]];
+        }
+        //find video
+        for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+            if ([[self.youtubeUpdate.videoIdList objectAtIndex:i] isEqualToString:favorite.videoId]) {
+                [self.youtubeUpdate.videoIdList removeObjectAtIndex:i];
+                [self.youtubeUpdate.titleList removeObjectAtIndex:i];
+                [self.youtubeUpdate.thumbnailList removeObjectAtIndex:i];
+                [self.youtubeUpdate.durationList removeObjectAtIndex:i];
+                
+                break;
+            }
+        }
+    } else {
+        updateFavoriteFact = NO;
+    }
+
+    NSLog(@"update new youtube delete %@",self.youtubeUpdate.titleList);
+
 }
 
 
 - (void)insertFavorite:(Favorite *)favorite
 {
+    NSLog(@"--favorite %@",favorite.videoTitle);
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
 
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -1029,6 +1185,42 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         NSLog(@"save success in favorite");
     }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFavoriteFact"];
+    if (favoriteFact) {
+        updateFavoriteFact = YES;
+        self.youtubeUpdate = [[Youtube alloc] init];
+        for (int i = 0; i < [self.youtube.videoIdList count]; i++) {
+            [self.youtubeUpdate.videoIdList addObject:[self.youtube.videoIdList objectAtIndex:i]];
+            [self.youtubeUpdate.titleList addObject:[self.youtube.titleList objectAtIndex:i]];
+            [self.youtubeUpdate.thumbnailList addObject:[self.youtube.thumbnailList objectAtIndex:i]];
+            [self.youtubeUpdate.durationList addObject:[self.youtube.durationList objectAtIndex:i]];
+        }
+        //find video
+        NSInteger last = [self.youtubeUpdate.videoIdList count]-1;
+        for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
+            if ([[self.youtubeUpdate.videoIdList objectAtIndex:i] isEqualToString:favorite.videoId]) {
+                //delete fist
+                [self.youtubeUpdate.videoIdList removeObjectAtIndex:i];
+                [self.youtubeUpdate.titleList removeObjectAtIndex:i];
+                [self.youtubeUpdate.thumbnailList removeObjectAtIndex:i];
+                [self.youtubeUpdate.durationList removeObjectAtIndex:i];
+                
+                [self.youtubeUpdate.videoIdList insertObject:favorite.videoId atIndex:last];
+                [self.youtubeUpdate.titleList insertObject:favorite.videoTitle atIndex:last];
+                [self.youtubeUpdate.thumbnailList insertObject:favorite.videoThumbnail atIndex:last];
+                [self.youtubeUpdate.durationList insertObject:favorite.videoDuration atIndex:last];
+                
+                insertFavoriteFact = YES;
+                break;
+            }
+        }
+
+    } else {
+        updateFavoriteFact = NO;
+    }
+    NSLog(@"update new youtube insert %@",self.youtubeUpdate.titleList);
+   
 }
 
 
@@ -1048,25 +1240,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
 - (void)receivedDeleteFavoriteNotification:(NSNotification *)notification
 {
+    updateFavoriteFact = YES;
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
     [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
     if (favoriteDidPlayed) {
         favoriteDidPlayed = false;
         favoriteTableViewFlag = true;
-        self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
-        NSInteger selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
-        
-        if (selectedIndex >= [self.youtube.videoIdList count]) {
-            item = 0;
-        }
-        
-        if ([self.youtube.videoIdList count] == 0) {
+        self.youtubeUpdate = [[Youtube alloc] init];
+        self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
+        NSLog(@"youtube update count = %lu",(unsigned long)[self.youtubeUpdate.videoIdList count]);
+        selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
 
-            favoriteTableViewFlag = false;
-            [self.playerView stopVideo];
-            UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
-            [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
-        }
     }
 }
 
@@ -1074,7 +1258,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"received update playlist");
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
-    NSInteger selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
+    selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     NSLog(@"youtube update : %@", self.youtube.titleList);
     if (playlistDidPlayed) {
         playlistDidPlayed = false;
@@ -1379,7 +1563,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
     
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     

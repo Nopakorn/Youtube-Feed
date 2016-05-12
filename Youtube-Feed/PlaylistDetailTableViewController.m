@@ -85,19 +85,26 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                  name:@"YoutubePlaying" object:nil];
     
     NSString *indexCheck = [NSString stringWithFormat:@"%@",self.playlistIndexCheck];
-
-    if ([indexCheck isEqualToString:@"NO"]) {
+   
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"updatePlaylistFact"]) {
         self.playlistDetailPlaying = NO;
         
     } else {
-        NSInteger index = [indexCheck integerValue];
-        if (self.playlistIndex == index) {
-            self.playlistDetailPlaying = YES;
-        } else {
+        if ([indexCheck isEqualToString:@"NO"]) {
             self.playlistDetailPlaying = NO;
+            
+        } else {
+            NSInteger index = [indexCheck integerValue];
+            if (self.playlistIndex == index) {
+                self.playlistDetailPlaying = YES;
+            } else {
+                self.playlistDetailPlaying = NO;
+            }
         }
-    }
 
+    }
+  
    #pragma setup UMA in ViewDidload in PlaylistDetailTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -116,36 +123,43 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.playlistDetailPlaying = [[notification.userInfo objectForKey:@"playlistDetailFact"] boolValue];
     NSInteger playlistIndexCheck = [[notification.userInfo objectForKey:@"playlistIndexCheck"] integerValue];
     
-    if (playlistIndexCheck == self.playlistIndex) {
-        if (self.playlistDetailPlaying) {
-            if ([self.youtubeVideoList count] == [youtube.videoIdList count]) {
-                if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
-                    self.playlistDetailPlaying = YES;
-                    self.selectedRow = selectedIndex;
-                    //[self.tableView reloadData];
-                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-                    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"updatePlaylistFact"]) {
+        self.playlistDetailPlaying = NO;
+        
+    } else {
+        if (playlistIndexCheck == self.playlistIndex) {
+            if (self.playlistDetailPlaying) {
+                if ([self.youtubeVideoList count] == [youtube.videoIdList count]) {
+                    if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
+                        self.playlistDetailPlaying = YES;
+                        self.selectedRow = selectedIndex;
+                        //[self.tableView reloadData];
+                        NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+                        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                        NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+                        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+                        
+                    }
+                } else {
+                    NSLog(@"not equals - ");
                 }
+            } else {
+                self.playlistDetailPlaying = NO;
+                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+                
             }
         } else {
             self.playlistDetailPlaying = NO;
+            //[self.tableView reloadData];
             NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
             NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
             [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-
+            
         }
-    } else {
-        self.playlistDetailPlaying = NO;
-        //[self.tableView reloadData];
-        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
 
     }
-    
     
     NSLog(@"Recevied in playlistdetail %i",self.playlistDetailPlaying);
 }
@@ -403,6 +417,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //self.selectedRow = indexPath.row;
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"updatePlaylistFact"];
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)indexPath.row];
     [self addingDataToYoutubeObject];
     NSLog(@"duration? = %@",[self.youtube.durationList objectAtIndex:indexPath.row]);

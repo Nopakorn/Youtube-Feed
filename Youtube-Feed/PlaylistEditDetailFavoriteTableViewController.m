@@ -246,6 +246,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             abort();
         }
         
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"updatePlaylistFact"];
         [self.delegate addingVideoFromPlayListEditDetailFavorite:favorite];
     }
 }

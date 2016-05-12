@@ -33,6 +33,8 @@
 @property (nonatomic, strong) UMAFocusManager *focusManager;
 
 @property (strong, nonatomic) Youtube *youtube;
+@property (strong, nonatomic) Youtube *youtubeUpdate;
+
 @property (strong, nonatomic) Favorite *favorite;
 @property (strong, nonatomic) Playlist *playlist;
 

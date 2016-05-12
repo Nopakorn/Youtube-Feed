@@ -76,6 +76,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger directionFocus;
     BOOL scrollKKPTriggered;
     NSInteger markHighlightIndex;
+    
 }
 
 - (void)viewDidLoad {
@@ -86,6 +87,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     directionFocus = 0;
     markHighlightIndex = 0;
     scrollKKPTriggered = YES;
+    //self.selectedRow = -1;
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -96,7 +98,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
-    
+
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFavoriteFact"]) {
+        self.favoritePlaying = NO;
+    }     
+    NSLog(@"fav view did load");
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -125,6 +131,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"YoutubePlaying" object:nil];
         self.favoritePlaying = NO;
     }
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -139,7 +146,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
     [navBorder setOpaque:YES];
     [self.navigationController.navigationBar addSubview:navBorder];
-
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFavoriteFact"]) {
+        self.favoritePlaying = NO;
+        [self.tableView reloadData];
+    }
+//    if (self.selectedRow == -1) {
+//        self.favoritePlaying = NO;
+//    }
+    NSLog(@"fav view did appear");
+    NSLog(@"selectedRow %ld", (long)self.selectedRow);
+    NSLog(@"favorite %i mark hl %li",self.favoritePlaying,(long)markHighlightIndex);
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -165,23 +181,32 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.favoritePlaying = [[notification.userInfo objectForKey:@"favoriteFact"] boolValue];
     NSArray *result = [self.fetchedResultsController fetchedObjects];
     
-    if (self.favoritePlaying) {
-        if ([youtube.videoIdList count] == [result count]) {
-            self.selectedRow = selectedIndex;
-            //[self.tableView reloadData];
-            NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-            NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-
-        }
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFavoriteFact"]) {
+        self.favoritePlaying = NO;
         
     } else {
-        //[self.tableView reloadData];
-        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+    
+        if (self.favoritePlaying) {
+            if ([youtube.videoIdList count] == [result count]) {
+                self.selectedRow = selectedIndex;
+//                NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+//                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//                NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+//                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+           
+                [self.tableView reloadData];
+
+            }
+        } else {
+            
+            [self.tableView reloadData];
+//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+        }
+
     }
+
     NSLog(@"Recevied in favorite %i",self.favoritePlaying);
 }
 
@@ -461,7 +486,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [youtube.thumbnailList addObject:[manageObject valueForKey:@"videoThumbnail"]];
         [youtube.durationList addObject:[manageObject valueForKey:@"videoDuration"]];
     }
-    
+//    if (markHighlightIndex == self.selectedRow) {
+//        NSLog(@"Delete at highlight row");
+//        self.selectedRow = -1;
+//    }
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFavoriteFact"];
+    //self.selectedRow = -1;
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{@"youtubeObj": youtube,
                                @"selectedIndex": selected};
@@ -472,7 +502,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedRow = indexPath.row;
-
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deleteFavoriteFact"];
     NSArray *result = [self.fetchedResultsController fetchedObjects];
     Youtube *youtube = [[Youtube alloc] init];
     
@@ -557,7 +587,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:YES];
     
     [fetchRequest setSortDescriptors:@[sortDescriptor]];
     
