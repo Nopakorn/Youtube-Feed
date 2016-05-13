@@ -115,42 +115,44 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             {
                 didReceivedFromYoutubePlaying = YES;
                 self.selectedRow = selectedIndex;
-                //[self.tableView reloadData];
-                if (reloadFact) {
-                    [self.tableView reloadData];
-                } else {
-                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-                }
+                [self.tableView reloadData];
+//                if (reloadFact) {
+//                    [self.tableView reloadData];
+//                } else {
+//                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+//                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+//                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+//                }
             
             }
             
         } else {
             
             didReceivedFromYoutubePlaying = NO;
-            if (reloadFact) {
-                [self.tableView reloadData];
-            } else {
-                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-            }
+            [self.tableView reloadData];
+//            if (reloadFact) {
+//                [self.tableView reloadData];
+//            } else {
+//                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+//            }
 
         }
         
     } else {
         
         didReceivedFromYoutubePlaying = NO;
-        if (reloadFact) {
-            [self.tableView reloadData];
-        } else {
-            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-        }
-
+        [self.tableView reloadData];
+//        if (reloadFact) {
+//            [self.tableView reloadData];
+//        } else {
+//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+//        }
+//
     }
     NSLog(@"recevied search %i",self.searchPlaying);
 

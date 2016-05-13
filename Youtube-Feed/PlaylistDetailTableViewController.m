@@ -133,11 +133,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     if ([[youtube.videoIdList objectAtIndex:selectedIndex] isEqualToString:[[self.youtubeVideoList objectAtIndex:selectedIndex] valueForKey:@"videoId"]]) {
                         self.playlistDetailPlaying = YES;
                         self.selectedRow = selectedIndex;
-                        //[self.tableView reloadData];
-                        NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-                        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                        NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-                        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+                        [self.tableView reloadData];
+//                        NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+//                        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//                        NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+//                        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
                         
                     }
                 } else {
@@ -145,17 +145,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 }
             } else {
                 self.playlistDetailPlaying = NO;
-                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView reloadData];
+//                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
                 
             }
         } else {
             self.playlistDetailPlaying = NO;
-            //[self.tableView reloadData];
-            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView reloadData];
+//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
             
         }
 
