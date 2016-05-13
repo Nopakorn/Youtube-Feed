@@ -970,7 +970,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //                } else {
 //                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
 //                }
-                
+                NSLog(@"Next --- %lid",(long)item);
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             }
 
@@ -1146,7 +1146,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
                 }
                 updateFavoriteFact = NO;
+                updatePlaylistFact = NO;
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"deleteFavoriteFact"];
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"updatePlaylistFact"];
             }
         }
          NSLog(@"in backward %ld",(long)item);
@@ -1315,11 +1317,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
 - (void)receivedDeleteFavoriteNotification:(NSNotification *)notification
 {
-    updateFavoriteFact = YES;
-    updatePlaylistFact = NO;
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
     [self.favoriteButton setImage:btnImageStar forState:UIControlStateNormal];
     if (favoriteDidPlayed) {
+        updateFavoriteFact = YES;
+        updatePlaylistFact = NO;
+
         favoriteDidPlayed = false;
         favoriteTableViewFlag = true;
         self.youtubeUpdate = [[Youtube alloc] init];
@@ -1338,11 +1341,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     NSLog(@"youtube update playlist : %@", self.youtubeUpdate.titleList);
+
     if (playlistDidPlayed) {
         playlistDidPlayed = false;
         playlistDetailTableViewFlag = true;
 
     }
+
 }
 
 
@@ -1364,8 +1369,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     searchFact = NO;
     genreListFact = NO;
     playlistDetailFact = YES;
+    updatePlaylistFact = NO;
+    updateFavoriteFact = NO;
     
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
+    self.youtubeUpdate = [[Youtube alloc] init];
+    self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     playlistIndexCheck = [notification.userInfo objectForKey:@"playlistIndex"];
     NSLog(@"Received playlistDetail");
@@ -1397,7 +1406,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     searchFact = NO;
     genreListFact = NO;
     playlistDetailFact = NO;
-    
+    updatePlaylistFact = NO;
+    updateFavoriteFact = NO;
+    self.youtubeUpdate = [[Youtube alloc] init];
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];

@@ -78,7 +78,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     directionFocus = 0;
     scrollKKPTriggered = YES;
     markHighlightIndex = 0;
-    [self addingDataToYoutubeObject];
+    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
@@ -198,7 +198,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.navigationController.navigationBar addSubview:navBorder];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-
+    [self addingDataToYoutubeObject];
     NSLog(@"viewDidappear Playlistdetail");
     
     

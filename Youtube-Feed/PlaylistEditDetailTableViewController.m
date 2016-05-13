@@ -38,7 +38,9 @@ typedef NS_ENUM(NSInteger, AlertType) {
 @end
 
 @implementation PlaylistEditDetailTableViewController
-
+{
+    NSInteger lastIndex;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.youtubeVideoList = [[NSMutableArray alloc] initWithCapacity:10];
@@ -122,18 +124,41 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)updateYoutubeVideoList
 {
+
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Playlist" inManagedObjectContext:context]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@",self.playlist.title]];
-    
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"YoutubeVideo" inManagedObjectContext:context]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"playlist == %@",self.playlist]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    //
+    [fetchRequest setSortDescriptors:@[sortDescriptor]];
+    [self.youtubeVideoList removeAllObjects];
     NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
-    for (Playlist *playlistObject in result) {
-        NSLog(@"received youtube from playlist");
-        self.youtubeVideoList = [NSMutableArray arrayWithArray:playlistObject.youtubeVideos.allObjects];
+    for (int i = 0; i < result.count; i++) {
+        YoutubeVideo *yo = [result objectAtIndex:i];
+        [self.youtubeVideoList addObject:yo];
+        
     }
+
     [self.tableView reloadData];
+    //sending data
+    Youtube *youtube = [[Youtube alloc] init];
+    
+    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
+        YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
+        [youtube.videoIdList addObject:youtubeVideo.videoId];
+        [youtube.titleList addObject:youtubeVideo.videoTitle];
+        [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
+        [youtube.durationList addObject:youtubeVideo.videoDuration];
+    }
+    NSLog(@"check before updated %@",youtube.titleList);
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"updatePlaylistFact"];
+    NSString *selected = [NSString stringWithFormat:@"%lu",(long)lastIndex];
+    NSDictionary *userInfo = @{@"youtubeObj": youtube,
+                               @"selectedIndex": selected};
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePlaylist" object:self userInfo:userInfo];
 }
 
 - (void)removeYoutubeVideoFromList
@@ -229,6 +254,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    lastIndex = indexPath.row;
     if (indexPath.row == 0) {
         
         [self performSegueWithIdentifier:@"AddPlaylistSegue" sender:nil];
@@ -461,7 +487,8 @@ typedef NS_ENUM(NSInteger, AlertType) {
     } else {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"updatePlaylistFact"];
         Youtube *youtube = [[Youtube alloc] init];
-        
+        //update screen 1
+        [self getYt];
         for (int i = 0; i < [self.youtubeVideoList count]; i++) {
             YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
             [youtube.videoIdList addObject:youtubeVideo.videoId];
@@ -477,16 +504,11 @@ typedef NS_ENUM(NSInteger, AlertType) {
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePlaylist" object:self userInfo:userInfo];
     }
-    //update screen 1
-    //[self getYt];
+    
     
 }
 
-- (void)updateNewListYoutube
-{
-    
 
-}
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
