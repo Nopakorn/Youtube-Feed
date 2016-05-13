@@ -665,13 +665,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    scrollKKPTriggered = YES;
-    [_focusManager setHidden:NO];
-    if (viewFact == NO) {
+       if (viewFact == NO) {
         return YES;
     }
+    if (numberOfFavorites == 0) {
+        [_focusManager setHidden:YES];
+        return YES;
+    }
+    
     if (backFactFavorite == 0) {
         
+        scrollKKPTriggered = YES;
+        [_focusManager setHidden:NO];
+
         if (direction == 1) {
             if ([_focusManager focusIndex] == 0) {
                 indexFocusTabbar = 4;
@@ -726,18 +732,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
     //if favorites is 0 index
-    scrollKKPTriggered = YES;
-    [_focusManager setHidden:NO];
+
     if (viewFact == NO) {
         return YES;
     }
     
     if (numberOfFavorites == 0) {
+        [_focusManager setHidden:YES];
         return YES;
     }
-    indexFocus = [_focusManager focusIndex];
+   
     if (backFactFavorite) {
-       
+        scrollKKPTriggered = YES;
+        [_focusManager setHidden:NO];
+         indexFocus = [_focusManager focusIndex];
         //indexFocus = [_focusManager focusIndex];
         if (distanceX == 0 && distanceY == 1) {
             directionFocus = 0;
@@ -827,6 +835,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
+    if (numberOfFavorites == 0) {
+        [_focusManager setHidden:YES];
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"Home"]) {
+            return NO;
+            
+        } else {
+            return YES;
+        }
+    }
     if (isAlertShowUp) {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             [alert dismissViewControllerAnimated:YES completion:nil];
@@ -880,26 +900,31 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
-    NSLog(@"Long press %@ at %ld", [self getButtonName:button], (long)[_focusManager focusIndex]);
-    NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
+    if (numberOfFavorites == 0) {
+        return YES;
+    } else {
+        NSLog(@"Long press %@ at %ld", [self getButtonName:button], (long)[_focusManager focusIndex]);
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
+        
+        alert = [UIAlertController alertControllerWithTitle:@""
+                                                    message:description
+                                             preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction *action){
+                                                       
+                                                       [self deleteRowAtIndex:[_focusManager focusIndex]];
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
+        
+        [alert addAction:ok];
+        //[alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        isAlertShowUp = YES;
+        return YES;
 
-    alert = [UIAlertController alertControllerWithTitle:@""
-                                                        message:description
-                                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                         style:UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action){
-    
-                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
-                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-                                                       }];
-
-    [alert addAction:ok];
-    //[alert addAction:cancel];
-    [self presentViewController:alert animated:YES completion:nil];
-    isAlertShowUp = YES;
-    return YES;
+    }
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
