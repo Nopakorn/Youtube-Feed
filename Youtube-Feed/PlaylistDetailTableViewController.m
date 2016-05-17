@@ -221,81 +221,86 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)orientationChanged:(NSNotification *)notification
 {
     NSLog(@"View changing");
-    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (scrollKKPTriggered) {
-            if (portraitFact) {
-                if (backFactPlaylistDetail) {
-                    [_focusManager setFocusRootView:self.tableView];
-                    [_focusManager setHidden:NO];
-                    if (indexFocus == 24) {
-                        [_focusManager moveFocus:1];
-                    } else {
-                        
-                        if (indexFocus == 0) {
-                            if (directionFocus == 1) {
-                                [_focusManager moveFocus:indexFocus];
-                            } else {
-                                [_focusManager moveFocus:[_focusManager focusIndex]];
-                            }
-                            
-                        } else {
-                            [_focusManager moveFocus:indexFocus];
-                        }
-                        
-                    }
-                } else {
-                    
-                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                    [_focusManager setHidden:NO];
-                    [_focusManager moveFocus:indexFocusTabbar];
-                    
-                }
-                portraitFact = NO;
-                landscapeFact = YES;
-            }
-
-        } else {
-            [_focusManager setHidden:YES];
-        }
-        
+    if ([self.youtubeVideoList count] == 0) {
+        [_focusManager setHidden:YES];
     } else {
-        if (scrollKKPTriggered) {
-            if (landscapeFact) {
-                if (backFactPlaylistDetail) {
-                    
-                    [_focusManager setFocusRootView:self.tableView];
-                    [_focusManager setHidden:NO];
-                    if (indexFocus == 24) {
-                        [_focusManager moveFocus:1];
-                    } else {
-                        
-                        if (indexFocus == 0) {
-                            if (directionFocus == 1) {
-                                [_focusManager moveFocus:indexFocus];
+        if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+            if (scrollKKPTriggered) {
+                if (portraitFact) {
+                    if (backFactPlaylistDetail) {
+                        [_focusManager setFocusRootView:self.tableView];
+                        [_focusManager setHidden:NO];
+                        if (indexFocus == 24) {
+                            [_focusManager moveFocus:1];
+                        } else {
+                            
+                            if (indexFocus == 0) {
+                                if (directionFocus == 1) {
+                                    [_focusManager moveFocus:indexFocus];
+                                } else {
+                                    [_focusManager moveFocus:[_focusManager focusIndex]];
+                                }
+                                
                             } else {
-                                [_focusManager moveFocus:[_focusManager focusIndex]];
+                                [_focusManager moveFocus:indexFocus];
                             }
                             
-                        } else {
-                            [_focusManager moveFocus:indexFocus];
                         }
+                    } else {
+                        
+                        [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                        [_focusManager setHidden:NO];
+                        [_focusManager moveFocus:indexFocusTabbar];
                         
                     }
-                } else {
-                    
-                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                    [_focusManager setHidden:NO];
-                    [_focusManager moveFocus:indexFocusTabbar];
-                    
+                    portraitFact = NO;
+                    landscapeFact = YES;
                 }
-                portraitFact = YES;
-                landscapeFact = NO;
+                
+            } else {
+                [_focusManager setHidden:YES];
             }
-
+            
         } else {
-            [_focusManager setHidden:YES];
+            if (scrollKKPTriggered) {
+                if (landscapeFact) {
+                    if (backFactPlaylistDetail) {
+                        
+                        [_focusManager setFocusRootView:self.tableView];
+                        [_focusManager setHidden:NO];
+                        if (indexFocus == 24) {
+                            [_focusManager moveFocus:1];
+                        } else {
+                            
+                            if (indexFocus == 0) {
+                                if (directionFocus == 1) {
+                                    [_focusManager moveFocus:indexFocus];
+                                } else {
+                                    [_focusManager moveFocus:[_focusManager focusIndex]];
+                                }
+                                
+                            } else {
+                                [_focusManager moveFocus:indexFocus];
+                            }
+                            
+                        }
+                    } else {
+                        
+                        [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                        [_focusManager setHidden:NO];
+                        [_focusManager moveFocus:indexFocusTabbar];
+                        
+                    }
+                    portraitFact = YES;
+                    landscapeFact = NO;
+                }
+                
+            } else {
+                [_focusManager setHidden:YES];
+            }
+            
         }
-        
+
     }
     
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
@@ -481,12 +486,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
-    scrollKKPTriggered = YES;
-    [_focusManager setHidden:NO];
+    
     if (viewFact == NO) {
         return YES;
     }
+    
+    if ([self.youtubeVideoList count] == 0) {
+        [_focusManager setHidden:YES];
+        return YES;
+    }
+    
     if (backFactPlaylistDetail == 0) {
+        scrollKKPTriggered = YES;
+        [_focusManager setHidden:NO];
         if (direction == 1) {
             if ([_focusManager focusIndex] == 0) {
                 indexFocusTabbar = 4;
@@ -508,19 +520,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
 
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            NSLog(@"search");
             [_focusManager moveFocus:1];
             
         } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            NSLog(@"search");
             [_focusManager moveFocus:4];
             
         } else if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 1) {
-            NSLog(@"search");
             [_focusManager moveFocus:4];
             
         } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 0) {
-            NSLog(@"search");
             [_focusManager moveFocus:1];
             
         }
@@ -541,16 +549,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    scrollKKPTriggered = YES;
-    [_focusManager setHidden:NO];
+    
     if (viewFact == NO) {
         return YES;
     }
     if ([self.youtubeVideoList count] == 0) {
+        [_focusManager setHidden:YES];
         return YES;
     }
     indexFocus = [_focusManager focusIndex];
     if (backFactPlaylistDetail) {
+        scrollKKPTriggered = YES;
+        [_focusManager setHidden:NO];
         if (distanceX == 0 && distanceY == 1) {
             directionFocus = 0;
             indexFocus+=2;
@@ -638,6 +648,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
+    if ([self.youtubeVideoList count] == 0) {
+        [_focusManager setHidden:YES];
+        if ([[self getButtonName:button] isEqualToString:@"Back"]) {
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        } else if ([[self getButtonName:button] isEqualToString:@"Home"]) {
+            return NO;
+            
+        } else {
+            return YES;
+        }
+    }
+    
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
         [self.navigationController popViewControllerAnimated:YES];

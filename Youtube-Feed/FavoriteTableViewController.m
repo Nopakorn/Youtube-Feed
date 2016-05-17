@@ -213,79 +213,84 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)orientationChanged:(NSNotification *)notification
 {
     NSLog(@"View changing");
-    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-        if (scrollKKPTriggered) {
-            if (portraitFact) {
-                if (backFactFavorite) {
-                    [_focusManager setFocusRootView:self.tableView];
-                    [_focusManager setHidden:NO];
-                    if (indexFocus == numberOfFavorites-1) {
-                        [_focusManager moveFocus:indexFocus];
-                    } else {
-                        
-                        if (indexFocus == 0) {
-                            if (directionFocus == 1) {
-                                [_focusManager moveFocus:indexFocus];
-                            } else {
-                                [_focusManager moveFocus:[_focusManager focusIndex]];
-                            }
-                        } else {
-                            [_focusManager moveFocus:indexFocus];
-                        }
-                        
-                    }
-                } else {
-                    
-                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                    [_focusManager setHidden:NO];
-                    [_focusManager moveFocus:indexFocusTabbar];
-                    
-                }
-                portraitFact = NO;
-                landscapeFact = YES;
-            }
-
-        } else {
-            [_focusManager setHidden:YES];
-        }
-        
+    if (numberOfFavorites == 0) {
+        [_focusManager setHidden:YES];
     } else {
-        if (scrollKKPTriggered) {
-            if (landscapeFact) {
-                if (backFactFavorite) {
-                    
-                    [_focusManager setFocusRootView:self.tableView];
-                    [_focusManager setHidden:NO];
-                    if (indexFocus == numberOfFavorites-1) {
-                        [_focusManager moveFocus:indexFocus];
+        if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+            if (scrollKKPTriggered) {
+                if (portraitFact) {
+                    if (backFactFavorite) {
+                        [_focusManager setFocusRootView:self.tableView];
+                        [_focusManager setHidden:NO];
+                        if (indexFocus == numberOfFavorites-1) {
+                            [_focusManager moveFocus:indexFocus];
+                        } else {
+                            
+                            if (indexFocus == 0) {
+                                if (directionFocus == 1) {
+                                    [_focusManager moveFocus:indexFocus];
+                                } else {
+                                    [_focusManager moveFocus:[_focusManager focusIndex]];
+                                }
+                            } else {
+                                [_focusManager moveFocus:indexFocus];
+                            }
+                            
+                        }
                     } else {
                         
-                        if (indexFocus == 0) {
-                            if (directionFocus == 1) {
-                                [_focusManager moveFocus:indexFocus];
-                            } else {
-                                [_focusManager moveFocus:[_focusManager focusIndex]];
-                            }
-                        } else {
-                            [_focusManager moveFocus:indexFocus];
-                        }
+                        [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                        [_focusManager setHidden:NO];
+                        [_focusManager moveFocus:indexFocusTabbar];
                         
                     }
-                } else {
-                    
-                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                    [_focusManager setHidden:NO];
-                    [_focusManager moveFocus:indexFocusTabbar];
-                    
+                    portraitFact = NO;
+                    landscapeFact = YES;
                 }
-                portraitFact = YES;
-                landscapeFact = NO;
+                
+            } else {
+                [_focusManager setHidden:YES];
             }
             
-
         } else {
-            [_focusManager setHidden:YES];
+            if (scrollKKPTriggered) {
+                if (landscapeFact) {
+                    if (backFactFavorite) {
+                        
+                        [_focusManager setFocusRootView:self.tableView];
+                        [_focusManager setHidden:NO];
+                        if (indexFocus == numberOfFavorites-1) {
+                            [_focusManager moveFocus:indexFocus];
+                        } else {
+                            
+                            if (indexFocus == 0) {
+                                if (directionFocus == 1) {
+                                    [_focusManager moveFocus:indexFocus];
+                                } else {
+                                    [_focusManager moveFocus:[_focusManager focusIndex]];
+                                }
+                            } else {
+                                [_focusManager moveFocus:indexFocus];
+                            }
+                            
+                        }
+                    } else {
+                        
+                        [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                        [_focusManager setHidden:NO];
+                        [_focusManager moveFocus:indexFocusTabbar];
+                        
+                    }
+                    portraitFact = YES;
+                    landscapeFact = NO;
+                }
+                
+                
+            } else {
+                [_focusManager setHidden:YES];
+            }
         }
+
     }
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
@@ -334,6 +339,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
 

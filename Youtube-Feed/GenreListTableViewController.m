@@ -234,80 +234,85 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)orientationChanged:(NSNotification *)notification
 {
     NSLog(@"View changing");
-    if (scrollKKPTriggered) {
-        if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-            if (portraitFact) {
-                if (backFactGenreList) {
-                    [_focusManager setFocusRootView:self.tableView];
-                    [_focusManager setHidden:NO];
-                    if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
-                        [_focusManager moveFocus:1];
+    if ([self.genreYoutube.videoIdList count] == 0) {
+        [_focusManager setHidden:YES];
+    } else {
+        if (scrollKKPTriggered) {
+            if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
+                if (portraitFact) {
+                    if (backFactGenreList) {
+                        [_focusManager setFocusRootView:self.tableView];
+                        [_focusManager setHidden:NO];
+                        if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
+                            [_focusManager moveFocus:1];
+                        } else {
+                            
+                            if (indexFocus == 0) {
+                                if (directionFocus == 1) {
+                                    [_focusManager moveFocus:indexFocus];
+                                } else {
+                                    [_focusManager moveFocus:[_focusManager focusIndex]];
+                                }
+                                
+                            } else {
+                                [_focusManager moveFocus:indexFocus];
+                            }
+                            
+                        }
                     } else {
                         
-                        if (indexFocus == 0) {
-                            if (directionFocus == 1) {
-                                [_focusManager moveFocus:indexFocus];
-                            } else {
-                                [_focusManager moveFocus:[_focusManager focusIndex]];
-                            }
-
-                        } else {
-                            [_focusManager moveFocus:indexFocus];
-                        }
+                        [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                        [_focusManager setHidden:NO];
+                        [_focusManager moveFocus:indexFocusTabbar];
                         
                     }
-                } else {
-                    
-                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                    [_focusManager setHidden:NO];
-                    [_focusManager moveFocus:indexFocusTabbar];
-                    
+                    portraitFact = NO;
+                    landscapeFact = YES;
                 }
-                portraitFact = NO;
-                landscapeFact = YES;
+                
+            } else {
+                if (landscapeFact) {
+                    if (backFactGenreList) {
+                        
+                        [_focusManager setFocusRootView:self.tableView];
+                        [_focusManager setHidden:NO];
+                        if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
+                            [_focusManager moveFocus:1];
+                        } else {
+                            
+                            if (indexFocus == 0) {
+                                if (directionFocus == 1) {
+                                    [_focusManager moveFocus:indexFocus];
+                                } else {
+                                    [_focusManager moveFocus:[_focusManager focusIndex]];
+                                }
+                                
+                            } else {
+                                [_focusManager moveFocus:indexFocus];
+                            }
+                            
+                        }
+                    } else {
+                        
+                        [_focusManager setFocusRootView:self.tabBarController.tabBar];
+                        [_focusManager setHidden:NO];
+                        [_focusManager moveFocus:indexFocusTabbar];
+                        
+                        
+                    }
+                    portraitFact = YES;
+                    landscapeFact = NO;
+                }
+                
             }
             
         } else {
-            if (landscapeFact) {
-                if (backFactGenreList) {
-                    
-                    [_focusManager setFocusRootView:self.tableView];
-                    [_focusManager setHidden:NO];
-                    if (indexFocus == [self.genreYoutube.videoIdList count]-1) {
-                        [_focusManager moveFocus:1];
-                    } else {
-                        
-                        if (indexFocus == 0) {
-                            if (directionFocus == 1) {
-                                [_focusManager moveFocus:indexFocus];
-                            } else {
-                                [_focusManager moveFocus:[_focusManager focusIndex]];
-                            }
-
-                        } else {
-                            [_focusManager moveFocus:indexFocus];
-                        }
-                        
-                    }
-                } else {
-                    
-                    [_focusManager setFocusRootView:self.tabBarController.tabBar];
-                    [_focusManager setHidden:NO];
-                    [_focusManager moveFocus:indexFocusTabbar];
-                    
-                    
-                }
-                portraitFact = YES;
-                landscapeFact = NO;
-            }
+            //        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
+            //        NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
+            //        NSInteger row = [(NSIndexPath *)[sortedIndexPaths objectAtIndex:0] row];
+            //        NSLog(@"row = %ld",(long)row);
             
         }
-
-    } else {
-//        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-//        NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
-//        NSInteger row = [(NSIndexPath *)[sortedIndexPaths objectAtIndex:0] row];
-//        NSLog(@"row = %ld",(long)row);
 
     }
     
