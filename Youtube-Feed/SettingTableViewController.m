@@ -129,6 +129,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [subView removeFromSuperview];
         }
     }
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 

@@ -38,7 +38,9 @@ typedef NS_ENUM(NSInteger, AlertType) {
 @end
 
 @implementation PlaylistEditTableViewController
-
+{
+    BOOL selectFact;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Edit Playlist", nil)];
@@ -48,6 +50,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    selectFact = NO;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -69,6 +72,11 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [subView removeFromSuperview];
         }
     }
+    //[self.navigationController popViewControllerAnimated:NO];
+    if (!selectFact) {
+        [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:0] animated:NO];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
@@ -165,7 +173,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    selectFact = YES;
     if(indexPath.row == [self.playlist_List count]) {
 
         [self createNewPlaylist];

@@ -72,6 +72,8 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [subView removeFromSuperview];
         }
     }
+    [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:0] animated:NO];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 

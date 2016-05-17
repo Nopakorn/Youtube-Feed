@@ -40,7 +40,9 @@ typedef NS_ENUM(NSInteger, AlertType) {
 @implementation PlaylistEditDetailTableViewController
 {
     NSInteger lastIndex;
+    BOOL selectFact;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.youtubeVideoList = [[NSMutableArray alloc] initWithCapacity:10];
@@ -56,6 +58,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    selectFact = NO;
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setHidden:YES];
     
@@ -78,6 +81,12 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [subView removeFromSuperview];
         }
     }
+    
+    if (!selectFact) {
+        [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:0] animated:NO];
+    }
+    
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
@@ -254,6 +263,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    selectFact = YES;
     lastIndex = indexPath.row;
     if (indexPath.row == 0) {
         
