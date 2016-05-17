@@ -75,6 +75,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger markHighlightIndex;
     
     BOOL viewFact;
+    BOOL hostActive;
+    BOOL internetActive;
+    BOOL reloadFact;
 }
 @synthesize delegate = _delegate;
 
@@ -89,6 +92,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     indexFocusCatch = 0;
     directionFocus = 0;
     inTabbar = false;
+    hostActive = NO;
+    internetActive = NO;
+    reloadFact = NO;
     self.youtube = [[Youtube alloc] init];
     self.imageData = [[NSMutableArray alloc] initWithCapacity:10];
     self.recommendYoutube = [[Youtube alloc] init];
@@ -115,6 +121,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.navigationController.navigationBar.tintColor = UIColorFromRGB(0x4F6366);
 
     
+
 #pragma setup UMA in ViewDidload in RecommendTableView
 //    _inputDevices = [NSMutableArray array];
      _umaApp = [UMAApplication sharedApplication];
@@ -130,6 +137,88 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 //    [self prepareBlocks];
 //    [_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
+
+- (void)checkNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus) {
+        case NotReachable:
+        {
+            NSLog(@"The internet is down");
+            internetActive = NO;
+            break;
+            
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"The internet is working via WiFi");
+            internetActive = YES;
+            break;
+            
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"The internet is working via 3g");
+            internetActive = YES;
+            break;
+            
+        }
+            
+            
+        default:
+            break;
+    }
+    
+    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"A gateway to the host server is down.");
+            hostActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"A gateway to the host server is working via WIFI.");
+            hostActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"A gateway to the host server is working via WWAN.");
+            hostActive = YES;
+            
+            break;
+        }
+    }
+
+   [self showingNetworkStatus];
+  
+}
+
+ - (void)showingNetworkStatus
+{
+    if (internetActive) {
+        if(reloadFact){
+            reloadFact = NO;
+            NSLog(@"---recommend %@",self.recommendYoutube.titleList);
+            [self launchReload];
+        }
+        
+        NSLog(@"internet is Up ---- %id ", nextPage);
+    } else {
+        reloadFact = YES;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
+        NSLog(@"internet is Down ----");
+    }
+    
+}
+
+
+
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
 {
@@ -270,7 +359,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [subView removeFromSuperview];
         }
     }
-    NSLog(@"View changing");
+
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -281,13 +370,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
     NSInteger row = [(NSIndexPath *)[sortedIndexPaths objectAtIndex:0] row];
-    NSLog(@"current top row %ld",(long)row);
-    NSLog(@"current indexFocus %ld",indexFocus);
-    NSLog(@"current GET indexFocus %ld and direction %ld",[_focusManager focusIndex], (long)directionFocus);
-    NSLog(@"scroll triggered fact %d",scrollKKPTriggered);
-//    if (nextPage == 0) {
-//        indexFocus -= 25;
-//    }
+
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
         if (scrollKKPTriggered) {
             if (portraitFact) {
@@ -425,6 +508,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [navBorder setOpaque:YES];
     [self.navigationController.navigationBar addSubview:navBorder];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+    
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -444,6 +534,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [subView removeFromSuperview];
         }
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
@@ -556,6 +647,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     float reload_distance = 50;
     if(y > h + reload_distance) {
         if (nextPage) {
+            reloadFact = YES;
             [self launchReload];
         } else {
             NSLog(@"Its still loading api");
@@ -643,6 +735,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
        
         [self.tableView reloadData];
         nextPage = true;
+        reloadFact = NO;
         NSLog(@"update indexfocus %ld or get it %ld direction %ld",(long)indexFocus, [_focusManager focusIndex], (long)directionFocus);
         if (scrollKKPTriggered) {
             if (directionFocus == 0) {

@@ -89,6 +89,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSString *genreType;
     NSString *searchTerm;
     NSInteger selectedIndex;
+    
+    BOOL internetActive;
+    BOOL hostActive;
+    BOOL videoReadyFact;
 
 }
 - (id)init
@@ -115,6 +119,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [super viewDidLoad];
 
     viewFact = YES;
+    videoReadyFact = NO;
     self.tabBarController.delegate = self;
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
@@ -231,6 +236,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
+    
+    
+    
 #pragma setup UMA in ViewDidload
     _inputDevices = [NSMutableArray array];
     _umaApp = [UMAApplication sharedApplication];
@@ -503,12 +511,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidAppear:animated];
     NSLog(@"View did appear in youtube");
+    [self hideNavWithFact:NO];
+    
     [hideNavigation invalidate];
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     
     viewFact = YES;
     indexFocusTabbar = 2;
-   
+    //videoReadyFact = NO;
+    //Reachability
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+    
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
+
     if (recommendTableViewFlag) {
 
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -570,6 +589,86 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
+- (void)checkNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus) {
+        case NotReachable:
+        {
+
+            internetActive = NO;
+            break;
+            
+        }
+        case ReachableViaWiFi:
+        {
+
+            internetActive = YES;
+            break;
+            
+        }
+        case ReachableViaWWAN:
+        {
+
+            internetActive = YES;
+            break;
+            
+        }
+            
+            
+        default:
+            break;
+    }
+    
+    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+
+            hostActive = NO;
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            hostActive = YES;
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+
+            hostActive = YES;
+            break;
+        }
+    }
+    if (videoReadyFact) {
+        [self showingNetworkStatus];
+    }
+    
+    
+}
+
+- (void)showingNetworkStatus
+{
+    if (internetActive) {
+        if (videoReadyFact) {
+            videoReadyFact = NO;
+            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+            NSLog(@"internet is Up ---- item index %lid ", (long)item);
+        }
+        
+    } else {
+        
+        NSLog(@"internet is Down ---- item index %lid ", (long)item);
+    }
+    
+}
+- (BOOL)isNetworkConnected
+{
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus networkStatus = [reachability currentReachabilityStatus];
+    return networkStatus != NotReachable;
+}
 
 - (void)orientationChanged:(NSNotification *)notification
 {
@@ -647,6 +746,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [hideNavigation invalidate];
     [_focusManager setHidden:YES];
     viewFact = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
    
 }
@@ -654,9 +754,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)playerViewDidBecomeReady:(YTPlayerView *)playerView
 {
     BOOL checkFav = false;
+    //videoReadyFact = YES;
     UIImage *btnImageStarCheck = [UIImage imageNamed:@"star_2"];
     UIImage *btnImageStar = [UIImage imageNamed:@"star_1"];
-    
+    NSLog(@"Video did become ready");
     //self.navigationItem.title = [self.youtube.titleList objectAtIndex:item];
     
     //self.resultFovorite = [self.fetchedResultsController fetchedObjects];
@@ -767,10 +868,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
    
 }
 
+- (void)playerView:(YTPlayerView *)playerView receivedError:(YTPlayerError)error
+{
+    NSLog(@"error occurs %ld",(long)error);
+}
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
-    NSLog(@"playerView state changing");
+    NSLog(@"playerView state changing ---- state:%ld",(long)state);
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)item];
     NSDictionary *userInfo = @{ @"youtubeCurrentPlaying": selected,
                                 @"youtubeObj":self.youtube,
@@ -868,10 +973,17 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
         
         if (favoriteFact) {
+            updatePlaylistFact = NO;
             updateFavoriteFact = YES;
+            [self updateYoutubeListOnNowPlaying:@"Forward"];
+            
+        } else  if (playlistDetailFact) {
+            updateFavoriteFact = NO;
+            updatePlaylistFact = YES;
             [self updateYoutubeListOnNowPlaying:@"Forward"];
         } else {
             updateFavoriteFact = NO;
+            updatePlaylistFact = NO;
             youtubeUpdateZeroFact = NO;
         }
         if(item == [self.youtube.videoIdList count]) {
@@ -895,6 +1007,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
   
         }
         
+    } else if (state == kYTPlayerErrorHTML5Error) {
+        NSLog(@"Youtube HTML5 Error");
     }
 }
 
@@ -918,7 +1032,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         
     } else if (sender == self.nextButton) {
-       
+        NSLog(@"Next Button");
+        videoReadyFact = YES;
         item+=1;
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
@@ -952,12 +1067,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 } else if(searchFact) {
                     [self launchReloadSearch];
                 } else {
-//                    if (youtubeUpdateZeroFact) {
-//                        [self.playerView pauseVideo];
-//                    } else {
-//                        item = 0;
-//                        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
-//                    }
+
                     item = 0;
                     [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                 }
@@ -965,12 +1075,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
                
             } else {
-//                if (youtubeUpdateZeroFact) {
-//                    [self.playerView pauseVideo];
-//                } else {
-//                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
-//                }
-                NSLog(@"Next --- %lid",(long)item);
+
                 [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
             }
 
@@ -1019,7 +1124,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     if ([position isEqualToString:@"Forward"]) {
         if (updateFavoriteFact || updatePlaylistFact) {
-             NSLog(@" next --- youtube update count = %lu",(unsigned long)[self.youtubeUpdate.videoIdList count]);
             item-=1;
             if ([self.youtubeUpdate.videoIdList count] == 0) {
                 updateFavoriteFact = NO;
@@ -1081,8 +1185,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"updatePlaylistFact"];
             }
         }
-       
-        NSLog(@"in forward %ld",(long)item);
+
     }
     if ([position isEqualToString:@"Backward"]) {
        
@@ -1151,9 +1254,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"updatePlaylistFact"];
             }
         }
-         NSLog(@"in backward %ld",(long)item);
+
     }
-     NSLog(@"youtube new %@",self.youtubeUpdate.titleList);
+
     
 }
 

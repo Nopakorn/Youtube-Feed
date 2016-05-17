@@ -8,17 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
+#import "Reachability.h"
 
 #import <UIEMultiAccess/UIEMultiAccess.h>
 
+
 @protocol RecommendTableViewControllerDelegate;
+@class Reachability;
 
 @interface RecommendTableViewController : UITableViewController<UITableViewDelegate,UITableViewDataSource>
 {
     //id<RecommendTableViewControllerDelegate> delegate;
     //NSInteger selectedRow;    
     UIActivityIndicatorView *spinner;
-    
+    Reachability *internetReachable;
+    Reachability *hostReachable;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *recommendedIconTitle;

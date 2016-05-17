@@ -18,6 +18,8 @@
 #import <UIEMultiAccess/UIEMultiAccess.h>
 
 #import <MediaPlayer/MediaPlayer.h>
+#import "Reachability.h"
+@class Reachability;
 
 @interface ViewController : UIViewController <YTPlayerViewDelegate, RecommendTableViewControllerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate, SearchTableViewControllerDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UMAFocusManagerDelegate>
 {
@@ -28,6 +30,9 @@
     NSTimer *hideNavigation;
     BOOL shouldHideStatusBar;
     UIAlertController *alert;
+    
+    Reachability *internetReachable;
+    Reachability *hostReachable;
 }
 @property (nonatomic) UMAApplication *umaApp;
 @property (nonatomic, strong) UMAFocusManager *focusManager;
