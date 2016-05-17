@@ -70,6 +70,8 @@
 		5CD4C4591CA295B400A6C837 /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CD4C4581CA295B400A6C837 /* DataController.m */; };
 		5CF4FB451CB27547007EB1DA /* UIEMultiAccess.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5CF4FB441CB27547007EB1DA /* UIEMultiAccess.bundle */; };
 		5CF4FB491CB27BF6007EB1DA /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5CF4FB481CB27BF6007EB1DA /* Assets.bundle */; };
+		5CF56DA61CEAE3DE00EC90E2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF56DA51CEAE3DE00EC90E2 /* Reachability.m */; };
+		5CF56DA81CEAE42400EC90E2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF56DA71CEAE42400EC90E2 /* SystemConfiguration.framework */; };
 		F839CED9CE4E6DC1742A5EEC /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0560DCFEDA6238431F502497 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -203,6 +205,9 @@
 		5CD4C4581CA295B400A6C837 /* DataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataController.m; sourceTree = "<group>"; };
 		5CF4FB441CB27547007EB1DA /* UIEMultiAccess.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = UIEMultiAccess.bundle; path = Framework/UIEMultiAccess.bundle; sourceTree = "<group>"; };
 		5CF4FB481CB27BF6007EB1DA /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Assets.bundle; path = Framework/Assets.bundle; sourceTree = "<group>"; };
+		5CF56DA41CEAE3DE00EC90E2 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../Downloads/Reachability/Reachability/Reachability.h; sourceTree = "<group>"; };
+		5CF56DA51CEAE3DE00EC90E2 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../Downloads/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
+		5CF56DA71CEAE42400EC90E2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		818953F486A67E7C1C922A32 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A2F0408D75113D1EDBC3B51A /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -212,6 +217,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CF56DA81CEAE42400EC90E2 /* SystemConfiguration.framework in Frameworks */,
 				5C7784DF1CAE5A1300836C4E /* MediaPlayer.framework in Frameworks */,
 				5C4BADD81CAAB051008C465D /* UIEMultiAccess.framework in Frameworks */,
 				5C4BADC71CAAA80F008C465D /* libc++.1.dylib in Frameworks */,
@@ -244,6 +250,7 @@
 		0F86857DA1F1084B09DA4D29 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5CF56DA71CEAE42400EC90E2 /* SystemConfiguration.framework */,
 				5C7784DE1CAE5A1300836C4E /* MediaPlayer.framework */,
 				5C4BADD71CAAB051008C465D /* UIEMultiAccess.framework */,
 				5C4BADC61CAAA80F008C465D /* libc++.1.dylib */,
@@ -320,6 +327,8 @@
 		11C170E61C7186A800E74681 /* Youtube-Feed */ = {
 			isa = PBXGroup;
 			children = (
+				5CF56DA41CEAE3DE00EC90E2 /* Reachability.h */,
+				5CF56DA51CEAE3DE00EC90E2 /* Reachability.m */,
 				5C57EB871CC4D675001DC64E /* tutorial */,
 				5CD4C4471CA2942400A6C837 /* Core Data */,
 				11C170EA1C7186A800E74681 /* AppDelegate.h */,
@@ -698,6 +707,7 @@
 				5CBA2CEB1C97CC150049FE4A /* PlaylistEditCustomCell.m in Sources */,
 				11C170E91C7186A800E74681 /* main.m in Sources */,
 				5C67E4201C9696F100A08005 /* FavoriteCustomCell.m in Sources */,
+				5CF56DA61CEAE3DE00EC90E2 /* Reachability.m in Sources */,
 				5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */,
 				5C46DAA61CB64E870035837E /* Tutorial1ViewController.m in Sources */,
 				5C42228F1C9169B000C1C525 /* AddPlaylistPopUpViewController.m in Sources */,

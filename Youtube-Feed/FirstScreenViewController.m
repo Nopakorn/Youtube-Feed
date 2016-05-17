@@ -8,6 +8,7 @@
 
 #import "FirstScreenViewController.h"
 #import "MainTabBarViewController.h"
+#import "Reachability.h"
 
 @interface FirstScreenViewController ()
 
@@ -17,12 +18,19 @@
 {
     BOOL receivedGenre;
     BOOL receivedYoutube;
+    BOOL internetActive;
+    BOOL hostActive;
+    BOOL alertFact;
+    BOOL loadApiFact;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     receivedGenre = NO;
     receivedYoutube = NO;
-
+    internetActive = NO;
+    hostActive = NO;
+    alertFact = YES;
+    loadApiFact = YES;
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     [self.navigationController setNavigationBarHidden:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
@@ -32,8 +40,125 @@
     //tutorial has been showed
 //    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+//
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
     
+}
+
+- (void)checkNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus) {
+        case NotReachable:
+        {
+            NSLog(@"The internet is down");
+            internetActive = NO;
+            break;
+        
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"The internet is working via WiFi");
+            internetActive = YES;
+            break;
+            
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"The internet is working via 3g");
+            internetActive = YES;
+            break;
+            
+        }
+           
+            
+        default:
+            break;
+    }
+    
+    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"A gateway to the host server is down.");
+            hostActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"A gateway to the host server is working via WIFI.");
+            hostActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"A gateway to the host server is working via WWAN.");
+            hostActive = YES;
+            
+            break;
+        }
+    }
+    if (alertFact) {
+        [self showingNetworkStatus];
+    }
+    
+}
+
+- (void)showingNetworkStatus
+{
+    alertFact = NO;
+    if (internetActive) {
+        NSLog(@"your internet is turn on");
+        if (loadApiFact) {
+            loadApiFact = NO;
+            if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+                    [self callGenreSecondTime];
+                    
+                } else {
+                    [self callGenre];
+                }
+                
+            } else {
+                
+                [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
+            }
+
+        }
+
+    } else {
+        
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Please turn on your internet.", nil)];
+            
+        alert = [UIAlertController alertControllerWithTitle:description
+                                                        message:@""
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+            
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction *action){
+                                                           alertFact = YES;
+                                                           [alert dismissViewControllerAnimated:YES completion:nil];
+                                                       }];
+        [alert addAction:ok];
+        [self presentViewController:alert animated:YES completion:nil];
+        NSLog(@"your internet is turn off");
+    }
+
+}
+
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -42,34 +167,27 @@
     
     self.youtube = [[Youtube alloc] init];
     self.genre = [[Genre alloc] init];
-
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
-            self.spinner.hidden = NO;
-            self.loadingLabel.hidden = NO;
-            [self.spinner startAnimating];
-            
-//            NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-//            NSArray *stringSeparated = [saveGenre componentsSeparatedByString:@"+"];
-//            self.genreSelected = [NSMutableArray arrayWithArray:stringSeparated];
-//            
-//            NSString *saveGenreId = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreIdSelectedString"];
-//            NSArray *stringSeparatedId = [saveGenreId componentsSeparatedByString:@"+"];
-//            self.genreIdSelected = [NSMutableArray arrayWithArray:stringSeparatedId];
-             self.youtube = [[Youtube alloc] init];
-            [self callGenreSecondTime];
-
-        } else {
-            self.loadingLabel.hidden = NO;
-            self.spinner.hidden = NO;
-            [self.spinner startAnimating];
-            [self callGenre];
-        }
-        
-    } else {
-        
-        [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
-    }
+    self.loadingLabel.hidden = NO;
+    self.spinner.hidden = NO;
+    [self.spinner startAnimating];
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
+//        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+//            self.spinner.hidden = NO;
+//            self.loadingLabel.hidden = NO;
+//            [self.spinner startAnimating];
+//            [self callGenreSecondTime];
+//
+//        } else {
+//            self.loadingLabel.hidden = NO;
+//            self.spinner.hidden = NO;
+//            [self.spinner startAnimating];
+//            [self callGenre];
+//        }
+//        
+//    } else {
+//        
+//        [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
+//    }
 
 }
 
@@ -115,6 +233,7 @@
 //
 - (void)callGenreSecondTime
 {
+
     [self.genre getGenreFromYoutube];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedGenreSecondtime)
@@ -180,6 +299,7 @@
         [self performSegueWithIdentifier:@"SubmitToTabbarController" sender:@0];
         receivedYoutube = NO;
         receivedGenre = NO;
+        loadApiFact = YES;
     } else {
         NSLog(@"not YET");
     }

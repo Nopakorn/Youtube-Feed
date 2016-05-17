@@ -11,9 +11,12 @@
 #import "Youtube.h"
 #import "Genre.h"
 
+@class Reachability;
 @interface FirstScreenViewController : UIViewController<UIAlertViewDelegate, FirstSettingTableViewControllerDelegate >
 {
     UIAlertController *alert;
+    Reachability *internetReachable;
+    Reachability *hostReachable;
 }
 
 @property (strong, nonatomic) Youtube *youtube;
