@@ -86,6 +86,13 @@
                 
             }else{
                 
+                if (self.titleList > self.durationList) {
+                    for (int i = [self.durationList count]; i < [self.titleList count]; i++) {
+                        [self.titleList removeObjectAtIndex:i];
+                        [self.videoIdList removeObjectAtIndex:i];
+                        [self.thumbnailList removeObjectAtIndex:i];
+                    }
+                }
                 NSLog(@"%@",error);
             }
             
@@ -148,6 +155,14 @@
                 [self fetchVideos:nextPage];
                 
             }else{
+                NSLog(@"youtube--- getRecom error t:%lu d:%lu",(unsigned long)[self.titleList count],(unsigned long)[self.durationList count]);
+                if (self.titleList > self.durationList) {
+                    for (int i = [self.durationList count]; i < [self.titleList count]; i++) {
+                        [self.titleList removeObjectAtIndex:i];
+                        [self.videoIdList removeObjectAtIndex:i];
+                        [self.thumbnailList removeObjectAtIndex:i];
+                    }
+                }
                 NSLog(@"%@",error);
                 
             }
@@ -173,6 +188,7 @@
                 checkResult = @"LoadVideoId";
                 [self fetchVideos:nextPage];
             }else{
+                NSLog(@"youtube--- not nextPage getRecom errort:%lu d:%lu",(unsigned long)[self.titleList count],(unsigned long)[self.durationList count]);
                 NSLog(@"%@",error);
             }
         
@@ -206,6 +222,13 @@
                 
                 [self fetchVideos:nextPage];
             }else{
+                if (self.titleList > self.durationList) {
+                    for (int i = [self.durationList count]; i < [self.titleList count]; i++) {
+                        [self.titleList removeObjectAtIndex:i];
+                        [self.videoIdList removeObjectAtIndex:i];
+                        [self.thumbnailList removeObjectAtIndex:i];
+                    }
+                }
                 NSLog(@"%@",error);
             }
             
@@ -263,6 +286,7 @@
                 //NSLog(@"%@",self.searchResults);
                 [self fetchVideosDuration];
             }else{
+                NSLog(@"youtube--- duration error %lu",(unsigned long)[self.titleList count]);
                 NSLog(@"%@",error);
             }
             
