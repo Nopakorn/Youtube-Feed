@@ -251,8 +251,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     } else {
-        didReceivedFromYoutubePlaying = NO;
         
+        didReceivedFromYoutubePlaying = NO;
         NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
         NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
         [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];

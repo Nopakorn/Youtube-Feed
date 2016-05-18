@@ -380,10 +380,9 @@ typedef NS_ENUM(NSInteger, AlertType) {
                                                  selector:@selector(receivedLoadVideoId)
                                                      name:@"LoadVideoId" object:nil];
     }
-   
+ 
     //[self performSegueWithIdentifier:@"SubmitSetting" sender:nil];
-    
-    
+
 }
 
 - (void)receivedLoadVideoId
