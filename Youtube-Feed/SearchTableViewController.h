@@ -10,12 +10,16 @@
 #import  "Youtube.h"
 
 #import <UIEMultiAccess/UIEMultiAccess.h>
+#import "Reachability.h"
 
+@class Reachability;
 @protocol SearchTableViewControllerDelegate;
 
 @interface SearchTableViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIGestureRecognizerDelegate>
 {
     UIActivityIndicatorView *spinner;
+    Reachability *internetReachable;
+    Reachability *hostReachable;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *searchIconTitle;
 

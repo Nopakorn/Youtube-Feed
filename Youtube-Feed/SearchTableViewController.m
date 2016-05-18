@@ -64,6 +64,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL spinerFact;
     NSInteger markHighlightIndex;
     BOOL reloadFact;
+    BOOL searchFact;
+    BOOL internetActive;
+    BOOL hostActive;
 }
 
 @synthesize delegate = _delegate;
@@ -74,6 +77,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.searchBar.placeholder = @"Search from Youtube";
     spinerFact = NO;
     reloadFact = NO;
+    internetActive = NO;
+    hostActive = NO;
+    searchFact = NO;
     nextPage = true;
     self.youtube = [[Youtube alloc] init];
     self.searchYoutube = [[Youtube alloc] init];
@@ -167,6 +173,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [subView removeFromSuperview];
         }
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
     
     NSLog(@"viewDidDisappear SearchController");
@@ -196,13 +204,125 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.navigationController.navigationBar addSubview:navBorder];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+    
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setHidden:YES];
     //[self.tableView reloadData];
 
 }
+
+- (void)checkNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus) {
+        case NotReachable:
+        {
+            NSLog(@"The internet is down");
+            internetActive = NO;
+            break;
+            
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"The internet is working via WiFi");
+            internetActive = YES;
+            break;
+            
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"The internet is working via 3g");
+            internetActive = YES;
+            break;
+            
+        }
+            
+            
+        default:
+            break;
+    }
+    
+    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"A gateway to the host server is down.");
+            hostActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"A gateway to the host server is working via WIFI.");
+            hostActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"A gateway to the host server is working via WWAN.");
+            hostActive = YES;
+            
+            break;
+        }
+    }
+    
+    [self showingNetworkStatus];
+    
+}
+
+- (void)showingNetworkStatus
+{
+    if (internetActive) {
+        if(reloadFact){
+            reloadFact = NO;
+            
+            if (searchFact) {
+                //searchFact = NO;
+                [spinner stopAnimating];
+                [self.searchYoutube.titleList removeAllObjects];
+                [self.searchYoutube.videoIdList removeAllObjects];
+                [self.searchYoutube.thumbnailList removeAllObjects];
+                [self.searchYoutube.durationList removeAllObjects];
+                [self.tableView reloadData];
+                self.searchYoutube = [[Youtube alloc] init];
+                NSLog(@"re search : %@",self.searchText);
+                [self.searchYoutube callSearchByText:self.searchText withNextPage:NO];
+                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+                spinner.center = CGPointMake(self.view.center.x, 85.5);
+                spinner.color = [UIColor blackColor];
+                [self.tableView addSubview:spinner];
+                [spinner startAnimating];
+                
+                [[NSNotificationCenter defaultCenter] addObserver:self
+                                                         selector:@selector(receivedLoadVideoId)
+                                                             name:@"LoadVideoIdFromSearch" object:nil];
+            } else {
+                
+                [self launchReload];
+            }
+            
+        }
+        
+    } else {
+        reloadFact = YES;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearch" object:nil];
+    }
+    
+}
+
+
+
 
 - (void)orientationChanged:(NSNotification *)notification
 {
@@ -343,6 +463,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     float reload_distance = 50;
     if(y > h + reload_distance) {
         if (nextPage) {
+            reloadFact = YES;
             [self launchReload];
         } else {
             NSLog(@"Its still loading api");
@@ -352,7 +473,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)launchReload
 {
-    reloadFact = YES;
+    searchFact = NO;
     nextPage = false;
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.frame = CGRectMake(0, 0, 320, 44);
@@ -413,6 +534,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSLog(@"search text %@",searchBar.text);
     reloadFact = YES;
     spinerFact = YES;
+    searchFact = YES;
     self.searchYoutube = [[Youtube alloc] init];
     [self.searchYoutube callSearchByText:searchBar.text withNextPage:NO];
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -434,6 +556,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.searchBar.showsCancelButton = NO;
         spinerFact = NO;
         reloadFact = NO;
+        searchFact = NO;
         if ([self.searchText isEqualToString:self.searchTerm]) {
             if (self.searchPlaying) {
                 didReceivedFromYoutubePlaying = YES;
