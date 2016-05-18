@@ -10,10 +10,14 @@
 
 #import "Youtube.h"
 #import <UIEMultiAccess/UIEMultiAccess.h>
+#import "Reachability.h"
 
+@class Reachability;
 @interface GenreTableViewController : UITableViewController
 {
     UIAlertController *alert;
+    Reachability *internetReachable;
+    Reachability *hostReachable;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *genreIconTitle;

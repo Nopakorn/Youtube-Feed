@@ -219,6 +219,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 }
 
+
 - (void)checkNetworkStatus:(NSNotification *)notification
 {
     NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];

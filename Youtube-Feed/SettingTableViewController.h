@@ -9,11 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "Youtube.h"
 #import "Genre.h"
+#import "Reachability.h"
 
+@class Reachability;
 @interface SettingTableViewController : UITableViewController<UITableViewDelegate, UITableViewDataSource, UITabBarControllerDelegate>
 {
     NSInteger selectedRow;
     UIAlertController *alert;
+    Reachability *internetReachable;
+    Reachability *hostReachable;
 }
 
 @property (strong, nonatomic) Youtube *youtube;

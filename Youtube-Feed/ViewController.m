@@ -93,6 +93,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     BOOL internetActive;
     BOOL hostActive;
     BOOL videoReadyFact;
+    BOOL forwardFact;
+    BOOL backwardFact;
 
 }
 - (id)init
@@ -120,6 +122,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
     viewFact = YES;
     videoReadyFact = NO;
+    forwardFact = NO;
+    backwardFact = NO;
     self.tabBarController.delegate = self;
     self.playButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
     self.playButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
@@ -653,11 +657,85 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (internetActive) {
         if (videoReadyFact) {
             videoReadyFact = NO;
-            [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
-            NSLog(@"internet is Up ---- item index %lid ", (long)item);
+            if (forwardFact) {
+                if (favoriteFact) {
+                    updatePlaylistFact = NO;
+                    updateFavoriteFact = YES;
+                    [self updateYoutubeListOnNowPlaying:@"Forward"];
+                    
+                } else  if (playlistDetailFact) {
+                    updateFavoriteFact = NO;
+                    updatePlaylistFact = YES;
+                    [self updateYoutubeListOnNowPlaying:@"Forward"];
+                } else {
+                    updateFavoriteFact = NO;
+                    updatePlaylistFact = NO;
+                    youtubeUpdateZeroFact = NO;
+                }
+                // check length
+                item+=1;
+                if (item >= [self.youtube.videoIdList count]) {
+                    
+                    item-=1;
+                    [alert dismissViewControllerAnimated:YES completion:nil];
+                    if (recommendFact) {
+                        [self launchReloadReccommend];
+                    } else if(genreListFact) {
+                        [self launchReloadGenreList];
+                    } else if(searchFact) {
+                        [self launchReloadSearch];
+                    } else {
+                        
+                        item = 0;
+                        [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                    }
+                    
+                    
+                    
+                } else {
+                    
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                }
+            }
+            
+            if (backwardFact) {
+                if (favoriteFact) {
+                    updatePlaylistFact = NO;
+                    updateFavoriteFact = YES;
+                    [self updateYoutubeListOnNowPlaying:@"Backward"];
+                    
+                } else  if (playlistDetailFact) {
+                    updateFavoriteFact = NO;
+                    updatePlaylistFact = YES;
+                    [self updateYoutubeListOnNowPlaying:@"Backward"];
+                } else {
+                    updateFavoriteFact = NO;
+                    updatePlaylistFact = NO;
+                    youtubeUpdateZeroFact = NO;
+                }
+                
+                if (item < 0) {
+                    
+                    item = [self.youtube.videoIdList count]-1;
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                    
+                } else {
+                    
+                    [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
+                    
+                }
+                
+            }
+
         }
         
     } else {
+        
+        [alert dismissViewControllerAnimated:YES completion:nil];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoIdNextPage" object:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearchNextPage" object:nil];
         
         NSLog(@"internet is Down ---- item index %lid ", (long)item);
     }
@@ -1034,6 +1112,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else if (sender == self.nextButton) {
         NSLog(@"Next Button");
         videoReadyFact = YES;
+        forwardFact = YES;
+        backwardFact = NO;
         item+=1;
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
@@ -1082,11 +1162,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     } else if (sender == self.prevButton) {
-        
+         videoReadyFact = YES;
         item-=1;
         [self.playerView pauseVideo];
         UIImage *btnImagePlay = [UIImage imageNamed:@"playButton"];
         [self.playButton setImage:btnImagePlay forState:UIControlStateNormal];
+        forwardFact = NO;
+        backwardFact = YES;
         if (outOfLengthAlert) {
             
             if (favoriteFact) {
@@ -1661,7 +1743,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
         } else if (genreListFact) {
             
-            NSString *selected = [NSString stringWithFormat:@"%lu",item];
+            NSString *selected = [NSString stringWithFormat:@"%lu",(long)item];
             NSDictionary *userInfo = @{ @"youtubeObj": self.youtube,
                                         @"selectedIndex": selected,
                                         @"genreType":genreType };
@@ -1670,7 +1752,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
         } else if (searchFact) {
             
-            NSString *selected = [NSString stringWithFormat:@"%lu",item];
+            NSString *selected = [NSString stringWithFormat:@"%lu",(long)item];
             NSDictionary *userInfo = @{ @"youtubeObj": self.youtube,
                                         @"selectedIndex": selected,
                                         @"searchTerm": searchTerm };

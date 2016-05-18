@@ -36,14 +36,19 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 
 @implementation SettingTableViewController
-
+{
+    BOOL reloadFact;
+    BOOL internetActive;
+    BOOL hostActive;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tabBarItem.image = [[UIImage imageNamed:@"settingIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-
     
-    
+    reloadFact = NO;
+    internetActive = NO;
+    hostActive = NO;
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     self.genreIdSelected = [[NSMutableArray alloc] initWithCapacity:10];
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
@@ -98,11 +103,97 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [navBorder setOpaque:YES];
     [self.navigationController.navigationBar addSubview:navBorder];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+    
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
+
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setHidden:YES];
     //[self.tableView reloadData];
 }
 
+
+- (void)checkNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus) {
+        case NotReachable:
+        {
+            NSLog(@"The internet is down");
+            internetActive = NO;
+            break;
+            
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"The internet is working via WiFi");
+            internetActive = YES;
+            break;
+            
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"The internet is working via 3g");
+            internetActive = YES;
+            break;
+            
+        }
+            
+            
+        default:
+            break;
+    }
+    
+    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"A gateway to the host server is down.");
+            hostActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"A gateway to the host server is working via WIFI.");
+            hostActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"A gateway to the host server is working via WWAN.");
+            hostActive = YES;
+            
+            break;
+        }
+    }
+    
+    [self showingNetworkStatus];
+    
+}
+
+- (void)showingNetworkStatus
+{
+    if (internetActive) {
+        if(reloadFact){
+            [alert dismissViewControllerAnimated:YES completion:nil];
+            [self submitButtonPressed:self];
+            reloadFact = NO;
+        }
+        
+    } else {
+        reloadFact = YES;
+        [alert dismissViewControllerAnimated:YES completion:nil];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoId" object:nil];
+    }
+    
+}
 - (void)orientationChanged:(NSNotification *)notification
 {
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
@@ -129,6 +220,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [subView removeFromSuperview];
         }
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [self.navigationController popViewControllerAnimated:NO];
 }
 
@@ -349,6 +441,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         
     } else {
         NSLog(@"not zero");
+        reloadFact = YES;
         self.youtube = [[Youtube alloc] init];
         NSString *genreSelectedString = @"";
          NSString *genreIdSelectedString = @"";

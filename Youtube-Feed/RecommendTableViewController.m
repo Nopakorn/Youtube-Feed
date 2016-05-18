@@ -203,8 +203,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     if (internetActive) {
         if(reloadFact){
+//            if (nextPage) {
+//                NSLog(@"calling reload net is up ");
+//                reloadFact = NO;
+//                [self launchReload];
+//            } else {
+//                NSLog(@"it still launchReload");
+//            }
+            NSLog(@"calling reload net is up ");
             reloadFact = NO;
-            NSLog(@"---recommend %@",self.recommendYoutube.titleList);
             [self launchReload];
         }
         
@@ -230,32 +237,31 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         {
             didReceivedFromYoutubePlaying = YES;
             self.selectedRow = selectedIndex;
-            NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-            NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+//            NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
+//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
+//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
 
-            //[self.tableView beginUpdates];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-            //[self.tableView endUpdates];
 
-            //[self.tableView reloadData];
+            [self.tableView reloadData];
             
         } else {
             
             didReceivedFromYoutubePlaying = NO;
-            
-            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView reloadData];
+//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
 
         }
         
     } else {
         
         didReceivedFromYoutubePlaying = NO;
-        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadData];
+//        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
+//        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
+//        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
 
     }
     
@@ -492,6 +498,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     indexFocus = 1;
     portraitFact = YES;
     landscapeFact = YES;
+    reloadFact = NO;
     //[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     if (self.recommendPlaying) {
@@ -647,9 +654,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     float reload_distance = 50;
     if(y > h + reload_distance) {
         if (nextPage) {
+            NSLog(@"calling loading api scroll view");
             reloadFact = YES;
             [self launchReload];
         } else {
+            //reloadFact = NO;
             NSLog(@"Its still loading api");
         }
     }
@@ -657,6 +666,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)launchReload
 {
+    NSLog(@"calling launchReload");
     nextPage = false;
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.frame = CGRectMake(0, 0, 320, 44);

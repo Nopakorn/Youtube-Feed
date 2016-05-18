@@ -135,7 +135,7 @@
 
     } else {
         
-        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Please turn on your internet.", nil)];
+        NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Can Not Connected To The Internet.", nil)];
             
         alert = [UIAlertController alertControllerWithTitle:description
                                                         message:@""

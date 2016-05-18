@@ -68,6 +68,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger indexFocusTabbar;
     BOOL viewFact;
     NSInteger directionFocus;
+    BOOL internetActive;
+    BOOL hostActive;
+    BOOL reloadFact;
 }
 
 - (void)viewDidLoad {
@@ -76,6 +79,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.genreYoutube = [[Youtube alloc] init];
     backFactGenre = YES;
     scrollKKPTriggered = YES;
+    internetActive = NO;
+    hostActive = NO;
+    reloadFact = NO;
+    
     indexFocusTabbar = 1;
     directionFocus = 0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -126,7 +133,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     landscapeFact = YES;
     viewFact = YES;
     backFactGenre = YES;
-    
+    internetActive = NO;
+    hostActive = NO;
+    reloadFact = NO;
     indexFocus = 1;
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
@@ -134,6 +143,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [navBorder setOpaque:YES];
     [self.navigationController.navigationBar addSubview:navBorder];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+    
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
+
 #pragma setup UMA in ViewDidAppear in GenreTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -143,6 +160,86 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 
 }
+
+- (void)checkNetworkStatus:(NSNotification *)notification
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus) {
+        case NotReachable:
+        {
+            NSLog(@"The internet is down");
+            internetActive = NO;
+            break;
+            
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"The internet is working via WiFi");
+            internetActive = YES;
+            break;
+            
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"The internet is working via 3g");
+            internetActive = YES;
+            break;
+            
+        }
+            
+            
+        default:
+            break;
+    }
+    
+    NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+    switch (hostStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"A gateway to the host server is down.");
+            hostActive = NO;
+            
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"A gateway to the host server is working via WIFI.");
+            hostActive = YES;
+            
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"A gateway to the host server is working via WWAN.");
+            hostActive = YES;
+            
+            break;
+        }
+    }
+    
+    [self showingNetworkStatus];
+    
+}
+
+- (void)showingNetworkStatus
+{
+    if (internetActive) {
+        if(reloadFact){
+            [alert dismissViewControllerAnimated:YES completion:nil];
+            [self callYoutube:self.searchTerm];
+            reloadFact = NO;
+        }
+        
+    } else {
+       reloadFact = YES;
+       [alert dismissViewControllerAnimated:YES completion:nil];
+       [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoId" object:nil];
+    }
+    
+}
+
+
 
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -156,6 +253,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             [subView removeFromSuperview];
         }
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 
 }
@@ -324,6 +422,7 @@ willDecelerate:(BOOL)decelerate
 
 - (void)callYoutube:(NSString *)searchTerm
 {
+    reloadFact = YES;
     self.genreYoutube = [[Youtube alloc] init];
    
     [self.genreYoutube getGenreSearchYoutube:searchTerm withNextPage:NO];
@@ -346,6 +445,7 @@ willDecelerate:(BOOL)decelerate
 {
     NSLog(@"received load");
     dispatch_async(dispatch_get_main_queue(), ^{
+        reloadFact = NO;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoId" object:nil];
         [alert dismissViewControllerAnimated:YES completion:nil];
         [self performSegueWithIdentifier:@"SubmitGenre" sender:nil];
@@ -356,7 +456,7 @@ willDecelerate:(BOOL)decelerate
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:@"SubmitGenre"]){
-        NSLog(@"perform genre");
+
         GenreListTableViewController *dest = segue.destinationViewController;
         dest.genreYoutube = self.genreYoutube;
         dest.searchTerm = self.searchTerm;
