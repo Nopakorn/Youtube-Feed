@@ -199,7 +199,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
                                                  style:UIAlertActionStyleDefault
                                                handler:^(UIAlertAction *action){
-                                                   
+                                                   selectFact = NO;
                                                    [self saveNewPlaylist:[[alert.textFields objectAtIndex:0] text]];
                                                    [alert dismissViewControllerAnimated:YES completion:nil];
                                                }];
@@ -207,7 +207,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction *action){
-                                                       
+                                                       selectFact = NO;
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
     [alert addAction:ok];

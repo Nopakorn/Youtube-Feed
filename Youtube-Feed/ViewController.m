@@ -693,7 +693,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     
                     
                 } else {
-                    
+                    item-=1;
                     [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                 }
             }

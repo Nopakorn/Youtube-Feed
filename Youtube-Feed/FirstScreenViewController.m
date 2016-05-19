@@ -115,7 +115,6 @@
 {
     alertFact = NO;
     if (internetActive) {
-        NSLog(@"your internet is turn on");
         if (loadApiFact) {
             loadApiFact = NO;
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
@@ -243,7 +242,6 @@
 - (void)receivedGenreSecondtime
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"received genre");
         receivedGenre = YES;
         [self.genreSelected removeAllObjects];
         
@@ -285,8 +283,6 @@
 - (void)receivedLoadVideoId
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-    
-        NSLog(@"received youtube");
         receivedYoutube = YES;
         [self callPerformTabbar];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoId" object:nil];
@@ -301,7 +297,6 @@
         receivedGenre = NO;
         loadApiFact = YES;
     } else {
-        NSLog(@"not YET");
     }
 
 }
@@ -316,7 +311,6 @@
 {
     if([segue.identifier isEqualToString:@"SubmitToTabbarController"]){
         NSNumber *indexShow = @0;
-        NSLog(@"tabbar segue");
         MainTabBarViewController *dest = segue.destinationViewController;
         dest.youtube = self.youtube;
         dest.recommendYoutube = self.youtube;
@@ -327,7 +321,7 @@
         [dest setSelectedIndex:indexShow.unsignedIntegerValue];
 
     } else if ([segue.identifier isEqualToString:@"SettingView"]) {
-        NSLog(@"setting view segue");
+
         UINavigationController *nav = segue.destinationViewController;
 
         FirstSettingTableViewController *newVC = [nav.viewControllers objectAtIndex:0];
@@ -359,7 +353,7 @@
 
 - (void)firstSettingTableViewControllerDidSelected:(FirstSettingTableViewController *)firstSettingViewController
 {
-    NSLog(@"first setting did selected");
+
     self.genreSelected = firstSettingViewController.genreSelected;
     NSString *genreSelectedString = @"";
     for(int i = 0 ; i < [self.genreSelected count] ; i++){

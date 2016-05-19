@@ -408,6 +408,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.genreTitle = [self.genreList objectAtIndex:indexPath.row];
     self.searchTerm = [self.genreIdList objectAtIndex:indexPath.row];
     [self callYoutube:self.searchTerm];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView

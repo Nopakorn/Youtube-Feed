@@ -87,7 +87,7 @@
             }else{
                 
                 if (self.titleList > self.durationList) {
-                    for (int i = [self.durationList count]; i < [self.titleList count]; i++) {
+                    for (NSInteger i = [self.durationList count]; i < [self.titleList count]; i++) {
                         [self.titleList removeObjectAtIndex:i];
                         [self.videoIdList removeObjectAtIndex:i];
                         [self.thumbnailList removeObjectAtIndex:i];
@@ -157,7 +157,7 @@
             }else{
                 NSLog(@"youtube--- getRecom error t:%lu d:%lu",(unsigned long)[self.titleList count],(unsigned long)[self.durationList count]);
                 if (self.titleList > self.durationList) {
-                    for (int i = [self.durationList count]; i < [self.titleList count]; i++) {
+                    for (NSInteger i = [self.durationList count]; i < [self.titleList count]; i++) {
                         [self.titleList removeObjectAtIndex:i];
                         [self.videoIdList removeObjectAtIndex:i];
                         [self.thumbnailList removeObjectAtIndex:i];
@@ -223,7 +223,7 @@
                 [self fetchVideos:nextPage];
             }else{
                 if (self.titleList > self.durationList) {
-                    for (int i = [self.durationList count]; i < [self.titleList count]; i++) {
+                    for (NSInteger i = [self.durationList count]; i < [self.titleList count]; i++) {
                         [self.titleList removeObjectAtIndex:i];
                         [self.videoIdList removeObjectAtIndex:i];
                         [self.thumbnailList removeObjectAtIndex:i];
