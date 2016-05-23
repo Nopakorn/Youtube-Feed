@@ -208,6 +208,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
 
     NSLog(@"Recevied in favorite %i",self.favoritePlaying);
+    NSLog(@"Selected index %i",selectedIndex);
 }
 
 - (void)orientationChanged:(NSNotification *)notification

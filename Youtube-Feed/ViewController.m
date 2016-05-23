@@ -220,6 +220,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                                                  action:@selector(handleTapPressed:)];
     [self.view addGestureRecognizer:tgpr];
     
+//    UITapGestureRecognizer *tgpr_bar = [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                                                           action:@selector(handleTapPressedOnSlider:)];
+//
+//    [self.ProgressSlider addGestureRecognizer:tgpr_bar];
+    
     UITapGestureRecognizer *tgpr_webView = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                            action:@selector(handleTapPressedOnWebView:)];
     tgpr_webView.delegate = self;
@@ -395,6 +400,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
 }
 
+- (void)handleTapPressedOnSlider:(UITapGestureRecognizer *)gestureRecognizer
+{
+    //NSLog(@"handleTapPressed on slider event");
+//    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+//        NSLog(@"handleTapPressed on slider event BEGIN");
+//        
+//    }
+//    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+//        NSLog(@"handleTapPressed on slider event END");
+//        
+//    }
+}
 - (void)handleTapPressed:(UITapGestureRecognizer *)gestureRecognizer
 {
     NSLog(@"handleTapPressed event");
@@ -453,7 +470,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.currentTimePlay.hidden = YES;
         
     } else {
-        NSLog(@"with fact NO");
+       // NSLog(@"with fact NO");
         //[hideNavigation invalidate];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
@@ -531,7 +548,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
     [hostReachable startNotifier];
-
+    
+    if (internetActive) {
+        NSLog(@"internet active");
+        videoReadyFact = NO;
+    } else {
+        NSLog(@"internet not active ");
+         videoReadyFact = YES;
+    }
     if (recommendTableViewFlag) {
 
         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
@@ -657,26 +681,32 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (internetActive) {
         if (videoReadyFact) {
             videoReadyFact = NO;
+            NSLog(@"----LENGTH ITEM %ld",(long)item);
             if (forwardFact) {
-                if (favoriteFact) {
-                    updatePlaylistFact = NO;
-                    updateFavoriteFact = YES;
-                    [self updateYoutubeListOnNowPlaying:@"Forward"];
-                    
-                } else  if (playlistDetailFact) {
-                    updateFavoriteFact = NO;
-                    updatePlaylistFact = YES;
-                    [self updateYoutubeListOnNowPlaying:@"Forward"];
-                } else {
-                    updateFavoriteFact = NO;
-                    updatePlaylistFact = NO;
-                    youtubeUpdateZeroFact = NO;
-                }
+                //item+=1;
+//                if(item <= 0){
+//                    item+=1;
+//                }
+//                if (favoriteFact) {
+//                    updatePlaylistFact = NO;
+//                    updateFavoriteFact = YES;
+//                    [self updateYoutubeListOnNowPlaying:@"Forward"];
+//                    
+//                } else  if (playlistDetailFact) {
+//                    updateFavoriteFact = NO;
+//                    updatePlaylistFact = YES;
+//                    [self updateYoutubeListOnNowPlaying:@"Forward"];
+//                } else {
+//                    updateFavoriteFact = NO;
+//                    updatePlaylistFact = NO;
+//                    youtubeUpdateZeroFact = NO;
+//                }
                 // check length
-                item+=1;
+                
+                //item+=1;
                 if (item >= [self.youtube.videoIdList count]) {
                     
-                    item-=1;
+                    //item-=1;
                     [alert dismissViewControllerAnimated:YES completion:nil];
                     if (recommendFact) {
                         [self launchReloadReccommend];
@@ -687,33 +717,34 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     } else {
                         
                         item = 0;
+                        NSLog(@"no fact ITEM %ld",(long)item);
                         [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                     }
                     
                     
                     
                 } else {
-                    item-=1;
+                    //item-=1;
                     [self.playerView loadWithVideoId:[self.youtube.videoIdList objectAtIndex:item] playerVars:self.playerVers];
                 }
             }
             
             if (backwardFact) {
-                if (favoriteFact) {
-                    updatePlaylistFact = NO;
-                    updateFavoriteFact = YES;
-                    [self updateYoutubeListOnNowPlaying:@"Backward"];
-                    
-                } else  if (playlistDetailFact) {
-                    updateFavoriteFact = NO;
-                    updatePlaylistFact = YES;
-                    [self updateYoutubeListOnNowPlaying:@"Backward"];
-                } else {
-                    updateFavoriteFact = NO;
-                    updatePlaylistFact = NO;
-                    youtubeUpdateZeroFact = NO;
-                }
-                
+//                if (favoriteFact) {
+//                    updatePlaylistFact = NO;
+//                    updateFavoriteFact = YES;
+//                    [self updateYoutubeListOnNowPlaying:@"Backward"];
+//                    
+//                } else  if (playlistDetailFact) {
+//                    updateFavoriteFact = NO;
+//                    updatePlaylistFact = YES;
+//                    [self updateYoutubeListOnNowPlaying:@"Backward"];
+//                } else {
+//                    updateFavoriteFact = NO;
+//                    updatePlaylistFact = NO;
+//                    youtubeUpdateZeroFact = NO;
+//                }
+//                
                 if (item < 0) {
                     
                     item = [self.youtube.videoIdList count]-1;
@@ -728,7 +759,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
 
         }
-        
+        NSLog(@"internet is Up ---- item index %lid ", (long)item);
     } else {
         
         [alert dismissViewControllerAnimated:YES completion:nil];
@@ -821,6 +852,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     [super viewDidDisappear:animated];
     NSLog(@"viewDidDisappear Viewcontroller");
+    [self hideNavWithFact:NO];
     [hideNavigation invalidate];
     [_focusManager setHidden:YES];
     viewFact = NO;
@@ -874,7 +906,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (IBAction)sliderValueChanged:(UISlider *)sender
 {
-
+    [self hideNavWithFact:NO];
+    [hideNavigation invalidate];
+    hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
     NSInteger startTime = sender.value * self.playerTotalTime;
     [self.timerProgress invalidate];
     self.ProgressSlider.value = (double)startTime / self.playerTotalTime;
@@ -1216,7 +1250,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 youtubeUpdateZeroFact = NO;
                 BOOL lastVideoFact = NO;
                 NSInteger  newIndex = 0;
-                NSLog(@" update Favorite = %id | update Playlist = %id ",updateFavoriteFact, updatePlaylistFact);
+                NSLog(@" update Favorite = %id | update Playlist = %id | item = %i",updateFavoriteFact, updatePlaylistFact, item);
                 if (updateFavoriteFact) {
                     if (insertFavoriteFact) {
                         newIndex = item;
@@ -1243,6 +1277,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 if (lastVideoFact) {
                     item = newIndex +=1;
                     //has last video in the list
+                    NSLog(@"im here %i count %i",item, [self.youtubeUpdate.titleList count]);
                     self.youtube = [[Youtube alloc] init];
                     for (int i = 0; i < [self.youtubeUpdate.videoIdList count]; i++) {
                         [self.youtube.videoIdList addObject:[self.youtubeUpdate.videoIdList objectAtIndex:i]];
@@ -1860,7 +1895,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self hideNavWithFact:NO];
         [hideNavigation invalidate];
         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-        
+        return YES;
     } else {
         if (backFact) {
             //limitation of volume level
@@ -1940,7 +1975,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [self hideNavWithFact:NO];
         [hideNavigation invalidate];
         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-
+        
+        return YES;
     } else {
         if (backFact) {
             if (distanceX == 1 && distanceY == 0) {
@@ -2057,9 +2093,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
          hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
         
     } else {
-        
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             if (backFact) {
+                NSLog(@"focus backFact");
                 [_focusManager setHidden:NO];
                 [_focusManager setFocusRootView:self.tabBarController.tabBar];
                 [_focusManager moveFocus:2];
@@ -2067,6 +2103,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [self hideNavWithFact:NO];
                 [hideNavigation invalidate];
             } else {
+                 NSLog(@"focus backFact no");
                 [_focusManager setFocusRootView:_containerView];
                 [_focusManager setHidden:YES];
                 [_focusManager moveFocus:4];
@@ -2077,6 +2114,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
             NSLog(@"Main---");
+            //[_focusManager fo];
             [hideNavigation invalidate];
             hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
             return NO;
