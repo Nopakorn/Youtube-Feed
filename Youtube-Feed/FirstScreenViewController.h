@@ -25,6 +25,9 @@
 @property (nonatomic, retain) NSMutableArray *genreList;
 @property (nonatomic, retain) NSMutableArray *genreSelected;
 @property (nonatomic, retain) NSMutableArray *genreIdSelected;
+@property (weak, nonatomic) IBOutlet UIImageView *imageScreenPT;
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageScreenLS;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) IBOutlet UILabel *loadingLabel;

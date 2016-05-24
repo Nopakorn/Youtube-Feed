@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KKP_LauchScreen(4.7)" translatesAutoresizingMaskIntoConstraints="NO" id="lUG-Nq-Yf9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Default.png" translatesAutoresizingMaskIntoConstraints="NO" id="lUG-Nq-Yf9">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="1" green="0.7728249536971461" blue="0.73331677445341614" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
@@ -37,6 +37,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="KKP_LauchScreen(4.7)" width="750" height="1334"/>
+        <image name="Default.png" width="750" height="1334"/>
     </resources>
 </document>

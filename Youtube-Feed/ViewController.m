@@ -172,7 +172,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         NSLog(@"object is nil");
     }
     
-    //[self.navigationController setNavigationBarHidden:NO];
 
     self.playerView.delegate = self;
     self.playerVers =  @{ @"playsinline" : @1,
@@ -345,7 +344,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)prefersStatusBarHidden
 {
-    //return shouldHideStatusBar;
     return YES;
 }
 
@@ -458,6 +456,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)hideNavWithFact:(BOOL )fact
 {
     if (fact) {
+        
         [self.navigationController setNavigationBarHidden:YES animated:NO];
         self.tabBarController.tabBar.hidden = YES;
         self.playButton.hidden = YES;
@@ -470,8 +469,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.currentTimePlay.hidden = YES;
         
     } else {
-       // NSLog(@"with fact NO");
-        //[hideNavigation invalidate];
+        
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         self.tabBarController.tabBar.hidden = NO;
         self.playButton.hidden = NO;
@@ -482,8 +480,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.ProgressSlider.hidden = NO;
         self.totalTime.hidden = NO;
         self.currentTimePlay.hidden = NO;
-        //hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
-        
     }
 
 }
@@ -931,14 +927,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (isSeekForward) {
         if (total < 1) {
-            NSLog(@"-- in forward seek");
             float playerCurrentTime = [self.playerView currentTime];
             playerCurrentTime+=5;
             self.ProgressSlider.value = (playerCurrentTime / (float)self.playerTotalTime);
             [self.playerView seekToSeconds:playerCurrentTime allowSeekAhead:YES];
             
         } else {
-            NSLog(@"-- in forward seek kill time");
             [self.timerProgress invalidate];
         }
 
@@ -970,10 +964,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSInteger minutes = (ti / 60) % 60;
     NSInteger hours = (ti / 3600);
     if (hours > 0) {
-        //self.totalTimeWidthConstraint.constant = 75;
+
          return [NSString stringWithFormat:@"%ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
     } else {
-        //self.totalTimeWidthConstraint.constant = 48;
 
         return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
     }
@@ -1002,11 +995,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     if (state == kYTPlayerStatePlaying) {
         NSLog(@"video play");
-//        self.ProgressSlider.value = 0;
-//        self.currentTimePlay.text = @"00:00";
-//        self.totalTime.text = @"00:00";
-        //[self.ProgressSlider addTarget:self action:@selector(sliderValueChanged:) forControlEvents:UIControlEventValueChanged];
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"YoutubePlaying" object:self userInfo:userInfo];
         UIImage *btnImagePause = [UIImage imageNamed:@"pauseButton"];
         [self.playButton setImage:btnImagePause forState:UIControlStateNormal];

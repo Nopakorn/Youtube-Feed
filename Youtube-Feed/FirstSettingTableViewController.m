@@ -91,7 +91,7 @@
     self.genreList = [[NSMutableArray alloc] initWithObjects:@"Pop", @"Rock", @"Alternative Rock", @"Classical", @"Country", @"Dance", @"Folk", @"Indie", @"Jazz", @"Hip-hop", nil];
     //add initial genre
     [self.genreSelected addObject:[self.genreList objectAtIndex:0]];
-    NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -203,8 +203,6 @@
         }
     }
     
-    NSLog(@"check genre selected %@ id %@",self.genreSelected, self.genreIdSelected);
-    
     if ([self.genreIdSelected count] == 0) {
         NSString * description = [NSString stringWithFormat:NSLocalizedString(@"Please select at least one genre", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
@@ -254,7 +252,7 @@
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
         [alert addAction:ok];
-        //[alert addAction:cancel];
+
         [self presentViewController:alert animated:YES completion:nil];
         
     } else {

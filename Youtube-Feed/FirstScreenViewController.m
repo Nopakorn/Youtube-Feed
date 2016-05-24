@@ -22,6 +22,7 @@
     BOOL hostActive;
     BOOL alertFact;
     BOOL loadApiFact;
+    BOOL viewFact;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,8 +30,9 @@
     receivedYoutube = NO;
     internetActive = NO;
     hostActive = NO;
-    alertFact = YES;
-    loadApiFact = YES;
+    alertFact = NO;
+    loadApiFact = NO;
+    viewFact = NO;
     self.genreSelected = [[NSMutableArray alloc] initWithCapacity:10];
     [self.navigationController setNavigationBarHidden:YES];
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
@@ -38,15 +40,18 @@
     self.spinner.hidden = YES;
     //[self.spinner startAnimating];
     //tutorial has been showed
-//    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+//    internetReachable = [Reachability reachabilityForInternetConnection];
+//    [internetReachable startNotifier];
+    //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
+    //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"genreSelectedFact"];
 //    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-    internetReachable = [Reachability reachabilityForInternetConnection];
-    [internetReachable startNotifier];
-//
-    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
-    [hostReachable startNotifier];
     
+//
+//    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+//    [hostReachable startNotifier];
+    [self.imageScreenPT setImage:[UIImage imageNamed:NSLocalizedString(@"imageNamePT", nil)]];
+    [self.imageScreenLS setImage:[UIImage imageNamed:NSLocalizedString(@"imageNameLS", nil)]];
 }
 
 - (void)checkNetworkStatus:(NSNotification *)notification
@@ -57,6 +62,7 @@
         {
             NSLog(@"The internet is down");
             internetActive = NO;
+            alertFact = YES;
             break;
         
         }
@@ -64,6 +70,7 @@
         {
             NSLog(@"The internet is working via WiFi");
             internetActive = YES;
+            alertFact = YES;
             break;
             
         }
@@ -71,6 +78,7 @@
         {
             NSLog(@"The internet is working via 3g");
             internetActive = YES;
+            alertFact = YES;
             break;
             
         }
@@ -106,34 +114,46 @@
         }
     }
     if (alertFact) {
+
         [self showingNetworkStatus];
+
+        
     }
     
 }
 
 - (void)showingNetworkStatus
 {
+   
     alertFact = NO;
     if (internetActive) {
         if (loadApiFact) {
             loadApiFact = NO;
+            
+            self.youtube = [[Youtube alloc] init];
+            self.genre = [[Genre alloc] init];
+
             if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
                 if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
                     [self callGenreSecondTime];
                     
                 } else {
                     [self callGenre];
+
                 }
                 
             } else {
                 
                 [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
+
             }
 
         }
 
     } else {
-        
+        alertFact = YES;
+        loadApiFact = YES;
+
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Can Not Connected To The Internet.", nil)];
             
         alert = [UIAlertController alertControllerWithTitle:description
@@ -148,7 +168,7 @@
                                                        }];
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
-        NSLog(@"your internet is turn off");
+
     }
 
 }
@@ -169,25 +189,34 @@
     self.loadingLabel.hidden = NO;
     self.spinner.hidden = NO;
     [self.spinner startAnimating];
-//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
-//        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
-//            self.spinner.hidden = NO;
-//            self.loadingLabel.hidden = NO;
-//            [self.spinner startAnimating];
-//            [self callGenreSecondTime];
-//
-//        } else {
-//            self.loadingLabel.hidden = NO;
-//            self.spinner.hidden = NO;
-//            [self.spinner startAnimating];
-//            [self callGenre];
-//        }
-//        
-//    } else {
-//        
-//        [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
-//    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    internetReachable = [Reachability reachabilityForInternetConnection];
+    [internetReachable startNotifier];
+    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
+    [hostReachable startNotifier];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialPass"]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
+            self.spinner.hidden = NO;
+            self.loadingLabel.hidden = NO;
+            [self.spinner startAnimating];
+            [self callGenreSecondTime];
 
+                
+        } else {
+            self.loadingLabel.hidden = NO;
+            self.spinner.hidden = NO;
+            [self.spinner startAnimating];
+            [self callGenre];
+
+        }
+            
+    } else {
+
+        [self performSegueWithIdentifier:@"TutorialPhase" sender:@0];
+    }
+  
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -197,7 +226,7 @@
 
 - (void)callSearchSecondTime:(NSString *)saveGenre
 {
-    NSLog(@"calling search second time ");
+
     [self.youtube changeIndexNextPage:0];
     [self.youtube getRecommendSearchYoutube:saveGenre withNextPage:NO];
     [self.spinner startAnimating];
@@ -274,7 +303,7 @@
 - (void)receivedGenre
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        //receivedGenre = YES;
+
         [self performSegueWithIdentifier:@"SettingView" sender:@0];
          [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreTitle" object:nil];
     });
@@ -309,6 +338,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    viewFact = YES;
     if([segue.identifier isEqualToString:@"SubmitToTabbarController"]){
         NSNumber *indexShow = @0;
         MainTabBarViewController *dest = segue.destinationViewController;
