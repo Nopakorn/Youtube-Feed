@@ -50,8 +50,9 @@
 //
 //    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
 //    [hostReachable startNotifier];
-    [self.imageScreenPT setImage:[UIImage imageNamed:NSLocalizedString(@"imageNamePT", nil)]];
-    [self.imageScreenLS setImage:[UIImage imageNamed:NSLocalizedString(@"imageNameLS", nil)]];
+//    [self.imageScreenPT setImage:[UIImage imageNamed:NSLocalizedString(@"imageNamePT", nil)]];
+//    [self.imageScreenLS setImage:[UIImage imageNamed:NSLocalizedString(@"imageNameLS", nil)]];
+    NSLog(@"viewDidLoad --- FirstScreenViewController");
 }
 
 - (void)checkNetworkStatus:(NSNotification *)notification
@@ -124,7 +125,7 @@
 
 - (void)showingNetworkStatus
 {
-   
+   NSLog(@"ShowingNetworkStatus --- FirstScreenViewController");
     alertFact = NO;
     if (internetActive) {
         if (loadApiFact) {
@@ -177,13 +178,15 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear --- FirstScreenViewController");
+
      [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    NSLog(@"viewDidAppear --- FirstScreenViewController");
     self.youtube = [[Youtube alloc] init];
     self.genre = [[Genre alloc] init];
     self.loadingLabel.hidden = NO;
@@ -339,6 +342,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     viewFact = YES;
+    NSLog(@"prepareForSegue --- FirstScreenViewController");
     if([segue.identifier isEqualToString:@"SubmitToTabbarController"]){
         NSNumber *indexShow = @0;
         MainTabBarViewController *dest = segue.destinationViewController;
