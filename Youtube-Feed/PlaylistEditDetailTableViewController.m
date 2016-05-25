@@ -51,8 +51,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     self.tableView.allowsSelectionDuringEditing = YES;
     self.navigationItem.title = self.playlist.title;
     [self fetchYoutubeVideoList];
-    //[self getYt];
-    
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -125,7 +124,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     for (int i = 0; i < result.count; i++) {
         YoutubeVideo *yo = [result objectAtIndex:i];
         [self.youtubeVideoList addObject:yo];
-        NSLog(@"check fetch: %@ and index: %@",yo.videoTitle, yo.index);
     }
 
 }
@@ -161,7 +159,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
         [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
         [youtube.durationList addObject:youtubeVideo.videoDuration];
     }
-    NSLog(@"check before updated %@",youtube.titleList);
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"updatePlaylistFact"];
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)lastIndex];
     NSDictionary *userInfo = @{@"youtubeObj": youtube,
@@ -181,7 +178,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
     for (Playlist *playlistObject in result) {
-        NSLog(@"remove youtube from playlist");
         playlistObject.youtubeVideos = newYoutubeVideoList;
         NSError *error = nil;
         if (![context save:&error]) {
@@ -196,8 +192,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"view did appear playlisteditdetail");
-    //[self fetchPlaylist];
     [self getYt];
     [self.tableView reloadData];
 }
@@ -216,13 +210,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
     return [self.youtubeVideoList count]+1;
-//    id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-//    if ([sectionInfo numberOfObjects] == 0) {
-//        return 1;
-//    } else {
-//        return [sectionInfo numberOfObjects]+1;
-//    }
-    
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -240,14 +228,12 @@ typedef NS_ENUM(NSInteger, AlertType) {
         [cell addGestureRecognizer:lgpr];
         
     }
-    //[self fetchPlaylist];
     if (indexPath.row == 0) {
         cell.name.text = self.playlist.title;
         
         
     }else {
-//         NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
-//        YoutubeVideo *youtubeVideoForRow = [self.fetchedResultsController objectAtIndexPath:customIndexPath];
+
         YoutubeVideo *youtubeVideoForRow = [self.youtubeVideoList objectAtIndex:indexPath.row-1];
         cell.name.text = youtubeVideoForRow.videoTitle;
         cell.addIcon.hidden = YES;
@@ -294,7 +280,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     if (indexPath == nil) {
-        
         NSLog(@"long press table view but not in row");
         
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
@@ -325,7 +310,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
         
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row == 0) {
         
-        NSLog(@"began at %ld",indexPath.row);
         [self renamePlaylistTitle];
         
     } else {
@@ -335,7 +319,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)deleteRowAtIndex:(NSInteger )index
 {
-    NSLog(@"delete at %ld", index);
+
     [self.youtubeVideoList removeObjectAtIndex:index];
     [self.tableView reloadData];
     [self removeYoutubeVideoFromList];
@@ -356,19 +340,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdatePlaylist" object:self userInfo:userInfo];
 }
-
-//- (void)addingDataToYoutubeObject
-//{
-//    Youtube *youtube = [[Youtube alloc] init];
-//    
-//    for (int i = 0; i < [self.youtubeVideoList count]; i++) {
-//        YoutubeVideo *youtubeVideo = [self.youtubeVideoList objectAtIndex:i];
-//        [youtube.videoIdList addObject:youtubeVideo.videoId];
-//        [youtube.titleList addObject:youtubeVideo.videoTitle];
-//        [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
-//        [youtube.durationList addObject:youtubeVideo.videoDuration];
-//    }
-//}
 
 - (void)renamePlaylistTitle
 {
@@ -409,7 +380,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"title == %@",self.playlist.title]];
     NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
     for (Playlist *playlistObject in result) {
-        NSLog(@"rename playlist title----------------------");
+      
         playlistObject.title = text;
         NSError *error = nil;
         if (![context save:&error]) {
@@ -470,7 +441,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         YoutubeVideo *y = [self.youtubeVideoList objectAtIndex:i];
         y.index = @(i);
         [newList addObject:y];
-        NSLog(@"list: %@ index:%@",y.videoTitle, y.index);
+
     }
     
     NSSet *newYoutubeVideoList = [NSSet setWithArray:newList];
@@ -482,8 +453,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     NSArray *result = [context executeFetchRequest:fetchRequest error:nil];
     for (Playlist *playlistObject in result) {
-        NSLog(@"reordering youtube from playlist----------------------");
-        //[context deleteObject:playlistObject.youtubeVideos];
         playlistObject.youtubeVideos = newYoutubeVideoList;
         NSError *error = nil;
         if (![context save:&error]) {
@@ -506,8 +475,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [youtube.thumbnailList addObject:youtubeVideo.videoThumbnail];
             [youtube.durationList addObject:youtubeVideo.videoDuration];
         }
-        //NSLog(@"selectedIndex : %lu",(long)sourceIndexPath.row-1);
-        //NSLog(@"new youtube list %@",youtube.titleList);
+
         NSString *selected = [NSString stringWithFormat:@"%lu",(long)sourceIndexPath.row-1];
         NSDictionary *userInfo = @{@"youtubeObj": youtube,
                                    @"selectedIndex": selected};
@@ -536,9 +504,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 {
 
     [self updateYoutubeVideoList];
-    //[self.tableView reloadData];
-    NSLog(@"Receive from delegate playlisteditdetailfavorite %@",favorite.videoTitle);
-    
+
 }
 
 
@@ -585,59 +551,5 @@ typedef NS_ENUM(NSInteger, AlertType) {
     return _fetchedResultsController;
 }
 
-//- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-//{
-//    [self.tableView beginUpdates];
-//}
-//
-//- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-//           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
-//{
-//    switch(type) {
-//        case NSFetchedResultsChangeInsert:
-//            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-//            break;
-//            
-//        case NSFetchedResultsChangeDelete:
-//            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-//            break;
-//            
-//        default:
-//            return;
-//    }
-//}
-//
-//- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-//       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
-//      newIndexPath:(NSIndexPath *)newIndexPath
-//{
-//    UITableView *tableView = self.tableView;
-//    NSIndexPath *customIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
-//    NSIndexPath *customNewIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row-1 inSection:indexPath.section];
-//    
-//    switch(type) {
-//        case NSFetchedResultsChangeInsert:
-//            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-//            break;
-//            
-//        case NSFetchedResultsChangeDelete:
-//            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-//            break;
-//            
-//        case NSFetchedResultsChangeUpdate:
-//            [self.tableView reloadData];
-//            break;
-//            
-//        case NSFetchedResultsChangeMove:
-//            [tableView deleteRowsAtIndexPaths:@[customIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-//            [tableView insertRowsAtIndexPaths:@[customNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-//            break;
-//    }
-//}
-//
-//- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-//{
-//    [self.tableView endUpdates];
-//}
 
 @end

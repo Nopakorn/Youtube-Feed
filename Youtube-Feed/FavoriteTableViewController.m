@@ -93,7 +93,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Favorites", nil)];
 
-    //fetchdata for checking when youtube is playing
     youtubeFavorite = [self.fetchedResultsController fetchedObjects];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
@@ -102,7 +101,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"deleteFavoriteFact"]) {
         self.favoritePlaying = NO;
     }     
-    NSLog(@"fav view did load");
+
 #pragma setup UMA in ViewDidload in PlaylistTableView
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
@@ -150,12 +149,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.favoritePlaying = NO;
         [self.tableView reloadData];
     }
-//    if (self.selectedRow == -1) {
-//        self.favoritePlaying = NO;
-//    }
-    NSLog(@"fav view did appear");
-    NSLog(@"selectedRow %ld", (long)self.selectedRow);
-    NSLog(@"favorite %i mark hl %li",self.favoritePlaying,(long)markHighlightIndex);
+
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -189,31 +183,22 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if (self.favoritePlaying) {
             if ([youtube.videoIdList count] == [result count]) {
                 self.selectedRow = selectedIndex;
-//                NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-//                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//                NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-//                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-           
                 [self.tableView reloadData];
 
             }
         } else {
             
             [self.tableView reloadData];
-//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
         }
 
     }
 
-    NSLog(@"Recevied in favorite %i",self.favoritePlaying);
-    NSLog(@"Selected index %i",selectedIndex);
 }
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    NSLog(@"View changing");
+
     if (numberOfFavorites == 0) {
         [_focusManager setHidden:YES];
     } else {
@@ -311,7 +296,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSArray *result = [self.fetchedResultsController fetchedObjects];
     for (int i = 0; i < result.count; i++) {
         NSManagedObject *object = [result objectAtIndex:i];
-        NSLog(@"check favorite %@", [object valueForKey:@"videoTitle"]);
     }
 }
 
@@ -467,7 +451,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
                   willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"scroll view dragging");
+
     scrollKKPTriggered = NO;
     [_focusManager setHidden:YES];
     
@@ -475,7 +459,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)deleteRowAtIndex:(NSInteger )index
 {
-    NSLog(@"delete at %ld", (long)index);
+
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     [context deleteObject:[[self.fetchedResultsController fetchedObjects] objectAtIndex:index]];
     
@@ -493,12 +477,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [youtube.thumbnailList addObject:[manageObject valueForKey:@"videoThumbnail"]];
         [youtube.durationList addObject:[manageObject valueForKey:@"videoDuration"]];
     }
-//    if (markHighlightIndex == self.selectedRow) {
-//        NSLog(@"Delete at highlight row");
-//        self.selectedRow = -1;
-//    }
+
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFavoriteFact"];
-    //self.selectedRow = -1;
+
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{@"youtubeObj": youtube,
                                @"selectedIndex": selected};
@@ -738,7 +719,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    //if favorites is 0 index
 
     if (viewFact == NO) {
         return YES;
@@ -753,7 +733,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         scrollKKPTriggered = YES;
         [_focusManager setHidden:NO];
          indexFocus = [_focusManager focusIndex];
-        //indexFocus = [_focusManager focusIndex];
         if (distanceX == 0 && distanceY == 1) {
             directionFocus = 0;
             indexFocus+=2;
@@ -838,7 +817,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press up in favorite");
+
     if (viewFact == NO) {
         return YES;
     }
@@ -867,22 +846,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             //
             [self.navigationController popViewControllerAnimated:YES];
-//            if (backFactFavorite) {
-//                NSLog(@"in tabbar controller");
-//                [_focusManager setFocusRootView:self.tabBarController.tabBar];
-//                [_focusManager setHidden:NO];
-//                [_focusManager moveFocus:1];
-//                backFactFavorite = NO;
-//                
-//            } else {
-//                
-//                NSLog(@"in main view");
-//                [_focusManager setFocusRootView:self.tableView];
-//                [_focusManager moveFocus:1];
-//               
-//                backFactFavorite = YES;
-//            }
-            
+
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
             if (numberOfFavorites == 0) {
                 return YES;
@@ -910,7 +874,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (numberOfFavorites == 0) {
         return YES;
     } else {
-        NSLog(@"Long press %@ at %ld", [self getButtonName:button], (long)[_focusManager focusIndex]);
+
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
         
         alert = [UIAlertController alertControllerWithTitle:@""
@@ -926,7 +890,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                                    }];
         
         [alert addAction:ok];
-        //[alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
         isAlertShowUp = YES;
         return YES;

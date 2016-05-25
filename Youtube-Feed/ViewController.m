@@ -1407,8 +1407,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"videoId == %@",favorite.videoId]];
     NSError *error = nil;
     NSArray *result = [context executeFetchRequest:fetchRequest error:&error];
-    NSLog(@"delete fav result %lu",(unsigned long)[result count]);
-    
     for (NSManagedObject *manageObject in result) {
         [context deleteObject:manageObject];
         if (![context save:&error]) {
@@ -1443,15 +1441,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         updateFavoriteFact = NO;
     }
-
-    NSLog(@"update new youtube delete %@",self.youtubeUpdate.titleList);
-
 }
 
 
 - (void)insertFavorite:(Favorite *)favorite
 {
-    NSLog(@"--favorite %@",favorite.videoTitle);
+ 
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
 
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -1504,8 +1499,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         updateFavoriteFact = NO;
     }
-    NSLog(@"update new youtube insert %@",self.youtubeUpdate.titleList);
-   
 }
 
 
@@ -1535,7 +1528,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         favoriteTableViewFlag = true;
         self.youtubeUpdate = [[Youtube alloc] init];
         self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
-        NSLog(@"youtube update count = %lu",(unsigned long)[self.youtubeUpdate.videoIdList count]);
         selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
 
     }
@@ -1548,8 +1540,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.youtubeUpdate = [[Youtube alloc] init];
     self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
-    NSLog(@"youtube update playlist : %@", self.youtubeUpdate.titleList);
-
     if (playlistDidPlayed) {
         playlistDidPlayed = false;
         playlistDetailTableViewFlag = true;
@@ -1562,7 +1552,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)receivedPlayBackStartedNotification:(NSNotification *) notification
 {
     if ([notification.name isEqual:@"Playback Started"] && notification.object != self) {
-        NSLog(@"pause video");
         [self.playerView pauseVideo];
     }
 
@@ -1585,7 +1574,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     playlistIndexCheck = [notification.userInfo objectForKey:@"playlistIndex"];
-    NSLog(@"Received playlistDetail");
+    
 }
 
 - (void)receivedGenreListNotification:(NSNotification *)notification
@@ -1601,8 +1590,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     genreType = [notification.userInfo objectForKey:@"genreType"];
-    //NSLog(@"Received playGenreList");
-    NSLog(@"Received genrelistdetail %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
+    
 }
 
 - (void)receivedFavoriteDidSelectedNotification:(NSNotification *)notification
@@ -1620,7 +1608,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     self.youtubeUpdate = [notification.userInfo objectForKey:@"youtubeObj"];
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
-    NSLog(@"Received favorite");
+
 
 }
 
@@ -1639,7 +1627,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     item = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     searchTerm = [notification.userInfo objectForKey:@"searchTerm"];
 
-    NSLog(@"Received search %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
 }
 
 - (void)receivedSettingDidSelectedNotification:(NSNotification *)notification
@@ -1654,8 +1641,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     recommendFact = YES;
     self.youtube = [notification.userInfo objectForKey:@"youtubeObj"];
     item = 0;
-        
-    NSLog(@"Received setting did selected %lu item: %lu",(unsigned long)[self.youtube.titleList count], (long)item);
+    
 }
 
 
@@ -1663,7 +1649,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     [hideNavigation invalidate];
-    //[_focusManager setHidden:YES];
     backFact = YES;
     if (tabBarController.selectedIndex == 2) {
     
@@ -1671,7 +1656,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         PlaylistTableViewController *playlistView = [nav.viewControllers objectAtIndex:0];
         playlistView.favorite = self.favorite;
         playlistView.youtube = self.youtube;
-        NSLog(@"select playlist");
         [_focusManager setHidden:NO];
     }
     
@@ -1682,8 +1666,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         rec.delegate = self;
         rec.selectedRow = item;
         rec.recommendPlaying = recommendFact;
-        NSLog(@"select recommend");
-        
 
     }
     
@@ -1692,9 +1674,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         UINavigationController *nav = [tabBarController.viewControllers objectAtIndex:4];
         SearchTableViewController *seachView = [nav.viewControllers objectAtIndex:0];
         seachView.delegate = self;
-        NSLog(@"select search");
         [_focusManager setHidden:YES];
         [_focusManager setDelegate:nil];
+        
     }
 }
 
@@ -1803,13 +1785,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.youtube = recommendViewController.recommendYoutube;
     item = recommendViewController.selectedRow;
-    NSLog(@"recommend did selected");
+
 }
 
 - (void)recommendTableViewControllerNextPage:(RecommendTableViewController *)recommendViewController
 {
     self.youtube = recommendViewController.recommendYoutube;
-    NSLog(@"recommend next page");
 }
 
 #pragma mark - delegate SearchTableViewController
@@ -1828,7 +1809,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     self.youtube = searchViewController.searchYoutube;
     item = searchViewController.selectedRow;
-     NSLog(@"Received Search");
+
 }
 
 
@@ -1875,10 +1856,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidRotateWithDistance:(NSUInteger)distance direction:(UMADialDirection)direction
 {
     if (viewFact == NO) {
-        NSLog(@"not in view");
         return YES;
     }
-    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
+   
     if (self.tabBarController.tabBar.hidden == YES) {
         [self hideNavWithFact:NO];
         [hideNavigation invalidate];
@@ -1893,16 +1873,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 level = 1.0;
             }
             
-            NSLog(@"in main view %lu    %ld",(unsigned long)distance, (long)direction);
             if ((long)direction == 1) {
-                NSLog(@"goes up");
                 level += 0.05;
-                NSLog(@"level %f",level);
                 [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
             } else {
-                NSLog(@"goes down");
                 level -= 0.05;
-                NSLog(@"level %f",level);
                 [[MPMusicPlayerController applicationMusicPlayer] setVolume:level];
             }
             [hideNavigation invalidate];
@@ -1934,11 +1909,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
             
             if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-                NSLog(@"search");
                 [_focusManager moveFocus:2];
                 
             } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 1) {
-                NSLog(@"search");
                 [_focusManager moveFocus:3];
                 
             }
@@ -1954,12 +1927,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     
     if (viewFact == NO) {
-        NSLog(@"not in view");
         return YES;
     }
     if (self.tabBarController.tabBar.hidden == YES) {
-        NSLog(@"change backFact fact");
-        //backFact = NO;
         [self hideNavWithFact:NO];
         [hideNavigation invalidate];
         hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
@@ -2067,10 +2037,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
     if (viewFact == NO) {
-        NSLog(@"not in view");
         return YES;
     }
-    NSLog(@"Press up %@", [self getButtonName:button]);
+
     if ([[self getButtonName:button] isEqualToString:@"Home"]){
         return NO;
         
@@ -2083,7 +2052,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             if (backFact) {
-                NSLog(@"focus backFact");
+
                 [_focusManager setHidden:NO];
                 [_focusManager setFocusRootView:self.tabBarController.tabBar];
                 [_focusManager moveFocus:2];
@@ -2091,7 +2060,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [self hideNavWithFact:NO];
                 [hideNavigation invalidate];
             } else {
-                 NSLog(@"focus backFact no");
+ 
                 [_focusManager setFocusRootView:_containerView];
                 [_focusManager setHidden:YES];
                 [_focusManager moveFocus:4];
@@ -2101,8 +2070,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
             
         } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
-            NSLog(@"Main---");
-            //[_focusManager fo];
+
             [hideNavigation invalidate];
             hideNavigation = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(hideNavigation) userInfo:nil repeats:NO];
             return NO;

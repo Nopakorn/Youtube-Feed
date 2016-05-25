@@ -444,7 +444,7 @@ willDecelerate:(BOOL)decelerate
 
 - (void)receivedLoadGenreVideoId
 {
-    NSLog(@"received load");
+
     dispatch_async(dispatch_get_main_queue(), ^{
         reloadFact = NO;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoId" object:nil];
@@ -474,8 +474,6 @@ willDecelerate:(BOOL)decelerate
     if (viewFact == NO) {
         return YES;
     }
-    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
-    //NSLog(@"in tabbar %id",backFactPlaylist);
     if (backFactGenre == 0) {
         
         if (direction == 1) {
@@ -531,7 +529,7 @@ willDecelerate:(BOOL)decelerate
     if (viewFact == NO) {
         return YES;
     }
-    NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+
     indexFocus = [_focusManager focusIndex];
     if (backFactGenre) {
         if (distanceX == 0 && distanceY == 1) {
@@ -557,7 +555,6 @@ willDecelerate:(BOOL)decelerate
 
             if ([_focusManager focusIndex] == 2) {
                 [_focusManager moveFocus:2];
-                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
             } else if ([_focusManager focusIndex] == 3) {
                 [_focusManager moveFocus:1];
             }
@@ -633,16 +630,14 @@ willDecelerate:(BOOL)decelerate
     }
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
-        NSLog(@"Reccomened Current view in focus %@", [_focusManager focusedView]);
+     
         if (backFactGenre) {
-            NSLog(@"in tabbar controller");
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
             [_focusManager moveFocus:1];
             backFactGenre = NO;
             
         } else {
-            
-            NSLog(@"in main view");
+
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager moveFocus:1];
             backFactGenre = YES;

@@ -113,7 +113,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager setHidden:NO];
-    NSLog(@"viewdidload playlistDetail");
+
 }
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
@@ -134,11 +134,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                         self.playlistDetailPlaying = YES;
                         self.selectedRow = selectedIndex;
                         [self.tableView reloadData];
-//                        NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-//                        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//                        NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-//                        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-                        
+
                     }
                 } else {
                     NSLog(@"not equals - ");
@@ -146,29 +142,23 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else {
                 self.playlistDetailPlaying = NO;
                 [self.tableView reloadData];
-//                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
+
                 
             }
         } else {
             self.playlistDetailPlaying = NO;
             [self.tableView reloadData];
-//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
             
         }
 
     }
-    
-    NSLog(@"Recevied in playlistdetail %i",self.playlistDetailPlaying);
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear PlaylistController");
+
     [_focusManager setHidden:YES];
     viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
@@ -199,9 +189,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     [self addingDataToYoutubeObject];
-    NSLog(@"viewDidappear Playlistdetail");
-    
-    
+
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     [_umaApp addViewController:self];
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
@@ -220,7 +208,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    NSLog(@"View changing");
+
     if ([self.youtubeVideoList count] == 0) {
         [_focusManager setHidden:YES];
     } else {
@@ -422,15 +410,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //self.selectedRow = indexPath.row;
+
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"updatePlaylistFact"];
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)indexPath.row];
     [self addingDataToYoutubeObject];
-    NSLog(@"duration? = %@",[self.youtube.durationList objectAtIndex:indexPath.row]);
+
     NSDictionary *userInfo = @{@"youtubeObj": self.youtube,
                                @"selectedIndex": selected,
                                @"playlistIndex": @(self.playlistIndex) };
-     NSLog(@"post playlistdetail");
+
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PlaylistDetailDidSelected" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -478,7 +466,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
                   willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"scroll view dragging");
+
     scrollKKPTriggered = NO;
     [_focusManager setHidden:YES];
     
@@ -644,7 +632,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press up in playlistDetail");
+
     if (viewFact == NO) {
         return YES;
     }
@@ -664,27 +652,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
         //
         [self.navigationController popViewControllerAnimated:YES];
-//        if (backFactPlaylistDetail) {
-//
-//            [_focusManager setFocusRootView:self.tabBarController.tabBar];
-//            [_focusManager setHidden:NO];
-//            [_focusManager moveFocus:1];
-//            backFactPlaylistDetail = NO;
-//            
-//        } else {
-//
-//            [_focusManager setFocusRootView:self.tableView];
-//            //[_focusManager moveFocus:1];
-//            if ([self.youtubeVideoList count] == 0) {
-//                [_focusManager setHidden:YES];
-//            }else{
-//                [_focusManager setHidden:NO];
-//                [_focusManager moveFocus:1];
-//            }
-//            
-//            backFactPlaylistDetail = YES;
-//        }
-        
+
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {
         if ([self.youtubeVideoList count] == 0) {
             return YES;
@@ -703,7 +671,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
 
     if (viewFact == NO) {
         return YES;

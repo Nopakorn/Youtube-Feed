@@ -23,7 +23,6 @@
         self.youtube_api_key = @"AIzaSyAPT3PRTZdTQDdoOtwviiC0FQPpJvfQlWE";
         NSLocale *currentLocale = [NSLocale currentLocale];
         self.regionCode = [currentLocale objectForKey:NSLocaleCountryCode];
-        //self.language = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
         checkResult = @"";
         
         if ([self.regionCode isEqualToString:@"JP"]) {
@@ -74,8 +73,6 @@
         [self.genreIds addObject:q[@"id"]];
     }
 
-//    NSLog(@"genre titles %@ %@ genre Language %@",self.genreTitles, self.genreIds, self.language);
-    NSLog(@"----------genre count %lu %lu",(unsigned long)[self.genreTitles  count], (unsigned long)[self.genreIds count]);
     if ([checkResult isEqualToString:@"LoadGenreTitle"]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreTitle" object:self];
     }

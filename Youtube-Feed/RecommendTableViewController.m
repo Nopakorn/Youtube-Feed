@@ -123,19 +123,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
 
 #pragma setup UMA in ViewDidload in RecommendTableView
-//    _inputDevices = [NSMutableArray array];
+
      _umaApp = [UMAApplication sharedApplication];
      _umaApp.delegate = self;
-//    _hidManager = [_umaApp requestHIDManager];
-//    
      [_umaApp addViewController:self];
-//    
-//    //focus
+   
+    //focus
       _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
       [_focusManager setFocusRootView:self.tableView];
       [_focusManager setHidden:NO];
-//    [self prepareBlocks];
-//    [_hidManager setDisconnectionCallback:_disconnectionBlock];
+
 }
 
 - (void)checkNetworkStatus:(NSNotification *)notification
@@ -203,23 +200,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     if (internetActive) {
         if(reloadFact){
-//            if (nextPage) {
-//                NSLog(@"calling reload net is up ");
-//                reloadFact = NO;
-//                [self launchReload];
-//            } else {
-//                NSLog(@"it still launchReload");
-//            }
-            NSLog(@"calling reload net is up ");
             reloadFact = NO;
             [self launchReload];
         }
-        
-        NSLog(@"internet is Up ---- %id ", nextPage);
+
     } else {
         reloadFact = YES;
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdNextPage" object:nil];
-        NSLog(@"internet is Down ----");
+
     }
     
 }
@@ -275,9 +263,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
     [self.tableView reloadData];
-    NSLog(@"received notification reload");
-    NSLog(@"recommend obj count: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
-    NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
+
 }
 
 - (void)prepareBlocks
@@ -476,8 +462,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 {
     NSLog(@"reseive setting ");
     [self.tableView reloadData];
-    
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"SettingDidSelected" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -486,27 +470,26 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     backFactRecommended = YES;
     scrollKKPTriggered = YES;
     viewFact = YES;
-    NSLog(@"view did appear recommend with selected row %ld",(long)self.selectedRow);
+
 //    
     MainTabBarViewController *mainTabbar = (MainTabBarViewController *)self.tabBarController;
     self.recommendYoutube = mainTabbar.recommendYoutube;
     self.genreSelected = mainTabbar.genreSelected;
-//     NSLog(@"recommend obj: %@", self.recommendYoutube.titleList);
-     NSLog(@"recommend obj count: %lu",(unsigned long)[self.recommendYoutube.titleList count]);
-     NSLog(@"recommend duration obj: %lu",(unsigned long)[self.recommendYoutube.durationList count]);
+
+
     indexFocusTabbar = 1;
     indexFocus = 1;
     portraitFact = YES;
     landscapeFact = YES;
     reloadFact = NO;
-    //[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     if (self.recommendPlaying) {
         didReceivedFromYoutubePlaying = YES;
         [self.tableView reloadData];
     } else {
         didReceivedFromYoutubePlaying = NO;
-        NSLog(@"not in recommend");
+
     }
     
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
@@ -528,12 +511,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:self.tableView];
     [_focusManager moveFocus:1];
     [_focusManager setHidden:NO];
-    //[self.tableView reloadData];
+
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear RecommendedController");
+
     [_focusManager setHidden:YES];
     viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
@@ -547,7 +530,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 #pragma mark - Table view data source
@@ -581,7 +564,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         cell.contentView.backgroundColor = [UIColor whiteColor];
     }
-    //check between durationlist and video idlist (they calling sperately in api methods)
+  
     if ([self.recommendYoutube.durationList count] == [self.recommendYoutube.videoIdList count]) {
         cell.name.text = [self.recommendYoutube.titleList objectAtIndex:indexPath.row];
         cell.tag = indexPath.row;
@@ -609,10 +592,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             });
         }
  
-    } else {
-       // NSLog(@"duration %lu and title list %lu",(unsigned long)[self.recommendYoutube.durationList count], (unsigned long)[self.recommendYoutube.videoIdList count]);
     }
-    
     return cell;
 }
 
@@ -640,7 +620,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
                   willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"scroll view dragging");
+
     scrollKKPTriggered = NO;
     [_focusManager setHidden:YES];
     
@@ -658,7 +638,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             reloadFact = YES;
             [self launchReload];
         } else {
-            //reloadFact = NO;
             NSLog(@"Its still loading api");
         }
     }
@@ -666,7 +645,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)launchReload
 {
-    NSLog(@"calling launchReload");
+
     nextPage = false;
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     spinner.frame = CGRectMake(0, 0, 320, 44);
@@ -741,12 +720,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
-         NSLog(@"finished load duration %lu and title list %lu",(unsigned long)[self.recommendYoutube.durationList count], (unsigned long)[self.recommendYoutube.videoIdList count]);
-       
+        
         [self.tableView reloadData];
         nextPage = true;
         reloadFact = NO;
-        NSLog(@"update indexfocus %ld or get it %ld direction %ld",(long)indexFocus, [_focusManager focusIndex], (long)directionFocus);
+
         if (scrollKKPTriggered) {
             if (directionFocus == 0) {
                 [_focusManager moveFocus:indexFocus+=25];
@@ -855,7 +833,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
 - (BOOL)umaDidTranslateWithDistance:(NSInteger)distanceX distanceY:(NSInteger)distanceY
 {
-    NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
     if (viewFact == NO) {
         return  YES;
     }
@@ -872,7 +849,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             indexFocus = [_focusManager focusIndex];
             
             if (distanceX == 0 && distanceY == 1) {
-                NSLog(@"BOTTOM main index focus %ld",(long)indexFocus);
                 [_focusManager moveFocus:1 direction:kUMAFocusForward];
                 indexFocus+=2;
                 directionFocus = 0;
@@ -886,7 +862,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     }
                 }
             } else if (distanceX == 0 && distanceY == -1) {
-                NSLog(@"TOP main index focus %ld",(long)indexFocus);
+               
                 [_focusManager moveFocus:1 direction:kUMAFocusBackward];
                 directionFocus = 1;
                 if (indexFocus == 0) {
@@ -1001,20 +977,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return  YES;
     }
-    NSLog(@"Press up in Recommended %id", backFactRecommended);
+    
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
 //
        
         if (backFactRecommended) {
-            NSLog(@"in tabbar controller");
+
             [_focusManager setFocusRootView:self.tabBarController.tabBar];
             [_focusManager moveFocus:1];
             inTabbar = YES;
             backFactRecommended = NO;
             
         } else {
-            
-            NSLog(@"in main view");
+
             [_focusManager setFocusRootView:self.tableView];
             [_focusManager moveFocus:1];
             backFactRecommended = YES;

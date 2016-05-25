@@ -72,7 +72,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
             [subView removeFromSuperview];
         }
     }
-    //[self.navigationController popViewControllerAnimated:NO];
+
     if (!selectFact) {
         [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:0] animated:NO];
     }
@@ -301,8 +301,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)deleteRowAtIndex:(NSInteger )index
 {
-    NSLog(@"delete at %ld", (long)index);
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     [context deleteObject:[[self.fetchedResultsController fetchedObjects] objectAtIndex:index]];
     
     NSError *error = nil;

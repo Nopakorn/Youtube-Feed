@@ -89,7 +89,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
     self.searchTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Search", nil)];
-    //self.searchIconTitle.hidden = YES;
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
@@ -105,7 +105,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
      self.selectedRow = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     self.searchTerm = [notification.userInfo objectForKey:@"searchTerm"];
     [self.tableView reloadData];
-    NSLog(@"received youtube relaod");
+
 }
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
@@ -176,8 +176,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    NSLog(@"viewDidDisappear SearchController");
+
     [_focusManager setHidden:YES];
     
 }
@@ -185,7 +184,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSLog(@"viewdidappear in search table");
+
     if (self.searchPlaying) {
         if ([self.searchTerm isEqualToString:self.searchText]) {
             didReceivedFromYoutubePlaying = YES;
@@ -195,8 +194,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     } else {
         didReceivedFromYoutubePlaying = NO;
-        NSLog(@"not in search");
     }
+    
     UIView *navBorder = [[UIView alloc] initWithFrame:CGRectMake(0,self.navigationController.navigationBar.frame.size.height-1,self.navigationController.navigationBar.frame.size.width, 5)];
     navBorder.tag = 99;
     [navBorder setBackgroundColor:UIColorFromRGB(0x4F6366)];
@@ -215,7 +214,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma setup UMA in ViewDidAppear in RecommendTableView
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setHidden:YES];
-    //[self.tableView reloadData];
+
 
 }
 
@@ -288,7 +287,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             reloadFact = NO;
             
             if (searchFact) {
-                //searchFact = NO;
+
                 [spinner stopAnimating];
                 [self.searchYoutube.titleList removeAllObjects];
                 [self.searchYoutube.videoIdList removeAllObjects];
@@ -296,7 +295,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [self.searchYoutube.durationList removeAllObjects];
                 [self.tableView reloadData];
                 self.searchYoutube = [[Youtube alloc] init];
-                NSLog(@"re search : %@",self.searchText);
+              
                 [self.searchYoutube callSearchByText:self.searchText withNextPage:NO];
                 spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
                 spinner.center = CGPointMake(self.view.center.x, 85.5);
@@ -381,9 +380,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     if ([self.searchYoutube.durationList count] != [self.searchYoutube.videoIdList count]) {
-        
         NSLog(@"No data");
-        
+
     } else {
         cell.name.text = [self.searchYoutube.titleList objectAtIndex:indexPath.row];
         cell.tag = indexPath.row;
@@ -434,10 +432,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"didselect row");
+
     self.selectedRow = indexPath.row;
-    //[self.delegate searchTableViewControllerDidSelected:self];
-    
+
     NSString *selected = [NSString stringWithFormat:@"%lu",(long)self.selectedRow];
     NSDictionary *userInfo = @{ @"youtubeObj": self.searchYoutube,
                                 @"selectedIndex": selected,
@@ -509,15 +506,11 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.searchBar.text = @"";
     self.searchBar.showsCancelButton = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearch" object:nil];
-//    UILabel *messageLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
-//    messageLb.text = @"";
-//    messageLb.textAlignment = NSTextAlignmentCenter;
-//    self.tableView.backgroundView = messageLb;
-//    self.tableView.backgroundView = nil;
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         [self.tableView reloadData];
-//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
     });
     
 
@@ -530,9 +523,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self.searchYoutube.thumbnailList removeAllObjects];
     [self.searchYoutube.durationList removeAllObjects];
     [self.tableView reloadData];
-    //didReceivedFromYoutubePlaying = false;
+
     self.searchText = searchBar.text;
-    NSLog(@"search text %@",searchBar.text);
+
     reloadFact = YES;
     spinerFact = YES;
     searchFact = YES;
@@ -569,15 +562,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         } else {
             didReceivedFromYoutubePlaying = NO;
         }
-//        if ([self.searchYoutube.videoIdList count] == 0) {
-//            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Video not found", nil)];
-//            UILabel *messageLb = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
-//            messageLb.text = description;
-//            messageLb.textAlignment = NSTextAlignmentCenter;
-//            self.tableView.backgroundView = messageLb;
-//
-//        }
-        
+     
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadVideoIdFromSearch" object:nil];
 
     });

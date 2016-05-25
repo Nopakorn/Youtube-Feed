@@ -172,9 +172,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    NSLog(@"View changing");
-    NSLog(@"wat index : %ld",(long)[_focusManager focusIndex]);
-
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
         if (scrollKKPTriggered) {
             if (portraitFact) {
@@ -182,7 +179,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     [_focusManager setFocusRootView:self.tableView];
                     [_focusManager setHidden:NO];
                     if (indexFocus == numberOfPlaylists-1) {
-                        NSLog(@"--at index : %ld",(long)[_focusManager focusIndex]);
                         [_focusManager moveFocus:indexFocus];
                     } else {
                         
@@ -222,8 +218,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     [_focusManager setFocusRootView:self.tableView];
                     [_focusManager setHidden:NO];
                     if (indexFocus == numberOfPlaylists-1) {
-                        
-                        NSLog(@"--at index : %ld",(long)[_focusManager focusIndex]);
                         [_focusManager moveFocus:indexFocus];
                         
                     } else {
@@ -319,11 +313,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (cell == nil) {
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"PlaylistCustomCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
-        //add gesture ;
-//        UILongPressGestureRecognizer *lgpr = [[UILongPressGestureRecognizer alloc] initWithTarget:self
-//                                                                                           action:@selector(handleLongPress:)];
-//        lgpr.minimumPressDuration = 1.5;
-//        [cell addGestureRecognizer:lgpr];
     }
     
     [self fetchPlaylist];
@@ -370,7 +359,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
                   willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"scroll view dragging");
+
     scrollKKPTriggered = NO;
     [_focusManager setHidden:YES];
     
@@ -379,7 +368,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (IBAction)editButtonPressed:(id)sender
 {
     NSLog(@"Edit buttonPressed");
-    //[self performSegueWithIdentifier:@"EditSegue" sender:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -581,12 +569,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
-    //NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
+
     indexFocus = [_focusManager focusIndex];
     if (backFactPlaylist) {
-        
-        //indexFocus = [_focusManager focusIndex];
-        
+
         if (distanceX == 0 && distanceY == 1) {
             directionFocus = 0;
             indexFocus+=2;
@@ -610,7 +596,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
             if ([_focusManager focusIndex] == 1) {
                 [_focusManager moveFocus:1];
-                NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
             } else if ([_focusManager focusIndex] == 3) {
                 [_focusManager moveFocus:1];
             }
@@ -680,7 +665,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
-    NSLog(@"Press up in playlist");
+
     if (isAlertShowUp) {
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             [alert dismissViewControllerAnimated:YES completion:nil];
@@ -695,14 +680,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         if ([[self getButtonName:button] isEqualToString:@"Back"]) {
             //
             if (backFactPlaylist) {
-                NSLog(@"in tabbar controller");
                 [_focusManager setFocusRootView:self.tabBarController.tabBar];
                 [_focusManager moveFocus:1];
                 backFactPlaylist = NO;
                 
             } else {
-                
-                NSLog(@"in main view");
+
                 [_focusManager setFocusRootView:self.tableView];
                 [_focusManager moveFocus:1];
                 backFactPlaylist = YES;
@@ -726,29 +709,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-//    NSLog(@"Long press %ld", (long)[_focusManager focusIndex]);
-//    if ([_focusManager focusIndex] > 0 && [_focusManager focusIndex] < [self.playlist_List count] + 1) {
-//        NSLog(@"can delete able");
-//            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
-//        
-//            alert = [UIAlertController alertControllerWithTitle:@""
-//                                                        message:description
-//                                                 preferredStyle:UIAlertControllerStyleAlert];
-//        
-//            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-//                                                         style:UIAlertActionStyleDefault
-//                                                       handler:^(UIAlertAction *action){
-//        
-////                                                           [self deleteRowAtIndex:[_focusManager focusIndex]];
-//                                                           [alert dismissViewControllerAnimated:YES completion:nil];
-//                                                       }];
-//        
-//            [alert addAction:ok];
-//            [self presentViewController:alert animated:YES completion:nil];
-//            isAlertShowUp = YES;
-//    }
-//
-//
 
     return YES;
 }

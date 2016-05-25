@@ -91,9 +91,10 @@ typedef NS_ENUM(NSInteger, AlertType) {
     [self.navigationController.navigationBar addSubview:navBorder];
     
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"reload table view");
+
     [self.tableView reloadData];
 }
 
@@ -162,31 +163,9 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    //NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
     self.favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//    NSLog(@"check object picked %@",self.favorite.videoTitle);
-//     NSString *description = [NSString stringWithFormat:@"Adding to %@",self.playlist.title];
-//    alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
-//                                                message:description
-//                                         preferredStyle:UIAlertControllerStyleAlert];
-//    
-//    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-//                                                 style:UIAlertActionStyleDefault
-//                                               handler:^(UIAlertAction *action){
-//                                                   
-//                                                   [self saveVideotoPlaylist:self.favorite];
-//                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-//                                               }];
-//    
-////    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"CANCEL"
-////                                                 style:UIAlertActionStyleDefault
-////                                               handler:^(UIAlertAction *action){
-////                                                   
-////                                                   [alert dismissViewControllerAnimated:YES completion:nil];
-////                                               }];
-//    [alert addAction:ok];
-////    [alert addAction:cancel];
-    //[self presentViewController:alert animated:YES completion:nil];
+
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self saveVideotoPlaylist:self.favorite];
 }
@@ -194,7 +173,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
 
 - (void)saveVideotoPlaylist:(Favorite *)favorite
 {
-     NSLog(@"check object passing %@",favorite.videoTitle);
+
     if ([self checkPlaylist:favorite]) {
         
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"This video is already in the Playlist", nil)];

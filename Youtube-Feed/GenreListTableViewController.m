@@ -133,7 +133,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     self.selectedIndex = [[notification.userInfo objectForKey:@"selectedIndex"] integerValue];
     self.genreType = [notification.userInfo objectForKey:@"genreType"];
     [self.tableView reloadData];
-    NSLog(@"received youtube relaod");
+
 }
 
 - (void)receivedYoutubePlayingNotification:(NSNotification *)notification
@@ -174,15 +174,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
         
     }
-    
-    
-   
-    NSLog(@"Recevied in genreList %@",self.genreType);
+
 }
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear GenreListController");
+
     [_focusManager setHidden:YES];
     viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
@@ -207,7 +204,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"View did didappear");
+
     backFactGenreList = YES;
     portraitFact = YES;
     landscapeFact = YES;
@@ -238,8 +235,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager moveFocus:1];    // Give focus to the first icon.
     
     if ([self.genreYoutube.videoIdList count] == 0) {
-        NSLog(@"did appear genreYoutube item is 0");
-        [_focusManager setHidden:YES];
+         [_focusManager setHidden:YES];
     } else {
         [_focusManager setHidden:NO];
     }
@@ -507,7 +503,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSDictionary *userInfo = @{ @"youtubeObj": self.genreYoutube,
                                @"selectedIndex": selected,
                                @"genreType":self.searchTerm };
-    NSLog(@"post genrelistdetail %lu",(unsigned long)[self.genreYoutube.titleList count]);
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PlayGenreListDidSelected" object:self userInfo:userInfo];
     [self.tabBarController setSelectedIndex:0];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -561,7 +557,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     dispatch_async(dispatch_get_main_queue(), ^{
         [spinner stopAnimating];
         self.tableView.tableFooterView = nil;
-        NSLog(@"duration list count %lu and title count %lu",(unsigned long)[self.genreYoutube.durationList count], (unsigned long)[self.genreYoutube.titleList count]);
         reloadFact = NO;
         [self.tableView reloadData];
         nextPage = true;
@@ -577,7 +572,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             
         }
-        //[self.tableView reloadData];
+
         [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreVideoIdNextPage" object:nil];
     });
     
@@ -721,9 +716,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
-    NSLog(@"at index : %ld",(long)[_focusManager focusIndex]);
-    //indexFocus = [_focusManager focusIndex];
-    
+
     if (nextPage == 0) {
         [_focusManager lock];
         return  YES;
@@ -864,8 +857,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     }
     
     if ([[self getButtonName:button] isEqualToString:@"Back"]) {
-        //
-        NSLog(@"Reccomened Current view in focus %@", [_focusManager focusedView]);
         [self.navigationController popViewControllerAnimated:YES];
 
     } else if ([[self getButtonName:button] isEqualToString:@"Main"]) {

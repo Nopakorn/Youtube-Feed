@@ -28,7 +28,6 @@
         self.durationList = [[NSMutableArray alloc] initWithCapacity:10];
         self.search = @"search?";
         self.video = @"video?";
-        //self.youtube_api_key = @"AIzaSyBpRHVLAcM9oTm9hvgXfe1f0ydH9Pv5sug";
         self.youtube_api_key = @"AIzaSyAPT3PRTZdTQDdoOtwviiC0FQPpJvfQlWE";
         self.videoIdListForGetDuration = @"";
         nextVideo = 0;
@@ -50,11 +49,8 @@
     self.searchTerm = @"";
     for(int i = 0 ; i < [genreSelected count] ; i++){
         self.searchTerm = [NSString stringWithFormat:@"%@ %@", self.searchTerm, [genreSelected objectAtIndex:i]];
-       // self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     }
     self.searchTerm = [self.searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"|"];
-     NSLog(@"genreSelected: %@",genreSelected);
-    NSLog(@"calling youtube services with searchTerm:%@",self.searchTerm);
     [self getRecommendSearchYoutube:self.searchTerm withNextPage:nextPage];
     
 }
@@ -62,13 +58,10 @@
 
 - (void)getGenreSearchYoutube:(NSString *)searchTerm withNextPage:(BOOL)nextPage
 {
-    NSLog(@"regionCode %@",self.regionCode);
-    //searchTerm = [searchTerm stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-    //NSString *escapedString = [searchTerm stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+
     NSString* urlString;
     if (nextPage) {
         urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=id%%2C+snippet%%2C+contentDetails&hl=%@&pageToken=%@&chart=mostPopular&videoCategoryId=%@&key=%@&maxResults=25&regionCode=%@", self.hl,self.nextPageToken, searchTerm, self.youtube_api_key, self.regionCode];
-//        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@&type=video&key=%@&maxResults=25&regionCode=%@&order=viewCount", self.nextPageToken, escapedString, self.youtube_api_key, self.regionCode];
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         
         NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -100,8 +93,6 @@
 
         
     } else {
-        
-//        urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=%@&maxResults=25&regionCode=%@&order=viewCount", escapedString , self.youtube_api_key, self.regionCode];
         urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=id%%2C+snippet%%2C+contentDetails&hl=%@&chart=mostPopular&videoCategoryId=%@&key=%@&maxResults=25&regionCode=%@", self.hl, searchTerm, self.youtube_api_key, self.regionCode];
 
         NSURL *url = [[NSURL alloc] initWithString:urlString];
@@ -269,7 +260,7 @@
 - (void)getVideoDurations:(NSString *)videoId
 {
         NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=%@&key=%@", videoId, self.youtube_api_key];
-        //NSLog(@"url get duration %@",urlString);
+
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         
@@ -283,10 +274,8 @@
                 self.searchResults = json;
                 checkDurationEachVideo = @"done";
                 nextVideo++;
-                //NSLog(@"%@",self.searchResults);
                 [self fetchVideosDuration];
             }else{
-                NSLog(@"youtube--- duration error %lu",(unsigned long)[self.titleList count]);
                 NSLog(@"%@",error);
             }
             
@@ -321,7 +310,6 @@
         } else if ([checkResult isEqualToString:@"LoadGenreVideoIdNextPage"]) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"LoadGenreVideoIdNextPage" object:self];
         }
-     //NSLog(@"duration: %@ and title %@", self.durationList, self.titleList);
 }
 
 -(void)fetchVideos:(BOOL)nextPage
@@ -336,8 +324,7 @@
             [self.thumbnailList addObject:q[@"snippet"][@"thumbnails"][@"default"][@"url"]];
         }
     }
-    //NSLog(@"video id %@",self.videoIdList);
-   
+
     if (nextPage) {
         indexNexPage = (int)[self.durationList count];
         self.videoIdListForGetDuration = @"";
@@ -346,7 +333,6 @@
         }
         
     } else {
-        NSLog(@"First Page  nextPage-youtube api");
         //indexNexPage = 0;
         for (int i = 0; i < [self.videoIdList count]; i++) {
             self.videoIdListForGetDuration = [NSString stringWithFormat:@"%@,%@", self.videoIdListForGetDuration, [self.videoIdList objectAtIndex:i]];
