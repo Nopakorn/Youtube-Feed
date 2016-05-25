@@ -251,7 +251,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     _inputDevices = [NSMutableArray array];
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
-    _hidManager = [_umaApp requestHIDManager];
+    //_hidManager = [_umaApp requestHIDManager];
     
     [_umaApp addViewController:self];
     
@@ -260,8 +260,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager setFocusRootView:_containerView];
     [_focusManager moveFocus:4];
     [_focusManager setHidden:YES];
-    [self prepareBlocks];
-    [_hidManager setDisconnectionCallback:_disconnectionBlock];
+    
+    //[self prepareBlocks];
+    //[_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
 
 - (void)prepareBlocks
@@ -605,11 +606,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [_focusManager moveFocus:4];    // Give focus to the first icon.
     //[_focusManager setDelegate:self];
     [_focusManager setHidden:YES];
-    [_hidManager setConnectionCallback:_connectionBlock];
-    [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
-                                    WithDiscoveryInterval:kHidDeviceControlTimeout
-                                    WithConnectionTimeout:kHidDeviceControlTimeout];
-    [_hidManager startDiscoverWithDeviceName:nil];
+    
+//    [_hidManager setConnectionCallback:_connectionBlock];
+//    [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
+//                                    WithDiscoveryInterval:kHidDeviceControlTimeout
+//                                    WithConnectionTimeout:kHidDeviceControlTimeout];
+//    [_hidManager startDiscoverWithDeviceName:nil];
 
 }
 

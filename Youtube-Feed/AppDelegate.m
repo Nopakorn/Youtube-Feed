@@ -31,8 +31,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [application setStatusBarHidden:YES];
-
-
+    
     UMAApplication *umaApp = [UMAApplication sharedApplication];
     [umaApp setDelegate:self];
     [umaApp setStatusBarStyle:kUMAStatusBarStyleBlack]; // Show status bar widget on secondary screen.
@@ -47,13 +46,6 @@
         NSLog (@"Second display is not connected");
     }
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"genreSelectedFact"]) {
-        //NSString *saveGenre = [[NSUserDefaults standardUserDefaults] stringForKey:@"genreSelectedString"];
-        //NSLog(@"YES genre is selected %@",saveGenre);
-    } else {
-         //NSLog(@"NO genre isnt selected");
-    }
-    
     return YES;
 }
 
