@@ -312,9 +312,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         
         [self renamePlaylistTitle];
         
-    } else {
-        NSLog(@"gestureRecognizer state = %ld", gestureRecognizer.state);
-    }
+    } 
 }
 
 - (void)deleteRowAtIndex:(NSInteger )index

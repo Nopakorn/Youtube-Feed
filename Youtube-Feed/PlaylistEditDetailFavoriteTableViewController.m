@@ -192,7 +192,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
        
     } else {
 
-        NSLog(@"check object picked %@",self.favorite.videoTitle);
         NSString *description = [NSString stringWithFormat:@"Adding Video to %@",self.playlist.title];
         alert = [UIAlertController alertControllerWithTitle:@"Adding Video"
                                                     message:description
@@ -202,7 +201,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction *action){
                                                        
-                                                       //[self saveVideotoPlaylist:self.favorite];
+                                                       
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
         

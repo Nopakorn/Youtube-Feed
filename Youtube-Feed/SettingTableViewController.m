@@ -118,21 +118,21 @@ typedef NS_ENUM(NSInteger, AlertType) {
     switch (internetStatus) {
         case NotReachable:
         {
-            NSLog(@"The internet is down");
+    
             internetActive = NO;
             break;
             
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WiFi");
+
             internetActive = YES;
             break;
             
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via 3g");
+
             internetActive = YES;
             break;
             
@@ -148,21 +148,21 @@ typedef NS_ENUM(NSInteger, AlertType) {
     {
         case NotReachable:
         {
-            NSLog(@"A gateway to the host server is down.");
+
             hostActive = NO;
             
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"A gateway to the host server is working via WIFI.");
+
             hostActive = YES;
             
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"A gateway to the host server is working via WWAN.");
+
             hostActive = YES;
             
             break;

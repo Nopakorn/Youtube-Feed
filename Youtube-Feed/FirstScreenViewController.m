@@ -38,21 +38,7 @@
     [[UIApplication sharedApplication] setStatusBarHidden:YES];
     self.loadingLabel.hidden = YES;
     self.spinner.hidden = YES;
-    //[self.spinner startAnimating];
-    //tutorial has been showed
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-//    internetReachable = [Reachability reachabilityForInternetConnection];
-//    [internetReachable startNotifier];
-    //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"tutorialPass"];
-    //[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"genreSelectedFact"];
-//    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-//
-//    hostReachable = [Reachability reachabilityWithHostName:@"www.youtube.com"];
-//    [hostReachable startNotifier];
-//    [self.imageScreenPT setImage:[UIImage imageNamed:NSLocalizedString(@"imageNamePT", nil)]];
-//    [self.imageScreenLS setImage:[UIImage imageNamed:NSLocalizedString(@"imageNameLS", nil)]];
-    NSLog(@"viewDidLoad --- FirstScreenViewController");
+
 }
 
 - (void)checkNetworkStatus:(NSNotification *)notification
@@ -61,7 +47,7 @@
     switch (internetStatus) {
         case NotReachable:
         {
-            NSLog(@"The internet is down");
+            
             internetActive = NO;
             alertFact = YES;
             break;
@@ -69,7 +55,6 @@
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WiFi");
             internetActive = YES;
             alertFact = YES;
             break;
@@ -77,7 +62,7 @@
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via 3g");
+            
             internetActive = YES;
             alertFact = YES;
             break;
@@ -94,21 +79,21 @@
     {
         case NotReachable:
         {
-            NSLog(@"A gateway to the host server is down.");
+            
             hostActive = NO;
             
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"A gateway to the host server is working via WIFI.");
+            
             hostActive = YES;
             
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"A gateway to the host server is working via WWAN.");
+
             hostActive = YES;
             
             break;
@@ -125,7 +110,7 @@
 
 - (void)showingNetworkStatus
 {
-   NSLog(@"ShowingNetworkStatus --- FirstScreenViewController");
+  
     alertFact = NO;
     if (internetActive) {
         if (loadApiFact) {
@@ -178,15 +163,12 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear --- FirstScreenViewController");
-
      [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSLog(@"viewDidAppear --- FirstScreenViewController");
     self.youtube = [[Youtube alloc] init];
     self.genre = [[Genre alloc] init];
     self.loadingLabel.hidden = NO;
@@ -297,7 +279,7 @@
         }
         
         genreSelectedString = [genreSelectedString stringByReplacingOccurrencesOfString:@" " withString:@"|"];
-        NSLog(@"with genre string %@", genreSelectedString);
+      
         [self callSearchSecondTime:genreSelectedString];
          [[NSNotificationCenter defaultCenter] removeObserver:self name:@"LoadGenreTitle" object:nil];
     });
@@ -342,7 +324,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     viewFact = YES;
-    NSLog(@"prepareForSegue --- FirstScreenViewController");
+
     if([segue.identifier isEqualToString:@"SubmitToTabbarController"]){
         NSNumber *indexShow = @0;
         MainTabBarViewController *dest = segue.destinationViewController;

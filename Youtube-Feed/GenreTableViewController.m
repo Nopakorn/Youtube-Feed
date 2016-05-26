@@ -87,11 +87,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     directionFocus = 0;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self createGerne];
-     NSLog(@"View did load");
+
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Genre", nil)];
-    //self.genreIconTitle.hidden = YES;
-//    UIImage *imageGenre = [UIImage imageNamed:@"genre1"];
-//    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:imageGenre];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedYoutubePlayingNotification:)
                                                  name:@"YoutubePlaying" object:nil];
@@ -121,14 +119,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
     }
   
-    
-    NSLog(@"Recevied in genre %@ index %li",self.genreType, (long)self.selectedIndex);
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     self.genreYoutube = [[Youtube alloc] init];
-    NSLog(@"View did appear");
+
     portraitFact = YES;
     landscapeFact = YES;
     viewFact = YES;
@@ -167,21 +163,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     switch (internetStatus) {
         case NotReachable:
         {
-            NSLog(@"The internet is down");
+
             internetActive = NO;
             break;
             
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WiFi");
+
             internetActive = YES;
             break;
             
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via 3g");
             internetActive = YES;
             break;
             
@@ -197,21 +192,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     {
         case NotReachable:
         {
-            NSLog(@"A gateway to the host server is down.");
+
             hostActive = NO;
             
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"A gateway to the host server is working via WIFI.");
+
             hostActive = YES;
             
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"A gateway to the host server is working via WWAN.");
+            
             hostActive = YES;
             
             break;
@@ -245,7 +240,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear GenreController");
+
     [_focusManager setHidden:YES];
     viewFact = NO;
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
@@ -357,8 +352,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.genreList = tabbar.genreTitles;
     self.genreIdList = tabbar.genreIds;
-    
-    NSLog(@"count in create %lu",(unsigned long)[self.genreList count]);
+
 }
 
 
@@ -414,7 +408,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView
 willDecelerate:(BOOL)decelerate
 {
-    NSLog(@"scroll view dragging");
+
     scrollKKPTriggered = NO;
     [_focusManager setHidden:YES];
     
@@ -559,7 +553,7 @@ willDecelerate:(BOOL)decelerate
                 [_focusManager moveFocus:1];
             }
         }else if (distanceX == -1 && distanceY == 0) {
-            NSLog(@"LEFT");
+
             if ([_focusManager focusIndex] == 0) {
                 indexFocusTabbar = 3;
             }else if ([_focusManager focusIndex] == 1) {
@@ -572,11 +566,9 @@ willDecelerate:(BOOL)decelerate
                 [_focusManager moveFocus:3];
             }
         }else if (distanceX == 0 && distanceY == 1) {
-            NSLog(@"BOTTOM");
             
         }else if (distanceX == 0 && distanceY == -1) {
-            NSLog(@"TOP");
-            
+
         }
         return NO;
         
@@ -680,7 +672,6 @@ willDecelerate:(BOOL)decelerate
 #pragma mark - UMAAppDiscoveryDelegate
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
-    NSLog(@"didDiscoverySucceed");
     if(appInfo) {
         int i = 0;
         for (UMAApplicationInfo *app in appInfo) {

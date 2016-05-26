@@ -136,8 +136,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                         [self.tableView reloadData];
 
                     }
-                } else {
-                    NSLog(@"not equals - ");
                 }
             } else {
                 self.playlistDetailPlaying = NO;
@@ -625,7 +623,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press Down in Playlist");
+   
     return YES;
 }
 
@@ -680,7 +678,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+
     return YES;
 }
 
@@ -695,7 +693,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma mark - UMAAppDiscoveryDelegate
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
-    NSLog(@"didDiscoverySucceed");
+
     if(appInfo) {
         int i = 0;
         for (UMAApplicationInfo *app in appInfo) {

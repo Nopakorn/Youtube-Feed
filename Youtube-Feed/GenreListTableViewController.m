@@ -249,21 +249,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     switch (internetStatus) {
         case NotReachable:
         {
-            NSLog(@"The internet is down");
+
             internetActive = NO;
             break;
             
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WiFi");
+
             internetActive = YES;
             break;
             
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via 3g");
+
             internetActive = YES;
             break;
             
@@ -279,21 +279,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     {
         case NotReachable:
         {
-            NSLog(@"A gateway to the host server is down.");
             hostActive = NO;
             
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"A gateway to the host server is working via WIFI.");
             hostActive = YES;
             
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"A gateway to the host server is working via WWAN.");
             hostActive = YES;
             
             break;
@@ -325,7 +322,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    NSLog(@"View changing");
+
     if ([self.genreYoutube.videoIdList count] == 0) {
         [_focusManager setHidden:YES];
     } else {
@@ -399,11 +396,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             }
             
         } else {
-            //        NSArray *indexPaths = [self.tableView indexPathsForVisibleRows];
-            //        NSArray *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
-            //        NSInteger row = [(NSIndexPath *)[sortedIndexPaths objectAtIndex:0] row];
-            //        NSLog(@"row = %ld",(long)row);
-            
+
         }
 
     }
@@ -472,7 +465,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 }
             });
         } else {
-            NSLog(@"thumnails was nil at row %ld",(long)indexPath.row);
+           
         }
 
     }
@@ -523,16 +516,19 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     
     scrollKKPTriggered = NO;   
     [_focusManager setHidden:YES];
+    if (![self.genreYoutube.videoIdList count] == 0) {
     
-    float reload_distance = 50;
-    if(y > h + reload_distance) {
-        if (nextPage) {
-            reloadFact = YES;
-            [self launchReload];
-        } else {
-            NSLog(@"Its still loading api");
+        float reload_distance = 50;
+        if(y > h + reload_distance) {
+            if (nextPage) {
+                reloadFact = YES;
+                [self launchReload];
+            } else {
+                NSLog(@"Its still loading api");
+            }
         }
     }
+
 }
 
 - (void)launchReload
@@ -634,9 +630,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (nextPage == 0) {
         return YES;
     } else {
-        //NSLog(@"normal rotate");
+
         if (backFactGenreList == 0) {
-             //NSLog(@"tabbar rotate");
+
             if (direction == 1) {
                 if ([_focusManager focusIndex] == 0) {
                     indexFocusTabbar = 3;
@@ -769,12 +765,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 
                 if ([_focusManager focusIndex] == 2) {
                     [_focusManager moveFocus:2];
-                    NSLog(@"after: %ld",(long)[_focusManager focusIndex]);
+                    
                 } else if ([_focusManager focusIndex] == 3) {
                     [_focusManager moveFocus:1];
                 }
             }else if (distanceX == -1 && distanceY == 0) {
-                NSLog(@"LEFT");
+
                 if ([_focusManager focusIndex] == 0) {
                     indexFocusTabbar = 3;
                 }else if ([_focusManager focusIndex] == 1) {
@@ -787,10 +783,10 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     [_focusManager moveFocus:3];
                 }
             }else if (distanceX == 0 && distanceY == 1) {
-                NSLog(@"BOTTOM");
+
                 
             }else if (distanceX == 0 && distanceY == -1) {
-                NSLog(@"TOP");
+
                 
             }
             return NO;
@@ -874,13 +870,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
+   
     return YES;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+
     return YES;
 }
 

@@ -122,14 +122,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 didReceivedFromYoutubePlaying = YES;
                 self.selectedRow = selectedIndex;
                 [self.tableView reloadData];
-//                if (reloadFact) {
-//                    [self.tableView reloadData];
-//                } else {
-//                    NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-//                    NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//                    NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-//                    [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-//                }
+
             
             }
             
@@ -137,30 +130,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             
             didReceivedFromYoutubePlaying = NO;
             [self.tableView reloadData];
-//            if (reloadFact) {
-//                [self.tableView reloadData];
-//            } else {
-//                NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//                NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//                [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-//            }
-
         }
         
     } else {
         
         didReceivedFromYoutubePlaying = NO;
         [self.tableView reloadData];
-//        if (reloadFact) {
-//            [self.tableView reloadData];
-//        } else {
-//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-//        }
-//
     }
-    NSLog(@"recevied search %i",self.searchPlaying);
+
 
 }
 
@@ -225,21 +202,20 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     switch (internetStatus) {
         case NotReachable:
         {
-            NSLog(@"The internet is down");
             internetActive = NO;
             break;
             
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WiFi");
+
             internetActive = YES;
             break;
             
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via 3g");
+
             internetActive = YES;
             break;
             
@@ -255,21 +231,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     {
         case NotReachable:
         {
-            NSLog(@"A gateway to the host server is down.");
+
             hostActive = NO;
             
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"A gateway to the host server is working via WIFI.");
+
             hostActive = YES;
             
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"A gateway to the host server is working via WWAN.");
+
             hostActive = YES;
             
             break;
@@ -380,7 +356,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
     }
     if ([self.searchYoutube.durationList count] != [self.searchYoutube.videoIdList count]) {
-        NSLog(@"No data");
+
 
     } else {
         cell.name.text = [self.searchYoutube.titleList objectAtIndex:indexPath.row];
@@ -457,16 +433,18 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     UIEdgeInsets inset = aScrollView.contentInset;
     float y = offset.y + bounds.size.height - inset.bottom;
     float h = size.height;
-    
-    float reload_distance = 50;
-    if(y > h + reload_distance) {
-        if (nextPage) {
-            reloadFact = YES;
-            [self launchReload];
-        } else {
-            NSLog(@"Its still loading api");
+    if (![self.searchYoutube.videoIdList count] == 0) {
+        float reload_distance = 50;
+        if(y > h + reload_distance) {
+            if (nextPage) {
+                reloadFact = YES;
+                [self launchReload];
+            } else {
+                NSLog(@"Its still loading api");
+            }
         }
     }
+    
 }
 
 - (void)launchReload
@@ -649,27 +627,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press Down in Recommended %@",[self getButtonName:button]);
+ 
     return YES;
 }
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
-//    if ([[self getButtonName:button]isEqualToString:@"Main"]) {
-//        return NO;
-//    }
+
     return YES;
 }
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
+
     return YES;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+
     return YES;
 }
 

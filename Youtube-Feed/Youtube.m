@@ -125,7 +125,6 @@
 {
     
     NSString *escapedString = [searchTerm stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    NSLog(@"in getRecommendSearchYoutube %@",escapedString);
     if (nextPage) {
     
         NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&pageToken=%@&q=%@&type=video&key=%@&maxResults=25&regionCode=%@&order=viewCount", self.nextPageToken, escapedString, self.youtube_api_key, self.regionCode];
@@ -146,7 +145,6 @@
                 [self fetchVideos:nextPage];
                 
             }else{
-                NSLog(@"youtube--- getRecom error t:%lu d:%lu",(unsigned long)[self.titleList count],(unsigned long)[self.durationList count]);
                 if (self.titleList > self.durationList) {
                     for (NSInteger i = [self.durationList count]; i < [self.titleList count]; i++) {
                         [self.titleList removeObjectAtIndex:i];
@@ -179,7 +177,6 @@
                 checkResult = @"LoadVideoId";
                 [self fetchVideos:nextPage];
             }else{
-                NSLog(@"youtube--- not nextPage getRecom errort:%lu d:%lu",(unsigned long)[self.titleList count],(unsigned long)[self.durationList count]);
                 NSLog(@"%@",error);
             }
         
@@ -202,7 +199,6 @@
        NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         [req setHTTPMethod:@"GET"];
         
-        NSLog(@"URLRequest %@",req);
         NSURLSession* session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         [[session dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error){
             if(!error)
@@ -230,8 +226,7 @@
     } else {
         
         NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=id%%2C+snippet&q=%@&type=video&key=%@&maxResults=25&regionCode=%@&order=viewCount", escapedString, self.youtube_api_key, self.regionCode];
-       
-        NSLog(@"URL %@",urlString);
+
         NSURL *url = [[NSURL alloc] initWithString:urlString];
         NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         
@@ -290,7 +285,7 @@
     }
     
     if ([self.durationList count] == [self.titleList count]) {
-        NSLog(@"duration get is done");
+       
     }
     
         if ([checkResult isEqualToString:@"LoadVideoId"]) {

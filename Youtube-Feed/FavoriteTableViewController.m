@@ -415,9 +415,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     if (indexPath == nil) {
-        NSLog(@"long press table view but not in row");
+       //
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"long press began at row %ld", (long)indexPath.row);
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from favorites", nil)];
 
         alert = [UIAlertController alertControllerWithTitle:@""
@@ -442,8 +441,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         [alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
 
-    } else {
-        NSLog(@"gestureRecognizer state = %ld", (long)gestureRecognizer.state);
     }
 
 }
@@ -810,7 +807,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press Down in Playlist");
+ 
     return YES;
 }
 
@@ -899,7 +896,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
     return YES;
 }
 

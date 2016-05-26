@@ -152,7 +152,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     } else {
         
         if (indexPath.row == [self.playlist_List count]) {
-            NSLog(@"playlist count %lu",(unsigned long)[self.playlist_List count]);
             cell.name.text = @" . . . . ";
             
         } else {
@@ -268,7 +267,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     if (indexPath.row == [self.playlist_List count]) {
-        NSLog(@"long press table view but not in row");
+      
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this playlist", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
@@ -293,8 +292,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
         [alert addAction:cancel];
         [self presentViewController:alert animated:YES completion:nil];
         
-    } else {
-        NSLog(@"gestureRecognizer state = %ld", (long)gestureRecognizer.state);
     }
     
 }

@@ -62,7 +62,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"view did Load Tabbar");
     self.customizableViewControllers = nil;
     self.tabBarController.tabBar.barTintColor = [UIColor blackColor];
     UITableView *view = (UITableView *)self.moreNavigationController.topViewController.view;
@@ -215,25 +214,25 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press down in tabbarcontroller %@",[self getButtonName:button]);
+    
     return NO;
 }
 
 - (BOOL)umaDidPressUpButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press up %@", [self getButtonName:button]);
+   
     return NO;
 }
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
+    
     return NO;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+    
     return NO;
 }
 
@@ -248,7 +247,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma mark - UMAAppDiscoveryDelegate
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
-    NSLog(@"didDiscoverySucceed");
+
     if(appInfo) {
         int i = 0;
         for (UMAApplicationInfo *app in appInfo) {

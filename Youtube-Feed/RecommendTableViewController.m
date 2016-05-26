@@ -104,7 +104,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(receivedSettingNotification:)
                                                  name:@"SettingDidSelected" object:nil];
-    NSLog(@"view did load recommend");
     self.navigationItem.title = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
     
     self.recommendedTitle.text = [NSString stringWithFormat:NSLocalizedString(@"Recommended", nil)];
@@ -141,21 +140,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     switch (internetStatus) {
         case NotReachable:
         {
-            NSLog(@"The internet is down");
+
             internetActive = NO;
             break;
             
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"The internet is working via WiFi");
+
             internetActive = YES;
             break;
             
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"The internet is working via 3g");
+
             internetActive = YES;
             break;
             
@@ -171,21 +170,21 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     {
         case NotReachable:
         {
-            NSLog(@"A gateway to the host server is down.");
+
             hostActive = NO;
             
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"A gateway to the host server is working via WIFI.");
+
             hostActive = YES;
             
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"A gateway to the host server is working via WWAN.");
+
             hostActive = YES;
             
             break;
@@ -225,21 +224,12 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         {
             didReceivedFromYoutubePlaying = YES;
             self.selectedRow = selectedIndex;
-//            NSIndexPath *indexPathReload = [NSIndexPath indexPathForRow:selectedIndex inSection:0];
-//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathReload, indexPathLastMark, nil];
-//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-
-
             [self.tableView reloadData];
             
         } else {
             
             didReceivedFromYoutubePlaying = NO;
             [self.tableView reloadData];
-//            NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//            NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//            [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
 
         }
         
@@ -247,13 +237,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         
         didReceivedFromYoutubePlaying = NO;
         [self.tableView reloadData];
-//        NSIndexPath *indexPathLastMark = [NSIndexPath indexPathForRow:markHighlightIndex inSection:0];
-//        NSArray *indexArray = [NSArray arrayWithObjects:indexPathLastMark, nil];
-//        [self.tableView reloadRowsAtIndexPaths:indexArray withRowAnimation:UITableViewRowAnimationNone];
-
     }
-    
-    NSLog(@"recevied recommend %i",self.recommendPlaying);
+
 
 }
 
@@ -380,7 +365,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                                 [_focusManager moveFocus:[_focusManager focusIndex]];
                             }
                         } else {
-                            NSLog(@"this case ? portrait %ld",(long)indexFocus);
+  
                             [_focusManager moveFocus:indexFocus];
                         }
                         
@@ -422,7 +407,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                             }
                             
                         } else {
-                            NSLog(@"this case ? landscape %ld",(long)indexFocus);
+                            
                             [_focusManager moveFocus:indexFocus];
                         }
                         
@@ -460,7 +445,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)receivedSettingNotification:(NSNotification *)notification
 {
-    NSLog(@"reseive setting ");
+
     [self.tableView reloadData];
 }
 
@@ -634,7 +619,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     float reload_distance = 50;
     if(y > h + reload_distance) {
         if (nextPage) {
-            NSLog(@"calling loading api scroll view");
             reloadFact = YES;
             [self launchReload];
         } else {
@@ -855,7 +839,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 if (indexFocus == [self.recommendYoutube.videoIdList count]) {
                     //reload data nextPage
                     if (nextPage) {
-                        NSLog(@"index focus before reload 0 %ld",(long)indexFocus);
                         [self launchReload];
                     } else {
                         NSLog(@"Its still loading api");
@@ -867,7 +850,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 directionFocus = 1;
                 if (indexFocus == 0) {
                     if (nextPage) {
-                        NSLog(@"index focus before reload 1 %ld",(long)indexFocus);
+                        
                         [self launchReload];
                     } else {
                         NSLog(@"Its still loading api");
@@ -879,8 +862,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         } else {
             
             if (distanceX == 1 && distanceY == 0) {
-                NSLog(@"RIGTH");
-                
                 if ([_focusManager focusIndex] == 0 ) {
                     indexFocusTabbar = 3;
                 } else if ([_focusManager focusIndex] == 2 ) {
@@ -898,7 +879,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     
                 }
             }else if (distanceX == -1 && distanceY == 0) {
-                NSLog(@"LEFT");
+              
                 if ([_focusManager focusIndex] == 0 ) {
                     indexFocusTabbar = 4;
                     
@@ -917,10 +898,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     
                 }
             }else if (distanceX == 0 && distanceY == 1) {
-                NSLog(@"BOTTOM");
-                
+
             }else if (distanceX == 0 && distanceY == -1) {
-                NSLog(@"TOP");
                 
             }
             return NO;
@@ -963,7 +942,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press Down in Recommended %@",[self getButtonName:button]);
     return YES;
 }
 
@@ -1012,13 +990,13 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
+
     return YES;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+
     return YES;
 }
 
@@ -1033,7 +1011,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma mark - UMAAppDiscoveryDelegate
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
-    NSLog(@"didDiscoverySucceed");
+
     if(appInfo) {
         int i = 0;
         for (UMAApplicationInfo *app in appInfo) {

@@ -43,7 +43,6 @@
         [umaApp setDisplayType:kUMADisplayHDMI];
         [umaApp startProjection];
     } else {
-        NSLog (@"Second display is not connected");
     }
 
     return YES;

@@ -42,8 +42,8 @@
 		5C5701F51CC8915200AF729C /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C5701F41CC8915200AF729C /* Genre.m */; };
 		5C57EB881CC4D675001DC64E /* tutorial in Resources */ = {isa = PBXBuildFile; fileRef = 5C57EB871CC4D675001DC64E /* tutorial */; };
 		5C57EB8B1CC5F7C1001DC64E /* TutorialNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */; };
-		5C58A2D01CF5B3CE00DF1C05 /* UIEMultiAccess.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C58A2CF1CF5B3CE00DF1C05 /* UIEMultiAccess.bundle */; };
-		5C58A2D21CF5B3DE00DF1C05 /* UIEMultiAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C58A2D11CF5B3DE00DF1C05 /* UIEMultiAccess.framework */; };
+		5C58A2D81CF6A93E00DF1C05 /* UIEMultiAccess.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C58A2D71CF6A93E00DF1C05 /* UIEMultiAccess.bundle */; };
+		5C58A2DA1CF6A94C00DF1C05 /* UIEMultiAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C58A2D91CF6A94C00DF1C05 /* UIEMultiAccess.framework */; };
 		5C67E4171C96767E00A08005 /* PlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */; };
 		5C67E41A1C9678FE00A08005 /* Favorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E4191C9678FE00A08005 /* Favorite.m */; };
 		5C67E4201C9696F100A08005 /* FavoriteCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C67E41F1C9696F100A08005 /* FavoriteCustomCell.m */; };
@@ -158,8 +158,8 @@
 		5C57EB891CC5F7C1001DC64E /* TutorialNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialNavigationController.h; sourceTree = "<group>"; };
 		5C57EB8A1CC5F7C1001DC64E /* TutorialNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialNavigationController.m; sourceTree = "<group>"; };
 		5C58A2C51CF4301400DF1C05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		5C58A2CF1CF5B3CE00DF1C05 /* UIEMultiAccess.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = UIEMultiAccess.bundle; path = Framework/UIEMultiAccess.bundle; sourceTree = "<group>"; };
-		5C58A2D11CF5B3DE00DF1C05 /* UIEMultiAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIEMultiAccess.framework; path = Framework/UIEMultiAccess.framework; sourceTree = "<group>"; };
+		5C58A2D71CF6A93E00DF1C05 /* UIEMultiAccess.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = UIEMultiAccess.bundle; path = Framework/UIEMultiAccess.bundle; sourceTree = "<group>"; };
+		5C58A2D91CF6A94C00DF1C05 /* UIEMultiAccess.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIEMultiAccess.framework; path = Framework/UIEMultiAccess.framework; sourceTree = "<group>"; };
 		5C67E4151C96767E00A08005 /* PlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistTableViewController.h; sourceTree = "<group>"; };
 		5C67E4161C96767E00A08005 /* PlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistTableViewController.m; sourceTree = "<group>"; };
 		5C67E4181C9678FE00A08005 /* Favorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Favorite.h; sourceTree = "<group>"; };
@@ -216,7 +216,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C58A2D21CF5B3DE00DF1C05 /* UIEMultiAccess.framework in Frameworks */,
+				5C58A2DA1CF6A94C00DF1C05 /* UIEMultiAccess.framework in Frameworks */,
 				5CF56DA81CEAE42400EC90E2 /* SystemConfiguration.framework in Frameworks */,
 				5C7784DF1CAE5A1300836C4E /* MediaPlayer.framework in Frameworks */,
 				5C4BADC71CAAA80F008C465D /* libc++.1.dylib in Frameworks */,
@@ -249,7 +249,7 @@
 		0F86857DA1F1084B09DA4D29 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5C58A2D11CF5B3DE00DF1C05 /* UIEMultiAccess.framework */,
+				5C58A2D91CF6A94C00DF1C05 /* UIEMultiAccess.framework */,
 				5CF56DA71CEAE42400EC90E2 /* SystemConfiguration.framework */,
 				5C7784DE1CAE5A1300836C4E /* MediaPlayer.framework */,
 				5C4BADC61CAAA80F008C465D /* libc++.1.dylib */,
@@ -302,7 +302,7 @@
 		11C170DB1C7186A800E74681 = {
 			isa = PBXGroup;
 			children = (
-				5C58A2CF1CF5B3CE00DF1C05 /* UIEMultiAccess.bundle */,
+				5C58A2D71CF6A93E00DF1C05 /* UIEMultiAccess.bundle */,
 				5CF4FB481CB27BF6007EB1DA /* Assets.bundle */,
 				11C170E61C7186A800E74681 /* Youtube-Feed */,
 				11C171001C7186A800E74681 /* Youtube-FeedTests */,
@@ -587,7 +587,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5CBA2CE81C97CA280049FE4A /* PlaylistEditDetailCustomCell.xib in Resources */,
-				5C58A2D01CF5B3CE00DF1C05 /* UIEMultiAccess.bundle in Resources */,
+				5C58A2D81CF6A93E00DF1C05 /* UIEMultiAccess.bundle in Resources */,
 				5C4BADFC1CAE1DBB008C465D /* Localizable.strings in Resources */,
 				11C170F71C7186A800E74681 /* LaunchScreen.storyboard in Resources */,
 				5CB425E01C9284A5005DCB46 /* PlaylistCustomCell.xib in Resources */,

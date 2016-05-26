@@ -128,15 +128,14 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         self.playlistIndexCheck = @"NO";
 
     }
-    
-    NSLog(@"Recevied in playlist favorite check : %i, playlistDetail check : %@", self.favoritePlaying, self.playlistIndexCheck);
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     viewFact = NO;
-    NSLog(@"viewDidDisappear PlaylistController");
+
     for (UIView *subView in self.navigationController.navigationBar.subviews) {
         if (subView.tag == 99) {
             [subView removeFromSuperview];
@@ -281,7 +280,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 }
  - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"inside view will appear");
 
 }
 
@@ -367,7 +365,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (IBAction)editButtonPressed:(id)sender
 {
-    NSLog(@"Edit buttonPressed");
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -390,8 +388,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         dest.selectedRow = self.selectedRow;
         dest.playlistIndex = customIndexPath.row;
         dest.playlistIndexCheck = self.playlistIndexCheck;
-        
-        NSLog(@"indexCheck %@",self.playlistIndexCheck);
 
     } else if ([segue.identifier isEqualToString:@"EditSegue"]) {
 
@@ -507,8 +503,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (viewFact == NO) {
         return YES;
     }
-    NSLog(@"focus index %ld distance: %lu diraction: %ld",(long)[_focusManager focusIndex], (unsigned long)distance, (long)direction);
-    //NSLog(@"in tabbar %id",backFactPlaylist);
     if (backFactPlaylist == 0) {
         if (direction == 1) {
             if ([_focusManager focusIndex] == 0) {
@@ -531,19 +525,15 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         }
 
         if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 0) {
-            NSLog(@"search");
             [_focusManager moveFocus:1];
             
         } else if ([_focusManager focusIndex] == 0 && distance == 1 && direction == 1) {
-            NSLog(@"search");
             [_focusManager moveFocus:4];
             
         } else if ([_focusManager focusIndex] == 3 && distance == 1 && direction == 1) {
-            NSLog(@"search");
             [_focusManager moveFocus:4];
             
         } else if ([_focusManager focusIndex] == 1 && distance == 1 && direction == 0) {
-            NSLog(@"search");
             [_focusManager moveFocus:1];
             
         }
@@ -586,7 +576,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     } else {
         
         if (distanceX == 1 && distanceY == 0) {
-            NSLog(@"RIGTH");
+
             if ([_focusManager focusIndex] == 0) {
                 indexFocusTabbar = 2;
             }else if ([_focusManager focusIndex] == 1) {
@@ -599,8 +589,8 @@ NSString *const kIsManualConnection = @"is_manual_connection";
             } else if ([_focusManager focusIndex] == 3) {
                 [_focusManager moveFocus:1];
             }
-        }else if (distanceX == -1 && distanceY == 0) {
-            NSLog(@"LEFT");
+        } else if (distanceX == -1 && distanceY == 0) {
+
             if ([_focusManager focusIndex] == 0) {
                 indexFocusTabbar = 4;
             }else if ([_focusManager focusIndex] == 3) {
@@ -614,11 +604,9 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                 [_focusManager moveFocus:4];
             }
         }else if (distanceX == 0 && distanceY == 1) {
-            NSLog(@"BOTTOM");
             
         }else if (distanceX == 0 && distanceY == -1) {
-            NSLog(@"TOP");
-            
+
         }
         return NO;
     
@@ -655,7 +643,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidPressDownButton:(UMAInputButtonType)button
 {
-    NSLog(@"Press Down in Playlist");
+
     return YES;
 }
 
@@ -715,7 +703,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+   
     return YES;
 }
 
