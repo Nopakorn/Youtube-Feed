@@ -67,7 +67,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"object select at %@", [self.playlist objectAtIndex:indexPath.row] );
+   
 }
 
 

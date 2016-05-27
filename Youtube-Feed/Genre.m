@@ -54,11 +54,7 @@
             checkResult = @"LoadGenreTitle";
             [self fetchGenreData];
             
-        }else{
-            
-            NSLog(@"%@",error);
-        }
-        
+        }        
     }] resume];
     
 

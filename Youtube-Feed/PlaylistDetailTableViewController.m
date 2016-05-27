@@ -34,12 +34,10 @@ static NSString *const kSettingsManualConnectionSubTitle =
 static NSString *const kDeviceNone = @"No Name";
 static NSString *const kAddressNone = @"No Address";
 
-static const NSInteger kNumberOfSectionsInTableView = 4;
 static NSString *const kRowNum = @"rowNum";
 static NSString *const kHeaderText = @"headerText";
 static NSString *const kTitleText = @"HID Device Sample";
-static const NSInteger kHeightForHeaderInSection = 33;
-static const NSTimeInterval kHidDeviceControlTimeout = 5;
+
 NSString *const kIsManualConnection = @"is_manual_connection";
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 @interface PlaylistDetailTableViewController ()<UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>

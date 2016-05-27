@@ -40,7 +40,6 @@
 
 - (IBAction)submitTutorialButtonPressed:(id)sender
 {
-    NSLog(@"Done tutorial");
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"tutorialPass"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [self dismissViewControllerAnimated:YES completion:Nil];

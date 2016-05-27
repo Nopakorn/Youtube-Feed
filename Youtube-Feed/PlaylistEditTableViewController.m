@@ -226,13 +226,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
                                                     message:@"You need to Type Your Playlist Name"
                                              preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK"
-                                                     style:UIAlertActionStyleDefault
-                                                   handler:^(UIAlertAction *action){
-                                                                                               
-                                                       [alert dismissViewControllerAnimated:YES completion:nil];
-                                                   }];
-
         [self presentViewController:alert animated:YES completion:nil];
     } else {
         [self insertNewPlaylist:title];
@@ -252,8 +245,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     // Save the context.
     NSError *error = nil;
     if (![context save:&error]) {
-        
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     
@@ -303,7 +294,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     NSError *error = nil;
     if (![context save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+
         abort();
     }
 
@@ -373,7 +364,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     if (![self.fetchedResultsController performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     

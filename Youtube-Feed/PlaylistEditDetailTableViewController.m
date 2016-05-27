@@ -181,7 +181,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
         playlistObject.youtubeVideos = newYoutubeVideoList;
         NSError *error = nil;
         if (![context save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
     }
@@ -280,11 +279,11 @@ typedef NS_ENUM(NSInteger, AlertType) {
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     if (indexPath == nil) {
-        NSLog(@"long press table view but not in row");
+       
         
     } else if (gestureRecognizer.state == UIGestureRecognizerStateBegan && indexPath.row != 0) {
         
-        NSLog(@"began at %ld",indexPath.row);
+      
         NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Delete this item from playlists", nil)];
         alert = [UIAlertController alertControllerWithTitle:@""
                                                     message:description
@@ -382,7 +381,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
         playlistObject.title = text;
         NSError *error = nil;
         if (![context save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
             
         } else {
@@ -454,7 +452,7 @@ typedef NS_ENUM(NSInteger, AlertType) {
         playlistObject.youtubeVideos = newYoutubeVideoList;
         NSError *error = nil;
         if (![context save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+       
             abort();
         }
     }
@@ -542,7 +540,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     if (![self.fetchedResultsController performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     

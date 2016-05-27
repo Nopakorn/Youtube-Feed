@@ -35,12 +35,10 @@ static NSString *const kSettingsManualConnectionSubTitle =
 static NSString *const kDeviceNone = @"No Name";
 static NSString *const kAddressNone = @"No Address";
 
-static const NSInteger kNumberOfSectionsInTableView = 4;
 static NSString *const kRowNum = @"rowNum";
 static NSString *const kHeaderText = @"headerText";
 static NSString *const kTitleText = @"HID Device Sample";
-static const NSInteger kHeightForHeaderInSection = 33;
-static const NSTimeInterval kHidDeviceControlTimeout = 5;
+
 NSString *const kIsManualConnection = @"is_manual_connection";
 
 @interface GenreTableViewController ()<UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
@@ -255,7 +253,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)orientationChanged:(NSNotification *)notification
 {
-    NSLog(@"View changing");
+
     if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
         if (scrollKKPTriggered) {
             if (portraitFact) {
@@ -651,19 +649,19 @@ willDecelerate:(BOOL)decelerate
 
 - (BOOL)umaDidLongPressButton:(UMAInputButtonType)button
 {
-    NSLog(@"Long press %@", [self getButtonName:button]);
+   
     return YES;
 }
 
 - (BOOL)umaDidDoubleClickButton:(UMAInputButtonType)button
 {
-    NSLog(@"Double click %@", [self getButtonName:button]);
+
     return YES;
 }
 
 - (void)umaDidAccelerometerUpdate:(UMAAcceleration)acceleration
 {
-    NSLog(@"Accer x=%f, y=%f, z=%f", acceleration.x, acceleration.y, acceleration.z);
+
 }
 
 
@@ -672,26 +670,7 @@ willDecelerate:(BOOL)decelerate
 #pragma mark - UMAAppDiscoveryDelegate
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
-    if(appInfo) {
-        int i = 0;
-        for (UMAApplicationInfo *app in appInfo) {
-            NSLog(@"-------------[app(%d)]----------------",i);
-            NSLog(@"id    :%@",[app stringProperty:PROP_APP_ID withDefault:@"-"]);
-            NSLog(@"name  :%@",[app stringProperty:PROP_APP_NAME withDefault:@"-"]);
-            NSLog(@"cname :%@",[app stringProperty:PROP_APP_VENDOR withDefault:@"-"]);
-            NSLog(@"text  :%@",[app stringProperty:PROP_APP_DESCRIPTION withDefault:@"-"]);
-            NSLog(@"cat   :%@",[app stringProperty:PROP_APP_CATEGORY withDefault:@"-"]);
-            NSLog(@"url   :%@",[app stringProperty:PROP_APP_URL withDefault:@"-"]);
-            NSLog(@"schema:%@",[app stringProperty:PROP_APP_SCHEMA withDefault:@"-"]);
-            NSLog(@"icon  :%@",[app stringProperty:PROP_APP_ICON_URL withDefault:@"-"]);
-            NSLog(@"new   :%d",[app integerProperty:PROP_APP_NEW withDefault:-1]);
-            NSLog(@"recmt :%d",[app integerProperty:PROP_APP_RECMD withDefault:-1]);
-            NSLog(@"date  :%@",[app stringProperty:PROP_APP_DATE withDefault:@"-"]);
-            NSLog(@"dev2  :%d",[app integerProperty:PROP_APP_DEV2 withDefault:-1]);
-            NSLog(@"drive :%d",[app integerProperty:PROP_APP_DRIVE withDefault:-1]);
-            i++;
-        }
-    }
+
 }
 #pragma mark - UMAApplicationDelegate
 
@@ -702,16 +681,16 @@ willDecelerate:(BOOL)decelerate
 
 - (void)didDiscoveryFail:(int)reason withMessage:(NSString *)message;
 {
-    NSLog(@"app discovery failed. (%@)", message);
+  
 }
 - (void)uma:(UMAApplication *)application didConnectInputDevice:(UMAInputDevice *)device
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    
 }
 
 - (void)uma:(UMAApplication *)application didDisconnectInputDevice:(UMAInputDevice *)device
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+
 }
 
 @end

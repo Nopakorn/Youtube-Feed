@@ -34,12 +34,10 @@ static NSString *const kSettingsManualConnectionSubTitle =
 static NSString *const kDeviceNone = @"No Name";
 static NSString *const kAddressNone = @"No Address";
 
-static const NSInteger kNumberOfSectionsInTableView = 4;
 static NSString *const kRowNum = @"rowNum";
 static NSString *const kHeaderText = @"headerText";
 static NSString *const kTitleText = @"HID Device Sample";
-static const NSInteger kHeightForHeaderInSection = 33;
-static const NSTimeInterval kHidDeviceControlTimeout = 5;
+
 NSString *const kIsManualConnection = @"is_manual_connection";
 
 @interface ViewController () <UMAAppDiscoveryDelegate, UMAApplicationDelegate>
@@ -167,11 +165,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     MainTabBarViewController *tabbar = (MainTabBarViewController *)self.tabBarController;
     self.youtube = tabbar.youtube;
     self.genreSelected = tabbar.genreSelected;
-    
-    if([tabbar.youtube.videoIdList count] == 0){
-        NSLog(@"object is nil");
-    }
-    
 
     self.playerView.delegate = self;
     self.playerVers =  @{ @"playsinline" : @1,
@@ -922,7 +915,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)playerView:(YTPlayerView *)playerView receivedError:(YTPlayerError)error
 {
-    NSLog(@"error occurs %ld",(long)error);
+   
 }
 
 - (void)playerView:(YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
@@ -1309,7 +1302,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)favoritePressed:(id)sender
 {
-    //NSLog(@"favorite check youtube %@", self.youtube.titleList);
+
     if ([self.youtube.videoIdList count] == 0) {
 
     } else {
@@ -1351,7 +1344,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     for (NSManagedObject *manageObject in result) {
         [context deleteObject:manageObject];
         if (![context save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
     }
@@ -1399,7 +1391,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     // Save the context.
     NSError *error = nil;
     if (![context save:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"deleteFavoriteFact"];
@@ -1790,7 +1781,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     if (![self.fetchedResultsController performFetch:&error]) {
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
 
@@ -1811,7 +1801,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
         return YES;
     } else {
         if (backFact) {
-            //limitation of volume level
+
             if (level < 0) {
                 level = 0.0;
             } else if (level > 1) {
@@ -2083,7 +2073,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)umaDidAccelerometerUpdate:(UMAAcceleration)acceleration
 {
-    NSLog(@"Accer x=%f, y=%f, z=%f", acceleration.x, acceleration.y, acceleration.z);
+
 }
 
 
@@ -2093,26 +2083,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
     
-    if(appInfo) {
-        int i = 0;
-        for (UMAApplicationInfo *app in appInfo) {
-            NSLog(@"-------------[app(%d)]----------------",i);
-            NSLog(@"id    :%@",[app stringProperty:PROP_APP_ID withDefault:@"-"]);
-            NSLog(@"name  :%@",[app stringProperty:PROP_APP_NAME withDefault:@"-"]);
-            NSLog(@"cname :%@",[app stringProperty:PROP_APP_VENDOR withDefault:@"-"]);
-            NSLog(@"text  :%@",[app stringProperty:PROP_APP_DESCRIPTION withDefault:@"-"]);
-            NSLog(@"cat   :%@",[app stringProperty:PROP_APP_CATEGORY withDefault:@"-"]);
-            NSLog(@"url   :%@",[app stringProperty:PROP_APP_URL withDefault:@"-"]);
-            NSLog(@"schema:%@",[app stringProperty:PROP_APP_SCHEMA withDefault:@"-"]);
-            NSLog(@"icon  :%@",[app stringProperty:PROP_APP_ICON_URL withDefault:@"-"]);
-            NSLog(@"new   :%d",[app integerProperty:PROP_APP_NEW withDefault:-1]);
-            NSLog(@"recmt :%d",[app integerProperty:PROP_APP_RECMD withDefault:-1]);
-            NSLog(@"date  :%@",[app stringProperty:PROP_APP_DATE withDefault:@"-"]);
-            NSLog(@"dev2  :%d",[app integerProperty:PROP_APP_DEV2 withDefault:-1]);
-            NSLog(@"drive :%d",[app integerProperty:PROP_APP_DRIVE withDefault:-1]);
-            i++;
-        }
-    }
 }
 #pragma mark - UMAApplicationDelegate
 
@@ -2123,16 +2093,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)didDiscoveryFail:(int)reason withMessage:(NSString *)message;
 {
-    NSLog(@"app discovery failed. (%@)", message);
+
 }
 - (void)uma:(UMAApplication *)application didConnectInputDevice:(UMAInputDevice *)device
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+
 }
 
 - (void)uma:(UMAApplication *)application didDisconnectInputDevice:(UMAInputDevice *)device
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+
 }
 
 @end

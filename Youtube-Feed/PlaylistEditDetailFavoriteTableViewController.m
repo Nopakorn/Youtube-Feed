@@ -222,7 +222,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
         // Save the context.
         NSError *error = nil;
         if (![context save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
         
@@ -321,7 +320,6 @@ typedef NS_ENUM(NSInteger, AlertType) {
     
     NSError *error = nil;
     if (![self.fetchedResultsController performFetch:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
         abort();
     }
     

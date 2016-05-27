@@ -32,12 +32,10 @@ static NSString *const kSettingsManualConnectionSubTitle =
 static NSString *const kDeviceNone = @"No Name";
 static NSString *const kAddressNone = @"No Address";
 
-static const NSInteger kNumberOfSectionsInTableView = 4;
 static NSString *const kRowNum = @"rowNum";
 static NSString *const kHeaderText = @"headerText";
 static NSString *const kTitleText = @"HID Device Sample";
-static const NSInteger kHeightForHeaderInSection = 33;
-static const NSTimeInterval kHidDeviceControlTimeout = 5;
+
 NSString *const kIsManualConnection = @"is_manual_connection";
 
 @interface MainTabBarViewController ()<UMAFocusManagerDelegate, UMAAppDiscoveryDelegate, UMAApplicationDelegate>
@@ -70,115 +68,24 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self setSelectedIndex:0];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] } forState:UIControlStateNormal];
-    
-    
      _inputDevices = [NSMutableArray array];
 #pragma setup UMA in ViewDidloadTABBAR
     _inputDevices = [NSMutableArray array];
     _umaApp = [UMAApplication sharedApplication];
     _umaApp.delegate = self;
-    //_hidManager = [_umaApp requestHIDManager];
-    
     [_umaApp addViewController:self];
     
-    //focus
     _focusManager = [[UMAApplication sharedApplication] requestFocusManagerForMainScreenWithDelegate:self];
     [_focusManager setFocusRootView:[self.tabBarController.viewControllers objectAtIndex:0].view];
-    //[_focusManager setFocusRootView:self.tabBar];
-
     [_focusManager setHidden:YES];
-//    [self prepareBlocks];
-//    [_hidManager setDisconnectionCallback:_disconnectionBlock];
 }
 
-- (void)prepareBlocks
-{
-    __weak typeof(self) weakSelf = self;
-    
-    //
-    // Block of Discovery Completion
-    //
-    _discoveryBlock = ^(UMAInputDevice *device, NSError *error) {
-        UIAlertView *alertView;
-        
-        switch ([error code]) {
-            case kUMADiscoveryDone: // Intentionally stops by the app
-            case kUMADiscoveryFailed: // Discovery failed with some reason
-                //[weakSelf.refreshControl endRefreshing];
-                break;
-            case kUMADiscoveryTimeout: // Timeout occurred
-                [weakSelf.hidManager stopDiscoverDevice];
-                alertView = [[UIAlertView alloc] initWithTitle:@"Discovery of HID Device finished"
-                                                       message:@"If you would like to discover again, pull down the view."
-                                                      delegate:weakSelf
-                                             cancelButtonTitle:@"OK"
-                                             otherButtonTitles:nil, nil];
-                alertView.tag = ALERT_TYPE_DISCOVERY_TIMEOUT;
-                [alertView show];
-                //[weakSelf.refreshControl endRefreshing];
-                break;
-            case kUMADiscoveryDiscovered:       // Device discovered
-                /* Get discovered devices and reload table*/
-                [weakSelf.inputDevices addObject:device];
-                //[weakSelf.sampleTableView reloadData];
-                break;
-            case kUMADiscoveryStarted:
-                break;
-            default:
-                break;
-        }
-    };
-    [_hidManager setDiscoveryCallback:_discoveryBlock];
-    
-    //
-    // Block of Connection Complete
-    //
-    _connectionBlock = ^(UMAInputDevice *device, NSError *error) {
-        UIAlertView *alertView;
-        switch ([error code]) {
-            case kUMAConnectedSuccess:
-                [weakSelf.hidManager stopDiscoverDevice];
-                weakSelf.connectedDevice = device;
-                //[weakSelf.sampleTableView reloadData];
-                break;
-            case kUMAConnectedTimeout:
-            case kUMAConnectedFailed:
-                alertView =
-                [[UIAlertView alloc] initWithTitle:@"Connection timeout occurred."
-                                           message:@"Reset the last memory and start to discovery?"
-                                          delegate:weakSelf
-                                 cancelButtonTitle:@"No"
-                                 otherButtonTitles:@"Yes", nil];
-                alertView.tag = ALERT_TYPE_FAIL_TO_CONNECT;
-                [alertView show];
-                break;
-            default:
-                break;
-                
-        }
-    };
-    [_hidManager setConnectionCallback:_connectionBlock];
-    
-    //
-    // Block of Disonnection Complete
-    //
-    _disconnectionBlock = ^(UMAInputDevice *device, NSError *error) {
-        weakSelf.connectedDevice = nil;
-        //[weakSelf.sampleTableView reloadData];
-    };
-    [_hidManager setDisconnectionCallback:_disconnectionBlock];
-}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    //self.passValue = @"test";
-    [_focusManager moveFocus:4];    // Give focus to the first icon.
-    
-//    [_hidManager setConnectionCallback:_connectionBlock];
-//    [_hidManager enableAutoConnectionWithDiscoveryTimeout:kHidDeviceControlTimeout
-//                                    WithDiscoveryInterval:kHidDeviceControlTimeout
-//                                    WithConnectionTimeout:kHidDeviceControlTimeout];
-//    [_hidManager startDiscoverWithDeviceName:nil];
+
+    [_focusManager moveFocus:4];    
 
 }
 
@@ -238,7 +145,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)umaDidAccelerometerUpdate:(UMAAcceleration)acceleration
 {
-    NSLog(@"Accer x=%f, y=%f, z=%f", acceleration.x, acceleration.y, acceleration.z);
+   
 }
 
 
@@ -247,27 +154,6 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 #pragma mark - UMAAppDiscoveryDelegate
 - (void)didDiscoverySucceed:(NSArray *)appInfo
 {
-
-    if(appInfo) {
-        int i = 0;
-        for (UMAApplicationInfo *app in appInfo) {
-            NSLog(@"-------------[app(%d)]----------------",i);
-            NSLog(@"id    :%@",[app stringProperty:PROP_APP_ID withDefault:@"-"]);
-            NSLog(@"name  :%@",[app stringProperty:PROP_APP_NAME withDefault:@"-"]);
-            NSLog(@"cname :%@",[app stringProperty:PROP_APP_VENDOR withDefault:@"-"]);
-            NSLog(@"text  :%@",[app stringProperty:PROP_APP_DESCRIPTION withDefault:@"-"]);
-            NSLog(@"cat   :%@",[app stringProperty:PROP_APP_CATEGORY withDefault:@"-"]);
-            NSLog(@"url   :%@",[app stringProperty:PROP_APP_URL withDefault:@"-"]);
-            NSLog(@"schema:%@",[app stringProperty:PROP_APP_SCHEMA withDefault:@"-"]);
-            NSLog(@"icon  :%@",[app stringProperty:PROP_APP_ICON_URL withDefault:@"-"]);
-            NSLog(@"new   :%d",[app integerProperty:PROP_APP_NEW withDefault:-1]);
-            NSLog(@"recmt :%d",[app integerProperty:PROP_APP_RECMD withDefault:-1]);
-            NSLog(@"date  :%@",[app stringProperty:PROP_APP_DATE withDefault:@"-"]);
-            NSLog(@"dev2  :%d",[app integerProperty:PROP_APP_DEV2 withDefault:-1]);
-            NSLog(@"drive :%d",[app integerProperty:PROP_APP_DRIVE withDefault:-1]);
-            i++;
-        }
-    }
 }
 #pragma mark - UMAApplicationDelegate
 
@@ -278,16 +164,16 @@ NSString *const kIsManualConnection = @"is_manual_connection";
 
 - (void)didDiscoveryFail:(int)reason withMessage:(NSString *)message;
 {
-    NSLog(@"app discovery failed. (%@)", message);
+
 }
 - (void)uma:(UMAApplication *)application didConnectInputDevice:(UMAInputDevice *)device
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+
 }
 
 - (void)uma:(UMAApplication *)application didDisconnectInputDevice:(UMAInputDevice *)device
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+
 }
 
 @end

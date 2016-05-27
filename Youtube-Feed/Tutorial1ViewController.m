@@ -16,9 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
+
     self.navigationController.navigationBarHidden = YES;
     
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"tutorial/HTML/tutorial01" ofType:@"html"];
@@ -34,20 +32,6 @@
     [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 }
 
-//- (void)orientationChanged:(NSNotification *)notification
-//{
-//    if ([UIScreen mainScreen].bounds.size.width < [UIScreen mainScreen].bounds.size.height) {
-//        
-////        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1"];
-////        [self.image1Bg setImage:portriatBg1];
-//    
-//    } else {
-//        
-////        UIImage *portriatBg1 = [UIImage imageNamed:@"tp1_Landscape"];
-////        [self.image1Bg setImage:portriatBg1];
-//    }
-//
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -59,26 +43,6 @@
     return YES;
 }
 
-//- (UIInterfaceOrientationMask)supportedInterfaceOrientations
-//{
-//    return UIInterfaceOrientationMaskPortrait;
-//}
-
-//- (BOOL)shouldAutorotate
-//{
-//    NSLog(@"calling auto rotate");
-//    return NO;
-//}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)nextButtonTutorialPressed:(id)sender {
     [self performSegueWithIdentifier:@"NextTutorial2" sender:nil];
