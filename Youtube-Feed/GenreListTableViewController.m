@@ -462,10 +462,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
                     }
                 }
             });
-        } else {
-           
         }
-
     }
     
     if (self.genreListPlaying) {
