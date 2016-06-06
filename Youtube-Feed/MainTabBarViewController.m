@@ -68,6 +68,7 @@ NSString *const kIsManualConnection = @"is_manual_connection";
     [self setSelectedIndex:0];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] } forState:UIControlStateNormal];
+    
      _inputDevices = [NSMutableArray array];
 #pragma setup UMA in ViewDidloadTABBAR
     _inputDevices = [NSMutableArray array];

@@ -90,7 +90,6 @@
             }
             
         }] resume];
-
         
     } else {
         urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=id%%2C+snippet%%2C+contentDetails&hl=%@&chart=mostPopular&videoCategoryId=%@&key=%@&maxResults=25&regionCode=%@", self.hl, searchTerm, self.youtube_api_key, self.regionCode];
